@@ -54,12 +54,12 @@ export class RmpLandingPageComponent implements OnInit{
   public notification_number: number;
   public serviceData;
   constructor(
-    private django: DjangoService, 
+    public django: DjangoService, 
     private DatePipe: DatePipe,
     public calendar: NgbCalendar, 
     private report_id_service: GeneratedReportService,
-    private dataProvider: DataProviderService, 
-    private auth_service: AuthenticationService, 
+    public dataProvider: DataProviderService, 
+    public  auth_service: AuthenticationService, 
     private spinner: NgxSpinnerService, 
     private toastr: NgToasterComponent) {
         this.fromDate = calendar.getToday();
@@ -153,7 +153,8 @@ export class RmpLandingPageComponent implements OnInit{
     if (this.note_status) {
       if(today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
           $('#DisplayNotesModal').modal('show');
-    } else $('#display-notes-status').prop("checked", true);
+    } else 
+    $('#display-notes-status').prop("checked", true);
   }
 
   /*------------------------Calendar---------------------------*/
@@ -197,8 +198,8 @@ export class RmpLandingPageComponent implements OnInit{
   public getCurrentLookUpTable() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
-        this.info = element
-        this.disclaimer_encounter_flag += 1
+        this.info = element;
+        this.disclaimer_encounter_flag += 1;
         if (this.disclaimer_encounter_flag == 1) {
           this.getAdminNotes();
           if (this.info.data.admin_note[0]) 

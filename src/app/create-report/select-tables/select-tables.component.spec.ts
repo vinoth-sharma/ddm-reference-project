@@ -156,7 +156,6 @@ describe('SelectTablesComponent', () => {
     component.selectedTables =[ {tables} ];
     fixture.detectChanges();
     tableSelectElement = fixture.debugElement.query(By.css('#table'));
-    spyOn(component, 'setSelectedTable').and.callThrough();
 
   });
 
@@ -194,7 +193,8 @@ describe('SelectTablesComponent', () => {
     component.objectExplorerSidebarService.setCustomTables(a);
     tick();
     fixture.detectChanges();
-    component.objectExplorerSidebarService.getCustomTables.subscribe(data => expect(data).toBe(a));
+    component.objectExplorerSidebarService.getCustomTables.
+        subscribe(data => expect(data).toBe(a));
   }));
 
   it('should update tables', () => {
@@ -224,95 +224,140 @@ describe('SelectTablesComponent', () => {
     fixture.detectChanges();
     component.updateTables(updateTables, 'table');
     fixture.detectChanges();
-    expect(component.selectedTables[0].tables['tables']).toEqual(updateSemanticList, 'semanticList');
+    expect(component.selectedTables[0].tables['tables']).
+      toEqual(updateSemanticList, 'semanticList');
   });
 
   it('should getRelatedTables execute', () => {
     fixture.detectChanges();
     component.getRelatedTables(selectedTable, 0);
-    fixture.detectChanges();    
-  
+    fixture.detectChanges();
+    let a = component.selectedTables.
+              some(table => table['table'] && table['table']['mapped_table_id']);
+    expect(a).toBe(false);           
   });
 
   it('should execute setSelectedTable ', () => {
+       const  event = {
+          'source' : {
+            'selected' : {
+              "_mostRecentViewValue": 'checking length of text',
+              'group': {
+                'label': 'Related Tables'
+              }
+            }
+          }
+         };
     fixture.detectChanges();
     component = fixture.componentInstance;
-    component.setSelectedTable(selectedTable, 0, 'Related Tables');
+    spyOn(component, 'setSelectedTable').and.callThrough(); //callThrough()
+    component.setSelectedTable(selectedTable, 0, event);
+    expect(component.setSelectedTable).toHaveBeenCalled();
   });
 
   it('should execute getFavoriteSortedTables', fakeAsync(() => {
     fixture.detectChanges();
+    spyOn(component, 'getFavoriteSortedTables').and.callThrough(); //callThrough()
     component.getFavoriteSortedTables('tables');
+    expect(component.getFavoriteSortedTables).toHaveBeenCalled();
   }));
 
   it('should execute doColumnAliasSpaceValidation', fakeAsync(() => {
     fixture.detectChanges();
+    spyOn(component, 'doColumnAliasSpaceValidation').and.callThrough(); //callThrough()
     component.doColumnAliasSpaceValidation();
+    expect(component.doColumnAliasSpaceValidation).toHaveBeenCalled();
   }));
 
   it('should execute spaceHandler' , fakeAsync(() => {
     fixture.detectChanges();
+    spyOn(component, 'spaceHandler').and.callThrough(); //callThrough()
     component.spaceHandler(' ganesh   ');
+    expect(component.spaceHandler).toHaveBeenCalled();
   }));
 
   it('should execute getCalculatedData', fakeAsync(() => {
     fixture.detectChanges();
+    spyOn(component, 'getCalculatedData').and.callThrough(); //callThrough()
     component.getCalculatedData();
+    expect(component.getCalculatedData).toHaveBeenCalled();
   }));
 
   it('should deleted key, ', fakeAsync(() => {
-    component.deleteKey(selectedTable, 0);
     fixture.detectChanges();
+    spyOn(component, 'deleteKey').and.callThrough(); //callThrough()
+    component.deleteKey(selectedTable, 0);
+    expect(component.deleteKey).toHaveBeenCalled();
   }));
 
   it('should execute filterColumn', fakeAsync(() =>{
-    component.filterColumn('hh', 0);
     fixture.detectChanges();
+    spyOn(component, 'filterColumn').and.callThrough(); //callThrough()
+    component.filterColumn('hh', 0);
+    expect(component.filterColumn).toHaveBeenCalled();
   }));
 
   it('should execute filter key', fakeAsync(() =>{
-    component.filterKey('hh', 0, 'primary');
     fixture.detectChanges();
+    spyOn(component, 'filterKey').and.callThrough(); //callThrough()
+    component.filterKey('hh', 0, 'primary');
+    expect(component.filterKey).toHaveBeenCalled();
   }));
 
   it('should execute create formula', fakeAsync(() => {
     fixture.detectChanges();
+    spyOn(component, 'createFormula').and.callThrough(); //callThrough()
     component.createFormula();
+    expect(component.createFormula).toHaveBeenCalled();
   }));
 
   it('should execute check error', fakeAsync(() =>{
     fixture.detectChanges();
+    spyOn(component, 'checkErr').and.callThrough(); //callThrough()
     component.checkErr();
+    expect(component.checkErr).toHaveBeenCalled();
   }));
 
   it('should execute add new row method', fakeAsync(() => {
     fixture.detectChanges();
+    spyOn(component, 'addRow').and.callThrough(); //callThrough()
     component.addRow(5);
+    expect(component.addRow).toHaveBeenCalled();
   }));
 
   it('should execute disableFields method', fakeAsync(() => {
     fixture.detectChanges(); 
+    spyOn(component, 'disableFields').and.callThrough(); //callThrough()
     component.disableFields();
+    expect(component.disableFields).toHaveBeenCalled();
   }));
 
   it('should execute resetSelected method', fakeAsync(() => {
     fixture.detectChanges(); 
+    spyOn(component, 'resetSelected').and.callThrough(); //callThrough()
     component.resetSelected(selectedTable);
+    expect(component.resetSelected).toHaveBeenCalled();
   }));
 
   it('should execute addKey method', fakeAsync(() => {
-    fixture.detectChanges(); 
+    fixture.detectChanges();
+    spyOn(component, 'addKey').and.callThrough(); //callThrough() 
     component.addKey(selectedTable);
+    expect(component.addKey).toHaveBeenCalled();
   }));
 
   it('should check isOpened method', fakeAsync(() => {
       fixture.detectChanges();
+      spyOn(component, 'isOpened').and.callThrough(); //callThrough()
       component.isOpened('', 0, 'table');
+      expect(component.isOpened).toHaveBeenCalled();
     }));
 
   it('should execute isDisabled method', fakeAsync(() => {
       fixture.detectChanges();
+      spyOn(component, 'isDisabled').and.callThrough(); //callThrough()
       component.isDisabled(true);
+      expect(component.isDisabled).toHaveBeenCalled();
     }));
 
   it('should execute selectionDone method', fakeAsync(() => {
@@ -323,7 +368,9 @@ describe('SelectTablesComponent', () => {
           'aliasName': ['a','b','c']
         }
       };
+      spyOn(component, 'selectionDone').and.callThrough(); //callThrough()
       component.selectionDone(event,0);
+      expect(component.selectionDone).toHaveBeenCalled();
     }));
 });
 

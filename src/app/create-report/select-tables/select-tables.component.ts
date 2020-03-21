@@ -303,20 +303,20 @@ export class SelectTablesComponent implements OnInit{
     selected['tableId'] =  typeof selected.tableId === 'string' ? 
                           Number(selected.tableId.split('_')[0]) : selected.tableId;
     // if table is a related table
-    if (this.isRelatedTable(selected) && event === 'Related Tables' 
+    if (this.isRelatedTable(selected) && event.source.selected.group.label === 'Related Tables' 
           && selected && selected['tables'] && selected['tables']['related tables'])
       selected['table'] = selected['tables']['related tables'].
                           find(table => selected['tableId'] === table['mapped_table_id']);
     // if table is a custom table
-    else if (this.isCustomTable(selected) && event === 'Custom Tables'
+    else if (this.isCustomTable(selected) && event.source.selected.group.label === 'Custom Tables'
               && selected && selected['tables'] && selected['tables']['custom tables'])
       selected['table'] = selected['tables']['custom tables'].
                           find(table => selected['tableId'] === table['custom_table_id']);
-    else if(event === 'Tables' && selected && selected['tables'] && 
+    else if(event.source.selected.group.label === 'Tables' && selected && selected['tables'] && 
             selected['tables']['tables'])
       selected['table'] = selected['tables']['tables'].
                           find(table => selected['tableId'] === table['sl_tables_id']);
-      selected['tableType'] = event;
+      selected['tableType'] = event.source.selected.group.label;
       this.getRelatedTables(selected, index);
       // this.multiSelectColumnsCollector(index);
       selected['columnsForMultiSelect'] = selected.table.column_properties.
@@ -337,7 +337,8 @@ export class SelectTablesComponent implements OnInit{
 
   // get the list of relationships_list table data
   public getRelatedTables(selected: any, index?:number) {
-    let isRelatedSelected = this.selectedTables.some(table => table['table'] && table['table']['mapped_table_id']);
+    let isRelatedSelected = this.selectedTables.
+                              some(table => table['table'] && table['table']['mapped_table_id']);
     // let isRelatedSelected = this.selectedTables.some(table => table['tables'] && table['tables']['related tables']['mapped_table_id']);
     this.resetSelected(selected);
     // this.updateSelectedTables();
@@ -644,27 +645,36 @@ export class SelectTablesComponent implements OnInit{
     this.isLoadingRelated = true;
     this.selectTablesService.getRelatedTables(this.selectedTables[0]['tableId']).
     subscribe(response => {
-      
-    this.selectedTables[1].tables['related tables'] = response['data'];
-    this.Originaltables['related tables'] = response['data'];
-      if(this.selectedTables.length > 0 && this.selectedTables[1].tables &&
-        this.selectedTables[1].tables['related tables']) {
-            let keyContent = this.selectedTables[1].tables['related tables'].map(data => {
-              return data.relationships_list.map(ele => {
-                return `Primary Key: ${ele.primary_key} Foreign Key: ${ele.foreign_key}`
-              })
-            })
-          this.selectedTables[1].tables['related tables'].forEach((element, key) => {
-            element['content'] = `${keyContent[key].map(k => k)}`
-          });
+      if(response['data']) {
+        this.selectedTables[1]['tables']['related tables'] = response['data'];
+        this.Originaltables['related tables'] = response['data'];
+          if(this.selectedTables.length > 0 && this.selectedTables[1].tables &&
+            this.selectedTables[1].tables['related tables']) {
+                let keyContent = this.selectedTables[1].tables['related tables'].map(data => {
+                  return data.relationships_list.map(ele => {
+                    return `Primary Key: ${ele.primary_key} Foreign Key: ${ele.foreign_key}`
+                  })
+                })
+                  if(this.selectedTables && this.selectedTables.length > 0 &&
+                      this.selectedTables[1] && this.selectedTables[1]['tables'] && 
+                      this.selectedTables[1]['tables']['related tables']) {
+                      this.selectedTables[1]['tables']['related tables'].
+                              forEach((element, key) => {
+                                element['content'] = `${keyContent[key].map(k => k)}`
+                              });
+                  }  
+              
+                    this.isLoadingRelated = false;
+                    this.relatedTableId = this.selectedTables[1]['tables']['related tables'].length && 
+                                    this.selectedTables[0]['table']['sl_tables_id']; 
+          }
+      }  
+        
+        }, error => {
           this.isLoadingRelated = false;
-          this.relatedTableId = this.selectedTables[1].tables['related tables'].length && this.selectedTables[0]['table']['sl_tables_id']; 
-      }
-    }, error => {
-      this.isLoadingRelated = false;
-      this.toasterService.error(error.message["error"] || this.defaultError);
-      this.selectedTables[1].tables['related tables'] = [];
-    });
+          this.toasterService.error(error.message["error"] || this.defaultError);
+          this.selectedTables[1].tables['related tables'] = [];
+        });
   }
 
 
@@ -788,7 +798,6 @@ export class SelectTablesComponent implements OnInit{
   // to get list of selected calculated column data
   public getCalculatedData() {
     let isValid = true;
-    console.log(this.selectedTables, 'selectedTables');
     this.selectedTables.forEach(data => {
       if(!data['tables']) 
         isValid = false;

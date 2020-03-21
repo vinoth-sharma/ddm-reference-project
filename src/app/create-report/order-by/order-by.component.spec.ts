@@ -99,9 +99,6 @@ describe('OrderByComponent', () => {
         component.sharedDataService.selectedTables.subscribe(data => expect(data).toBe(a));
         tick();
         fixture.detectChanges();
-        // spyOn(component.sharedDataService, 'setFormula');
-        // component.sharedDataService.setFormula(['orderBy'], '');
-        // fixture.detectChanges();
         spyOn(component, 'getColumns').and.returnValue(a);
         const b = component.getColumns(a);
         fixture.whenStable().then( () => {

@@ -5,8 +5,8 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { DatePipe } from '@angular/common';
-import { NgxSpinnerService } from "ngx-spinner";
 import { AuthenticationService } from "src/app/authentication.service";
+import Utils from '../../../utils';
 declare var $: any;
 import 'jquery';
 
@@ -60,7 +60,6 @@ export class RmpLandingPageComponent implements OnInit{
     private report_id_service: GeneratedReportService,
     public dataProvider: DataProviderService, 
     public  auth_service: AuthenticationService, 
-    private spinner: NgxSpinnerService, 
     private toastr: NgToasterComponent) {
         this.fromDate = calendar.getToday();
         this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
@@ -91,7 +90,7 @@ export class RmpLandingPageComponent implements OnInit{
           notes_end_timestamp = this.DatePipe.transform(new Date(this.customizedToDate.toString() + " " + 
                                   (this.endTime['hour']).toString() + ":" + (this.endTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
         }
-        this.spinner.show();
+        Utils.showSpinner();
         this.notes_details["notes_content"] = this.admin_notes;
         this.notes_details["notes_start_date"] = notes_start_timestamp;
         this.notes_details["notes_end_date"] = notes_end_timestamp;
@@ -105,10 +104,10 @@ export class RmpLandingPageComponent implements OnInit{
       this.serviceData = response;
       $('#AdminNotesModal').modal('hide');
       $('.modal-backdrop').removeClass('modal-backdrop');
-      this.spinner.hide();
+      Utils.hideSpinner();
       this.toastr.success("Admin Notes updated successfully");
     }, err => {
-        this.spinner.hide()
+      Utils.hideSpinner();
         this.toastr.error("Selection is incomplete")
       });
   }
@@ -120,14 +119,14 @@ export class RmpLandingPageComponent implements OnInit{
 
 // to get the list of previous message of important notes
   public prevMessage() {
-    this.spinner.show();
+    Utils.showSpinner();
     this.django.get_admin_notes().subscribe(response => {
       response['admin_notes'].forEach(item => {
         item.notes_end_date = new Date(new Date(item.notes_end_date)
                                 .toLocaleString("en-US",{timeZone:"America/New_York"}));
       });
       this.notes = response['admin_notes'];
-      this.spinner.hide();
+      Utils.hideSpinner();
     })
   }
 

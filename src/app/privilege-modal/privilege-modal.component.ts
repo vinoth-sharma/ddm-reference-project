@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from "../custom-directives/ng-toaster/ng-toaster.component";
 import { Router } from '@angular/router';  
 import { PrivilegeModalService } from "./privilege-modal.service";
 import Utils from "../../utils";
@@ -43,7 +43,7 @@ export class PrivilegeModalComponent implements OnInit {
 
   constructor(
     private privilegeModalService: PrivilegeModalService,
-    private toasterService: ToastrService,
+    private toasterService: NgToasterComponent,
     private router: Router,
     private dialog: MatDialog
   ) {}

@@ -1,8 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
-import { ToastrService } from 'ngx-toastr';
 import { MatDialog ,  MatDialogRef , MAT_DIALOG_DATA } from "@angular/material/dialog";
-
+import { NgToasterComponent } from "../../custom-directives/ng-toaster/ng-toaster.component";
 import { SharedDataService } from "../shared-data.service";
 import { AuthenticationService } from '../../authentication.service';
 import { FormulaService } from './formula.service';
@@ -41,15 +40,15 @@ export class FormulaComponent implements OnInit {
     all:[]
   }
   constructor(
-    private router: Router,
-    private activateRoute: ActivatedRoute,
-    private sharedDataService: SharedDataService,
-    private formulaService: FormulaService,
-    private authenticationService: AuthenticationService,
-    private toastrService: ToastrService,
-    private semanticReportsService:SemanticReportsService,
+    public router: Router,
+    public activateRoute: ActivatedRoute,
+    public sharedDataService: SharedDataService,
+    public formulaService: FormulaService,
+    public authenticationService: AuthenticationService,
+    public toastrService: NgToasterComponent,
+    public semanticReportsService:SemanticReportsService,
     public dialog : MatDialog,
-    private constantService:ConstantService) {
+    public constantService:ConstantService) {
       this.functions = this.constantService.getSqlFunctions('aggregations');
     }
 
@@ -100,7 +99,7 @@ export class FormulaComponent implements OnInit {
   }
 
   public getUserDetails() {
-    this.router.config.forEach(element => {
+    this.router.config?.forEach(element => {
       if (element.path == "semantic") {
         this.semanticId = element.data["semantic_id"];
       }
@@ -126,7 +125,7 @@ export class FormulaComponent implements OnInit {
       table_ids : [],
       custom_ids : []
     }
-    console.log(this.selectedTables);
+    // console.log(this.selectedTables);
     
     this.selectedTables.forEach(element => {
       if(element.tableType === "Custom Tables")
@@ -138,20 +137,20 @@ export class FormulaComponent implements OnInit {
     return obj;
   }
 
-  private isNewReport(){
-      return this.activateRoute.snapshot.queryParams.report?false:true;
+  public isNewReport(){
+      return this.activateRoute.snapshot?.queryParams.report?false:true;
   }
 
-  private getListId(){
-    if(this.activateRoute.snapshot.queryParams.report){
+  public getListId(){
+    if(this.activateRoute.snapshot?.queryParams.report){
       return this.activateRoute.snapshot.queryParams.report
     }else{
       return 0;
     }
   }
 
-  private getSheetId(){
-    if(this.activateRoute.snapshot.queryParams.sheet){
+  public getSheetId(){
+    if(this.activateRoute.snapshot?.queryParams.sheet){
       return this.activateRoute.snapshot.queryParams.sheet
     }else{
       return 0;
@@ -178,10 +177,11 @@ export class FormulaComponent implements OnInit {
   }
 
   /**
-   * saveReport
+   * add new sheet to existing report
    */
   public createNewSheet(data){
     Utils.showSpinner();
+    this.generateGroupBy();
     let options = {
       case_id : 3,
       copy_to : +this.getListId(),
@@ -201,7 +201,7 @@ export class FormulaComponent implements OnInit {
       calculate_column_flag : false,
       calculate_column_data : []
     }    
-
+    
     this.formulaService.createSheetToExistingReport(options).subscribe(
       res => {
         this.sharedDataService.setReportConditionFlag(false);
@@ -219,7 +219,7 @@ export class FormulaComponent implements OnInit {
     )
   }
 
-
+  // auto generate groupBy value 
   public generateGroupBy(){
     // formulaObject['select']['calculated']
     let formulaObject = this.sharedDataService.getFormulaObject();
@@ -282,11 +282,11 @@ export class FormulaComponent implements OnInit {
     // // console.log("FormulaObj in GB:",formulaObject);
   }
 
+  // create and edit the sheet from a report
   public createEditReport(data: any) {
     Utils.showSpinner();
     this.generateGroupBy();
-    let options;
-     options = {
+    let options = {
         'sl_id': this.getUserDetails(),
         'report_name': data.name,
         "created_by": this.userId,
@@ -325,7 +325,6 @@ export class FormulaComponent implements OnInit {
 
     this.formulaService.generateReport(options).subscribe(
       res => { 
-
         this.saveReportExcel({
           report_list_id : res['report_list_id']?res['report_list_id']:options.report_list_id,
           report_name : options.report_name
@@ -342,30 +341,27 @@ export class FormulaComponent implements OnInit {
     )
   }
 
+  //save to ecs
   public saveReportExcel(options,res) {
     let optionsBackup = options
     this.formulaService.uploadReport(options).subscribe(
       response => {
         if(response['message'] == 'Failed to upload file. Please try again.'){
           this.sharedDataService.setEcsStatus(false);
-          console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
           this.toastrService.error(response['file']['message']);
           this.formulaService.setFailedEcsUploadParameters(optionsBackup);
         }
         else{
           this.sharedDataService.setEcsStatus(true);
           // this.sharedDataService.ecsUpload = true;
-          console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
           // this.toastrService.success(response['message']);
           this.toastrService.success("File uploaded succesfully to ECS!!");
           this.formulaService.setFailedEcsUploadParameters({});
         }
-        
       },
       err => {
         // this.toastrService.error(err['message']['error']);
         this.sharedDataService.setEcsStatus(false);
-        console.log("ECS failure value : ",this.sharedDataService.ecsUpload);
         this.formulaService.setFailedEcsUploadParameters(optionsBackup);
         this.toastrService.error(err['message']['error']);
       }
@@ -388,7 +384,7 @@ export class FormulaComponent implements OnInit {
     }  
   }
 
-  private getAllData() {
+  public getAllData() {
     return {
       'selected_tables': this.getUpdatedTables(),
       'calculated_fields':  this.sharedDataService.getFormulaCalculatedData(),
@@ -401,11 +397,11 @@ export class FormulaComponent implements OnInit {
     };
   }
 
-  private getRequestId() {
+  public getRequestId() {
     return this.isEditView ? this.sharedDataService.getEditRequestId() : this.sharedDataService.getRequestId();
   }
 
-  private getUpdatedTables() {
+  public getUpdatedTables() {
     let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
     selectedTables.forEach(obj => {
       delete obj['tables'];

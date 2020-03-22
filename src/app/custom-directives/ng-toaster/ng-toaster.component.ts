@@ -32,4 +32,13 @@ export class NgToasterComponent implements OnInit {
     })
   }
 
+  warning(message){
+    this.toaster.open(message,"",{
+      duration : 2000,
+      verticalPosition : 'top',
+      horizontalPosition : 'right',
+      panelClass : ['warning-bar']
+    })
+  }
+
 }

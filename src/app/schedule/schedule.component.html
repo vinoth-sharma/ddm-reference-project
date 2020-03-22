@@ -51,15 +51,18 @@
             <div class="col-xs-7" (click)="setSendingDates()">
               <div class="form-group">
                 <div class='input-group date '>
-                    <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}' readonly="all"/>
-                    <span class="input-group-addon" (click)="hideCalendar()" [hidden]="isNotSelectable">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+                    <!-- <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}' readonly="all"/> -->
+                    <!-- <span class="input-group-addon" (click)="hideCalendar()" [hidden]="isNotSelectable"> -->
+                        <!-- <span class="glyphicon glyphicon-calendar"></span> -->
+                        <app-multiple-dates-picker [loadingDates]="scheduleData.schedule_for_date || scheduleData.custom_dates " ></app-multiple-dates-picker>
+                        <!-- [overRideData]='isOverRideData' -->
+                    <!-- </span> -->
                 </div>
             </div>
-            <ngb-multi-date-picker (click)="checkingDates()" [datesSelected]="datesSelected" 
+            <!-- <ngb-multi-date-picker (click)="checkingDates()" [datesSelected]="datesSelected" 
               (datesSelectedChange)="change($event)" [hidden]="calendarHide">
-            </ngb-multi-date-picker>
+            </ngb-multi-date-picker> -->
+            <!-- <app-multiple-dates-picker></app-multiple-dates-picker> -->
             </div>
           </div>
   

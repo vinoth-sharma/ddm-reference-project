@@ -30,18 +30,16 @@ export class PreviewTableContainerComponent implements OnInit {
     private queryBuilderService:QueryBuilderService, private cdRef : ChangeDetectorRef
     ) { }
 
-  ngOnInit() {
+  ngOnInit(){
   }
 
   ngAfterViewInit(){
-   
+    this.getPaginationData();
     this.cdRef.detectChanges();
   }
 
 
   ngOnChanges(){
-    this.getPaginationData();
-    
   }
 
   getPaginationData(){ 

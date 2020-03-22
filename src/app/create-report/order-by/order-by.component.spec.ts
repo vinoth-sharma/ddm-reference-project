@@ -99,15 +99,16 @@ describe('OrderByComponent', () => {
         component.sharedDataService.selectedTables.subscribe(data => expect(data).toBe(a));
         tick();
         fixture.detectChanges();
+        component.selectedTables = a;
         spyOn(component, 'getColumns').and.returnValue(a);
-        const b = component.getColumns(a);
+        const b = component.getColumns();
         fixture.whenStable().then( () => {
           fixture.detectChanges();
           expect(b).toEqual(a, 'checking column with table');
         });
         tick();
         fixture.detectChanges();
-        const initialState = component.getInitialState(a);
+        const initialState = component.getInitialState();
         const res = [{
           tableId: null,
           table: null,

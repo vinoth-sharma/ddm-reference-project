@@ -41,14 +41,16 @@ export class OrderByComponent implements OnInit {
   }
 
   getSelectedTableData(){
-      this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables);  
-      // this.sharedDataService.setFormula(['orderBy'], '');
-      this.columnWithTable = this.getColumns(this.selectedTables);
-      this.orderbyData = this.getInitialState(this.columnWithTable);
-      let formulaCalculated = this.sharedDataService.getOrderbyData();
-      this.removeDeletedTableData(formulaCalculated);
+      this.sharedDataService.selectedTables.subscribe(tables =>{
+        this.selectedTables = tables;
+        this.sharedDataService.setFormula(['orderBy'], '');
+        this.columnWithTable = this.getColumns();
+        this.orderbyData = this.getInitialState();
+        let formulaCalculated = this.sharedDataService.getOrderbyData();
+        this.removeDeletedTableData(formulaCalculated);
+      });  
       this.sharedDataService.resetQuerySeleted.subscribe(ele=> 
-            this.orderbyData = this.getInitialState(this.columnWithTable) );
+            this.orderbyData = this.getInitialState() );
   }
 
   // to add new row for order by data
@@ -75,7 +77,7 @@ export class OrderByComponent implements OnInit {
     }
     
     if(this.isEmpty(data))
-      this.orderbyData = this.getInitialState(this.columnWithTable);
+      this.orderbyData = this.getInitialState();
     else
       this.orderbyData = [];
       
@@ -97,11 +99,11 @@ export class OrderByComponent implements OnInit {
     return true;
   }
 
-  public getColumns(selectedTables) {   //fetch columns for selected tables
+  public getColumns() {   //fetch columns for selected tables
     let columnData = [];
     let columnWithTable = [];
-    if(selectedTables.length > 0){
-      columnWithTable = selectedTables.map(element => {
+    if(this.selectedTables.length > 0){
+      columnWithTable = this.selectedTables.map(element => {
         if(element && element['table'] && element['table']['column_properties']) {
           return element['table']['column_properties'].map(col => {
             if(element && element['select_table_alias']) {
@@ -120,14 +122,14 @@ export class OrderByComponent implements OnInit {
   }
 
   // initial state of some of params
-  public getInitialState(columnWithTable) {
+  public getInitialState() {
     return [{
       tableId: null,
       table: null,
       selectedColumn: null,
       columns: [],
       orderbySelected: 'ASC',
-      columnDetails: JSON.parse(JSON.stringify(columnWithTable)).sort()
+      columnDetails: JSON.parse(JSON.stringify(this.columnWithTable)).sort()
     }];
   }
 
@@ -168,13 +170,13 @@ export class OrderByComponent implements OnInit {
 // delete row of selected deleted button of order by data
   public deleteRow(index: number) {
     if ((this.orderbyData.length - 1) == 0) {
-      this.orderbyData = this.getInitialState(this.columnWithTable);
-      // this.sharedDataService.setFormula(['orderBy'], '');
+      this.orderbyData = this.getInitialState();
+      this.sharedDataService.setFormula(['orderBy'], '');
     } else {
       this.orderbyData.splice(index, 1);
       this.formulaArray1.splice(index, 1);
       this.formula1 = this.formulaArray1.join(',');
-      // this.sharedDataService.setFormula(['orderBy'], this.formula1);
+      this.sharedDataService.setFormula(['orderBy'], this.formula1);
     }
   }
 

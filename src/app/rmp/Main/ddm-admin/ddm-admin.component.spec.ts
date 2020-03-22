@@ -11,8 +11,9 @@ import { DataProviderService } from '../../data-provider.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { DjangoService } from '../../django.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
-fdescribe('DdmAdminComponent', () => {
+describe('DdmAdminComponent', () => {
   let component: DdmAdminComponent;
   let fixture: ComponentFixture<DdmAdminComponent>;
   let dataService;
@@ -231,24 +232,55 @@ fdescribe('DdmAdminComponent', () => {
     expect(djangoSpy).toHaveBeenCalled();
   }))
 
-  xit("should upload editted document to the server",()=>{
+  it("should upload editted document to the server",fakeAsync(()=>{
     component.content = true;
     spyOn(component,'ngOnInit');
+    let spinner = TestBed.inject(NgxSpinnerService)
     let element = fixture.debugElement.nativeElement;
-    let djangoService = TestBed.get(DjangoService);
+    let djangoService = TestBed.inject(DjangoService);
+    let toastrService = TestBed.inject(ToastrService)
     let lookUpValuesData = { data: { desc_text_admin_documents: [{ key: "lookUpData" }] } }
     spyOn(djangoService,"ddm_rmp_admin_documents_put").and.returnValue(of({}))
-    spyOn(djangoService,"getLookupValues").and.returnValue(lookUpValuesData)
+    spyOn(djangoService,"getLookupValues").and.returnValue(of(lookUpValuesData));
+    let toastrSpy = spyOn(toastrService,"success")
+    let spinnerShowSpy = spyOn(spinner,"show");
+    let spinnerHideSpy = spyOn(spinner,"hide");
+
     component.document_details = {title:"",url:"",admin_flag:true}
     fixture.detectChanges();
     element.querySelector("#document-name").value = "doc-name";
     element.querySelector("#document-url").value = "doc-url";
-    fixture.detectChanges();
-
     component.editDocument();
-    expect(component.document_details.title).toEqual("doc-name");
-    expect(component.document_details.url).toEqual("doc-url");
-  })
+    fixture.detectChanges();
+    expect(component.document_detailsEdit.title).toEqual("doc-name");
+    expect(component.document_detailsEdit.url).toEqual("doc-url");
+    tick();
+    expect(spinnerShowSpy).toHaveBeenCalled();
+    expect(spinnerHideSpy).toHaveBeenCalled();
+    expect(component.naming).toEqual(lookUpValuesData.data.desc_text_admin_documents);
+    expect(toastrSpy).toHaveBeenCalled();
+    expect(component.changeDoc).toBeFalsy();
+    expect( element.querySelector("#document-name").value).toEqual("");
+    expect(element.querySelector("#document-url").value).toEqual("");
+
+  }))
+
+
+    it("should set the input fields and set a few properties",()=>{
+      let element = fixture.debugElement.nativeElement;
+      component.content = true;
+      spyOn(component,"ngOnInit");
+      
+      fixture.detectChanges();
+      component.editDoc(1,"val","url");
+     
+      expect(component.editid).toEqual(1);
+      expect(component.changeDoc).toBeTruthy();
+      expect(element.querySelector("#document-name").value).toEqual("val");
+      expect(element.querySelector("#document-url").value).toEqual("url")
+
+      
+    })
 
 });
 

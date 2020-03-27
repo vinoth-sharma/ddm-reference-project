@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OndemandReportsComponent } from './ondemand-reports.component';
 import { OndemandService } from '../ondemand.service';
 
-fdescribe('OndemandReportsComponent', () => {
+describe('OndemandReportsComponent', () => {
   let component: OndemandReportsComponent;
   let fixture: ComponentFixture<OndemandReportsComponent>;
 

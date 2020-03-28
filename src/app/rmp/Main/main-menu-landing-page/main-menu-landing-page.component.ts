@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
-import * as Rx from "rxjs"
-import { NgxSpinnerService } from "ngx-spinner";
+import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import * as $ from 'jquery';
+import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
 import { AuthenticationService } from "src/app/authentication.service";
+import Utils from 'src/utils';
+import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 
 @Component({
   selector: 'app-main-menu-landing-page',
@@ -52,7 +53,12 @@ export class MainMenuLandingPageComponent implements OnInit{
     ]
   };
   
-  constructor(private django: DjangoService,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
+  constructor(private django: DjangoService,
+    private auth_service:AuthenticationService, 
+    private dataProvider: DataProviderService, 
+    private fb: FormBuilder, 
+    private router: Router,
+    private toastr: NgToasterComponent) {
         
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
@@ -63,7 +69,7 @@ export class MainMenuLandingPageComponent implements OnInit{
       if (currentUser) {
         this.user_name = currentUser["first_name"] + " " + currentUser["last_name"]
         this.user_role = currentUser["role"]
-      }
+      } 
     })
 
     this.data = this.dataProvider.loadLookUpTableData
@@ -91,19 +97,9 @@ export class MainMenuLandingPageComponent implements OnInit{
     $('#edit_button').hide()
   }
 
-  showSpinner() {
-    this.spinner.show();
-  }
-
-  hideSpinner() {
-    this.spinner.hide();
-  }
-
-  
-
   ngOnInit() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
-      this.showSpinner()      
+      Utils.showSpinner();     
       if (element) {
         this.dataProvider.changeIntialLoad(true)
         this.dataProvider.currentlookupData.subscribe(element2 => {
@@ -121,7 +117,7 @@ export class MainMenuLandingPageComponent implements OnInit{
             this.naming = this.original_content;
           }
         })
-        this.hideSpinner();        
+        Utils.hideSpinner();       
       }
     })
 
@@ -129,7 +125,7 @@ export class MainMenuLandingPageComponent implements OnInit{
 
     content_edits() {
      if(!this.textChange || this.enableUpdateData) {
-        this.spinner.show()
+      Utils.showSpinner();
         this.editModes = false;
         this.readOnlyContentHelper = true;
         this.description_text['description'] =  this.naming;
@@ -147,16 +143,14 @@ export class MainMenuLandingPageComponent implements OnInit{
           this.ngOnInit();
           this.original_content = this.naming;
           this.toastr.success("Updated Successfully");
-          this.spinner.hide();
+          Utils.hideSpinner();
         }, err => {
-          this.spinner.hide();
+          Utils.hideSpinner();
           this.toastr.error("Data not Updated");
         })
      } else  {
-      this.toastr.error("please enter the data");
-     }
-
-      
+      this.toastr.error("Please enter the data");
+     }     
   }
 
   textChanged(event) {
@@ -168,7 +162,7 @@ export class MainMenuLandingPageComponent implements OnInit{
   edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
-    this.naming = this.original_content;
+    this.naming = this.original_content;    
   }
 
   editEnable() {
@@ -204,7 +198,7 @@ export class MainMenuLandingPageComponent implements OnInit{
   }
 
   delete_confirmation() {
-    this.spinner.show()
+    Utils.showSpinner();
     this.django.ddm_rmp_main_menu_description_text_delete(this.active_content_id).subscribe(response => {      
       this.main_menu_content = this.main_menu_content.filter(element => {
         return element["ddm_rmp_main_menu_description_text_id"] != this.active_content_id
@@ -212,14 +206,14 @@ export class MainMenuLandingPageComponent implements OnInit{
       $(function () {
         $("#deleteModal #modal_close_button").click();
       })
-      this.spinner.hide()
+      Utils.hideSpinner();
       this.toastr.success("FAQ has been deleted successfully");
     }, err => {
       $(function () {
         $("#deleteModal #modal_close_button").click();
       })
-      this.spinner.hide()
-      this.toastr.error("Server error encountered!!", "Error");
+      Utils.hideSpinner();
+      this.toastr.error("Server error encountered!");
     })
   }
 
@@ -261,7 +255,7 @@ export class MainMenuLandingPageComponent implements OnInit{
 
   saveChanges() {
     if (!this.newContent) {
-      this.spinner.show()
+      Utils.showSpinner();
       let response_json = {
         "ddm_rmp_main_menu_description_text_id": this.active_content_id,
         "question": this.contentForm.value['question'],
@@ -272,38 +266,38 @@ export class MainMenuLandingPageComponent implements OnInit{
         this.main_menu_content.map((element, index) => {
           if (this.active_content_id == element["ddm_rmp_main_menu_description_text_id"]) {
             this.main_menu_content[index] = response_json
-          }
-        })
+          }        
+        })        
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
         })
-        this.spinner.hide();
+        Utils.hideSpinner();
         this.toastr.success("FAQ has been edited successfully");
       }, err => {
-        this.spinner.hide()
+        Utils.hideSpinner();
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
         })
-        this.toastr.error("Server error encountered!!", "Error");
+        this.toastr.error("Server error encountered!");
       })
     }
     else if (this.newContent) {
-      this.spinner.show()
+      Utils.showSpinner();
       this.django.ddm_rmp_main_menu_description_text_post(this.contentForm.value).subscribe(response => {
-        let response_json = this.contentForm.value
+        let response_json = this.contentForm.value      
         response_json["ddm_rmp_main_menu_description_text_id"] = response["data"]        
-        this.main_menu_content.push(response_json)        
+        this.main_menu_content.push(response_json)     
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
         })        
-        this.spinner.hide()
+        Utils.hideSpinner();
         this.toastr.success("New FAQ has been successfully created");
       }, err => {        
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
         })
-        this.spinner.hide()
-        this.toastr.error("Server error encountered!!", "Error");
+        Utils.hideSpinner();
+        this.toastr.error("Server error encountered!");
       })
     }
   }

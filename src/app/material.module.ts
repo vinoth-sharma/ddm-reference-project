@@ -72,7 +72,8 @@ import { CommonModule } from '@angular/common';
         MatSortModule,
         MatPaginatorModule,
         MatBadgeModule,
-        DragDropModule
+        DragDropModule,
+        NoopAnimationsModule
       ],
       exports : [
         // BrowserAnimationsModule,

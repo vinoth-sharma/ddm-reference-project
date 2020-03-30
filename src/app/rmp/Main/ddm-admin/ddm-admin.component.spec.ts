@@ -5,13 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 import { MaterialModule } from 'src/app/material.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DataProviderService } from '../../data-provider.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { DjangoService } from '../../django.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 
 describe('DdmAdminComponent', () => {
   let component: DdmAdminComponent;
@@ -24,9 +25,7 @@ describe('DdmAdminComponent', () => {
       providers: [{ provide: DataProviderService, useClass: DataProviderMockMockService },
       { provide: AuthenticationService, useClass: AuthenticationMockMockService }
       ],
-      imports: [FormsModule, QuillModule.forRoot({}), MaterialModule, HttpClientTestingModule, ToastrModule.forRoot({
-        preventDuplicates: true
-      }), RouterTestingModule],
+      imports: [FormsModule, QuillModule.forRoot({}), MaterialModule, HttpClientTestingModule,  RouterTestingModule,BrowserAnimationsModule],
     })
       .compileComponents();
   }));
@@ -151,7 +150,7 @@ describe('DdmAdminComponent', () => {
 
   it("should push data to to server when clicked on save button and update component properties", () => {
     let element = fixture.debugElement.nativeElement;
-    let toastr = TestBed.inject(ToastrService)
+    let toastr = TestBed.inject(NgToasterComponent)
     let djangoService = TestBed.inject(DjangoService);
     spyOn(djangoService, "ddm_rmp_landing_page_desc_text_put").and.returnValue(of("abc"))
     spyOn(component, 'ngOnInit');
@@ -204,7 +203,7 @@ describe('DdmAdminComponent', () => {
     component.content = true
     component.naming = namingData;
     let djangoService = TestBed.get(DjangoService);
-    let toastr = TestBed.get(ToastrService)
+    let toastr = TestBed.get(NgToasterComponent)
     spyOn(component,'ngOnInit');
     fixture.detectChanges();
     let tosterSpy = spyOn(toastr, "success")
@@ -221,7 +220,7 @@ describe('DdmAdminComponent', () => {
     component.content = true
     component.isAdmin = namingData;
     let djangoService = TestBed.get(DjangoService);
-    let toastr = TestBed.get(ToastrService);
+    let toastr = TestBed.get(NgToasterComponent);
     spyOn(component,'ngOnInit');
     let tosterSpy = spyOn(toastr, "success")
     let djangoSpy = spyOn(djangoService, "delete_upload_doc").and.returnValue(of({}));
@@ -235,10 +234,10 @@ describe('DdmAdminComponent', () => {
   it("should upload editted document to the server",fakeAsync(()=>{
     component.content = true;
     spyOn(component,'ngOnInit');
-    let spinner = TestBed.inject(NgxSpinnerService)
+    let spinner = TestBed.inject(NgLoaderService)
     let element = fixture.debugElement.nativeElement;
     let djangoService = TestBed.inject(DjangoService);
-    let toastrService = TestBed.inject(ToastrService)
+    let toastrService = TestBed.inject(NgToasterComponent)
     let lookUpValuesData = { data: { desc_text_admin_documents: [{ key: "lookUpData" }] } }
     spyOn(djangoService,"ddm_rmp_admin_documents_put").and.returnValue(of({}))
     spyOn(djangoService,"getLookupValues").and.returnValue(of(lookUpValuesData));

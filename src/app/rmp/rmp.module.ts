@@ -48,6 +48,7 @@ import { MatChipsModule } from '@angular/material/chips'
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { QuillModule } from "ngx-quill";
 import { MaterialModule } from "../material.module";
+import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
 
 @NgModule({
   declarations: [
@@ -106,6 +107,7 @@ import { MaterialModule } from "../material.module";
     NgxSpinnerModule,
     ToastrModule.forRoot(),
     MaterialModule.forRoot(),
+    CustomPipeModules.forRoot(),
     NgxPaginationModule,
     SharedComponentsModule
     // ,SelectDropDownModule

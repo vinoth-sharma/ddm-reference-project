@@ -44,7 +44,7 @@ export class OndemandReportsComponent{
       this.odInfoObject = { confirmation: true, type: 'On Demand', scheduleId: this.onDemandScheduleId, status: true }
     }
     else {
-      this.odInfoObject = { confirmation: false, type: 'On Demand', scheduleId: this.onDemandScheduleId, status: false }
+      this.odInfoObject = { confirmation: true, type: 'On Demand', scheduleId: this.onDemandScheduleId, status: false }
     }
     this.odScheduleConfirmation.emit(this.odInfoObject);
   }

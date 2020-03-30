@@ -45,7 +45,7 @@ describe('OndemandReportsComponent', () => {
     fixture.detectChanges();
     component.startOnDemandSchedule();
     component.odScheduleConfirmation.subscribe(res => {
-      expect(res).toEqual({ confirmation: false, type: 'On Demand', scheduleId: '', status: false })
+      expect(res).toEqual({ confirmation: true, type: 'On Demand', scheduleId: '', status: false })
     })
   })
 

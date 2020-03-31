@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import "../../../../assets/debug2.js";
-import 'jquery'
+// import 'jquery'
 declare var jsPDF: any;
 declare var $: any;
 import { Router } from "@angular/router";
@@ -8,13 +8,12 @@ import { NgbDate, NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap'
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
-import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
+import Utils from "../../../../utils";
 import { ReportCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-order-to-sale',
@@ -96,16 +95,10 @@ export class OrderToSaleComponent implements OnInit {
   model_end;
   dataModel: any;
   dropdownOptions = ["Original", "Subsequent", "Both"];
-  // config = {
-  //   displayKey: "option",
-  //   search: true,
-  //   limitTo: 3
-  // };
-  
+
   dropdownSettingsTarget = {};
   TargetSelect: any;
   selectedItemsDivision = {};
-  dropdownSettingsDivision = {};
   divisionRadioSelection: any;
   division_index = [];
 
@@ -282,7 +275,7 @@ export class OrderToSaleComponent implements OnInit {
  
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService, private auth_service: AuthenticationService,
-    private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
+    private DatePipe: DatePipe, private dataProvider: DataProviderService, private toastr: NgToasterComponent,
     private reportDataService: ReportCriteriaDataService) {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -332,7 +325,6 @@ export class OrderToSaleComponent implements OnInit {
         else {
           this.report_message = "Request #" + this.generated_report_id + " " + this.generated_report_status
         }
-        this.spinner.show()
         this.otsElement = this.userdivdata
         this.abcd = this.otsElement
         this.divDataSelected.map(element => {
@@ -350,84 +342,62 @@ export class OrderToSaleComponent implements OnInit {
         this.selectedItemsOrderEvent = [];
         this.dropdownSettingsOrderEvent = {
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_dropdown_order_event_id',
-          textField: 'order_event',
+          primaryKey: 'ddm_rmp_lookup_dropdown_order_event_id',
+          labelKey: 'order_event',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 1,
-          allowSearchFilter: true
-        };
-
-        this.dropdownSettingsDivision = {
-          singleSelection: false,
-          idField: '',
-          textField: '',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 2,
-          allowSearchFilter: true
+          badgeShowLimit: 1,
+          enableSearchFilter: true
         };
 
         this.dropdownSettingsAllocation = {
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_dropdown_allocation_group_id',
-          textField: 'allocation_group',
+          primaryKey: 'ddm_rmp_lookup_dropdown_allocation_group_id',
+          labelKey: 'allocation_group',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 2,
-          allowSearchFilter: true
+          badgeShowLimit: 2,
+          enableSearchFilter: true
         };
 
         this.dropdownSettingsMerchandize = {
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
-          textField: 'merchandising_model',
+          primaryKey: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
+          labelKey: 'merchandising_model',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 2,
-          allowSearchFilter: true
+          badgeShowLimit: 2,
+          enableSearchFilter: true
         };
 
         this.dropdownSettingsModelYear = {
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_dropdown_model_year_id',
-          textField: 'model_year',
+          primaryKey: 'ddm_rmp_lookup_dropdown_model_year_id',
+          labelKey: 'model_year',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 2,
-          allowSearchFilter: true
+          enableSearchFilter: true ,
+          badgeShowLimit : 2
         };
 
         this.dropdownSettingsOrderType = {
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_dropdown_order_type_id',
-          textField: 'order_type',
+          primaryKey: 'ddm_rmp_lookup_dropdown_order_type_id',
+          labelKey: 'order_type',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 2,
-          badgeShowLimit: 2,
-          allowSearchFilter: true
+          badgeShowLimit: 1,
+          enableSearchFilter: true
         };
 
         this.dropdownSettingsVehicleLine = {
-          text: "Brand",
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_dropdown_vehicle_line_brand_id',
-          textField: 'vehicle_line_brand',
+          primaryKey: 'ddm_rmp_lookup_dropdown_vehicle_line_brand_id',
+          labelKey: 'vehicle_line_brand',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 2,
-          allowSearchFilter: true
-        };
-
-        this.dropdownSettings = {
-          singleSelection: false,
-          idField: 'item_id',
-          textField: 'item_text',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 2,
-          allowSearchFilter: true
+          badgeShowLimit: 2,
+          enableSearchFilter: true
         };
 
         $('input.gross-sales').on('click', function () {
@@ -439,16 +409,14 @@ export class OrderToSaleComponent implements OnInit {
         });
 
         this.getOrderToSaleContent();
-
       }
     })
 
     if (localStorage.getItem('report_id')) {
-      this.spinner.show();
       this.previousSelections(localStorage.getItem('report_id'));
     }
     else{
-      this.spinner.hide();
+      // Utils.hideSpinner();
     }
   }
 
@@ -473,7 +441,7 @@ export class OrderToSaleComponent implements OnInit {
 
   content_edits() {
     if (!this.textChange || this.enableUpdateData) {
-      this.spinner.show()
+      Utils.showSpinner();
       this.editModes = false;
       this.readOnlyContentHelper = true;
       this.description_text['description'] = this.namings;
@@ -491,9 +459,9 @@ export class OrderToSaleComponent implements OnInit {
         this.editModes = false;
         this.ngOnInit()
         this.original_content = this.namings;
-        this.spinner.hide()
+        Utils.hideSpinner();
       }, err => {
-        this.spinner.hide()
+        Utils.hideSpinner();
       })
     } else {
       this.toastr.error("please enter the data");
@@ -577,8 +545,7 @@ export class OrderToSaleComponent implements OnInit {
         this.Checkbox_value[element.checkbox_desc].push(element.description)
       }
     })
-
-    this.spinner.hide()
+    // Utils.hideSpinner();
   }
 
   //----------------------------------------------DEPENDENT DROPDOWNS SETTINGS----------------------------------------------------------
@@ -594,7 +561,6 @@ export class OrderToSaleComponent implements OnInit {
 
   vehicleItemDeSelect(item: any) {
     this.vehicleIndex.splice(this.vehicleIndex.indexOf(item['ddm_rmp_lookup_dropdown_vehicle_line_brand_id']), 1)
-    console.log(this.vehicleIndex)
     this.vehicleSelection(this.vehicleIndex)
     this.vehicleDeSelection(this.vehicleIndex)
     this.allocationIndex = []
@@ -922,18 +888,13 @@ export class OrderToSaleComponent implements OnInit {
       this.typeofdata_flag = true
     }
     else if (this.finalData["distribution_data"].length != 0) {
-      console.log((this.finalData["distribution_data"]))
       this.typeofdata_flag = false
       $('#order-review-selection').modal('show');
     }
 
     if (this.ot_flag == false || this.typeofdata_flag == false) {
       this.flag = true
-
-
     }
-    console.log("Flag" + this.flag)
-    //// console.log(this.finalData)
   }
 
   submit() {
@@ -945,7 +906,6 @@ export class OrderToSaleComponent implements OnInit {
       this.summary_flag = true;
       //$("#review_close:button").click()
       this.modal_validation_flag = false
-      this.spinner.show();
       this.DropdownSelected();
 
       if (this.reportId != 0) {
@@ -965,8 +925,7 @@ export class OrderToSaleComponent implements OnInit {
       })
       let filteredDistributionData = this.finalData.distribution_data
       this.order_to_sales_selection = this.finalData
-
-
+      Utils.showSpinner();
       this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
         this.getreportSummary();
         if ((<HTMLInputElement>document.getElementById("attach-file1")).files[0] != null) {
@@ -974,21 +933,22 @@ export class OrderToSaleComponent implements OnInit {
         }
         localStorage.removeItem("report_id")
         this.report_id_service.changeUpdate(false)
-        this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id, "Success:")
+        this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id)
 
       }, err => {
-        this.spinner.hide();
-        this.toastr.error("Selection is incomplete", "Error:")
+        Utils.hideSpinner();
+        this.toastr.error("Selection is incomplete")
       })
 
       this.report_id_service.changeSavedChanges(false)
     }
     $('.modal-backdrop').remove();
   }
+
   getreportSummary() {
+    Utils.showSpinner();
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
-      this.spinner.hide()
       let tempArray = []
       if (this.summary["market_data"].length != 0) {
         if (this.summary["market_data"] == []) {
@@ -1199,7 +1159,6 @@ export class OrderToSaleComponent implements OnInit {
       }
       this.other_info = this.summary["ost_data"]["other_desc"][0]["other_desc"];
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      this.spinner.hide();
 
       if (this.summary['frequency_data'].length == 0)
         this.frequency_flag = false
@@ -1212,8 +1171,9 @@ export class OrderToSaleComponent implements OnInit {
       else {
         this.contact_flag = true
       }
+      Utils.hideSpinner();
     }, err => {
-      this.spinner.hide();
+      Utils.hideSpinner();
     })
   }
 
@@ -1249,7 +1209,6 @@ export class OrderToSaleComponent implements OnInit {
   //------------------------------------CALENDAR SETTINGS---------------------------------------------------------------------
   changeStartDateFormat() {
     this.customizedFromDate = this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), "dd-MMM-yyyy")
-    console.log(this.customizedFromDate)
   }
   changeEndDateFormat() {
     this.customizedToDate = this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day), "dd-MMM-yyyy")
@@ -1514,9 +1473,9 @@ export class OrderToSaleComponent implements OnInit {
 
   //------------------------------------------------------START SET Defaults-------------------------------------------//
   setDefaultSelections() {
+    Utils.showSpinner();
     this.django.get_report_details(this.reportId).subscribe(element => {
       var subData = element["ots_data"]["checkbox_data"];
-      try {
         for (var x = 0; x <= subData.length - 1; x++) {
           $('.chk').each(function (i, obj) {
             if (subData[x].ddm_rmp_lookup_ots_checkbox_values == $(obj).prop("value")) {
@@ -1524,9 +1483,6 @@ export class OrderToSaleComponent implements OnInit {
             }
           })
         }
-      }
-      catch (err) {
-      }
       var typeData = element["ots_data"]["distribution_data"];
       for (var i = 0; i <= typeData.length - 1; i++) {
         if (typeData[i].value == "Retail Only") {
@@ -1598,6 +1554,9 @@ export class OrderToSaleComponent implements OnInit {
           }
         })
       });
+      Utils.hideSpinner();
+    },err=>{
+      Utils.hideSpinner();
     });
   }
 
@@ -1606,12 +1565,11 @@ export class OrderToSaleComponent implements OnInit {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     var formData = new FormData();
     formData.append('file_upload', this.file);
-
-    this.spinner.show();
+    Utils.showSpinner();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      this.spinner.hide()
+      Utils.hideSpinner();
     }, err => {
-      this.spinner.hide();
+      Utils.hideSpinner();
     });
   }
 
@@ -1625,19 +1583,7 @@ export class OrderToSaleComponent implements OnInit {
     }
   }
 
-  // pushDE(){
-  //   $.each($("input[class='tod_checkbox_group']:checked"), function (){
-  //     for(var i=0; i<2;i++){
-  //       if(document.getElementsByClassName("DEinput" + i).checked){}
-  //     }
-  //   })
-  // }
-
-
-
   Check($event, i, val) {
-    console.log('HERE',val);
-    console.log($event);
     if ($event.target.checked) {
       const id = `disSum${i}1`;
       const radioButton = <HTMLInputElement>document.getElementById(id);
@@ -1651,17 +1597,10 @@ export class OrderToSaleComponent implements OnInit {
     }
   }
 
-  // enable(){
-  //   if($('#drop5').is(':checked')){
-  //     this.targetProd = false;
-  //   }
-  // }
-
-
   previousSelections(requestId){
-    this.spinner.show();
+    Utils.showSpinner();
     this.django.get_report_description(requestId).subscribe(element => {
-      console.log(element);
+      // console.log(element);
       if(element['ost_data']){
         
       this.selectedItemsAllocation = []
@@ -1744,9 +1683,6 @@ export class OrderToSaleComponent implements OnInit {
           var subData = element['ost_data']['checkbox_data']
         }
        
-        console.log(this.otsObj.modelRadio);
-        console.log(this.otsObj.divisionRadio);
-        console.log(subData);
         var temp = this.finalData;
         temp.checkbox_data = [];
         for(var x=0; x <= subData.length - 1; x++){
@@ -1863,7 +1799,6 @@ export class OrderToSaleComponent implements OnInit {
           }
           
           var disrtibutionData = element['ost_data']['distribution_data']
-          console.log(disrtibutionData);
           
           for(var x=0; x <= disrtibutionData.length - 1; x++){
             $('.tod_checkbox_group').each(function (i, obj) {
@@ -1926,8 +1861,9 @@ export class OrderToSaleComponent implements OnInit {
 
         this.finalData = temp
       }
-
+      Utils.hideSpinner();
+    },err=>{
+      Utils.hideSpinner();
     })
-    this.spinner.hide();
   }
 }

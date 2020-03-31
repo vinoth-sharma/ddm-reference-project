@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
-import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
-import { NgxSpinnerService } from "ngx-spinner";
+import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ReportCriteriaDataService } from "../../services/report-criteria-data.service";
 import "../../../../assets/debug.js";
 declare var jsPDF: any;
 declare var $: any;
-
-import { ToastrService } from "ngx-toastr";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import Utils from 'src/utils';
 
 @Component({
   selector: 'app-dealer-allocation',
@@ -190,8 +190,8 @@ export class DealerAllocationComponent implements OnInit{
   };
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
-    private DatePipe: DatePipe, private auth_service: AuthenticationService,
-    private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
+    private DatePipe: DatePipe, private auth_service: AuthenticationService, private dataProvider: DataProviderService,
+    private toastr: NgToasterComponent,
     private reportDataService: ReportCriteriaDataService) {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -294,11 +294,11 @@ export class DealerAllocationComponent implements OnInit{
         this.getDealerAllocatonInfo();
 
         if (localStorage.getItem('report_id')) {
-          this.spinner.show();
+          Utils.showSpinner();
           this.previousSelections(localStorage.getItem('report_id'));
         }
         else{
-          this.spinner.hide();
+          Utils.hideSpinner();
         }
       }
 
@@ -325,7 +325,7 @@ export class DealerAllocationComponent implements OnInit{
 
   content_edits() {
     if(!this.textChange || this.enableUpdateData) {
-    this.spinner.show()
+      Utils.showSpinner();
     this.editModes = false;
     this.readOnlyContentHelper= true;
     this.description_text['description'] = this.namings;
@@ -343,14 +343,18 @@ export class DealerAllocationComponent implements OnInit{
       this.editModes = false;
       this.ngOnInit()
       this.original_content = this.namings;
-      this.spinner.hide()
+      Utils.hideSpinner(); 
     }, err => {
-      this.spinner.hide()
+      Utils.hideSpinner(); 
     })
   } else  {
-    this.toastr.error("please enter the data");
+    this.toastr.error("Please enter the data");
     }
   }
+
+//   ddm_rmp_desc_text_id: 11
+// module_name: "Help_DealerAllocation"
+// description: "<p>Testing Musigma@123456789 xm,nm,nv,nmv,,ksd
 
   edit_True() {
     this.editModes = false;
@@ -429,11 +433,11 @@ export class DealerAllocationComponent implements OnInit{
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     var formData = new FormData();
     formData.append('file_upload', this.file);
-    this.spinner.show();
+    Utils.showSpinner();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      this.spinner.hide()
+      Utils.hideSpinner();
     }, err => {
-      this.spinner.hide();
+      Utils.hideSpinner();
     });
   }
 
@@ -509,7 +513,7 @@ export class DealerAllocationComponent implements OnInit{
       this.summary_flag = true;
       $("#review_close:button").click()
       this.modal_validation_flag = false;
-      this.spinner.show();
+      Utils.showSpinner();
       this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": this.dealerobj.modelRadio }
       console.log(this.selectedItemsModelYear);
       this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": this.dealerobj.alloRadio }
@@ -558,10 +562,10 @@ export class DealerAllocationComponent implements OnInit{
         }
         localStorage.removeItem("report_id")
         this.report_id_service.changeUpdate(false)
-        this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id, "Success:");
+        this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id);
       }, err => {
-        this.spinner.hide()
-        this.toastr.error("Selections are incomplete", "Error:")
+        Utils.hideSpinner(); 
+        this.toastr.error("Selections are incomplete");
       }
       )
       this.report_id_service.changeSavedChanges(false)
@@ -570,7 +574,7 @@ export class DealerAllocationComponent implements OnInit{
   }
 
   getReportSummery() {
-    this.spinner.show();
+    Utils.showSpinner();
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
       let tempArray = []
@@ -732,7 +736,7 @@ export class DealerAllocationComponent implements OnInit{
         this.fan_desc = []
       }
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      this.spinner.hide();
+      Utils.hideSpinner();
 
 
       if (this.summary['frequency_data'].length == 0) {
@@ -838,7 +842,7 @@ export class DealerAllocationComponent implements OnInit{
 
 
   previousSelections(requestId){
-    this.spinner.show();
+    Utils.showSpinner();
     this.django.get_report_description(requestId).subscribe(element => {
       console.log(element);
       if(element['da_data']){
@@ -919,6 +923,6 @@ export class DealerAllocationComponent implements OnInit{
         this.finalData = temp
       } //if ends here
     })
-    this.spinner.hide();
+    Utils.hideSpinner();
   }
 }

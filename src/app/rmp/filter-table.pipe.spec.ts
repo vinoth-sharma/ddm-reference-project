@@ -1,7 +1,7 @@
 import { FilterTablePipe } from './filter-table.pipe';
 import { pipe } from 'rxjs';
 
-fdescribe('FilterTablePipe', () => {
+describe('FilterTablePipe', () => {
   it('create an instance', () => {
     const pipe = new FilterTablePipe();
     expect(pipe).toBeTruthy();

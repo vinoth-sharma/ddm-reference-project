@@ -8,14 +8,8 @@ import Utils from '../../../../utils';
 
 import { OndemandConfigReportsComponent } from './ondemand-config-reports.component';
 import { OndemandService } from '../ondemand.service';
-import { compileComponentFromMetadata } from '@angular/compiler';
 
-// @NgModule({
-//   imports : [ FormControl ]
-// })
-// class testingComponent { }
-
-fdescribe('OndemandConfigReportsComponent', () => {
+describe('OndemandConfigReportsComponent', () => {
   let component: OndemandConfigReportsComponent;
   let fixture: ComponentFixture<OndemandConfigReportsComponent>;
 

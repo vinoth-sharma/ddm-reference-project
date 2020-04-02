@@ -357,37 +357,31 @@
         </thead>
         <tbody>
           <tr class="d-flex" *ngFor="let element of dospDataAvailable">
-            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)"
+            <td class="col-sm-12">
+              <input (click)="CheckboxCheck(element,$event)"
                 value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
                 type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
           </tr>
-          <tr class="d-flex">
-            <td class="col-sm-6">Start Date:
-              <input name="fromDateDOSP" type="text" value="{{ customizedFromDateDOSP }}" id="fromDateDOSP"
-                disabled="disabled" style="max-width:50%">
+          <tr class="d-flex" *ngIf="!dosp_calendar_flag">
+            <td class="col-sm-6">
+                <mat-form-field>
+                  <mat-label>Start Date:</mat-label>
+                  <input matInput [matDatepicker]="fromDpDOSP" [formControl]="fromDateDOSP"
+                         (dateChange)="onDOSPDateSelection()" textEditable="false">
+                  <mat-datepicker-toggle matSuffix [for]="fromDpDOSP"></mat-datepicker-toggle>
+                  <mat-datepicker #fromDpDOSP></mat-datepicker>
+                </mat-form-field>
             </td>
-            <td class="col-sm-6">End Date:
-              <input name="toDateDOSP" type="text" value="{{ customizedToDateDOSP }}" id="toDateDOSP"
-                disabled="disabled" style="max-width:50%">
+            <td class="col-sm-6">
+                <mat-form-field >
+                  <mat-label>End Date:</mat-label>
+                  <input matInput [matDatepicker]="toDpDOSP" [formControl]="toDateDOSP" 
+                          [disabled]="!fromDateDOSP.value" [min]="minDate" textEditable="false"
+                         (dateChange)="onDOSPDateSelection()">
+                  <mat-datepicker-toggle matSuffix [for]="toDpDOSP"></mat-datepicker-toggle>
+                  <mat-datepicker #toDpDOSP></mat-datepicker>
+                </mat-form-field>
             </td>
-          </tr>
-          <tr class="d-flex">
-            <td class="col-sm-2"></td>
-            <td class="col-sm-8">
-              <div id="calendarsDOSP" [hidden]=dosp_calendar_flag>
-                <ngb-datepicker #dp (select)="onDateSelectionDOSP($event)" [displayMonths]="2" [dayTemplate]="t"
-                  outsideDays="hidden">
-                </ngb-datepicker>
-                <ng-template #t let-date let-focused="focused">
-                  <span class="custom-day" [class.focused]="focused" [class.range]="isRangeDOSP(date)"
-                    [class.faded]="isHoveredDOSP(date) || isInsideDOSP(date)" (mouseenter)="hoveredDateDOSP = date"
-                    (mouseleave)="hoveredDateDOSP = null">
-                    {{ date.day }}
-                  </span>
-                </ng-template>
-              </div>
-            </td>
-            <td class="col-sm-2"></td>
           </tr>
         </tbody>
       </table>
@@ -458,32 +452,29 @@
           <tr class="d-flex">
             <td class="col-sm-12"><i>Please select an order event to specify the date range</i></td>
           </tr>
-          <tr class="d-flex">
-            <td class="col-sm-6">Start Date:
-              <input name="fromDate" type="text" value="{{ customizedFromDate }}" id="fromDate" textEditable="false"
-                style="max-width:50%" disabled="disabled">
-            </td>
-            <td class="col-sm-6">End Date:
-              <input name="toDate" type="text" value="{{ customizedToDate }}" id="toDate" disabled="disabled"
-                style="max-width:50%">
-            </td>
-          </tr>
-          <tr class="d-flex">
-            <td class="col-sm-12">
-              <div id="calendars" *ngIf="selectedItemsOrderEvent.length>0">
+          <tr class="d-flex" *ngIf="selectedItemsOrderEvent.length>0">
+            <td class="col-sm-6">
+                <mat-form-field >
+                  <mat-label>Start Date:</mat-label>
+                  <input matInput [matDatepicker]="fromOrderEvent" [formControl]="fromDate" 
+                          textEditable="false"
+                         (dateChange)="onOrderEventdateSelection()">
+                  <mat-datepicker-toggle matSuffix [for]="fromOrderEvent"></mat-datepicker-toggle>
+                  <mat-datepicker #fromOrderEvent></mat-datepicker>
+                </mat-form-field>
 
-                <ngb-datepicker #dp (select)="onDateSelection($event)" [(ngModel)]="dateSelect" [displayMonths]="2" [dayTemplate]="t"
-                  outsideDays="hidden">
-                </ngb-datepicker>
 
-                <ng-template #t let-date let-focused="focused">
-                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
-                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
-                    (mouseleave)="hoveredDate = null">
-                    {{ date.day }}
-                  </span>
-                </ng-template>
-              </div>
+
+            </td>
+            <td class="col-sm-6">
+                <mat-form-field >
+                  <mat-label>End Date:</mat-label>
+                  <input matInput [matDatepicker]="toOrderEvent" [formControl]="toDate" 
+                          [disabled]="!fromDate.value" [min]="minOrderEventDate" textEditable="false"
+                         (dateChange)="onOrderEventdateSelection()">
+                  <mat-datepicker-toggle matSuffix [for]="toOrderEvent"></mat-datepicker-toggle>
+                  <mat-datepicker #toOrderEvent></mat-datepicker>
+                </mat-form-field>
             </td>
           </tr>
         </tbody>

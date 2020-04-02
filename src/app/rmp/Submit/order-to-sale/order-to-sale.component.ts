@@ -4,7 +4,6 @@ import "../../../../assets/debug2.js";
 declare var jsPDF: any;
 declare var $: any;
 import { Router } from "@angular/router";
-import { NgbDate, NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
@@ -14,11 +13,37 @@ import Utils from "../../../../utils";
 import { ReportCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { FormControl } from '@angular/forms';
+import * as _moment from 'moment';
+
+const moment = _moment;
+const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD-MMM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MMM-YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-order-to-sale',
   templateUrl: './order-to-sale.component.html',
-  styleUrls: ['./order-to-sale.component.css']
+  styleUrls: ['./order-to-sale.component.css'],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
 })
 export class OrderToSaleComponent implements OnInit {
 
@@ -69,13 +94,10 @@ export class OrderToSaleComponent implements OnInit {
   date: string
   targetValue : any;
   saveit = false;
-  hoveredDate: NgbDate;
-  fromDate: NgbDate;
-  toDate: NgbDate;
-  fromDateDOSP: NgbDate;
-  toDateDOSP: NgbDate;
-  customizedFromDateDOSP: string;
-  customizedToDateDOSP: string;
+  fromDate:any = new FormControl();
+  toDate:any = new FormControl();
+  fromDateDOSP:any = new FormControl();
+  toDateDOSP:any = new FormControl();
   Checkbox_selected = {}
   targetProd: boolean = true;
   textChange = false;
@@ -218,8 +240,6 @@ export class OrderToSaleComponent implements OnInit {
   }
   from_date: string;
   user_name: string;
-  customizedFromDate: string;
-  customizedToDate: string;
   error_message: string;
   
   bac_description: any;
@@ -245,12 +265,8 @@ export class OrderToSaleComponent implements OnInit {
   other_info: any;
   startDateDOSP: {};
   endDateDOSP: {};
-  hoveredDateDOSP: NgbDate;
-  dosp_calendar_flag: boolean;
-  temp_min_date: NgbDate;
-  temp_max_date: NgbDate;
-  temp_max_date_DOSP: NgbDate;
-  temp_min_date_DOSP: NgbDate;
+  dosp_calendar_flag: boolean ;
+
   report_create: any;
   assigned_to: any;
   report_on_behalf = "";
@@ -273,7 +289,7 @@ export class OrderToSaleComponent implements OnInit {
     ]
   };
  
-  constructor(private router: Router, calendar: NgbCalendar,
+  constructor(private router: Router,
     private django: DjangoService, private report_id_service: GeneratedReportService, private auth_service: AuthenticationService,
     private DatePipe: DatePipe, private dataProvider: DataProviderService, private toastr: NgToasterComponent,
     private reportDataService: ReportCriteriaDataService) {
@@ -1207,101 +1223,59 @@ export class OrderToSaleComponent implements OnInit {
   }
 
   //------------------------------------CALENDAR SETTINGS---------------------------------------------------------------------
-  changeStartDateFormat() {
-    this.customizedFromDate = this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), "dd-MMM-yyyy")
-  }
-  changeEndDateFormat() {
-    this.customizedToDate = this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day), "dd-MMM-yyyy")
-  }
-  onDateSelection(date: NgbDate) {
-    console.log(this.dateSelect);
-    console.log(this.fromDate);
-    console.log(this.toDate);
+
+  public minOrderEventDate:any = "";
+  onOrderEventdateSelection(){
+    let from = this.fromDate.value;
+    let to = this.toDate.value;
     
-    if (!this.fromDate && !this.toDate) {
-      this.fromDate = date;
-      this.changeStartDateFormat();
-    }
-    else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
-      this.toDate = date;
-      this.changeEndDateFormat();
-    }
-    else {
-      this.toDate = null;
-      this.fromDate = date;
-      this.changeStartDateFormat();
+    //conditions to manage minDate when from,to selected 
+    if(from){
+      this.minOrderEventDate = new Date(from.year(),from.month(),from.date());
+      if(to){
+        to = +to>=+from?to:"";
+        this.toDate = +to>=+from?this.toDate:new FormControl();
+      } 
     }
 
-    if (this.toDate == null || this.fromDate == null || this.toDate == undefined && this.fromDate == undefined) {
+    if(from && to){
+      this.startDate = from.year() + "-" + (from.month()+1) + "-" + from.date();
+      this.endDate = to.year() + "-" + (to.month()+1)  + "-" + to.date();
+      this.finalData['data_date_range'] = { "StartDate": this.startDate, "EndDate": this.endDate };
+    }
+    else{
       this.finalData['data_date_range'] = { "StartDate": "", "EndDate": "" };
     }
-    else {
-      this.startDate = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
-      this.endDate = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day;
-      this.finalData['data_date_range'] = { "StartDate": this.startDate, "EndDate": this.endDate };
-
-    }
-  }
-
-  isHovered(date: NgbDate) {
-    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
-  }
-
-  isInside(date: NgbDate) {
-    return date.after(this.fromDate) && date.before(this.toDate);
-  }
-
-  isRange(date: NgbDate) {
-    return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
   }
 
   //------------------------------------CALENDAR SETTINGS DOSP---------------------------------------------------------------------
-  changeStartDateFormatDOSP() {
-    this.customizedFromDateDOSP = this.DatePipe.transform(new Date(this.fromDateDOSP.year, this.fromDateDOSP.month - 1, this.fromDateDOSP.day), "dd-MMM-yyyy")
-  }
-  changeEndDateFormatDOSP() {
-    this.customizedToDateDOSP = this.DatePipe.transform(new Date(this.toDateDOSP.year, this.toDateDOSP.month - 1, this.toDateDOSP.day), "dd-MMM-yyyy")
-  }
-  onDateSelectionDOSP(date: NgbDate) {
-    console.log(date);
-    if (!this.fromDateDOSP && !this.toDateDOSP) {
-      this.fromDateDOSP = date;
-      this.changeStartDateFormatDOSP();
-    }
-    else if (this.fromDateDOSP && !this.toDateDOSP && date.after(this.fromDateDOSP)) {
-      this.toDateDOSP = date;
-      this.changeEndDateFormatDOSP();
-    }
-    else {
-      this.toDateDOSP = null;
-      this.fromDateDOSP = date;
-      this.changeStartDateFormatDOSP();
+
+  public minDate:any = "";
+  onDOSPDateSelection(){
+    let from = this.fromDateDOSP.value;
+    let to = this.toDateDOSP.value;
+    
+    //conditions to manage minDate when from,to selected 
+    if(from){
+      this.minDate = new Date(from.year(),from.month(),from.date());
+      if(to){
+        to = +to>=+from?to:"";
+        this.toDateDOSP = +to>=+from?this.toDateDOSP:new FormControl();
+      } 
     }
 
-    if (this.toDateDOSP == null || this.fromDateDOSP == null || this.toDateDOSP == undefined && this.fromDateDOSP == undefined) {
+    if(from && to){
+      this.startDateDOSP = from.year() + "-" + (from.month()+1) + "-" + from.date();
+      this.endDateDOSP = to.year() + "-" + (to.month()+1)  + "-" + to.date();
+      this.finalData['dosp_start_date'] = this.startDateDOSP;
+      this.finalData['dosp_end_date'] = this.endDateDOSP;
+    }
+    else{
       this.finalData['dosp_start_date'] = "";
       this.finalData['dosp_end_date'] = "";
     }
-    else {
-      this.startDateDOSP = this.fromDateDOSP.year + "-" + this.fromDateDOSP.month + "-" + this.fromDateDOSP.day;
-      this.endDateDOSP = this.toDateDOSP.year + "-" + this.toDateDOSP.month + "-" + this.toDateDOSP.day;
-      this.finalData['dosp_start_date'] = this.startDateDOSP;
-      this.finalData['dosp_end_date'] = this.endDateDOSP;
-
-    }
   }
 
-  isHoveredDOSP(date: NgbDate) {
-    return this.fromDateDOSP && !this.toDateDOSP && this.hoveredDateDOSP && date.after(this.fromDateDOSP) && date.before(this.hoveredDateDOSP);
-  }
-
-  isInsideDOSP(date: NgbDate) {
-    return date.after(this.fromDateDOSP) && date.before(this.toDateDOSP);
-  }
-
-  isRangeDOSP(date: NgbDate) {
-    return date.equals(this.fromDateDOSP) || date.equals(this.toDateDOSP) || this.isInsideDOSP(date) || this.isHoveredDOSP(date);
-  }
   back() {
     this.router.navigate(["user/submit-request/select-report-criteria"]);
   }
@@ -1692,10 +1666,8 @@ export class OrderToSaleComponent implements OnInit {
               if(subData[x].description_text == ""){
                 obj.checked = true;
                 this.Checkbox_selected = { "value": subData[x].checkbox_description, "id": subData[x].ddm_rmp_lookup_ots_checkbox_values, "desc": subData[x].description_text };
-                temp.checkbox_data.push(this.Checkbox_selected);  
-                if($('#calendarsDOSP').is(':checked')){
-                  this.dosp_calendar_flag == false;
-                }
+                temp.checkbox_data.push(this.Checkbox_selected);
+                this.dosp_calendar_flag = false;
               }
               else if(subData[x].description_text != ""){
                 if(subData[x].checkbox_description == 'Target Production Date'){
@@ -1721,37 +1693,19 @@ export class OrderToSaleComponent implements OnInit {
           temp.data_date_range.EndDate = null;
           if(element['ost_data']['data_date_range'][0]['start_date']){
             var dateStart = element['ost_data']['data_date_range'][0]['start_date'].toString();
-            this.customizedFromDate = dateStart
-            
-            var startYear = +dateStart.substring(0,4);
-            var startMonth = +dateStart.substring(5,7);
-            var startDate = +dateStart.substring(8,10);
-
-            this.temp_min_date = <NgbDate>{
-              month : startMonth,
-              year: startYear,
-              day: startDate
-            }
-
-            this.fromDate = this.temp_min_date
-            this.startDate = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
+            let dateArr = dateStart.split("-");
+            let from = new Date(dateArr[0],dateArr[1]-1,dateArr[2]);
+            this.fromDate = new FormControl(moment(from));
+            this.minOrderEventDate = from;
+            this.startDate = from.getFullYear() + "-" + (from.getMonth()+1) + "-" + from.getDate();
           }
+
           if(element['ost_data']['data_date_range'][0]['end_date']){
             var dateEnd = element['ost_data']['data_date_range'][0]['end_date'].toString();
-            this.customizedToDate = dateEnd
-            
-            var endYear = +dateEnd.substring(0,4);
-            var endMonth = +dateEnd.substring(5,7);
-            var endDate = +dateEnd.substring(8,10);
-            
-            this.temp_max_date = <NgbDate>{
-              month : endMonth,
-              year: endYear,
-              day: endDate
-            }
-            
-            this.toDate = this.temp_max_date
-            this.endDate = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day;
+            let dateArr = dateEnd.split("-");
+            let to = new Date(dateArr[0],dateArr[1]-1,dateArr[2]);
+            this.toDate = new FormControl(moment(to));
+            this.endDate = to.getFullYear() + "-" + (to.getMonth()+1) + "-" + to.getDate();
             temp.data_date_range = { "StartDate": this.startDate, "EndDate": this.endDate };
           }
 
@@ -1760,41 +1714,23 @@ export class OrderToSaleComponent implements OnInit {
           //--------------------DOSP Calendar------------------------
           temp.dosp_start_date = null;
           temp.dosp_end_date = null;
+
           if(element['ost_data']['data_date_range'][0]['dosp_start_date']){
             var dateStartDOSP = element['ost_data']['data_date_range'][0]['dosp_start_date'].toString();
-            this.customizedFromDateDOSP = dateStartDOSP
-
-            var startYearDOSP = +dateStartDOSP.substring(0,4);
-            var startMonthDOSP = +dateStartDOSP.substring(5,7);
-            var startDateDOSP = +dateStartDOSP.substring(8,10);
-
-            this.temp_min_date_DOSP = <NgbDate>{
-              month : startMonthDOSP,
-              year: startYearDOSP,
-              day: startDateDOSP
-            }
-
-            this.fromDateDOSP = this.temp_min_date_DOSP
-            this.startDateDOSP = this.fromDateDOSP.year + "-" + this.fromDateDOSP.month + "-" + this.fromDateDOSP.day;
+            let dateArr = dateStartDOSP.split("-");
+            let from = new Date(dateArr[0],dateArr[1]-1,dateArr[2]);
+            this.fromDateDOSP = new FormControl(moment(from));
+            this.minDate = from;
+            this.startDateDOSP = from.getFullYear() + "-" + (from.getMonth()+1) + "-" + from.getDate();
             temp.dosp_start_date = this.startDateDOSP;
           }
 
           if(element['ost_data']['data_date_range'][0]['dosp_end_date']){
             var dateEndDOSP = element['ost_data']['data_date_range'][0]['dosp_end_date'].toString();
-            this.customizedToDateDOSP = dateEndDOSP
-
-            var endYearDOSP = +dateEndDOSP.substring(0,4);
-            var endMonthDOSP = +dateEndDOSP.substring(5,7);
-            var endDateDOSP = +dateEndDOSP.substring(8,10);
-            
-            this.temp_max_date_DOSP = <NgbDate>{
-              month : endMonthDOSP,
-              year: endYearDOSP,
-              day: endDateDOSP
-            }
-
-            this.toDateDOSP = this.temp_max_date_DOSP
-            this.endDateDOSP = this.toDateDOSP.year + "-" + this.toDateDOSP.month + "-" + this.toDateDOSP.day;
+            let dateArr = dateEndDOSP.split("-");
+            let to = new Date(dateArr[0],dateArr[1]-1,dateArr[2]);
+            this.toDateDOSP = new FormControl(moment(to));
+            this.endDateDOSP = to.getFullYear() + "-" + (to.getMonth()+1) + "-" + to.getDate();
             temp.dosp_end_date = this.endDateDOSP;
           }
           

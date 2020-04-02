@@ -2,7 +2,7 @@ import { OrderByPipe } from './order-by.pipe';
 
 // Angular Pipe unit test cases developed by Deepak Urs G V
 
-fdescribe('OrderByPipe', () => {
+describe('OrderByPipe', () => {
   it('create an instance', () => {
     const pipe = new OrderByPipe();
     expect(pipe).toBeTruthy();

@@ -1,8 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { OrderPipe } from 'ngx-order-pipe';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
-import { NgxSpinnerService } from "ngx-spinner";
 import { DatePipe } from '@angular/common'
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { AuthenticationService } from "src/app/authentication.service";
@@ -10,11 +8,11 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { Router } from '@angular/router';
 import Utils from "../../../utils"
 declare var $: any;
-import { ToastrService } from "ngx-toastr";
 import { CreateReportLayoutService } from '../../create-report/create-report-layout/create-report-layout.service';
 
 import { ScheduleService } from '../../schedule/schedule.service';
-import { map } from 'rxjs/operators';
+import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
+import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 
 @Component({
   selector: 'app-reports',
@@ -22,6 +20,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {
+
   namings: any;
   enableUpdateData = false;
   description_texts = {
@@ -37,15 +36,15 @@ export class ReportsComponent implements OnInit {
   textChange = false;
   public searchText;
   public p;
-  public dropdownSettings;
-  public dropdownList;
-  public selectedItems;
+  // public dropdownSettings;
+  // public dropdownList;
+  // public selectedItems;
   public ddm_rmp_post_report_id;
   public ddm_rmp_status_date;
   public title;
   public report_name;
-  public onItemSelect;
-  public onSelectAll;
+  // public onItemSelect;
+  // public onSelectAll;
   public metricsOtherList = [];
   public weekDayDict = {
     Monday: 'M',
@@ -160,26 +159,39 @@ export class ReportsComponent implements OnInit {
       ['image']
     ]
   };
-
-
+// paginator params
+  paginatorlength = 100;
+  paginatorpageSize = 10;
+  paginatorOptions :number[] = [5,10,25,100] 
+  paginatorLowerValue = 0;
+  paginatorHigherValue = 10;
+// 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service: AuthenticationService,
     private django: DjangoService,
-    private spinner: NgxSpinnerService,
+    private spinner: NgLoaderService,
     private dataProvider: DataProviderService,
     private DatePipe: DatePipe,
     public scheduleService: ScheduleService,
     public router: Router,
-    private toasterService: ToastrService,
+    private toasterService: NgToasterComponent,
     private createReportLayoutService: CreateReportLayoutService) {
+      this.readUserRole()
+      this.getLookUptableData()
+    this.editModes = false;
+   
+  }
+
+  readUserRole(){
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
       }
     })
+  }
 
-    this.editModes = false;
-    dataProvider.currentlookUpTableData.subscribe(element => {
+  getLookUptableData(){
+    this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
         this.content = element
         this.frequency_selections = this.content['data']['report_frequency']
@@ -201,14 +213,25 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getSemanticLayerID()
+    Utils.showSpinner();
+    this.getScheduledReports()
+    setTimeout(() => {
+      this.generated_id_service.changeButtonStatus(false)
+    })
+    this.getReportList();
+  }
+
+  getSemanticLayerID(){
     this.changeInFreq = true;
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
         this.semanticLayerId = element.data["semantic_id"];
       }
     });
+  }
 
-    Utils.showSpinner();
+  getScheduledReports(){
     this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res => {
       this.reportDataSource = res['data'];
       Utils.hideSpinner();
@@ -216,11 +239,9 @@ export class ReportsComponent implements OnInit {
       Utils.hideSpinner();
     }
     );
+  }
 
-    setTimeout(() => {
-      this.generated_id_service.changeButtonStatus(false)
-    })
-
+  getReportList(){
     this.django.get_report_list().subscribe(list => {
       if (list) {
         this.reportContainer = list['data'];
@@ -281,6 +302,7 @@ export class ReportsComponent implements OnInit {
           return b['favorites'] > a['favorites'] ? 1 : -1
         })
         this.reports = this.reportContainer;
+        this.paginatorlength = this.reports.length
       //   this.metricsOtherList = [];
       //   this.reports.forEach(arr =>{     
       //   let j = 0
@@ -302,6 +324,7 @@ export class ReportsComponent implements OnInit {
       }
     }, err => {
     })
+
   }
 
   checked(id, event) {
@@ -428,10 +451,8 @@ export class ReportsComponent implements OnInit {
         }
       }
     });
-
     if (isOnDemandOnly === "On Demand Configurable") {
       let tempReport = this.reports.filter(i => i['report_name'] === selectedReportName && i['title'] === reportTitle)
-
       this.reportTitle = tempReport.map(i => i['title'])[0];
       this.reportName = tempReport.map(i => i['report_name'])[0];
       this.reportId = tempReport.map(i => i['report_list_id'])[0];
@@ -441,7 +462,7 @@ export class ReportsComponent implements OnInit {
           this.reportRequestNumber = i.ddm_rmp_post_report_id;
         }
       });
-      $('#onDemandScheduleConfigurableModal').modal('show');
+      this.hideDemandScheduleConfigurableModal();
       Utils.hideSpinner();
       return;
     }
@@ -461,6 +482,10 @@ export class ReportsComponent implements OnInit {
       Utils.hideSpinner();
       return;
     }
+  }
+
+  hideDemandScheduleConfigurableModal(){
+    $('#onDemandScheduleConfigurableModal').modal('show');
   }
 
   public startOnDemandScheduling(data) {
@@ -573,7 +598,6 @@ export class ReportsComponent implements OnInit {
       }
     })
 
-
     this.obj_keys = Object.keys(this.Select_ots)
     this.freq_val = Object.values(this.Select_ots)
 
@@ -591,7 +615,6 @@ export class ReportsComponent implements OnInit {
       }
     })
 
-
     this.obj_keys_da = Object.keys(this.Select_da)
     this.freq_val_da = Object.values(this.Select_da)
 
@@ -608,9 +631,8 @@ export class ReportsComponent implements OnInit {
         this.Select_on_demand[element['report_frequency_values']].push({ "select_frequency_values": element['select_frequency_values'], "ddm_rmp_lookup_select_frequency_id": element['ddm_rmp_lookup_select_frequency_id'], "select_frequency_description": element['select_frequency_description'] })
       }
     })
-
     this.obj_keys_on_demand = Object.keys(this.Select_on_demand)
-    this.freq_val_on_demand = Object.values(this.Select_on_demand)
+    this.freq_val_on_demand = Object.values(this.Select_on_demand);
 
   }
 
@@ -700,6 +722,11 @@ export class ReportsComponent implements OnInit {
     }, err => {
       this.spinner.hide();
     });
+    this.showChangeFrequencyModal()
+
+  }
+
+  showChangeFrequencyModal(){
     $('#change-Frequency').modal('show');
 
   }
@@ -1040,6 +1067,12 @@ export class ReportsComponent implements OnInit {
     }, err => {
       this.spinner.hide()
     })
+  }
+  
+ 
+  onPaginationChange(event){
+  this.paginatorLowerValue = event.pageIndex * event.pageSize;
+  this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   }
 
 }

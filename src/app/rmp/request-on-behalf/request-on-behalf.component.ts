@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, catchError ,  switchMap ,  tap } from 'rxjs/operators';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -26,7 +26,7 @@ export class RequestOnBehalfComponent implements OnInit {
 
   constructor(private generated_service: GeneratedReportService,
     private django: DjangoService,
-    private toastr: ToastrService, ) {
+    private toastr: NgToasterComponent, ) {
     this.model = "";
   }
 

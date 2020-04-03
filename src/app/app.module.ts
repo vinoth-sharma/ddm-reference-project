@@ -47,7 +47,6 @@ import { LogEntryComponent } from './log-entry/log-entry.component';
 // RMP
 // import { RMPModule } from "./rmp/rmp.module";
 // import {RMPRoutingModule} from "./rmp/rmp-routing.module"
-import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
 import { ShowSignatureComponent } from './show-signature/show-signature.component'; 
 import { ShareReportService } from './share-reports/share-report.service';

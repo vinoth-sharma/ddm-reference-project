@@ -90,7 +90,7 @@ export class RmpLandingPageComponent implements OnInit{
           notes_end_timestamp = this.DatePipe.transform(new Date(this.customizedToDate.toString() + " " + 
                                   (this.endTime['hour']).toString() + ":" + (this.endTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
         }
-        Utils.showSpinner();
+        // Utils.showSpinner();
         this.notes_details["notes_content"] = this.admin_notes;
         this.notes_details["notes_start_date"] = notes_start_timestamp;
         this.notes_details["notes_end_date"] = notes_end_timestamp;
@@ -159,10 +159,12 @@ export class RmpLandingPageComponent implements OnInit{
 
   /*------------------------Calendar---------------------------*/
   public changeStartDateFormat() {
-    this.customizedFromDate = this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), "dd-MMM-yyyy");
+    this.customizedFromDate = 
+    this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), "dd-MMM-yyyy");
   }
   public changeEndDateFormat() {
-    this.customizedToDate = this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day), "dd-MMM-yyyy");
+    this.customizedToDate = 
+    this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day), "dd-MMM-yyyy");
   }
 
   // selecting from and to date selection

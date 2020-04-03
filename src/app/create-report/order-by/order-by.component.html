@@ -1,40 +1,41 @@
-<mat-card *ngFor="let item of orderbyData; index as i; last as isLast; first as isFirst" class="order-by-data" style="padding: 6px;">
-  <mat-grid-list cols="3" rowHeight="60px">
-    <mat-grid-tile>
-      <mat-form-field style="width: 90%;">
-        <mat-label> Choose Column for Order By</mat-label>
-        <mat-select [(ngModel)]="item.selectedColumn" id="columnValues" (selectionChange)="calculateFormula(i)"
-        (openedChange)="opened($event,i)"
-        [title]="item.selectedColumn | spaceFormater">
-            <input matInput placeholder="Search column" name="tableSearch" class= "filter-input" 
-            [id]="'id_'+i"
-            [(ngModel)]="tableSearch" (keyup)="filterTable($event,i,true)"/>
-          <mat-option *ngFor="let col of item.columnDetails" [value]="col"> 
-            {{ col | spaceFormater | maximumCharacter }} 
-          </mat-option>
-          <div *ngIf="!item.columnDetails.length" style="padding: 21px;">No columns available</div>
-        </mat-select>
-      </mat-form-field>
-    </mat-grid-tile>
+  <mat-card *ngFor="let item of orderbyData; index as i; last as isLast; first as isFirst" class="order-by-data" style="padding: 6px;">
+    <mat-grid-list cols="3" rowHeight="60px">
+      <mat-grid-tile>
+        <mat-form-field style="width: 90%;">
+          <mat-label> Choose Column for Order By</mat-label>
+          <mat-select [(ngModel)]="item.selectedColumn" id="columnValues" (selectionChange)="calculateFormula(i)"
+          (openedChange)="opened($event,i)"
+          [title]="item.selectedColumn | spaceFormater">
+              <input matInput placeholder="Search column" name="tableSearch" class= "filter-input" 
+              [id]="'id_'+i"
+              [(ngModel)]="tableSearch" (keyup)="filterTable($event,i,true)"/>
+            <mat-option *ngFor="let col of item.columnDetails" [value]="col"> 
+              {{ col | spaceFormater | maximumCharacter }} 
+            </mat-option>
+            <div *ngIf="item && item.columnDetails && !item.columnDetails.length" style="padding: 21px;">No columns available</div>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+  
+      <mat-grid-tile >
+        <mat-form-field style="width: 300px;">
+          <mat-label> Choose Order by</mat-label>
+          <mat-select [(ngModel)]="item.orderbySelected" id="orderValues" (selectionChange)="calculateFormula(i)">
+            <mat-option *ngFor="let values of orderbyType" [value]="values"> {{values | maximumCharacter}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+  
+      <mat-grid-tile>
+        <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add row" (click)="addRow()" style="position: relative;left: -15%;">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-stroked-button mat-icon-button aria-label="Delete row" isRoundButton="true" (click)="deleteRow(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card>
 
-    <mat-grid-tile >
-      <mat-form-field style="width: 300px;">
-        <mat-label> Choose Order by</mat-label>
-        <mat-select [(ngModel)]="item.orderbySelected" id="orderValues" (selectionChange)="calculateFormula(i)">
-          <mat-option *ngFor="let values of orderbyType" [value]="values"> {{values | maximumCharacter}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
-      <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add row" (click)="addRow()" style="position: relative;left: -15%;">
-        <mat-icon>add</mat-icon>
-      </button>
-      <button mat-stroked-button mat-icon-button aria-label="Delete row" isRoundButton="true" (click)="deleteRow(i)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </mat-grid-tile>
-  </mat-grid-list>
-</mat-card>
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
 <button mat-button matStepperNext (click)="formula()" class="float-right btn btn-success" [disabled]="!orderbyData[0].orderbySelected" >Add to Formula Bar</button>

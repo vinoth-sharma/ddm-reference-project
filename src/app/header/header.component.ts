@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { AuthSsoService } from '../auth-sso.service';
-import { ToastrService } from 'ngx-toastr';
+import { NgToasterComponent } from '../custom-directives/ng-toaster/ng-toaster.component';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import Utils from '../../utils';
 
@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
     private authenticationService:AuthenticationService,
     private activatedRoute:ActivatedRoute,
     private authSsoService:AuthSsoService,
-    private toastrService: ToastrService,
+    private toastrService: NgToasterComponent,
     private dataProvider:DataProviderService) 
     { 
       this.subscribeToService()

@@ -30,7 +30,7 @@
     "@schematics/angular": "^0.8.9",
     "@schematics/update": "^0.8.9",
     "@types/d3": "^5.7.2",
-    "@types/jquery": "^3.3.32",
+    "@types/jquery": "^3.3.34",
     "angular-custom-modal": "^1.2.0",
     "angular-font-awesome": "^3.1.2",
     "angular-pipes": "^9.1.0",

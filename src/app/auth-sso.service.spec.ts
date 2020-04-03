@@ -9,8 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { of, BehaviorSubject } from 'rxjs';
 import { ConstantService } from './constant.service';
 
-fdescribe('AuthSsoService', () => {
-
+describe('AuthSsoService', () => {
   let injector: TestBed;
   let service: AuthSsoService;
   let httpMock: HttpTestingController;

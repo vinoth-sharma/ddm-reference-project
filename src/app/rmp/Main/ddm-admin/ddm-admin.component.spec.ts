@@ -12,7 +12,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { DjangoService } from '../../django.service';
 
-fdescribe('DdmAdminComponent', () => {
+describe('DdmAdminComponent', () => {
   let component: DdmAdminComponent;
   let fixture: ComponentFixture<DdmAdminComponent>;
   let dataService;

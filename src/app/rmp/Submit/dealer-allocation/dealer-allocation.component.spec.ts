@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
 import { DatePipe } from '@angular/common';
 import { MaterialModule } from 'src/app/material.module';
 import { GeneratedReportService } from '../../generated-report.service';
@@ -24,7 +25,7 @@ describe('DealerAllocationComponent', () => {
       declarations: [ DealerAllocationComponent, NgToasterComponent],
       providers: [DatePipe, { provide: DataProviderService, useClass: DataProviderMockService },
         { provide: AuthenticationService, useClass: AuthenticationMockService }],
-        imports: [HttpClientTestingModule,FormsModule,QuillModule.forRoot({}),RouterTestingModule, MaterialModule],
+        imports: [HttpClientTestingModule,AngularMultiSelectModule,FormsModule,QuillModule.forRoot({}),RouterTestingModule, MaterialModule],
     })
     .compileComponents();
   }));

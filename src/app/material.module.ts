@@ -1,5 +1,5 @@
 import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+// import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
@@ -32,7 +32,7 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatBadgeModule } from '@angular/material/badge';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+// import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 
 
@@ -72,8 +72,8 @@ import { CommonModule } from '@angular/common';
         MatSortModule,
         MatPaginatorModule,
         MatBadgeModule,
-        DragDropModule,
-        NoopAnimationsModule
+        DragDropModule
+        // NoopAnimationsModule
       ],
       exports : [
         // BrowserAnimationsModule,

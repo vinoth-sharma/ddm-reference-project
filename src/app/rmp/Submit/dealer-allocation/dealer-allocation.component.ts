@@ -105,7 +105,7 @@ export class DealerAllocationComponent implements OnInit{
   modelYearDrop: any;
   division: any;
   selectedItemsAllocation: any[];
-  dropdownSettingsAllocation: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
+  dropdownSettingsAllocation: { singleSelection: boolean; primaryKey: string; labelKey: string; selectAllText: string; unSelectAllText: string; badgeShowLimit: number; allowSearchFilter: boolean; };
   modelYearSelectedItems: any;
   allocationGroupselecteditems: any;
   divisionRadioSelection: any;
@@ -264,31 +264,31 @@ export class DealerAllocationComponent implements OnInit{
 
         this.dropdownSettingsDivision = {
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_division_id',
-          textField: 'division_desc',
+          primaryKey: 'ddm_rmp_lookup_division_id',
+          labelKey: 'division_desc',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 3,
+          badgeShowLimit: 3,
           allowSearchFilter: true
         };
 
         this.dropdownSettingsModelYear = {
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_dropdown_model_year_id',
-          textField: 'model_year',
+          primaryKey: 'ddm_rmp_lookup_dropdown_model_year_id',
+          labelKey: 'model_year',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 3,
+          badgeShowLimit: 3,
           allowSearchFilter: true
         };
 
         this.dropdownSettingsAllocation = {
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_dropdown_allocation_group_da_id',
-          textField: 'allocation_group',
+          primaryKey: 'ddm_rmp_lookup_dropdown_allocation_group_da_id',
+          labelKey: 'allocation_group',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 3,
+          badgeShowLimit: 3,
           allowSearchFilter: true
         };
         this.getDealerAllocatonInfo();
@@ -367,7 +367,9 @@ export class DealerAllocationComponent implements OnInit{
     this.readOnlyContentHelper = false;
     this.namings = this.original_content;
   }
-  ngOnInit() { }
+  ngOnInit() { 
+      $('#dropdownHolder').find('angular4-multiselect').find('col-sm-12');
+  }
 
   getDealerData() {
     this.django.getNewData().subscribe((lookup: any) => {
@@ -379,9 +381,9 @@ export class DealerAllocationComponent implements OnInit{
   getDealerAllocatonInfo() {
     this.check = { "value": 1, "id": 2 };
     this.modelYearSelectedItems = this.lookup.data.model_year;
-
     this.dropdownLookup = this.lookup.data.drop_downs_da;
     this.consensusData = this.lookup.data.concensus_data_da;
+    console.log(this.consensusData,"this.consensusData");    
     this.displaySummary = this.lookup.data.display_summary;
     this.cycle = this.lookup.data.cycle_data_da;
     this.cycle = Array.of(this.cycle)

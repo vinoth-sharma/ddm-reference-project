@@ -39,8 +39,6 @@ describe('MainMenuLandingPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MainMenuLandingPageComponent);
     component = fixture.componentInstance;
-    router.initialNavigation();
-    // fixture.detectChanges(); 
     spyOn(Utils, "showSpinner")
   });
 

@@ -102,11 +102,11 @@
 
           </div>
           <div class="row">
-            <div class="col-sm-12">
-              <ng-multiselect-dropdown [placeholder]="'Search'" [data]="modelYearSelectedItems"
+            <div class="col-sm-12" id="dropdownHolder">
+              <angular4-multiselect [data]="modelYearSelectedItems"
                 [(ngModel)]="selectedItemsModelYear" [settings]="dropdownSettingsModelYear"
                 (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
-              </ng-multiselect-dropdown>
+              </angular4-multiselect>
             </div>
           </div>
           <div class="row" *ngFor="let element of displaySummary;let i=index;">
@@ -128,9 +128,9 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="allocationGroupselecteditems"
+              <angular4-multiselect class="dropdown" [data]="allocationGroupselecteditems"
                 [(ngModel)]="selectedItemsAllocation" [settings]="dropdownSettingsAllocation">
-              </ng-multiselect-dropdown>
+              </angular4-multiselect>
             </div>
           </div>
           <div class="row" *ngFor="let element of displaySummary;let i=index;">
@@ -229,7 +229,7 @@
                   <td *ngIf="i%2==0">
                     <input [id]="'consensus_data'+i" class="events" type="checkbox" (change)="concensusData(element,$event)"
                       value={{element.ddm_rmp_lookup_da_consensus_data_id}}>&nbsp;&nbsp;
-                      <span [ngbTooltip]="element.tooltip">{{element.cd_values}} {{id}}</span>
+                      <span class="text-ellipsis" title="{{element.tooltip}}">{{element.cd_values}} {{id}}</span>
                   </td>
                 </tr>
               </td>
@@ -238,7 +238,7 @@
                   <td *ngIf="i%2!=0">
                     <input [id]="'consensus_data'+i" class="events" type="checkbox" (change)="concensusData(element,$event)"
                       value={{element.ddm_rmp_lookup_da_consensus_data_id}}>&nbsp;&nbsp;
-                      <span [ngbTooltip]="element.tooltip">{{element.cd_values}} {{id}}</span>
+                      <span class="text-ellipsis" title="{{element.tooltip}}">{{element.cd_values}} {{id}}</span>
                   </td>
                 </tr>
               </td>

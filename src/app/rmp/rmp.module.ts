@@ -1,8 +1,6 @@
 import { NgModule,APP_INITIALIZER } from '@angular/core';
-// import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { RMPRoutingModule } from './rmp-routing.module';
-// import { SelectDropDownModule } from 'ngx-select-dropdown'
 import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -33,18 +31,13 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { DataProviderService } from "./data-provider.service";
 import { ToastrModule } from "ngx-toastr";
 import { NgxPaginationModule } from 'ngx-pagination';
-// import { MatPaginatorModule } from '@angular/material'; 
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { TagInputModule } from 'ngx-chips';
 import { CustomModalsModule } from './custom-modals/custom-modals.module';
 import { OngoingScheduleComponent } from './ongoing-schedule/ongoing-schedule.component'
 import { MultiDatePickerOngoingComponent } from './multi-date-picker-ongoing/multi-date-picker-ongoing.component'
-import { MatChipsModule } from '@angular/material/chips'
-// import { MatTableModule, MatSortModule, MatAutocompleteModule, 
-//   MatIconModule, MatCheckboxModule , MatDatepickerModule,
-//   MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, 
-//   MatGridListModule, MatInputModule, MatExpansionModule} from '@angular/material';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { QuillModule } from "ngx-quill";
 import { MaterialModule } from "../material.module";

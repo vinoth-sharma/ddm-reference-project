@@ -291,6 +291,14 @@ svg {
   margin-bottom: -10px;
 }
 
+.text-ellipsis {
+  text-overflow: ellipsis;
+  display: block;
+  padding-top: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 ::ng-deep .quillEditor .quill .ql-container .ql-editor {
   max-height: 300px;
 }

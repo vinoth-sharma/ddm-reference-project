@@ -3,8 +3,7 @@ import { AuthGuard } from './auth.guard';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AuthSsoService } from './auth-sso.service';
 
-
-fdescribe('AuthGuard', () => {
+describe('AuthGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AuthGuard],

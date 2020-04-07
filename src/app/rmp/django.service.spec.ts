@@ -5,7 +5,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { environment } from 'src/environments/environment';
 // import { environment } from ".../../../environments/environment";
 
-fdescribe('DjangoService', () => {
+describe('DjangoService', () => {
   let injector: TestBed;
   let service : DjangoService;
   let httpMock : HttpTestingController;

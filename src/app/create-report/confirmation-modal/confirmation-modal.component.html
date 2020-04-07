@@ -1,7 +1,7 @@
 <div class="modal-container">
   <div class="modal-header">
     {{ data.modalTitle }}
-    <mat-icon style="cursor:pointer;" (click)="closeDailog(false);">close</mat-icon>
+    <mat-icon style="cursor:pointer;" id="close-modal" (click)="closeDailog(false);">close</mat-icon>
   </div>
   <div class="modal-body">
     <div style="text-align: center;padding: 18px;">
@@ -13,7 +13,6 @@
         <mat-radio-button value="no">No</mat-radio-button>
       </mat-radio-group>
     </div>
-    
   </div>
   <div class="modal-footer" style="padding: 10px;margin-top: 38px;">
     <button mat-raised-button 

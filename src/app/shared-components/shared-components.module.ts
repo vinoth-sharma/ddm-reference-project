@@ -19,16 +19,23 @@ import { SaveAsModalComponent } from './saveAs-modal/saveAs-modal.component';
 import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar/related-tables-sidebar.component';
 import { OrderByPipe } from "./filters/order-by.pipe";
 import { ValidatorDirective } from "./directives/validator.directive";
-import { TooltipDirective } from "./directives/tooltip.directive";
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
+// import { MatProgressSpinnerModule, MatFormFieldModule, 
+//   MatGridListModule, MatIconModule, MatAutocompleteModule , 
+//   MatChipsModule, MatCardModule, MatInputModule,
+//    MatButtonModule, MatTabsModule, MatExpansionModule } from '@angular/material';
+import { MatSelectModule } from "@angular/material/select";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerService } from "ngx-spinner"
 import { from } from 'rxjs';
 import { EditDescriptionComponent } from './sidebars/edit-description/edit-description.component';
+// import { MatMenuModule } from '@angular/material/menu';
+// import { MatBadgeModule } from "@angular/material/badge";
 import { LovContainerComponent } from '../modallist/lov-container/lov-container.component';
 import { ShowLovComponent } from '../modallist/show-lov/show-lov.component';
 import { JoinsHelpOptionComponent } from '../create-report/joins-help-option/joins-help-option.component';
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MaximumCharacterPipe } from './maximum-character.pipe';
 import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
 import { MaterialModule } from "../material.module";
@@ -42,7 +49,22 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     NgMultiSelectDropDownModule, 
     FormsModule,
     ReactiveFormsModule,
+    MatSelectModule,
     NgxSpinnerModule,
+    // MatProgressSpinnerModule,
+    // MatInputModule,
+    // MatFormFieldModule,
+    // MatGridListModule,
+    // MatIconModule,
+    // MatAutocompleteModule,
+    // MatChipsModule,
+    // MatCardModule,
+    // MatButtonModule,
+    // MatMenuModule,
+    // MatBadgeModule,
+    // MatTabsModule,
+    // MatExpansionModule,
+    MatSlideToggleModule,
     CustomPipeModules.forRoot(),
     MaterialModule.forRoot()
   ],
@@ -61,7 +83,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     RelatedTablesSidebarComponent,
     OrderByPipe,
     ValidatorDirective,
-    TooltipDirective,
     HeaderComponent,
     FooterComponent,
     EditDescriptionComponent,
@@ -88,9 +109,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     RelatedTablesSidebarComponent,
     OrderByPipe,
     ValidatorDirective,
-    TooltipDirective,
     HeaderComponent,
     FooterComponent,
+    // MatProgressSpinnerModule,
     JoinsHelpOptionComponent,
     MaximumCharacterPipe
     // CalculatedColumnComponent

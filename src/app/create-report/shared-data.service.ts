@@ -4,47 +4,39 @@ import { Subject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-
 export class SharedDataService {
 
-  private requestId:number;
-  private calculatedData: any = [];
-  private calcData: any = [];
-  // private conditionData: any = [];
-  private havingData: string = '';
-  private orderbyData: any = {};
-  private formulaCalculatedData: any = [];
-  private reportList: any = [];
-  private newConditionData: any = {};
-  private keyChips: any = [];
-  private aggregationData: any = [];
-  private saveAsData: any = {
+  public requestId:number;
+  public havingData: string = '';
+  public orderbyData: any = {};
+  public formulaCalculatedData: any = [];
+  public reportList: any = [];
+  public newConditionData: any = {};
+  public keyChips: any = [];
+  public aggregationData: any = [];
+  public saveAsData: any = {
     'name' : '',
     'desc' : ''
   }
-  private aggregationToken:string = '';
-  private existingColumns: any[] = [];
-  private conditionName: string = '';
+  public aggregationToken:string = '';
+  public existingColumns: any[] = [];
+  public conditionName: string = '';
   public isReqIdSet:boolean = false;
-  private sheetJson:any = [];
+  public sheetJson:any = [];
   public showSelectReqIdBtn : boolean = false;
    
-  // private existingCondition: any = [];
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
   public ecsUpload : boolean = true ;
 
-  // public preview = new Subject<boolean>();
-  // public $toggle = this.preview.asObservable();
-
   public formula = new Subject<any>();
   public $formula = this.formula.asObservable();
 
-  private isNextClicked = new Subject<boolean>();
+  public isNextClicked = new Subject<boolean>();
   
   public saveAsDetails = new Subject<any>();
   
-  private formulaObj = {
+  public formulaObj = {
     select: {
       tables: [],
       calculated: [],
@@ -71,7 +63,6 @@ export class SharedDataService {
   public validQueryFlagEmittor = new Subject<any>();
 
   public checkSelectStatus(){
-    
     let objs = Object.keys(this.formulaObj.select)
     this.validQuery = objs.some(ele=>{
       return this.formulaObj.select[ele].length > 0?true:false
@@ -137,18 +128,6 @@ export class SharedDataService {
     return formula.replace(/[\r\n]+/g, ' ');
   }
 
-  public isAppliedCaluclated() {
-    return (this.calculatedData.length > 0);
-  }
-
-  // public setCalculatedData(data: any) {
-  //   this.calculatedData = data;
-  // }
-
-  // public getCalculateData() {
-  //   return this.calculatedData;
-  // }
-
   public setNewConditionData(data: any) {
     this.newConditionData = data;
   }
@@ -157,12 +136,6 @@ export class SharedDataService {
     return ({'data':this.newConditionData});
   }
   
-
-  // public isAppliedCondition() {
-  //   // return (this.conditionData.length > 0);
-  //      return false;
-  // }
-
   public calDataForCondition = new Subject();
   public setCalcData(data: any) {
     let l_data = data.map(ele=>{
@@ -174,14 +147,6 @@ export class SharedDataService {
     this.calDataForCondition.next(l_data);
   }
 
-  // public setConditionData(data: any) {
-  //   this.conditionData = data;
-  // }
-
-  // public getConditionData() {
-  //   return this.conditionData;
-  // }
-
   //set sheetjson Calc data
   public setFormulaCalculatedData(data: any) {
     this.formulaCalculatedData = data;
@@ -189,10 +154,6 @@ export class SharedDataService {
   public getFormulaCalculatedData() {
     return this.formulaCalculatedData;
   }
-
-  // setToggle(val: boolean) {
-  //   this.preview.next(val);
-  // }
 
   public setReportList(data: any) {
     this.reportList = data;
@@ -242,13 +203,6 @@ export class SharedDataService {
   public setExistingColumns(data:any){
     this.existingColumns = data;
   }
-  // public setExistingCondition(data:any){
-  //   this.existingCondition = data;
-  // }
-
-  // public getExistingCondition(){
-  //   return this.existingCondition;
-  // }
 
   public setOrderbyData(data:any) {
    this.orderbyData = data;

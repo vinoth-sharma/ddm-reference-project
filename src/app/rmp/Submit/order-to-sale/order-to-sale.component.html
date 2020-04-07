@@ -322,7 +322,7 @@
                 <td *ngIf="i%2==0">
                   <input id="gross" (click)="CheckboxCheck(element,$event)"
                     value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
-                  <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
+                  <span [title]="element.tooltip?element.tooltip:''">{{element.field_values}}</span>
                 </td>
               </tr>
             </td>
@@ -331,7 +331,7 @@
               <td *ngIf="i%2!=0">
                 <input id="gross" (click)="CheckboxCheck(element,$event)"
                   value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
-                <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
+                <span [title]="element.tooltip?element.tooltip:''">{{element.field_values}}</span>
               </td>
             </tr>
           </td>
@@ -388,7 +388,7 @@
           <tr class="d-flex" *ngFor="let element of salesDataAvailable">
             <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)"
                 value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
-              <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
+              <span [title]="element.tooltip?element.tooltip:''">{{element.field_values}}</span>
             </td>
           </tr>
         </tbody>

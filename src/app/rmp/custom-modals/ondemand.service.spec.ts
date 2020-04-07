@@ -4,7 +4,7 @@ import { OndemandService } from './ondemand.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from "../../../environments/environment";
 
-fdescribe('OndemandService', () => {
+describe('OndemandService', () => {
   let injector: TestBed;
   let service : OndemandService;
   let httpMock : HttpTestingController;

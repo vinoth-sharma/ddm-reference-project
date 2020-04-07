@@ -5,6 +5,7 @@ import { AuthSsoService } from '../auth-sso.service';
 import { ToastrService } from 'ngx-toastr';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import Utils from '../../utils';
+import { NgToasterComponent } from '../custom-directives/ng-toaster/ng-toaster.component';
 
 @Component({
   selector: 'app-header',
@@ -27,7 +28,7 @@ export class HeaderComponent implements OnInit {
     private authenticationService:AuthenticationService,
     private activatedRoute:ActivatedRoute,
     private authSsoService:AuthSsoService,
-    private toastrService: ToastrService,
+    private toastrService: NgToasterComponent,
     private dataProvider:DataProviderService) 
     { 
       this.subscribeToService()
@@ -44,6 +45,7 @@ export class HeaderComponent implements OnInit {
         this.user_role = role["role"]
         this.dataProvider.currentNotifications.subscribe((element:Array<any>) => {
           if (element) {
+               
                 this.user_name = role["first_name"] + "" + role["last_name"]
                 this.user_role = role["role"]
                 this.notification_list = element.filter(element => {

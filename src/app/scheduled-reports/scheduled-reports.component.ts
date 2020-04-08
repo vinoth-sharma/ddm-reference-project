@@ -127,7 +127,7 @@ export class ScheduledReportsComponent {
     });
   }
 
-
+  // obtaining the semantic layer id
   public getSemanticId() {
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
@@ -136,7 +136,8 @@ export class ScheduledReportsComponent {
     });
   }
 
-  public goToReports(reportName: string) {
+  // directing to scheduled report
+  public goToScheduledReport(reportName: string) {
     Utils.showSpinner();
     this.firstClick = true;
     let tempData = this.dataSource['data'];
@@ -157,6 +158,7 @@ export class ScheduledReportsComponent {
     this.router.navigate(['semantic/sem-reports/home']);
   }
 
+  // deledting a scheduled report
   public deleteScheduledReport(procuredScheduleReportId: number) {
     Utils.showSpinner();
     this.scheduleService.deleteScheduledReport(procuredScheduleReportId).subscribe(

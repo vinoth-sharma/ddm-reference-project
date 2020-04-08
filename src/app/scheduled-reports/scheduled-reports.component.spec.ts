@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MaterialModule } from "../material.module";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 import { QuillModule } from 'ngx-quill';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -35,14 +34,14 @@ class testComponent { }
 class testingComponent { }
 
 // MatSort, MatPaginator, MatTableDataSource, 
-fdescribe('ScheduledReportsComponent', () => {
+describe('ScheduledReportsComponent', () => {
   let component: ScheduledReportsComponent;
   let fixture: ComponentFixture<ScheduledReportsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ScheduledReportsComponent, ScheduleComponent, MultipleDatesPickerComponent, ShowSignatureSchedularComponent ],
-      imports: [FormsModule, ReactiveFormsModule, BrowserModule, HttpClientTestingModule, RouterTestingModule, BrowserAnimationsModule, MaterialModule.forRoot(), QuillModule.forRoot({})],
+      imports: [FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule, BrowserAnimationsModule, MaterialModule.forRoot(), QuillModule.forRoot({})],
       providers : [ Utils ]
       // MatPaginator, MatSort, MatTableDataSource,
     })

@@ -10,6 +10,7 @@ import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toa
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 declare var jsPDF: any;
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-submit-landing-page',
@@ -107,13 +108,14 @@ export class SubmitLandingPageComponent implements OnInit {
 
   constructor(private router: Router, private django: DjangoService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService, private dataProvider: DataProviderService,
-    private toastr: NgToasterComponent, private report_id_service: GeneratedReportService) {
+    private toaster: NgToasterComponent, private report_id_service: GeneratedReportService) {
     this.editMode = false;
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
       }
     })
+  // Conflicting change
   //   this.contentForm = new FormGroup({
   //     contentForm: new FormControl()
   //  });
@@ -222,9 +224,10 @@ export class SubmitLandingPageComponent implements OnInit {
     })
   }
 
-  navigate() {
-    this.router.navigate(["/user/main/user-profile"]);
-  }
+  // Not being used
+  // navigate() {
+  //   this.router.navigate(["/user/main/user-profile"]);
+  // }
 
   disclaimerNotAcknowledged() {
     $('#disclaimer-modal').modal('show');
@@ -273,14 +276,14 @@ export class SubmitLandingPageComponent implements OnInit {
         this.editModes = false;
         this.ngOnInit();
         this.original_contents = this.namings;
-        this.toastr.success("Updated Successfully");
+        this.toaster.success("Updated Successfully");
         // this.spinner.hide()
       }, err => {
         // this.spinner.hide()
-        this.toastr.error("Server Error");
+        this.toaster.error("Server Error");
       })
     } else {
-      this.toastr.error("please enter the data");
+      this.toaster.error("please enter the data");
     }
   }
 
@@ -315,13 +318,13 @@ export class SubmitLandingPageComponent implements OnInit {
         this.editModes_disc = false;
         this.ngOnInit();
         // this.spinner.hide();
-        this.toastr.success("Data updated");
+        this.toaster.success("Data updated");
       }, err => {
         // this.spinner.hide();
-        this.toastr.error("Server Error");
+        this.toaster.error("Server Error");
       })
     } else {
-      this.toastr.error("please enter the data");
+      this.toaster.error("please enter the data");
     }
   }
 
@@ -365,15 +368,15 @@ export class SubmitLandingPageComponent implements OnInit {
         this.dataProvider.changelookUpTableData(this.saved)
         this.editModes_disc = false;
         this.ngOnInit();
-        this.toastr.success("Updated Successfully");
+        this.toaster.success("Updated Successfully");
         // this.spinner.hide();
         $("#disclaimerConfirmationModal").modal("hide");
       }, err => {
         // this.spinner.hide()
-        this.toastr.error("Server Error:")
+        this.toaster.error("Server Error:")
       })
     } else {
-      this.toastr.error("please enter the data");
+      this.toaster.error("please enter the data");
     }
   }
 
@@ -404,10 +407,10 @@ export class SubmitLandingPageComponent implements OnInit {
           this.saved = data
           $('#disclaimer-modal').modal('hide');
           // this.spinner.hide()
-          this.toastr.success("Disclaimers Acknowledged")
+          this.toaster.success("Disclaimers Acknowledged")
         })
       }, err => {
-        this.toastr.error("Server problem encountered")
+        this.toaster.error("Server problem encountered")
       })
     }
     else {

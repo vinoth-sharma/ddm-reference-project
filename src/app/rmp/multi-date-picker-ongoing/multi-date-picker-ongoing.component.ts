@@ -1,156 +1,117 @@
-// import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
+import { NgToasterComponent } from "../../custom-directives/ng-toaster/ng-toaster.component";
 
-// @Component({
-//   selector: 'app-multi-date-picker-ongoing',
-//   templateUrl: './multi-date-picker-ongoing.component.html',
-//   styleUrls: ['./multi-date-picker-ongoing.component.css']
-// })
-// export class MultiDatePickerOngoingComponent implements OnInit {
-
-//   constructor() { }
-
-//   ngOnInit() {
-//   }
-
-// }
-
-import {Component,Input,Output,EventEmitter, OnInit, OnChanges, SimpleChanges} from '@angular/core';
-import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import { MultiDateService } from '../../multi-date-picker/multi-date.service'
-import { ToastrService } from 'ngx-toastr';
-
-const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
-  one && two && two.year === one.year && two.month === one.month && two.day === one.day;
-
-const before = (one: NgbDateStruct, two: NgbDateStruct) =>
-  !one || !two ? false : one.year === two.year ? one.month === two.month ? one.day === two.day
-    ? false : one.day < two.day : one.month < two.month : one.year < two.year;
-
-const after = (one: NgbDateStruct, two: NgbDateStruct) =>
-  !one || !two ? false : one.year === two.year ? one.month === two.month ? one.day === two.day
-    ? false : one.day > two.day : one.month > two.month : one.year > two.year;
+import { MultiDatePickerOngoingService } from './multi-date-picker-ongoing.service'
 
 @Component({
   selector: 'app-multi-date-picker-ongoing',
   templateUrl: './multi-date-picker-ongoing.component.html',
-  styles: [`
-    .custom-day {
-      text-align: center;
-      padding: 0.185rem 0.25rem;
-      display: inline-block;
-      height: 2rem;
-      width: 2rem;
-    }
-    .custom-day.range, .custom-day:hover {
-      background-color: rgb(2, 117, 216);
-      color: white;
-    }
-    .custom-day.faded {
-      background-color: rgba(2, 117, 216, 0.5);
-    }
-    .custom-day.selected{  
-      background-color: rgba(255, 255, 0, .5);
-        
-    }
-  `]
+  styleUrls: ['./multi-date-picker-ongoing.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
-export class MultiDatePickerOngoingComponent implements OnInit, OnChanges {
+export class MultiDatePickerOngoingComponent implements OnInit {
 
-  hoveredDate: NgbDateStruct;
+  @Input() loadingDates : any = this.MultiDatePickerOngoingService.datesChosen || [];
+  @Input() datePickerStatus : boolean = true;
+  
+  constructor( public MultiDatePickerOngoingService : MultiDatePickerOngoingService,
+                public toasterService : NgToasterComponent) { }
 
-  fromDate: NgbDateStruct;
-  toDate: NgbDateStruct;
-  index:any;
-
-  _datesSelected:NgbDateStruct[]=[]; 
-
-  @Input()
-  set datesSelected(value:NgbDateStruct[])  
-  {
-     this._datesSelected=value;
-  }
-  get datesSelected():NgbDateStruct[]
-  {
-    return this._datesSelected?this._datesSelected:[];
+  ngOnInit(): void {
   }
 
-  @Output() datesSelectedChange=new EventEmitter<NgbDateStruct[]>();
-
-  constructor(calendar: NgbCalendar,
-              private multiDateService: MultiDateService,
-              public toasterService: ToastrService) {
-  }
-
-  ngOnInit() {
-    // write logic to nullify old selections colors??
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-  }
-
-  onDateSelection(event:any,date: NgbDateStruct) {
-
-    event.target.parentElement.blur();  //make that not appear the outline
-    if (!this.fromDate && !this.toDate) {
-      if (event.ctrlKey==true && this.multiDateService.dateMode === true ){  //If is CrtlKey pressed
-        this.fromDate = date;
+  ngOnChanges(changes : SimpleChanges,calendar: any) {
+    if('loadingDates' in changes){
+      // console.log('CHANGES seen in TODAYs date in loadingDates: ',changes);
+      this.daysSelected = this.MultiDatePickerOngoingService.datesChosen;
+      if(this.daysSelected.length && this.daysSelected.length ===1){
+        this.daysSelected = [this.daysSelected];
       }
-      else if(event.ctrlKey==true && this.multiDateService.dateMode === false ){
-        this.toasterService.error("Select any of the recurring frequencies to continue with MULTIPLE DATES");
-        this.toasterService.error("Please select 'Recurring frequency' as YES and ....");
+      this.daysSelectedDisplayed = this.daysSelected;
+      // console.log("this.datePickerStatus value in loadingDates changes",this.datePickerStatus);
+      // console.log("CHANGES in loadingDates changes :",changes);
+      // this.datePickerStatus = true;
+      this.datePickerStatus = changes.datePickerStatus.currentValue;
+      if(this.datePickerStatus === undefined || null || ''){
+        this.datePickerStatus = true;
       }
-      else
-        this.addDate(date);
+      // console.log("this.datePickerStatus value NOWW in loadingDates changes",this.datePickerStatus);
+      if(this.daysSelected && this.daysSelected.length){
+        calendar.updateTodaysDate();
+      }
+      
+    }
+    // if('datePickerStatus' in changes){
+    //   this.datePickerStatus = changes.datePickerStatus.currentValue || true; //wrong
+    // //   console.log("this.datePickerStatus value in datePicker changes",this.datePickerStatus);
+    // //   console.log("CHANGES in datePicker changes :",changes);
+    // }
+  }
 
-      this.datesSelectedChange.emit(this.datesSelected);
+public daysSelected: any = [];
+public daysSelectedDisplayed: any = [];
+event: any;
 
-    } else if (this.fromDate && !this.toDate && after(date, this.fromDate)) {
-      this.toDate = date;
-      this.addRangeDate(this.fromDate,this.toDate);
-      this.fromDate=null;
-      this.toDate=null;
-    } else {
-      this.toDate = null;
-      this.fromDate = date;
+isSelected = (event: any) => {
+  const date = ("00" + (event.getMonth() + 1)).slice(-2) + "/" + ("00" + event.getDate()).slice(-2) + "/" + event.getFullYear();
+
+  if(this.daysSelected && ( typeof(this.daysSelected) == 'string')){
+    this.daysSelected = [this.daysSelected];
+    this.daysSelectedDisplayed = [this.daysSelected];
+  }
+
+  return this.daysSelected.find(x => x == date) ? "selected" : null;
+};
+
+select(event: any, calendar: any) {
+  const date = ("00" + (event.getMonth() + 1)).slice(-2) + "/" + ("00" + event.getDate()).slice(-2) + "/" + event.getFullYear();
+
+  if(this.daysSelected && ( typeof(this.daysSelected) == 'string')){
+    this.daysSelected = [this.daysSelected];
+    this.daysSelectedDisplayed = [this.daysSelected];
+  }
+
+  const index = this.daysSelected.findIndex(x => x == date);
+
+  if (index < 0) {
+    if(( this.daysSelected.length == 0 && this.MultiDatePickerOngoingService.isRecurringDatesMode == false ) || ( this.daysSelected.length >= 0 && this.MultiDatePickerOngoingService.isRecurringDatesMode == true && ( this.MultiDatePickerOngoingService.recurrencePattern.length != 0) )){
+      // this.MultiDatePickerOngoingService.recurrencePattern != null && this.MultiDatePickerOngoingService.recurrencePattern != undefined &&
+      if(this.MultiDatePickerOngoingService.recurrencePattern == '1'){
+        this.daysSelected = [ this.MultiDatePickerOngoingService.datesChosen[0] ];
+        this.daysSelectedDisplayed = [...this.daysSelected] ; 
+      }
+      this.daysSelected.push(date);
+      this.daysSelectedDisplayed.push(date);
+    }
+    else{
+      if( this.daysSelected.length == 1 && this.MultiDatePickerOngoingService.isRecurringDatesMode == false ){
+        this.toasterService.error('Please select YES as the recurring frequency and continue selecting the multiple dates!')
+      }
+      else if(( this.daysSelected.length >= 0 && this.MultiDatePickerOngoingService.isRecurringDatesMode == true && (this.MultiDatePickerOngoingService.recurrencePattern.length == 0 ) )){
+        this.toasterService.error('Please select any of the recurring frequencies and continue!')
+      }
     }
   }
 
-  addDate(date:NgbDateStruct)
-  {
-      this.index=this.datesSelected.findIndex(f=>f.day==date.day && f.month==date.month && f.year==date.year);
-      if( (this.multiDateService.dateMode === false && (this.datesSelected.length === 0 || this.datesSelected.length === 1 ) ) || 
-          (this.multiDateService.dateMode === true && this.datesSelected.length >= 0) ){
-      if (this.index>=0){     //If exist, remove the date
-        this.datesSelected.splice(this.index,1)
-      }
-      else if(this.multiDateService.dateMode === false && this.datesSelected.length >= 1){
-          this.toasterService.error("Select any of the recurring frequencies to continue with MULTIPLE DATES")
-          this.toasterService.error("Please select 'Recurring frequency' as YES and ....");
-      }
-      else{   //a simple push
-        this.datesSelected.push(date);}
-      }
-    }
-    addRangeDate(fromDate:NgbDateStruct,toDate:NgbDateStruct)
-    {
-        //We get the getTime() of the dates from and to
-        let from=new Date(fromDate.year+"-"+fromDate.month+"-"+fromDate.day).getTime();
-        let to=new Date(toDate.year+"-"+toDate.month+"-"+toDate.day).getTime();
-        for (let time=from;time<=to;time+=(24*60*60*1000)) //add one day
-        {
-            let date=new Date(time);
-            //javascript getMonth give 0 to January, 1, to February...
-            this.addDate({year:date.getFullYear(),month:date.getMonth()+1,day:date.getDate()});
-        }   
-        this.datesSelectedChange.emit(this.datesSelected);
-    }
-    //return true if is selected
-    isDateSelected(date:NgbDateStruct)
-    {
-        return (this.datesSelected.findIndex(f=>f.day==date.day && f.month==date.month && f.year==date.year)>=0);
-    }
-  isHovered = date => this.fromDate && !this.toDate && this.hoveredDate && after(date, this.fromDate) && before(date, this.hoveredDate);
-  isInside = date => after(date, this.fromDate) && before(date, this.toDate);
-  isFrom = date => equals(date, this.fromDate);
-  isTo = date => equals(date, this.toDate);
+  else {
+    this.daysSelected.splice(index, 1);
+    this.daysSelectedDisplayed.splice(index, 1);
+  }
+
+
+  this.daysSelected = this.removeDuplicates(this.daysSelected);
+  this.MultiDatePickerOngoingService.datesChosen = [...this.daysSelected];
+  // this.MultiDatePickerOngoingService.datesChosen = this.removeDuplicates(this.daysSelected);
+  // this.datesChosen.emit()
+  // this.dateChosen.emit(JSON.stringify(this.daysSelected))
+  // console.log("SELECTED DATES in the picker : ",this.daysSelected);
+  this.daysSelectedDisplayed = [...this.daysSelected];
+  
+  calendar.updateTodaysDate();
+}
+
+public removeDuplicates(array) {
+  return array.filter((a, b) => array.indexOf(a) === b)
+};
+
 }

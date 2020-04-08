@@ -4,10 +4,10 @@ import "../../../../assets/debug2.js";
 declare var jsPDF: any;
 declare var $: any;
 import { Router } from "@angular/router";
-import { DjangoService } from 'src/app/rmp/django.service';
+import { DjangoService } from '../../django.service';
 import { DatePipe } from '@angular/common'
-import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
-import { DataProviderService } from "src/app/rmp/data-provider.service";
+import { GeneratedReportService } from '../../generated-report.service'
+import { DataProviderService } from "../../data-provider.service";
 import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
 import Utils from "../../../../utils";
 import { ReportCriteriaDataService } from "../../services/report-criteria-data.service";
@@ -47,17 +47,13 @@ const MY_FORMATS = {
 })
 export class OrderToSaleComponent implements OnInit {
 
-  abc = [
-    { ddm_rmp_lookup_division_id: 14, ddm_rmp_lookup_market: 3, division_desc: "012 - GMC(Export)" }
-  ]
-
   generated_report_status: string;
   generated_report_id: number;
   selectedItems = [];
   dropdownSettings = {};
   order_to_sales_selection = {};
 
-  order_to_sale_selection: object;
+  order_to_sale_selection: any;
   textData;
   type_data_value = {};
   finalData = {
@@ -127,7 +123,7 @@ export class OrderToSaleComponent implements OnInit {
   selectedItemsModelYear = [];
   dropdownSettingsModelYear = {};
   modelRadio: any;
-  modelYearSelectedItems: any;
+  modelYearSelectedItems: any = [];
   modelYear: any;
 
   allocationSelectItems = [];
@@ -149,22 +145,22 @@ export class OrderToSaleComponent implements OnInit {
   selectedItemsOrderType = [];
   dropdownSettingsOrderType = {};
   orderRadio: any;
-  orderTypeSelecteditems: any;
+  orderTypeSelecteditems: any = []; 
   orderType: any;
 
   vehicleIndex: Array<number> = [];
   selectedItemsVehicleLine = [];
   dropdownSettingsVehicleLine = {};
-  vehicleDataSelecteditems: any;
+  vehicleDataSelecteditems: any = []
   vehicleData: any;
 
   selectedItemsOrderEvent = [];
   dropdownSettingsOrderEvent = {};
-  orderEvent: any;
+  orderEvent: any = [];
 
-  gcheck: boolean;
-  ncheck: boolean;
-  check: boolean;
+  gcheck: boolean = false;
+  ncheck: boolean = false;
+  check: boolean = false;
 
   orderToSaleDropdowns: any;
   typeOfData: any;
@@ -189,15 +185,10 @@ export class OrderToSaleComponent implements OnInit {
   Checkbox_data: any;
   Checkbox_value = {};
   DropValues = {};
-  obj_keys: Array<string>
-  val: {}[];
-  obj_keys1: Array<string>
-  val1: {}[];
-  radioButton: any;
+ 
   distributionRadio = "";
   distId;
   counter;
-  targetPop = "Select"
   startDate: {};
   endDate: {};
   otsElement: Object;
@@ -289,151 +280,10 @@ export class OrderToSaleComponent implements OnInit {
     ]
   };
  
-  constructor(private router: Router,
-    private django: DjangoService, private report_id_service: GeneratedReportService, private auth_service: AuthenticationService,
-    private DatePipe: DatePipe, private dataProvider: DataProviderService, private toastr: NgToasterComponent,
-    private reportDataService: ReportCriteriaDataService) {
-    this.auth_service.myMethod$.subscribe(role => {
-      if (role) {
-        this.user_name = role["first_name"] + " " + role["last_name"]
-        this.user_role = role["role"]
-      }
-    })
-
-    this.gcheck = false;
-    this.ncheck = false;
-    this.check = false;
-    dataProvider.currentlookUpTableData.subscribe(element => {
-      if (element) {
-        this.lookup = element
-        let ref = this.lookup['data']['desc_text']
-        let temps = ref.find(function (element) {
-          return element["ddm_rmp_desc_text_id"] == 12;
-        })
-        if (temps) {
-          this.original_content = temps.description;
-        }
-        else {
-          this.original_content = ""
-        }
-        this.namings = this.original_content;
-        this.reportDataService.getReportID().subscribe(ele => {
-          this.reportId = ele;
-        });
-
-        this.report_id_service.currentSelections.subscribe(report_id => {
-          this.generated_report_id = report_id
-        })
-        this.report_id_service.currentstatus.subscribe(status => {
-          this.generated_report_status = status
-        })
-        this.report_id_service.currentDivisionSelected.subscribe(divisions => {
-          if (divisions != null) {
-            this.divDataSelected = divisions
-          }
-          else {
-            this.divDataSelected = []
-          }
-        })
-
-        if (this.generated_report_id == 0)
-          this.report_message = "";
-        else {
-          this.report_message = "Request #" + this.generated_report_id + " " + this.generated_report_status
-        }
-        this.otsElement = this.userdivdata
-        this.abcd = this.otsElement
-        this.divDataSelected.map(element => {
-          if (!(this.division_index.includes(element['ddm_rmp_lookup_division_id']))) {
-            this.division_index.push(element['ddm_rmp_lookup_division_id'])
-          }
-        })
-
-        this.selectedItemsDivision = [];
-        this.selectedItemsModelYear = [];
-        this.selectedItemsAllocation = [];
-        this.selectedItemsMerchandize = [];
-        this.selectedItemsVehicleLine = [];
-        this.selectedItemsOrderType = [];
-        this.selectedItemsOrderEvent = [];
-        this.dropdownSettingsOrderEvent = {
-          singleSelection: false,
-          primaryKey: 'ddm_rmp_lookup_dropdown_order_event_id',
-          labelKey: 'order_event',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          badgeShowLimit: 1,
-          enableSearchFilter: true
-        };
-
-        this.dropdownSettingsAllocation = {
-          singleSelection: false,
-          primaryKey: 'ddm_rmp_lookup_dropdown_allocation_group_id',
-          labelKey: 'allocation_group',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          badgeShowLimit: 2,
-          enableSearchFilter: true
-        };
-
-        this.dropdownSettingsMerchandize = {
-          singleSelection: false,
-          primaryKey: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
-          labelKey: 'merchandising_model',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          badgeShowLimit: 2,
-          enableSearchFilter: true
-        };
-
-        this.dropdownSettingsModelYear = {
-          singleSelection: false,
-          primaryKey: 'ddm_rmp_lookup_dropdown_model_year_id',
-          labelKey: 'model_year',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          enableSearchFilter: true ,
-          badgeShowLimit : 2
-        };
-
-        this.dropdownSettingsOrderType = {
-          singleSelection: false,
-          primaryKey: 'ddm_rmp_lookup_dropdown_order_type_id',
-          labelKey: 'order_type',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          badgeShowLimit: 1,
-          enableSearchFilter: true
-        };
-
-        this.dropdownSettingsVehicleLine = {
-          singleSelection: false,
-          primaryKey: 'ddm_rmp_lookup_dropdown_vehicle_line_brand_id',
-          labelKey: 'vehicle_line_brand',
-          selectAllText: 'Select All',
-          unSelectAllText: 'UnSelect All',
-          badgeShowLimit: 2,
-          enableSearchFilter: true
-        };
-
-        $('input.gross-sales').on('click', function () {
-          $('input.gross-sales').not(this).prop('checked', false);
-        });
-
-        $('input.net-sales').on('click', function () {
-          $('input.net-sales').not(this).prop('checked', false);
-        });
-
-        this.getOrderToSaleContent();
-      }
-    })
-
-    if (localStorage.getItem('report_id')) {
-      this.previousSelections(localStorage.getItem('report_id'));
-    }
-    else{
-      // Utils.hideSpinner();
-    }
+  constructor(public router: Router,
+    public django: DjangoService, public report_id_service: GeneratedReportService, public auth_service: AuthenticationService,
+    public DatePipe: DatePipe, public dataProvider: DataProviderService, public toastr: NgToasterComponent,
+    public reportDataService: ReportCriteriaDataService) {
   }
 
   notify() {
@@ -444,8 +294,94 @@ export class OrderToSaleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.auth_service.myMethod$.subscribe(role => {
+      if (role) {
+        this.user_name = role["first_name"] + " " + role["last_name"]
+        this.user_role = role["role"]
+      }
+    })
+    
+    this.dataProvider.currentlookUpTableData.subscribe(element => {
+      if (element) {
+        console.log(element);
+        
+        this.lookupDateReassigning(element);
+      }
+    })
+
+    if (localStorage.getItem('report_id')) {
+      this.previousSelections(localStorage.getItem('report_id'));
+    }
+    else{
+      // Utils.hideSpinner();
+    }
     // this.targetProd = true;
-    this.salesDataAvailable = this.Checkbox_data.filter(element => element.checkbox_desc == "Sales and Availability")
+    this.salesDataAvailable = this.Checkbox_data?this.Checkbox_data.filter(element => element.checkbox_desc == "Sales and Availability"):[];
+  }
+
+  lookupDateReassigning(element){
+        
+    this.lookup = element
+    let ref = this.lookup['data']['desc_text']
+    let temps = ref.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 12;
+    })
+    if (temps) {
+      this.original_content = temps.description;
+    }
+    else {
+      this.original_content = ""
+    }
+    this.namings = this.original_content;
+    this.reportDataService.getReportID().subscribe(ele => {
+      this.reportId = ele;
+    });
+
+    this.report_id_service.currentSelections.subscribe(report_id => {
+      this.generated_report_id = report_id
+    })
+    this.report_id_service.currentstatus.subscribe(status => {
+      this.generated_report_status = status
+    })
+    this.report_id_service.currentDivisionSelected.subscribe(divisions => {
+      if (divisions != null) {
+        this.divDataSelected = divisions
+      }
+      else {
+        this.divDataSelected = []
+      }
+    })
+
+    if (this.generated_report_id == 0)
+      this.report_message = "";
+    else {
+      this.report_message = "Request #" + this.generated_report_id + " " + this.generated_report_status
+    }
+    this.otsElement = this.userdivdata
+    this.abcd = this.otsElement
+    this.divDataSelected.map(element => {
+      if (!(this.division_index.includes(element['ddm_rmp_lookup_division_id']))) {
+        this.division_index.push(element['ddm_rmp_lookup_division_id'])
+      }
+    })
+
+    this.selectedItemsDivision = [];
+    this.selectedItemsModelYear = [];
+    this.selectedItemsAllocation = [];
+    this.selectedItemsMerchandize = [];
+    this.selectedItemsVehicleLine = [];
+    this.selectedItemsOrderType = [];
+    this.selectedItemsOrderEvent = [];
+    this.setDropDownDefaultSettings();
+    $('input.gross-sales').on('click', function () {
+      $('input.gross-sales').not(this).prop('checked', false);
+    });
+
+    $('input.net-sales').on('click', function () {
+      $('input.net-sales').not(this).prop('checked', false);
+    });
+
+    this.getOrderToSaleContent();
   }
 
   textChanged(event) {
@@ -1801,5 +1737,68 @@ export class OrderToSaleComponent implements OnInit {
     },err=>{
       Utils.hideSpinner();
     })
+  }
+
+  setDropDownDefaultSettings(){
+    this.dropdownSettingsOrderEvent = {
+      singleSelection: false,
+      primaryKey: 'ddm_rmp_lookup_dropdown_order_event_id',
+      labelKey: 'order_event',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      badgeShowLimit: 1,
+      enableSearchFilter: true
+    };
+
+    this.dropdownSettingsAllocation = {
+      singleSelection: false,
+      primaryKey: 'ddm_rmp_lookup_dropdown_allocation_group_id',
+      labelKey: 'allocation_group',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      badgeShowLimit: 2,
+      enableSearchFilter: true
+    };
+
+    this.dropdownSettingsMerchandize = {
+      singleSelection: false,
+      primaryKey: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
+      labelKey: 'merchandising_model',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      badgeShowLimit: 2,
+      enableSearchFilter: true
+    };
+
+    this.dropdownSettingsModelYear = {
+      singleSelection: false,
+      primaryKey: 'ddm_rmp_lookup_dropdown_model_year_id',
+      labelKey: 'model_year',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      enableSearchFilter: true ,
+      badgeShowLimit : 2
+    };
+
+    this.dropdownSettingsOrderType = {
+      singleSelection: false,
+      primaryKey: 'ddm_rmp_lookup_dropdown_order_type_id',
+      labelKey: 'order_type',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      badgeShowLimit: 1,
+      enableSearchFilter: true
+    };
+
+    this.dropdownSettingsVehicleLine = {
+      singleSelection: false,
+      primaryKey: 'ddm_rmp_lookup_dropdown_vehicle_line_brand_id',
+      labelKey: 'vehicle_line_brand',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      badgeShowLimit: 2,
+      enableSearchFilter: true
+    };
+
   }
 }

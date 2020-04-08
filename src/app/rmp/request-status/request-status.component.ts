@@ -41,6 +41,7 @@ export class RequestStatusComponent implements OnInit{
   public fieldType = 'string';
   public isButton;
   public scheduleDataToBeSent:any = {};
+  public reportListIdToSchedule : number = null;
   enableUpdateData = false;
   textChange = false;
 
@@ -1497,6 +1498,7 @@ export class RequestStatusComponent implements OnInit{
       // console.log("results fetched",res);
       this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null; // to separate the post() and put()
       this.scheduleDataToBeSent = res['data'];
+      this.reportListIdToSchedule = this.scheduleDataToBeSent.request_id
       Utils.hideSpinner(); 
       $('#ongoingScheduleModal').modal('show');
       }

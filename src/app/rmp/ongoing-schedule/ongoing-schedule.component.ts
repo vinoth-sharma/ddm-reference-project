@@ -1,6 +1,4 @@
-// import { Component, OnInit } from '@angular/core';
 import { Component, OnInit,Input, SimpleChanges, ElementRef, Output, EventEmitter ,ViewChild} from '@angular/core';
-// import * as $ from "jquery";
 import { AuthenticationService } from '../../authentication.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -9,16 +7,13 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { FormControl, Validators } from '@angular/forms';
 
 import { ScheduleService } from '../../schedule/schedule.service';
-import { MultiDateService } from '../../multi-date-picker/multi-date.service'
 import Utils from 'src/utils';
-import { ToastrService } from 'ngx-toastr';
-// import { scheduled } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
-declare var $: any;
+import { NgToasterComponent } from "../../custom-directives/ng-toaster/ng-toaster.component";
+import { MultiDatePickerOngoingService } from '../multi-date-picker-ongoing/multi-date-picker-ongoing.service';
 import { ShareReportService } from '../../share-reports/share-report.service';
-import { CreateReportLayoutService } from '../../create-report/create-report-layout/create-report-layout.service';
-// import { format } from 'path';
+// import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service'; // temporary fix for RMP standalone
 
+declare var $: any;
 
 @Component({
   selector: 'app-ongoing-schedule',
@@ -26,7 +21,6 @@ import { CreateReportLayoutService } from '../../create-report/create-report-lay
   styleUrls: ['./ongoing-schedule.component.css']
 })
 export class OngoingScheduleComponent implements OnInit {
-
   public isCollapsed: boolean = true;
   public isSharedHidden : boolean;
   public isFtpHidden : boolean;
@@ -38,7 +32,6 @@ export class OngoingScheduleComponent implements OnInit {
   minDate: NgbDateStruct;
   file: File;
   public loading;
-  public onSelectionChanged;
   @ViewChild('pdf')
   pdfFile: ElementRef;
   fileName: string;
@@ -47,19 +40,16 @@ export class OngoingScheduleComponent implements OnInit {
   public signSelected: boolean = false;
   description: string;
   signatures = [];
-  // selectSign: string;
   public selected_id: number;
   selectId;
-  public editorData: '';
   maxSignId: number;
   signNames = [];
   defaultError = "There seems to be an error. Please try again later.";
-  public confirmOnGoingValues : any = {};
   
   public dateValue : string;
   public calendarHide : boolean;
   public values : any = [];
-  public isNotSelectableOnGoing:boolean = true;
+  public isDatePickerHidden:boolean = true;
 
   datesSelected:NgbDateStruct[]=[]; 
 
@@ -83,25 +73,29 @@ export class OngoingScheduleComponent implements OnInit {
   roleName:any;
   public hideFtp: boolean = false;
   public showSignatureEditor:boolean = false;
-  
-  // public todayDate:NgbDateStruct;
-  // @Input() report_list_id : number;
+  public isDqmActive:boolean = false;
+  public recurringButtonValue : boolean = false;
+  public isSetFrequencyHidden : boolean = true;
+  public isRequestIdFound : boolean = true;
+  public todaysDate : string = '';
+  public isEditingMode : boolean = false;
+  signatureModel = false;
+  inputParams: any;
+  public isOverRideData :boolean = false;
+
   @Input() reportId: number;
   @Input() reportName: string;
+  @Input() scheduleChanges : boolean;
   @Input() selectedReqId: number;
   @Input() requestReport: number;
-   // @Input() reportId : number;
   @Input() scheduleReportData: any = {};
   @Output() update = new EventEmitter();
-  @Output() dateMode = new EventEmitter();
-  @Output() confirmOnGoing = new EventEmitter();;
-
-
+  // @Output() overRideDate = new EventEmitter();
+  // @Output() isRecurringDatesMode = new EventEmitter();
 
   public reportFormats = [
     {'value': 1, 'display': 'Csv'},
     {'value': 2, 'display': 'Xlsx'},
-    // {'value': 3, 'display': 'Pdf'},
   ];
 
   public sharingModes = [
@@ -123,7 +117,18 @@ export class OngoingScheduleComponent implements OnInit {
     {'value': 5, 'display': 'Custom'}
   ]
 
-  public scheduleData = {
+  public recurringChoice = [
+    {'value': 'true', 'display': 'Yes'},
+    {'value': 'false', 'display': 'No'},
+  ];
+
+  public notificationChoice = [
+    {'value': 'true', 'display': 'Yes'},
+    {'value': 'false', 'display': 'No'},
+  ];
+
+
+  public previousScheduleDetails = {
     sl_id:'',
   created_by:'',
   report_list_id:'',
@@ -152,25 +157,59 @@ export class OngoingScheduleComponent implements OnInit {
   uploaded_file_name:'',
   ecs_file_object_name:'',
   ecs_bucket_name:'',
-  request_id:''
+  request_id:'',
+  is_Dqm:''
+};
+
+public scheduleData = {
+  sl_id:'',
+  created_by:'',
+  report_list_id:'',
+  report_request_id: '',
+  report_name:'',
+  schedule_for_date:'',
+  schedule_for_time:'',
+  custom_dates:[],
+  recurring_flag:'',
+  recurrence_pattern:'',
+  export_format:'',
+  notification_flag:'',
+  sharing_mode:'',
+  multiple_addresses:[],
+  dl_list_flag:'',
+  ftp_port:'',
+  ftp_folder_path:'',
+  ftp_address: '',
+  ftp_user_name:'',
+  ftp_pd:'',
+  modified_by:'',
+  dl_list:[],
+  description:'',
+  signature_html:'',
+  is_file_uploaded:'',
+  uploaded_file_name:'',
+  ecs_file_object_name:'',
+  ecs_bucket_name:'',
+  request_id:'',
+  is_Dqm:''
 };
 
   constructor(public scheduleService: ScheduleService,
-              public multiDateService: MultiDateService,
-              public toasterService: ToastrService,
+              public toasterService: NgToasterComponent,
+              public multipleDatesSelectionOngoingService: MultiDatePickerOngoingService,
               private router: Router,
               public authenticationService: AuthenticationService,
-              private shareReportService: ShareReportService,
-              private createReportLayoutService : CreateReportLayoutService) { }
+              // private semanticReportsService:SemanticReportsService // temporary fix for RMP standalone
+              private shareReportService: ShareReportService
+              ) { }
 
 
   ngOnInit() {
-
     this.isFtpHidden = true;
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     this.showRadio = false;
     this.showNotification = false;
-    this.refreshScheduleData();
+    this.loading = true;
 
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
@@ -179,9 +218,9 @@ export class OngoingScheduleComponent implements OnInit {
       this.scheduleData = {
         sl_id:'',
         created_by:'',
-        report_list_id:'',
-        report_request_id: '',
-        report_name:'',
+        report_list_id: this.reportId ? this.reportId.toString() : '',
+        report_request_id: this.selectedReqId ? this.selectedReqId.toString() : '',
+        report_name: this.reportName ? this.reportName : '',
         schedule_for_date:'',
         schedule_for_time:'',
         custom_dates:[],
@@ -205,7 +244,8 @@ export class OngoingScheduleComponent implements OnInit {
         uploaded_file_name:'',
         ecs_file_object_name:'',
         ecs_bucket_name:'',
-        request_id:''
+        request_id:'',
+        is_Dqm:''
     };
     }
     this.calendarHide = true;
@@ -225,90 +265,130 @@ export class OngoingScheduleComponent implements OnInit {
         this.hideFtp = true;
       }
     });
+
+    // this.fruitCtrl.valueChanges.pipe(
+    // distinctUntilChanged())
+    // .subscribe(value => {
+    //   if ((value || '').trim() && value.length >= 3) {
+    //     this.shareReportService.verifyUser(value).subscribe(res => {
+    //       this.autoUserList = res['data'];
+    //       this.loading = false;
+    //     })
+    //   }
+    // });
     
   }
 
   ngOnChanges(changes:SimpleChanges){
-    console.log("CHANGES SEEN",changes);
+    // this.isDqmActive  = this.semanticReportsService.isDqm;
+    this.isEditingMode = false;
+    // this.isRequestIdFound = true;
     
     if('reportId' in changes && changes.reportId.currentValue){
-    this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
-    let reportIdProcured = changes.reportId.currentValue.report_id;
-    // console.log("PROCURED REP-ID",reportIdProcured); 
+      if('reportName' in changes && changes.reportName.currentValue){
+        this.scheduleData['report_name'] = changes.reportName.currentValue; 
+      }
+      let reportIdProcured = changes.reportId.currentValue;
+      this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
 
-    // changed API call here
-    this.scheduleService.getRequestDetailsForScheduler(reportIdProcured).subscribe(res => {
-      this.dataObj = res["data"];
-      let request_id = this.dataObj.map(val=>val.request_id);
-      // console.log("Request Id only",request_id);
-      this.scheduleData.request_id = request_id;
-      // console.log("GET REQUEST DETAILS(request_id,request_title)",res)
-    }, error => {
-      // console.log("ERROR NATURE:",error);
-    });
+      this.scheduleService.getRequestDetailsForScheduler(reportIdProcured).subscribe(res => {
+        this.dataObj = res["data"];
+        if(this.dataObj.length){
+          let request_id = this.dataObj.map(val=>val.request_id);
+          this.scheduleData.request_id = request_id;
+          this.scheduleData.report_list_id = reportIdProcured;
+          this.isRequestIdFound = true;
+          this.getRecipientList();
+        }
+        else{
+          this.isRequestIdFound = false;
+          this.loading = false;
+        }
+      }, error => {
+        console.log("ERROR NATURE:",error);
+      });
     }
 
-    if('scheduleReportData' in changes) {
+    if('scheduleReportData' in changes && this.scheduleReportData) {
+      this.isEditingMode = true;
+      this.isDatePickerHidden = false;
+      this.scheduleData.request_id = ''; // as the this.scheduleData.request_id was not being reset
+      this.scheduleData.report_list_id = '';
+      this.scheduleData.report_name = '';
       this.scheduleData = this.scheduleReportData;
-      // this.scheduleData.request_id = this.scheduleData.request_id
       this.scheduleData.report_name = this.scheduleReportData.report_name; // as the edit report's call was not showing report-name
-      // console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
+      this.loading = false;
       this.changeDeliveryMethod(this.scheduleData.sharing_mode);
 
-      if(this.scheduleData.recurring_flag === undefined){
-        this.showRadio = false;
+      if(this.scheduleData.request_id && this.scheduleData.request_id == null || this.scheduleData.request_id == '' || this.scheduleData.request_id == undefined){
+        this.isRequestIdFound = false;
       }
-      else if(this.scheduleData.recurring_flag.toString() === "false"){
-        this.showRadio = true;
+
+      if(this.scheduleData.recurring_flag){
+        this.isSetFrequencyHidden = false;
       }
-      else if(this.scheduleData.recurring_flag.toString() === "true"){
-        this.showRadio = false;
+
+      if(this.scheduleData.description && this.scheduleData.description.length ){
+        let descInpBox = document.getElementById("description");
+        descInpBox.innerHTML = this.scheduleData.description;
       }
-  
-      if(this.scheduleData.notification_flag === undefined){
-        this.showNotification = false;
+
+      if(this.scheduleData.signature_html && this.scheduleData.signature_html.length){
+        this.signatures.forEach(t=> { 
+          if(t.signature_html === this.scheduleData.signature_html )
+          {
+            this.scheduleData.signature_html = t.signature_html; 
+          } 
+        })
       }
-      else if(this.scheduleData.notification_flag.toString() === "false"){
-        this.showNotification = true;
-      }
-      else if(this.scheduleData.notification_flag.toString() === "true"){
-        this.showNotification = false;
-      }
-      
+
       if(this.scheduleData.schedule_for_date != null){
-        const scheduledDate = new Date(this.scheduleData.schedule_for_date);
-        this.datesSelected = [<NgbDateStruct>{
-          month: scheduledDate.getMonth() + 1,
-          year: scheduledDate.getFullYear(),
-          day: scheduledDate.getDate()
-        }];
-        // let date = []
-        // date.push(this.scheduleData.schedule_for_date);
+        // const scheduledDate = new Date(this.scheduleData.schedule_for_date);
+        // this.datesSelected = [<NgbDateStruct>{
+        //   month: scheduledDate.getMonth() + 1,
+        //   year: scheduledDate.getFullYear(),
+        //   day: scheduledDate.getDate()
+        // }];
+        this.multipleDatesSelectionOngoingService.datesChosen = [this.scheduleData.schedule_for_date];
       }
-      // else{
         else if(this.scheduleData.custom_dates){
-        this.values = this.scheduleData.custom_dates.map(date => {
-          const scheduledDate = new Date(date);
-          return <NgbDateStruct>{
-            month: scheduledDate.getMonth() + 1,
-            year: scheduledDate.getFullYear(),
-            day: scheduledDate.getDate()
-          };
-        });
-        this.datesSelected = this.values;
+        // this.values = this.scheduleData.custom_dates.map(date => {
+        //   const scheduledDate = new Date(date);
+        //   return <NgbDateStruct>{
+        //     month: scheduledDate.getMonth() + 1,
+        //     year: scheduledDate.getFullYear(),
+        //     day: scheduledDate.getDate()
+        //   };
+        // });
+        this.multipleDatesSelectionOngoingService.datesChosen = this.scheduleData.custom_dates;
       }
-      this.values = this.datesSelected.map(date => `${date.month}/${date.day}/${date.year}`);
+      // console.log("CHECKING this.scheduleData.schedule_for_date values : ",this.scheduleData.schedule_for_date);
+      // console.log("CHECKING this.scheduleData.custom_dates values : ",this.scheduleData.custom_dates);
+      // console.log("CHECKING this.multipleDatesSelectionOngoingService.datesChosen values : ",this.multipleDatesSelectionOngoingService.datesChosen);
+      
+      // this.values = this.datesSelected.map(date => `${date.month}/${date.day}/${date.year}`);
+    }
+
+    if('scheduleChanges' in changes && changes.scheduleChanges.currentValue != 0 ){
+      let pageAddress = window.location.href;
+      if(pageAddress && pageAddress.length && !pageAddress.includes('/semantic/sem-reports/home')){
+        this.scheduleData = this.previousScheduleDetails;
+      }
     }
 
     if(this.reportName){
       this.scheduleData.report_name = this.reportName;
     }
 
-    if(this.requestReport){
-      this.scheduleData.request_id = this.requestReport.toString();
-    }
+    // if(this.requestReport){
+    //   this.scheduleData.request_id = this.requestReport.toString();
+    // }
+    // else if(!this.isRequestIdFound && this.requestReport == undefined){
+    //   this.isRequestIdFound = false;
+    //   this.scheduleData.request_id = '';
+    // }
 
-    if(this.scheduleData.multiple_addresses){
+    if(this.scheduleData && this.scheduleData.multiple_addresses){
       this.emails = this.scheduleData.multiple_addresses
     }
     
@@ -323,42 +403,44 @@ export class OngoingScheduleComponent implements OnInit {
       this.isFtpHidden = true;
     }
 
-      if (this.requestReport) {
-        this.getRecipientList();
-      }
-
   }
 
   public apply(){
 
+    if(this.description && this.description.length){
+      this.scheduleData.description = this.description; // to set the HTML value equivalent of the description
+    }
+    else{
+      this.transformDescription();
+    }
+    
+    this.getSchedulingDates();
     this.checkingDates(); // using this method to overcome rescheduling invalid dates problem
     this.checkEmptyField();
 
-    if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
+    if((this.scheduleData['custom_dates'] === null || (this.scheduleData['custom_dates'] != null && this.scheduleData['custom_dates'].length != 0)) && ( this.scheduleData['recurrence_pattern'] != null && this.scheduleData['recurrence_pattern'].toString().length === 0) ){
       this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
       return;
     }
 
     if(this.isEmptyFields == false && this.stopSchedule == false){
-      // if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
-      //   this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
-      //   return;
-      // }
+
       Utils.showSpinner();
       this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
       this.scheduleData.created_by = this.userId;
       this.scheduleData.modified_by = this.userId;
-      // this.scheduleService.setFormDescription(this.scheduleData.description);
+      this.scheduleData.is_Dqm = (false).toString(); // temporary fix for RMP standalone
       
       //TO DO : checking received scheduleReportId to differentiate apply/edit option
       this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
+        // ,this.reportIdProcuredFromChanges
         this.toasterService.success('Report scheduled successfully');
-        this.confirmOnGoingValues = {'status':true,'requestId':this.scheduleData.request_id};
-        // this.emit(confirmOnGoing)
-        this.confirmOnGoing.emit(this.confirmOnGoingValues);
+        this.multipleDatesSelectionOngoingService.datesChosen = [];
+        this.scheduleService.scheduleReportIdFlag = undefined;
         Utils.hideSpinner();
         Utils.closeModals();
         this.update.emit('updated');
+        // this.reportIdProcuredFromChanges = '';
       }, error => {
         Utils.hideSpinner();
         this.toasterService.error('Report schedule failed');
@@ -372,36 +454,61 @@ export class OngoingScheduleComponent implements OnInit {
 
   }
 
-  // public updateDateTime(){
-  //   // this.dataObj[]
-  //   console.log("updateDateTime() called");
-  //   console.log("CHECKING THE DATA OBJECTS--------")
-  //   console.log("this.scheduleData : ",this.scheduleData);
-  //   // console.log("this.dataObj",this.dataObj);
 
-    
-    
-    
-  // }
+  public getSchedulingDates(){
+    let procuredDates = this.multipleDatesSelectionOngoingService.datesChosen;
+    if( procuredDates && procuredDates.length == 1 ){
+      this.scheduleData.schedule_for_date = procuredDates[0];
+    }
+    else if(  procuredDates && procuredDates.length > 1 ){
+      this.scheduleData.custom_dates = procuredDates;
+      this.scheduleData.schedule_for_date = ''
+    }
+  }
 
   public setNotificationValue(value){
+    //// CHECK ALSO WHETHER THIS METHOD IS NEEDED OR NOT OR DIRECT NGMODEL IS HAPPENING
     this.scheduleData.notification_flag = value;
   }
 
   public setRecurringFlag(value){
-    this.scheduleData.recurring_flag = value;
-    this.multiDateService.dateMode = value;
-    if(value === false){
-      this.isNotSelectableOnGoing = false;
+    // this.isDatePickerHidden = true;
+    this.isDatePickerHidden = false;
+    this.isSetFrequencyHidden = true;
+    if(value == 'true'){ //  || value == true
+      this.isSetFrequencyHidden = false;
+      this.multipleDatesSelectionOngoingService.recurrencePattern = '';
+      this.scheduleData.recurring_flag = '';
+    }
+    else{
+      this.isSetFrequencyHidden = true;
+      this.multipleDatesSelectionOngoingService.recurrencePattern = '';
     }
 
+    this.scheduleData.recurring_flag = value;
+    if(value === 'true'){
+      // this.multiDateService.dateMode = true;
+      this.multipleDatesSelectionOngoingService.isRecurringDatesMode = true;
+    }
+    else if(value === 'false'){
+      // this.multiDateService.dateMode = false;
+      this.multipleDatesSelectionOngoingService.isRecurringDatesMode = false;
+    }
+    
+    // if(value.length != 0){
+    //   this.isDatePickerHidden = false;
+    // }
+    
     if(this.scheduleData.custom_dates.length){
       this.scheduleData.custom_dates = [];
-      this.multiDateService.sendingDates = [];
+      // this.multiDateService.sendingDates = []; 
       this.values = [];
       this.datesSelected = []; // this clearance removes the yellow marking also
+      this.toasterService.warning("All the multiple dates are removed!!")
+      this.toasterService.success("Please select a new date!")
     }
 
+    this.scheduleData.recurrence_pattern = '';
   }
 
   public setMultipleAddressListValues(){
@@ -414,15 +521,13 @@ export class OngoingScheduleComponent implements OnInit {
 
   public schedulingDates;
   public setSendingDates(){
-    console.log("SETSENDINGDATES() is called in schedule datepicker")
-    this.schedulingDates = this.multiDateService.sendingDates;
-    console.log("this.multiDateService.sendingDates ARE:",this.multiDateService.sendingDates)
+    // this.schedulingDates = this.multiDateService.sendingDates;
     if(this.schedulingDates){
     if(this.schedulingDates.length === 1){
-      this.scheduleData.schedule_for_date = this.multiDateService.sendingDates[0].toString();
+      // this.scheduleData.schedule_for_date = this.multiDateService.sendingDates[0].toString();
     }
     else{
-      this.scheduleData.custom_dates = this.multiDateService.sendingDates;
+      // this.scheduleData.custom_dates = this.multiDateService.sendingDates;
       this.scheduleData.schedule_for_date = ""
     }
 
@@ -435,15 +540,40 @@ export class OngoingScheduleComponent implements OnInit {
   }
   
   public setCollapse(recurrencePattern: string){
-    console.log("this.isCollapsed value",this.isCollapsed);
-    if(recurrencePattern === "5"){
-      this.isNotSelectableOnGoing = false;
+    this.multipleDatesSelectionOngoingService.recurrencePattern = recurrencePattern;
+    if(recurrencePattern === "1"){
+      this.isDatePickerHidden = true;
+      let todaysDateObject = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
+      this.todaysDate = todaysDateObject.month+'/'+todaysDateObject.day+'/'+todaysDateObject.year
+      this.multipleDatesSelectionOngoingService.datesChosen = [this.todaysDate];
+      // this.overRideDate.emit('override date')
+      this.isOverRideData = true;
+
+      // this.multiDateService.sendingDates = [this.todaysDate]
+      // this.datesSelected = [];
+      // this.values = [this.todaysDate];
+      this.setSendingDates();
+    }
+    else if(recurrencePattern === "5"){
+      if(this.todaysDate.length){
+        this.todaysDate = '';
+        // this.multiDateService.sendingDates = [] 
+        this.multipleDatesSelectionOngoingService.datesChosen = [];
+        // this.values = []; 
+      }
+      this.isDatePickerHidden = false;
       this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
       this.setSendingDates();
     }
     else{
+      if(this.todaysDate.length){
+        this.todaysDate = '';
+        // this.multiDateService.sendingDates = []  \
+        this.multipleDatesSelectionOngoingService.datesChosen = [];
+        // this.values = []; 
+      }
       this.isCollapsed = true;
-      this.isNotSelectableOnGoing = false;
+      this.isDatePickerHidden = false;
     }
   }
   
@@ -460,7 +590,7 @@ export class OngoingScheduleComponent implements OnInit {
     else{
       this.values = [];
     }
-    this.multiDateService.sendingDates = this.values;
+    // this.multiDateService.sendingDates = this.values;
   }
 
   public hideCalendar(){
@@ -468,26 +598,30 @@ export class OngoingScheduleComponent implements OnInit {
   }
 
   public checkingDates(){
+    if(!this.isEditingMode){
       this.stopSchedule = false;
-      if(this.values.length){
-        this.values.forEach(date => {
+      // if(this.values.length){
+      //   this.values.forEach(date => {
+      if(this.multipleDatesSelectionOngoingService.datesChosen && this.multipleDatesSelectionOngoingService.datesChosen.length){
+        this.multipleDatesSelectionOngoingService.datesChosen.forEach(date => {
           let d1 = new Date(date);
-        this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
-        let d2 = this.minDate.year + "/" + this.minDate.month + "/" + this.minDate.day
-        let d3 = new Date(d2);
-        let timeDifference = d1.getTime() - d3.getTime();
-        let daysDifference = timeDifference / (1000 * 3600 * 24);
-        // this.stopSchedule = false;  
-        if(daysDifference<0){
-          this.stopSchedule =true;
-          this.toasterService.error('Please deselect the INVALID date('+date+') and continue with dates starting from TODAY to schedule the report!');
-          return; 
-        }
+          this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
+          let d2 = this.minDate.year + "/" + this.minDate.month + "/" + this.minDate.day
+          let d3 = new Date(d2);
+          let timeDifference = d1.getTime() - d3.getTime();
+          let daysDifference = timeDifference / (1000 * 3600 * 24);
+          // this.stopSchedule = false;  
+          if(daysDifference<0){
+            this.stopSchedule =true;
+            this.toasterService.error('Please deselect the INVALID date('+date+') and continue with dates starting from TODAY to schedule the report!');
+            return; 
+          }
         else{
-
+          // do nothing
         } 
         });
       }
+    }
   }
 
 
@@ -510,7 +644,7 @@ export class OngoingScheduleComponent implements OnInit {
     let fileValues = {};
     fileValues['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
     this.scheduleService.uploadPdf(fileValues).subscribe(res => {
-      this.toasterService.success('Successfully uploaded ',this.fileName);
+      this.toasterService.success('Successfully uploaded '+this.fileName);
       this.scheduleData.is_file_uploaded = 'true'; // Not needed as true always???
       this.scheduleData['uploaded_file_name'] = res['uploaded_file_name'];
       this.scheduleData['ecs_file_object_name'] = res['ecs_file_object_name'];
@@ -522,41 +656,65 @@ export class OngoingScheduleComponent implements OnInit {
     );
   }
 
+
+
   select(signatureName) {
     this.signSelected = true;
-    console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
-    console.log("ALL SIGNATURES",this.signatures)
-    const selectedSign = this.signatures.find(x =>
-      x.signature_name.trim().toLowerCase() == signatureName.trim().toLowerCase());
-    this.editorData = selectedSign.signature_html;
-    console.log("Editor data",this.editorData);
-    this.selected_id = selectedSign.signature_id;
-    console.log("SELECTED ID data",this.selected_id);
-    this.signatures.filter(i=> { 
-      if(i['signature_id'] === this.selected_id){ 
-        this.scheduleData.signature_html=i.signature_html;
-      }
-    }
-    );
+    this.inputParams = this.signatures.find(x =>
+      x.signature_html.trim().toLowerCase() == signatureName.target.value.trim().toLowerCase());
+      console.log("this.inputParams are: ",this.inputParams);
+
+      this.scheduleData.signature_html = this.inputParams.signature_html;
+  }
+
+  openSignatureModel() {
+  this.signatureModel = true;
+  setTimeout(() => {
+    document.getElementById('signScheduleModel').click();
+  }, 5);
   }
 
 
   getRecipientList() {
-    this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
-      res => {  this.emails.push(res['user_data']['email']);
+    this.scheduleService.getRequestDetails(this.scheduleData.request_id).subscribe(res => {  
+      if(res){
+        // this.emails.push(res['user_data']['email']);
+        this.loading = false;
+        if(res['dl_list'].length){
+          let selectedEmails = res['dl_list'].map(i=>i.distribution_list);
+          this.emails = selectedEmails;
+          this.scheduleData.multiple_addresses = this.emails;
+        }
+        else{
+          // if empty response
+          this.emails = [];
+          this.scheduleData.multiple_addresses = [];
+          this.loading = false;
+        }
+        // console.log("Curated Emails:",this.emails);
+      }
+      else{
+        // if no response
+        this.emails = [];
+        this.scheduleData.multiple_addresses = [];
+        this.loading = false;
+      }
       })
   }  
- 
-  signDeleted(event) {
+
+  signSchedularDeleted(event) {
     this.fetchSignatures().then(result => {
       Utils.hideSpinner();
+      // this.scheduleData.signature_html = ''
     });
+    this.signatureModel = false;
+    this.signSelected = false;
   }
 
   add(event: MatChipInputEvent): void {
     const input = this.fruitCtrl.value;
     const value = event.value;
-    this.getDuplicateMessage();
+    this.getDuplicateMessage(input);
     if ((value || '').trim() && !this.fruitCtrl.invalid && !this.isDuplicate) {
       this.emails.push(value.trim());
     } else {
@@ -565,8 +723,19 @@ export class OngoingScheduleComponent implements OnInit {
     this.scheduleData.multiple_addresses = [...this.emails];
   }
 
-  getDuplicateMessage() {
-    if (this.emails.includes(this.fruitCtrl.value)) {
+  onSelectionChanged(data) {
+    this.getDuplicateMessage(data.option.value);
+    if (data.option.value && !this.isDuplicate) {
+      this.emails.push(data.option.value);
+    }
+    this.fruitCtrl.setValue('');
+  }
+
+  getDuplicateMessage(data) {
+    // if (this.emails.includes(this.fruitCtrl.value)) {
+    //   this.isDuplicate = true;
+    // }  CHECKING THIS SIMILAR IMPLEMENTATION
+    if (this.emails.includes(data)) {
       this.isDuplicate = true;
     }
     else {
@@ -594,7 +763,7 @@ export class OngoingScheduleComponent implements OnInit {
     document.getElementById("valueInput").click();
   }
 
-  public fetchSignatures(callback = null) {
+  public fetchSignatures(signatureNameStateObject? : any,callback = null) {
     return new Promise((resolve, reject) => {
       let user_id = this.userId;
       
@@ -606,7 +775,8 @@ export class OngoingScheduleComponent implements OnInit {
           user_id: string,
           image_id: number
         }[]
-      }) => {
+      }
+      ) => {
         this.maxSignId = Math.max.apply(null, res.data.map(sign => sign.signature_id)) + 1;
         this.signatures = [{
           "signature_id": this.maxSignId,
@@ -619,6 +789,18 @@ export class OngoingScheduleComponent implements OnInit {
           this.signNames[i] = this.signatures[i]["signature_name"];
         }
 
+
+    if(signatureNameStateObject && signatureNameStateObject.name.length){
+      this.signatures.forEach(t=> { 
+        if(t.signature_html === signatureNameStateObject.html )
+        {
+          console.log('true object : ',t.signature_name)
+          this.scheduleData.signature_html = signatureNameStateObject.html;
+          console.log("this.scheduleData.signature_html value : ",this.scheduleData.signature_html);
+          
+        } 
+      })}
+
         resolve(true);
       }, error => {
         reject(error);
@@ -626,47 +808,58 @@ export class OngoingScheduleComponent implements OnInit {
     });
   }
 
-  updateSignatureData(options) {
+  updateSchedularSignatureData(options) {
     Utils.showSpinner();
+    let creatingSignatureName = options.name;
     this.shareReportService.putSign(options).subscribe(
       res => {
-        this.toasterService.success("Edited successfully")
+        this.toasterService.success("Signature edited successfully")
+        this.scheduleData.signature_html = creatingSignatureName;
         this.fetchSignatures().then((result) => {
-          // this.scheduleData.signature_html = null;   CHECK REFLECTION of signature back again in signature
+          this.signatureModel = false;
           Utils.hideSpinner();
-          $('#signature').modal('hide');
+          $('#signature-schedular').modal('hide');
         }).catch(err => {
+          this.signatureModel = false;
           this.toasterService.error(err.message || this.defaultError);
           Utils.hideSpinner();
         })
       }, error => {
+        this.signatureModel = false;
         Utils.hideSpinner();
-        $('#signature').modal('hide');
+        $('#signature-schedular').modal('hide');
       })
   };
 
-  createSignatureData(options) {
+  createSchedularSignatureData(options) {
     Utils.showSpinner();
+    let creatingSignatureNameObject = options;
     this.shareReportService.createSign(options).subscribe(
       res => {
-        this.toasterService.success("Created successfully")
+        if(res){
+        this.scheduleData.signature_html = creatingSignatureNameObject.name;
+        this.fetchSignatures(creatingSignatureNameObject); // updating the signatures list , send an optional parameter to update this.scheduleData.signature_html
+        this.toasterService.success("Signature created successfully")
         this.fetchSignatures().then((result) => {
-          this.scheduleData.signature_html = null;
           Utils.hideSpinner();
-          $('#signature').modal('hide');
+          $('#signature-schedular').modal('hide');
         }).catch(err => {
           this.toasterService.error(err.message || this.defaultError);
           Utils.hideSpinner();
         })
+
+        this.signatureModel = false;
+      }
       }, error => {
+        this.signatureModel = false;
         Utils.hideSpinner();
-        $('#signature').modal('hide');
+        $('#signature-schedular').modal('hide');
       })
   };
 
   public addTags() {
     if (this.multipleAddresses.trim() == '') {
-        this.toasterService.info("Cannot save empty tags");
+        this.toasterService.error("Cannot save empty tags");
     } else {
         this.scheduleData.multiple_addresses.push(this.multipleAddresses);
         this.multipleAddresses = '';
@@ -723,7 +916,7 @@ export class OngoingScheduleComponent implements OnInit {
     }
     else if(this.scheduleData.sharing_mode === "2" &&
         (this.scheduleData.ftp_address.length === 0 || this.scheduleData.ftp_pd.length === 0 ||
-             this.scheduleData.ftp_port.length === 0 || this.scheduleData.ftp_user_name.length === 0)
+            this.scheduleData.ftp_port.length === 0 || this.scheduleData.ftp_user_name.length === 0)
               ){
                 this.toasterService.error('Please enter FTP details properly to schedule the report!');
                 this.isEmptyFields = true;
@@ -732,19 +925,23 @@ export class OngoingScheduleComponent implements OnInit {
       this.toasterService.error('Please provide valid description to schedule the report!');
       this.isEmptyFields = true;
     }
-    else if(this.scheduleData.signature_html.length === 0){
-      this.toasterService.error('Please select a valid signature to schedule the report!');
-      this.isEmptyFields = true;
-    }
+    // else if(this.scheduleData.signature_html.length === 0){
+    //   this.toasterService.error('Please select a valid signature to schedule the report!');
+    //   this.isEmptyFields = true;
+    // }
   }
 
   transformDescription() {
     let descriptionValue = document.getElementById("description");
     this.description = descriptionValue.innerHTML;
-    this.scheduleData.description = this.description;
+    // this.scheduleData.description = this.description;  CAPTURING THIS VALUE DURING SUBMISSION
   }
 
   public refreshScheduleData(){
+    let previousReportName = this.scheduleData.report_name;
+    let previousRequestId = this.scheduleData.request_id;
+    let previousReportId = this.scheduleData.report_list_id;
+    this.previousScheduleDetails = this.scheduleData;
       this.scheduleData = {
         sl_id:'',
         created_by:'',
@@ -774,9 +971,12 @@ export class OngoingScheduleComponent implements OnInit {
         uploaded_file_name:'',
         ecs_file_object_name:'',
         ecs_bucket_name:'',
-        request_id:''
+        request_id:'',
+        is_Dqm:''
     };
-    // }
+    this.scheduleData.report_name = previousReportName;
+    this.scheduleData.request_id = previousRequestId;
+    this.scheduleData.report_list_id = previousReportId;
     this.calendarHide = true;
     this.showRadio = false;
     this.showNotification = false;
@@ -789,47 +989,8 @@ export class OngoingScheduleComponent implements OnInit {
     document.getElementById("scheduleTime").innerHTML = '';
     this.file= null;
     this.fileUpload = false;
-    // time if not completely
-    // date selction not going
-    // NO- recurring flag and notification flag
-
+    this.recurringButtonValue = false;
+    this.multipleDatesSelectionOngoingService.datesChosen = [];
+    this.isDatePickerHidden = true;
   }
-
-  // DO NOT DELETE THE BELOW CODE
-  // public todayDateMethod(){
-  //   let todayTime = new Date();
-  //   //// console.log("TODAY's DATE:",todayTime);
-  //   //// console.log("Formatted date BEFORE:",this.todayDate);    
-  //   let month = Number(todayTime.getMonth()+1)
-  //   let date =  Number(todayTime.getDate()+1)
-  //   let year =  Number(todayTime.getFullYear())
-  //   //// console.log("Today's date:",month,"/",date,"/",year)
-
-  //   this.todayDate = <NgbDateStruct>{ day: todayTime.getDate(), month: todayTime.getMonth()+1, year: todayTime.getFullYear() }
-  //   //// console.log("Formatted date:",this.todayDate);
-  // }
-
-
-  // onNavigate(event){
-  //   //// console.log("Navigate event",event);
-  //   const targetMonth = event.next.month;
-  //   const targetYear = event.next.year;
-    // const selectedDay = event.next.day;
-    // const selectedDay = 2;
-
-    // this.values = {
-    //   year: targetYear,
-    //   month:targetMonth,
-    //   day: selectedDay
-    // }
-
-    // //// console.log("CURRENT DATE in values",this.values);
-    // this.datesSelected[0].month = targetMonth;
-    // this.datesSelected[0].year = targetYear;
-    // this.datesSelected[0].day = selectedDay;
-    
-  // }
-  
 }
-
-

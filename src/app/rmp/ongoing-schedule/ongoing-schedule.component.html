@@ -18,7 +18,7 @@ aria-hidden="true">
         </div>
       </div>
 
-      <div class="row ">
+      <div class="row">
         <label for="reportFormat" class="col-xs-5">Report's request id</label>
         <div class="col-xs-7">
           <input name="reportRequestId" id="reportRequestId" [(ngModel)]="scheduleData.request_id" class="form-control"
@@ -29,23 +29,14 @@ aria-hidden="true">
       <div class="row ">
         <label for="recurringReport" class="col-xs-5">Recurring report<span class="span-color">*</span></label>
         <div class="col-xs-7">
-          <div class="radio-inline">
-            <input type="radio" name="recurringReport" id="recurringReport" (click)="setRecurringFlag(true)"
-            [checked]="scheduleData.recurring_flag">Yes
-          </div>
-          <!-- To show when there is 'NO' value selected -->
-          <div class="radio-inline" *ngIf="showRadio">
-            <input type="radio" name="recurringReport" id="recurringReport" (click)="setRecurringFlag(false)"
-            [checked]="!scheduleData.recurring_flag">No
-          </div>
-          <!-- To show when there is 'NO' value not-selected -->
-          <div class="radio-inline" *ngIf="!showRadio">
-              <input type="radio" name="recurringReport" id="recurringReport" (click)="setRecurringFlag(false)">No
-            </div>
+          <select [(ngModel)]="scheduleData.recurring_flag" id="reportFormat" class="form-control" name="reportFormat"
+          style="background-color: #FFF;width: 100%;height: 100%;" (change)="setRecurringFlag(scheduleData.recurring_flag)">
+            <option *ngFor="let choice of recurringChoice" [value]="choice.value">{{choice.display}}</option>
+          </select>
         </div>
       </div>
 
-      <div class="row" *ngIf="scheduleData.recurring_flag" >
+      <div class="row" [hidden]="isSetFrequencyHidden" >
         <label for="recurringReportFrequency" class="col-xs-5">(set frequency)<span class="span-color">*</span></label>
         <div class="col-xs-7">
           <select class="form-control form-control-lg" name="recurringReportFrequency" [(ngModel)]="scheduleData.recurrence_pattern"
@@ -60,15 +51,18 @@ aria-hidden="true">
         <div class="col-xs-7" (click)="setSendingDates()">
           <div class="form-group">
             <div class='input-group date '>
-                <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}' readonly="all"/>
-                <span class="input-group-addon" (click)="hideCalendar()" [hidden]="isNotSelectableOnGoing">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+                <!-- <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}' readonly="all"/> -->
+                <!-- <span class="input-group-addon" (click)="hideCalendar()" [hidden]="isDatePickerHidden"> -->
+                    <!-- <span class="glyphicon glyphicon-calendar"></span> -->
+                    <app-multi-date-picker-ongoing [loadingDates]="scheduleData.schedule_for_date || scheduleData.custom_dates " [datePickerStatus]="isDatePickerHidden"></app-multi-date-picker-ongoing>
+                    <!-- [overRideData]='isOverRideData' -->
+                <!-- </span> -->
             </div>
         </div>
-        <app-multi-date-picker-ongoing (click)="checkingDates()" [datesSelected]="datesSelected" 
+        <!-- <ngb-multi-date-picker (click)="checkingDates()" [datesSelected]="datesSelected" 
           (datesSelectedChange)="change($event)" [hidden]="calendarHide">
-        </app-multi-date-picker-ongoing>
+        </ngb-multi-date-picker> -->
+        <!-- <app-multiple-dates-picker></app-multiple-dates-picker> -->
         </div>
       </div>
 
@@ -84,7 +78,7 @@ aria-hidden="true">
         <label for="reportFormat" class="col-xs-5">Report format<span class="span-color">*</span></label>
         <div class="col-xs-7">
           <select [(ngModel)]="scheduleData.export_format" id="reportFormat" class="form-control" name="reportFormat"
-            style="background-color: #FFF;width: 100%;height: 100%;" disabled>
+            style="background-color: #FFF;width: 100%;height: 100%;">
             <option *ngFor="let format of reportFormats" [value]="format.value">{{format.display}}</option>
           </select>
         </div>
@@ -93,34 +87,26 @@ aria-hidden="true">
       <div class="row ">
         <label for="recurringReport" class="col-xs-5 col-form-label">Send notifications<span class="span-color">*</span></label>
         <div class="col-xs-7">
-          <div class="radio-inline">
-            <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(true)"
-              [checked]="scheduleData.notification_flag">Yes
-          </div>
-          <!-- To show when NO value selected -->
-          <div class="radio-inline" *ngIf="showNotification">
-              <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(false)"
-              [checked]="!scheduleData.notification_flag">No
-            </div>
-            <!-- To show when there is NO value not-selected -->
-            <div class="radio-inline" *ngIf="!showNotification">
-                <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(false)">No
-            </div>
+          <select [(ngModel)]="scheduleData.notification_flag" id="reportFormat" class="form-control" name="reportFormat"
+          style="background-color: #FFF;width: 100%;height: 100%;" (change)="setNotificationValue(scheduleData.notification_flag)">
+            <option *ngFor="let choice of notificationChoice" [value]="choice.value">{{choice.display}}</option>
+          </select>
         </div>
       </div>
 
 
       <div class="row">
         <label for="email-address" class="col-xs-5 col-form-label">Email Address(es)<span class="span-color">*</span></label>
-        <div class=" col-xs-7 disabled">
+        <div class=" col-xs-7">
           <input class="form-control form-control-lg" matInput [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
-          style="border: 1px solid #afafb5;border-radius:5px;width: 100%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px"
-          [matAutocomplete]="shareSuggestion" [formControl]="fruitCtrl" name="email" id="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" disabled/>
+            style="border: 1px solid #afafb5;border-radius:5px;width: 100%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px"
+              [matAutocomplete]="emailSuggestion" [formControl]="fruitCtrl" name="email" id="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$"
+              [disabled]="loading"/>
         </div>
         <div *ngIf="loading" class="spinner-border" role="status">
           <span class="sr-only">Loading...</span>
         </div>
-        <mat-autocomplete #shareSuggestion="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+        <mat-autocomplete #emailSuggestion="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
           <mat-option *ngFor="let opt of autoUserList" [value]="opt" >
             {{opt}}
           </mat-option>
@@ -129,12 +115,12 @@ aria-hidden="true">
         <div *ngIf="fruitCtrl.errors?.pattern">
           <p style="color: red;">Email is invalid</p>
         </div>
-        <div class="chips disabled">
+        <div class="chips">
           <mat-chip-list #chipList>
             <mat-chip *ngFor="let email of emails" [selectable]="selectable" [removable]="removable"
               (removed)="remove(email)" [(ngModel)]="scheduleData.multiple_addresses">
               {{email}}
-              <mat-icon matChipRemove *ngIf="removable" class="disabled">cancel</mat-icon>
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
             </mat-chip>
           </mat-chip-list>
         </div>
@@ -145,7 +131,7 @@ aria-hidden="true">
         <div class=" col-xs-7">
           <select name="deliveryMethod" id="deliveryMethod" name="deliveryMethod"
             [(ngModel)]="scheduleData.sharing_mode" (change)="changeDeliveryMethod(scheduleData.sharing_mode)"
-            class="form-control form-control-lg" disabled>
+            class="form-control form-control-lg">
             <option [hidden]="hideFtp" *ngFor="let format of sharingModes" [value]="format.value">{{format.display}}</option>
             <option [hidden]="!hideFtp" *ngFor="let format of sharingModesNonAdmins" [value]="format.value">{{format.display}}</option>
           </select>
@@ -159,7 +145,7 @@ aria-hidden="true">
           <label for="ftp-address" class="col-xs-5 col-form-label">FTP Address<span class="span-color">*</span></label>
           <div class=" col-xs-7">
               <input name="ftpAddress" id="ftpAddress" class="form-control form-control-lg"
-              [(ngModel)]="scheduleData.ftp_address" disabled>
+              [(ngModel)]="scheduleData.ftp_address">
           </div>
         </div>
       </div>
@@ -169,7 +155,7 @@ aria-hidden="true">
           <label for="ftp-port" class="col-xs-5">FTP Port<span class="span-color">*</span></label>
           <div class=" col-xs-7">
               <input name="ftpPort" id="ftpPort" class="form-control form-control-lg"
-              [(ngModel)]="scheduleData.ftp_port" aria-placeholder=" " disabled>
+              [(ngModel)]="scheduleData.ftp_port" aria-placeholder=" ">
           </div>
         </div>
       </div>
@@ -187,7 +173,7 @@ aria-hidden="true">
           </label>
           <div class=" col-xs-7">
             <input type="text" [(ngModel)]="scheduleData.ftp_folder_path" class="form-control form-control-lg"
-              placeholder="Optional" disabled>
+              placeholder="Optional">
           </div>
         </div>
       </div>
@@ -196,7 +182,7 @@ aria-hidden="true">
         <div class="row">
           <label for="ftp-user-name" class="col-xs-5">FTP user name<span class="span-color">*</span></label>
           <div class=" col-xs-7">
-            <input type="text" [(ngModel)]="scheduleData.ftp_user_name" class="form-control form-control-lg" disabled>
+            <input type="text" [(ngModel)]="scheduleData.ftp_user_name" class="form-control form-control-lg">
           </div>
         </div>
       </div>
@@ -205,16 +191,17 @@ aria-hidden="true">
         <div class="row">
           <label for="ftp-pasword" class="col-xs-5">FTP password<span class="span-color">*</span></label>
           <div class=" col-xs-7">
-            <input type="text" [(ngModel)]="scheduleData.ftp_pd" class="form-control form-control-lg" disabled>
+            <input type="text" [(ngModel)]="scheduleData.ftp_pd" class="form-control form-control-lg">
           </div>
         </div>
       </div>
 
-      <div class="row disabled"> 
+      <div class="row"> 
         <label class="col-xs-5">Add Description<span class="span-color">*</span></label>
         <div class="col-xs-7">
           <div contenteditable="true" id ="description" class="description form-control mb-4 PADD5PX" 
-          (keydown)="autoSize($event.target)" (input)="transformDescription()" name="description" [(ngModel)]="scheduleData.description" ngDefaultControl></div>
+          (keydown)="autoSize($event.target)" (input)="transformDescription()" name="description" [(ngModel)]="scheduleData.description" ngDefaultControl>{{scheduleData.description}}
+        </div>
         </div>
       </div> 
 
@@ -222,16 +209,16 @@ aria-hidden="true">
         <label class="col-xs-5">Add Attachment</label>
         <div class="col-xs-7 pl-2">
         <input #imageInput type="file" class="sideButtons" style="display: none;" accept=".pdf, .doc, .docx"
-          id="valueInput" (change)="uploadPdf($event)" #pdf disabled>
+          id="valueInput" (change)="uploadPdf($event)" #pdf>
         <button (click)="imageInput.click()"
-          style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Upload pdf" disabled>
+          style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Upload pdf">
           <svg style="width:20px;height:20px" viewBox="0 0 24 24">
             <path fill="#000000"
               d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2M10.1,11.4C10.08,11.44 9.81,13.16 8,16.09C8,16.09 4.5,17.91 5.33,19.27C6,20.35 7.65,19.23 9.07,16.59C9.07,16.59 10.89,15.95 13.31,15.77C13.31,15.77 17.17,17.5 17.7,15.66C18.22,13.8 14.64,14.22 14,14.41C14,14.41 12,13.06 11.5,11.2C11.5,11.2 12.64,7.25 10.89,7.3C9.14,7.35 9.8,10.43 10.1,11.4M10.91,12.44C10.94,12.45 11.38,13.65 12.8,14.9C12.8,14.9 10.47,15.36 9.41,15.8C9.41,15.8 10.41,14.07 10.91,12.44M14.84,15.16C15.42,15 17.17,15.31 17.1,15.64C17.04,15.97 14.84,15.16 14.84,15.16M7.77,17C7.24,18.24 6.33,19 6.1,19C5.87,19 6.8,17.4 7.77,17M10.91,10.07C10.91,10 10.55,7.87 10.91,7.92C11.45,8 10.91,10 10.91,10.07Z" />
           </svg>
         </button>
         <span *ngIf="fileUpload">{{fileName}}</span>
-        <button *ngIf="fileUpload" style="margin-left: 5px;border-radius: 5px;" (click)="reset()" disabled>Reset</button>
+        <button *ngIf="fileUpload" style="margin-left: 5px;border-radius: 5px;" (click)="reset()">Reset</button>
       </div>
       </div>
 
@@ -240,21 +227,28 @@ aria-hidden="true">
         <div class="col-xs-7 pl-2 pr-0">
         <div class="col-xs-10 pl-3 pr-0">
         <select class="form-control form-control-lg w-100" (change)="select($event)" [(ngModel)]="scheduleData.signature_html"
-          placeholder="select or create" disabled>
+          placeholder="select or create">
           <option style="display: none;"></option>
-          <option *ngFor="let sign of signatures" [value]="sign.signature_html">
+          <!-- <option *ngFor="let sign of signatures" [value]="sign.signature_html"> -->
+          <option *ngFor="let sign of signatures" [value]="sign.signature_html"> 
+                <!-- because we are sending the name for select() -->
             {{sign.signature_name}}
           </option>
         </select>
         </div>
         <div class="col-xs-2 pl-0">
-          <button #editSign id="editSign" data-toggle="modal" [disabled]="!signSelected" data-target="#signature"
-          data-backdrop="static" data-keyboard="false" class="disabled"
-          style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Edit Signature" disabled>
+          <button #editSign id="editSign"
+          (click)='openSignatureModel()'
+            [disabled]="!signSelected" 
+           style="margin-top:3px;border: none;background-color:transparent;outline: none;" 
+           title="Edit Signature">
           <svg style="width:20px;height:20px;" viewBox="0 0 24 24">
             <path [ngStyle]="{'fill' : signSelected ? 'black' : 'gray'}"
               d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
           </svg>
+        </button>
+        <button id='signScheduleModel' *ngIf='signatureModel' data-toggle="modal" style="display: none;" data-target="#signature-schedular"
+                data-backdrop="static" data-keyboard="false">
         </button>
       </div>
       </div>
@@ -267,9 +261,13 @@ aria-hidden="true">
     <div class="modal-footer mt-0 mr-4">
       <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="refreshScheduleData()">Cancel</button>
       <button type="button" class="btn btn-success button-uniform"
-        (click)="apply()">Apply</button>
+        (click)="apply();setMultipleAddressListValues()">Apply</button>
     </div>
 
   </div>
 </div>
 </div>
+
+<!-- <app-show-signature-schedular *ngIf='signSelected' [inputParams]='inputParams'  (updateSchedularSignature)="updateSchedularSignatureData($event)"
+                  (createSchedularSignature)="createSchedularSignatureData($event)" (deleteSchedularSignature)="signSchedularDeleted($event)">
+</app-show-signature-schedular> -->

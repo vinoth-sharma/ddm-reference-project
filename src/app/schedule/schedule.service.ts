@@ -3,9 +3,6 @@ import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { catchError, map } from "rxjs/operators";
 import { Router } from '@angular/router';
-// import Utils from 'src/utils';
-
-// import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +18,6 @@ export class ScheduleService {
 
   constructor(private http:HttpClient,
               private router: Router
-              // public toasterService:ToastrService
               ) { }
 
   public handleError(error: any): any {
@@ -33,10 +29,10 @@ export class ScheduleService {
     throw errObj;
   }
 
+  // saving and editing scheduling of report data
   public updateScheduleData(scheduleData){
 
     let serviceUrl = `${environment.baseUrl}reports/report_scheduler/`;
-
     this.requestBody = {
       sl_id: scheduleData.sl_id,
       created_by: scheduleData.created_by || "",
@@ -49,7 +45,6 @@ export class ScheduleService {
       notification_flag: scheduleData.notification_flag,
       multiple_addresses: scheduleData.multiple_addresses,
       recurrence_pattern: parseInt(scheduleData.recurrence_pattern) || 0,
-      custom_range: 10,
       custom_dates: scheduleData.custom_dates || [],
       schedule_for_date: scheduleData.schedule_for_date || "01/01/2011",
       modified_by: scheduleData.created_by || "",
@@ -85,7 +80,7 @@ export class ScheduleService {
     }
 
     if(scheduleData.is_file_uploaded === true || scheduleData.is_file_uploaded != ""){
-      this.requestBody['uploaded_file_name'] = scheduleData.uploaded_file_name; // append the respectie scheduleData later
+      this.requestBody['uploaded_file_name'] = scheduleData.uploaded_file_name; // append the respective scheduleData later
       this.requestBody['ecs_file_object_name'] = scheduleData.ecs_file_object_name;
       this.requestBody['ecs_bucket_name'] = scheduleData.ecs_bucket_name;
     }
@@ -113,11 +108,13 @@ export class ScheduleService {
     }
   }
 
+  // obtaining all scheduled reports
   public getScheduledReports(semanticLayerId){
     let serviceUrl = `${environment.baseUrl}reports/get_scheduled_reports?sl_id=${semanticLayerId}`;
     return this.http.get(serviceUrl);
   }
 
+  // obtaining a scheduled report
   public getScheduleReportData(scheduleReportId,onGoingFlag?:number){
     let serviceUrl;
     if(onGoingFlag == 1){
@@ -131,6 +128,7 @@ export class ScheduleService {
     return this.http.get(serviceUrl);
   }
 
+  // uploading the pdf details
   public uploadPdf(fileValues){
     let serviceUrl = `${environment.baseUrl}reports/upload_schedule_files/`;
     let fileData = new FormData();
@@ -141,13 +139,22 @@ export class ScheduleService {
     .pipe(catchError(this.handleError));
   }
 
+  // obtaining request details for scheduler
   public getRequestDetailsForScheduler(reportIdProcured:number){
     let serviceUrl = `${environment.baseUrl}reports/get_report_requests?report_list_id=${reportIdProcured}`;
     return this.http.get(serviceUrl);
   }
 
+  // deleting a scheduled report
   public deleteScheduledReport(scheduleReportId:number){
     let serviceUrl = `${environment.baseUrl}reports/report_scheduler/?report_schedule_id=${[scheduleReportId]}`;
     return this.http.delete(serviceUrl);
+  }
+
+  // temporary service for removing RMP-DDM dependency
+  public getRequestDetails(id) {
+    let url = `${environment.baseUrl}RMP/get_report_description/?report_id=${id}`;
+    return this.http.get(url)
+      .pipe(catchError(this.handleError));
   }
 } 

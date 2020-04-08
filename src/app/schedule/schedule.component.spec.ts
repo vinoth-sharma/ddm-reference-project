@@ -13,7 +13,7 @@ import { MultipleDatesPickerComponent } from '../custom-directives/multiple-date
 import { ShowSignatureSchedularComponent } from '../show-signature-schedular/show-signature-schedular.component'
 
 import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
-// import { MultipleDatesSelectionService } from '../custom-directives/multiple-dates-picker/multiple-dates-selection.service';
+import { MultipleDatesSelectionService } from '../custom-directives/multiple-dates-picker/multiple-dates-selection.service';
 
 @NgModule({
   imports : [ FormControl ]
@@ -65,48 +65,35 @@ describe('ScheduleComponent', () => {
     expect(component.isFtpHidden).toEqual(false);
   })
 
-  it('should set the notification value',()=>{
-    let testValue = 'true';
-    component = fixture.componentInstance;
-    component.setNotificationValue(testValue);
-    fixture.detectChanges();
-    expect(component.scheduleData.notification_flag).toEqual(testValue)
-  })
-
-
   it('should set the email values',()=>{
-    // let testEmails = ['testEmail1@gm.com','testEmail2@gm.com','testEmail3@gm.com','testEmail4@gm.com'];
-    // try importing service and checking??
     let testEmails = [];
     component = fixture.componentInstance;
     component.setMultipleAddressListValues();
-    // fixture.detectChanges();
     expect(component.scheduleData.multiple_addresses).toEqual(testEmails)
   })
 
   // TypeError: Cannot read property 'updateTodaysDate' of undefined
-  // it('should test the close and opening of the recurring frequency pattern dropdown :: 1 ', ()=>{
-  //   let testRecurrencePattern = '1';
-  //   fixture = TestBed.createComponent(ScheduleComponent);
-  //   component = fixture.componentInstance;
-  //   component.setCollapse(testRecurrencePattern);
-  //   // let service = fixture.debugElement.injector.get(MultipleDatesSelectionService);
-  //   fixture.detectChanges();
+  it('should test the close and opening of the recurring frequency pattern dropdown :: 1 ', ()=>{
+    let testRecurrencePattern = '1';
+    fixture = TestBed.createComponent(ScheduleComponent);
+    component = fixture.componentInstance;
+    component.setCollapse(testRecurrencePattern);
+    let service = fixture.debugElement.injector.get(MultipleDatesSelectionService);
+    fixture.detectChanges();
+    expect(service.recurrencePattern).toEqual(testRecurrencePattern);
+    expect(component.isDatePickerHidden).toEqual(true);
+    expect(service.datesChosen).toEqual(component.todaysDate);
+  } )
 
-  //   // expect(service.recurrencePattern).toEqual(testRecurrencePattern);
-  //   expect(component.isDatePickerHidden).toEqual(true);
-  //   // expect(service.datesChosen).toEqual(component.todaysDate);
 
-  // } )
+  it('should test the notification value',()=>{
+    let testNotificationValue = 'true';
+    component.setNotificationValue(testNotificationValue);
+    fixture.detectChanges();
 
-  // selectSignature(signatureName) {
-  //   this.signSelected = true;
-  //   this.inputParams = this.signatures.find(x =>
-  //     x.signature_html.trim().toLowerCase() == signatureName.target.value.trim().toLowerCase());
-  //     console.log("this.inputParams are: ",this.inputParams);
-  //     this.scheduleData.signature_html = this.inputParams.signature_html;
-  // }
- 
+    expect(component.scheduleData.notification_flag).toEqual(testNotificationValue);
+  })
+
   // it('should select the signature ',()=>{
   //   let testSignatureName = 'ddmTeam';
   //   let testSignatureObject = { signature_name : testSignatureName, signature_html : '<p>Regards,DDM Team</p>'}
@@ -114,8 +101,6 @@ describe('ScheduleComponent', () => {
   //   component = fixture.componentInstance;
   //   component.selectSignature('ddmTeam')
   //   fixture.detectChanges();
-  //   // ??
-  //   // expect(component.scheduleData.signature_html).toEqual(component.inputParams.signature_html);
   // })
 
   it('should test the getRecipientList()',()=>{
@@ -127,7 +112,6 @@ describe('ScheduleComponent', () => {
     service.getRequestDetails(mockRequestId).subscribe(res=>{
       expect(component.emails).toEqual(res['dl_list'].map(i=>i.distribution_list))
       expect(component.scheduleData.multiple_addresses).toEqual(component.emails)
-      // this.scheduleData.multiple_addresses = this.emails;
     })
   })
 });

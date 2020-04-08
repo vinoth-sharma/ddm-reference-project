@@ -23,30 +23,20 @@ export class MultipleDatesPickerComponent implements OnInit {
 
   ngOnChanges(changes : SimpleChanges,calendar: any) {
     if('loadingDates' in changes){
-      console.log('CHANGES seen in TODAYs date in loadingDates: ',changes);
       this.daysSelected = this.multipleDatesSelectionService.datesChosen;
       if(this.daysSelected.length && this.daysSelected.length ===1){
         this.daysSelected = [this.daysSelected];
       }
       this.daysSelectedDisplayed = this.daysSelected;
-      console.log("this.datePickerStatus value in loadingDates changes",this.datePickerStatus);
-      console.log("CHANGES in loadingDates changes :",changes);
-      // this.datePickerStatus = true;
       this.datePickerStatus = changes.datePickerStatus.currentValue;
       if(this.datePickerStatus === undefined || null || ''){
         this.datePickerStatus = true;
       }
-      console.log("this.datePickerStatus value NOWW in loadingDates changes",this.datePickerStatus);
       if(this.daysSelected && this.daysSelected.length){
         calendar.updateTodaysDate();
       }
       
     }
-    // if('datePickerStatus' in changes){
-    //   this.datePickerStatus = changes.datePickerStatus.currentValue || true; //wrong
-    //   console.log("this.datePickerStatus value in datePicker changes",this.datePickerStatus);
-    //   console.log("CHANGES in datePicker changes :",changes);
-    // }
   }
 
 public daysSelected: any = [];
@@ -102,10 +92,6 @@ select(event: any, calendar: any) {
 
   this.daysSelected = this.removeDuplicates(this.daysSelected);
   this.multipleDatesSelectionService.datesChosen = [...this.daysSelected];
-  // this.multipleDatesSelectionService.datesChosen = this.removeDuplicates(this.daysSelected);
-  // this.datesChosen.emit()
-  // this.dateChosen.emit(JSON.stringify(this.daysSelected))
-  console.log("SELECTED DATES in the picker : ",this.daysSelected);
   this.daysSelectedDisplayed = [...this.daysSelected];
   
   calendar.updateTodaysDate();

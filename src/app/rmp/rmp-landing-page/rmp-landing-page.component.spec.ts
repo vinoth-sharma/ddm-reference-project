@@ -28,7 +28,6 @@ import { Observable } from 'rxjs';
 import { DjangoService } from '../django.service';
 import { DataProviderService } from '../data-provider.service';
 import 'jquery';
-import { NgxSpinnerService } from "ngx-spinner";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { AuthenticationService } from "src/app/authentication.service";
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -40,6 +39,9 @@ describe('RmpLandingPageComponent', () => {
   let injector: TestBed;
   let httpMock: HttpTestingController;
   let djangoservice: DjangoService;
+  const datePipe: DatePipe = new DatePipe('en-US');
+  let authService: AuthenticationService;
+  let dataProvider: DataProviderService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -60,12 +62,14 @@ describe('RmpLandingPageComponent', () => {
                 ],
       declarations: [ RmpLandingPageComponent, HeaderComponent,
                       RequestOnBehalfComponent, NgToasterComponent],
-      providers:[ DatePipe, NgxSpinnerService , 
-                  MatSnackBar, AuthenticationService]
+      providers:[ DatePipe, MatSnackBar, AuthenticationService]
     })
     .compileComponents();
     injector = getTestBed();
     httpMock = TestBed.get(HttpTestingController);
+    authService = TestBed.get(AuthenticationService);
+    dataProvider = TestBed.get(DataProviderService);
+    djangoservice = TestBed.get(DjangoService);
   }));
 
   beforeEach(() => {
@@ -81,21 +85,16 @@ describe('RmpLandingPageComponent', () => {
   });
 
   it('should execute getHeaderDetails method', fakeAsync(() => {
-    fixture.detectChanges();
     const a = {
         'role': 'admin',
         'first_name': 'Ganesh',
         'last_name': 'm'
     };
-    component.auth_service.myMethod(a,1, '');
-    fixture.detectChanges();
-    component.auth_service.myMethod$.subscribe(role =>{
-      expect(role).toEqual(a);
-    });
+    authService.myMethod(a,1, '');
+    authService.myMethod$.subscribe(role => expect(role).toEqual(a));
   }));
 
   it('should execute getCurrentLookUpTable method', fakeAsync(() =>{
-    fixture.detectChanges();
     const a = {
         'message':'success',
         'data': {
@@ -396,13 +395,11 @@ describe('RmpLandingPageComponent', () => {
           ]
         }
     };
-    component.dataProvider.changelookUpTableData(a);
-    tick();
-    fixture.detectChanges();
-    component.dataProvider.currentlookUpTableData.
+    dataProvider.changelookUpTableData(a);
+    tick(1500);
+    dataProvider.currentlookUpTableData.
       subscribe(res => {
         expect(res).toEqual(a);
-        fixture.detectChanges();
         expect(component.info).toEqual(res);
     });
   }));
@@ -415,21 +412,10 @@ describe('RmpLandingPageComponent', () => {
             'admin_flag': false,
             'admin_note_status': true
           };
-    let myService = TestBed.get(DjangoService);
-    let mySpy = spyOn(myService, 'ddm_rmp_admin_notes').and.callThrough(); //callThrough()
     spyOn(component, 'getDDmRmpAdminNotes').and.callThrough(); //callThrough()
     component.getDDmRmpAdminNotes();
+    djangoservice.ddm_rmp_admin_notes(notes_details).subscribe(res =>  expect(res).toBe(notes_details));
     expect(component.getDDmRmpAdminNotes).toHaveBeenCalled();
-    tick(500);
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      discardPeriodicTasks();
-      expect(component.serviceData).toBe(notes_details);
-    });
-    expect(myService).toBeDefined();
-    expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1); 
   }));
 
   it('should check main menu tab', fakeAsync(() => {
@@ -481,10 +467,7 @@ describe('RmpLandingPageComponent', () => {
   }));
 
   it('should clear message', fakeAsync(() => {
-    fixture.detectChanges();
     component.clearMessage();
-    tick(500);
-    fixture.detectChanges();
     expect(component.admin_notes).toEqual('');
   }));
 
@@ -505,22 +488,36 @@ describe('RmpLandingPageComponent', () => {
     expect(component.notes).toBe(notes_details.admin_notes);
   }));
 
-  // it('should execute changeStartDateFormat', fakeAsync(() => {
-  //   fixture.detectChanges();
-  //   spyOn(component, 'changeStartDateFormat').and.callThrough(); //callThrough()
-  //   component.changeStartDateFormat();
-  //   fixture.detectChanges();
-  //   expect(component.customizedFromDate).toBe('23-Mar-2020');
-  //   expect(component.changeStartDateFormat).toHaveBeenCalled();
-  // }));
+  it('should execute changeStartDateFormat', fakeAsync(() => {
+    fixture.detectChanges();
+    let d = new Date();
+    component.fromDate = {
+      year: d.getFullYear(),
+      month: d.getMonth(),
+      day: d.getDate()
+    };
+    let result = datePipe.transform(new Date(d.getFullYear(),  d.getMonth() - 1, d.getDate()), "dd-MMM-yyyy");
+    fixture.detectChanges();
+    spyOn(component, 'changeStartDateFormat').and.callThrough(); //callThrough()
+    component.changeStartDateFormat();
+    expect(component.customizedFromDate).toEqual(result);
+    expect(component.changeStartDateFormat).toHaveBeenCalled();
+  }));
 
-  // it('should execute changeEndDateFormat' , fakeAsync(() => {
-  //   fixture.detectChanges();
-  //   spyOn(component, 'changeEndDateFormat').and.callThrough(); //callThrough()
-  //   component.changeEndDateFormat();
-  //   expect(component.customizedToDate).toBe('02-Apr-2020');
-  //   expect(component.changeEndDateFormat).toHaveBeenCalled();
-  // }));
+  it('should execute changeEndDateFormat' , fakeAsync(() => {
+    let d = new Date();
+    component.toDate = {
+      year: d.getFullYear(),
+      month: d.getMonth(),
+      day: d.getDate()+10
+    };
+    let result = datePipe.transform(new Date(d.getFullYear(),  d.getMonth() - 1, d.getDate()+10), "dd-MMM-yyyy");
+    fixture.detectChanges();
+    spyOn(component, 'changeEndDateFormat').and.callThrough(); //callThrough()
+    component.changeEndDateFormat();
+    expect(component.customizedToDate).toEqual(result);
+    expect(component.changeEndDateFormat).toHaveBeenCalled();
+  }));
 
   it('should execute getAdminNotes', fakeAsync(() => {
     const adminNote = {

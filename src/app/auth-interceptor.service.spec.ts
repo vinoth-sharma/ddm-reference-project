@@ -12,7 +12,7 @@ describe('AuthInterceptor', () => {
 
     beforeEach(() =>{ TestBed.configureTestingModule({
         imports: [ HttpClientTestingModule ],
-        providers:[ AuthSsoService ]
+        providers:[ AuthSsoService, AuthInterceptor ]
         });
         injector = getTestBed();
         authSsoService = injector.get(AuthSsoService); 
@@ -30,12 +30,11 @@ describe('AuthInterceptor', () => {
 
     it('should execute checkToken method', fakeAsync(() => {
         const result = [1,2,2,3];
-        authSsoService.checkToken().subscribe(res => {
-          expect(res).toEqual(result);
-        });
+        authSsoService.checkToken().subscribe(res => 
+          expect(res).toEqual(result));
         const req = httpMock.expectOne(`${environment.baseUrl}login/check_status`);
         expect(req.request.method).toBe("GET");
-        expect(req.request.headers.has('Authorization')).toEqual(false);
+        expect(req.request.headers.has('Authorization')).toEqual(true);
         req.flush(result);
       }));
 });

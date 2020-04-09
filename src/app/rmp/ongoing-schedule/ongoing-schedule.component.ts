@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, SimpleChanges, ElementRef, Output, EventEmitter, ViewChild } from '@angular/core';
 import { AuthenticationService } from '../../authentication.service';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { FormControl, Validators } from '@angular/forms';
@@ -31,7 +29,7 @@ export class OngoingScheduleComponent implements OnInit {
   public userId: any = {};
   public showRadio: boolean = true;
   public showNotification: boolean = true;
-  public minDate: NgbDateStruct;
+  public minDate:any;
   public file: File;
   public loading;
   @ViewChild('pdf')
@@ -189,7 +187,6 @@ export class OngoingScheduleComponent implements OnInit {
   constructor(public scheduleService: ScheduleService,
     public toasterService: NgToasterComponent,
     public multipleDatesSelectionOngoingService: MultiDatePickerOngoingService,
-    private router: Router,
     public authenticationService: AuthenticationService,
     // private semanticReportsService:SemanticReportsService // temporary fix for RMP standalone
     private shareReportService: ShareReportService

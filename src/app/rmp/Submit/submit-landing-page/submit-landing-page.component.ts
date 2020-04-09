@@ -23,9 +23,9 @@ export class SubmitLandingPageComponent implements OnInit {
   public naming: string = "Loading";
   public message: string;
   public check: boolean;
-  public contentForm;
-  public loading = false;
-  public textChange = false;
+  public contentForm; // conflicting variable for test case
+  public loading: boolean = false;
+  public textChange: boolean = false;
   public editMode: Boolean;
   public description_text = {
     "ddm_rmp_desc_text_id": 3,
@@ -40,7 +40,7 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   public date: any;
-  public discMandate;
+  public discMandate: any;
   public finalData = {
     'disclaimer_ack': ""
   };
@@ -54,16 +54,16 @@ export class SubmitLandingPageComponent implements OnInit {
   public pdfGenerationProgress: number;
 
   public contents;
-  public enable_edits = false
-  public editModes = false;
-  public editModes_disc = false;
-  public readOnlyContent = true;
-  public readOnlyContentDisclaimer = true;
-  public readOnlyContentHelper = true;
-  public original_contents;
-  public original_contents_disclaimer;
+  public enable_edits: boolean = false
+  public editModes: boolean = false;
+  public editModes_disc: boolean = false;
+  public readOnlyContent: boolean = true;
+  public readOnlyContentDisclaimer: boolean = true;
+  public readOnlyContentHelper: boolean = true;
+  public original_contents: any;
+  public original_contents_disclaimer: any;
   public namings: string = "Loading";
-  public naming_disclaimer = "Loading";
+  public naming_disclaimer: string = "Loading";
   public check_disclaimer_status: boolean = false;
   public check_saved_status: boolean;
   public enableUpdateData = false;
@@ -75,10 +75,10 @@ export class SubmitLandingPageComponent implements OnInit {
     "description": ""
   }
 
-  public content_disc;
-  public enable_edit_disc = false
-  public editModess = false;
-  public original_content_disc;
+  public content_disc: any;
+  public enable_edit_disc: boolean = false
+  public editModess: boolean = false;
+  public original_content_disc: any;
   public namingss: string = "Loading";
 
   public parentsSubjectss: Rx.Subject<any> = new Rx.Subject();

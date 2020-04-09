@@ -10,7 +10,7 @@ declare var $: any;
 import { SubmitLandingPageComponent } from './submit-landing-page.component';
 
 //// Angular unit test cases written by Deepak Urs G V
-fdescribe('SubmitLandingPageComponent', () => {
+describe('SubmitLandingPageComponent', () => {
   let component: SubmitLandingPageComponent;
   let fixture: ComponentFixture<SubmitLandingPageComponent>;
 

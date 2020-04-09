@@ -70,7 +70,7 @@ describe('ConstantService', () => {
         'error': errorData.error.error
       }
     }
-    
+
     expect(function () { service.handleError(errorData) }).toThrow(errObj)
   }))
 

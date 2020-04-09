@@ -11,9 +11,9 @@ describe('RmpLandingPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RmpLandingPageComponent, HeaderComponent ]
+      declarations: [RmpLandingPageComponent, HeaderComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

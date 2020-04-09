@@ -47,9 +47,9 @@ describe('MainMenuLandingPageComponent', () => {
   });
 
   it('should check if text is updated', () => {
-    let data = {text: "Has text been updated"};
+    let data = { text: "Has text been updated" };
     component.textChanged(data);
-    expect(component.textChange).toBeTruthy();      
+    expect(component.textChange).toBeTruthy();
     expect(component.enableUpdateData).toBeTruthy();
   });
 
@@ -57,7 +57,7 @@ describe('MainMenuLandingPageComponent', () => {
     component.original_content = "data";
     component.edit_True();
     expect(component.editModes).toBeFalsy();
-    expect(component.readOnlyContentHelper).toBeTruthy();    
+    expect(component.readOnlyContentHelper).toBeTruthy();
     expect(component.naming).toEqual("data");
   });
 
@@ -65,7 +65,7 @@ describe('MainMenuLandingPageComponent', () => {
     component.original_content = "original data";
     component.editEnable();
     expect(component.editModes).toBeTruthy();
-    expect(component.readOnlyContentHelper).toBeFalsy();    
+    expect(component.readOnlyContentHelper).toBeFalsy();
     expect(component.naming).toEqual("original data");
   });
 
@@ -123,7 +123,7 @@ describe('MainMenuLandingPageComponent', () => {
     let tosterSpy = spyOn(toastr, "success");
     let dataProviderService = TestBed.get(DataProviderService);
     let lookUpTableData = { data: { desc_text_admin_documents: [{ key: "lookUpData" }] } }
-    spyOn(djangoService, "ddm_rmp_landing_page_desc_text_put").and.returnValue(of([{ddm_rmp_desc_text_id: 4,temp_desc_text:"abc"}]));
+    spyOn(djangoService, "ddm_rmp_landing_page_desc_text_put").and.returnValue(of([{ ddm_rmp_desc_text_id: 4, temp_desc_text: "abc" }]));
     spyOn(dataProviderService, "changelookUpTableData").and.returnValue(of(lookUpTableData));
     spyOn(Utils, "hideSpinner");
     tick();

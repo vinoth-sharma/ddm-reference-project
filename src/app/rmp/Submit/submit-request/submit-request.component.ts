@@ -10,16 +10,16 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 export class SubmitRequestComponent implements OnInit {
   selectCriteria: boolean;
   update: boolean;
-  showReportId: string;
+  showReportId: string = '';
   showButton: boolean;
 
   constructor(private generated_id_service: GeneratedReportService) {
     this.generated_id_service.saveChanges.subscribe(element => {
-      this.selectCriteria = element
+      this.selectCriteria = element;
     })
 
     this.generated_id_service.saveUpdate.subscribe(ele => {
-      this.update = ele
+      this.update = ele;
     })
   }
 

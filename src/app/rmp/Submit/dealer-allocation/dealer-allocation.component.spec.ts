@@ -22,19 +22,19 @@ describe('DealerAllocationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DealerAllocationComponent, NgToasterComponent],
+      declarations: [DealerAllocationComponent, NgToasterComponent],
       providers: [DatePipe, { provide: DataProviderService, useClass: DataProviderMockService },
         { provide: AuthenticationService, useClass: AuthenticationMockService }],
-        imports: [HttpClientTestingModule,AngularMultiSelectModule,FormsModule,QuillModule.forRoot({}),RouterTestingModule, MaterialModule],
+      imports: [HttpClientTestingModule, AngularMultiSelectModule, FormsModule, QuillModule.forRoot({}), RouterTestingModule, MaterialModule],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DealerAllocationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    spyOn(Utils,"showSpinner");
+    spyOn(Utils, "showSpinner");
   });
 
   it('should create', () => {
@@ -42,32 +42,31 @@ describe('DealerAllocationComponent', () => {
   });
 
   it('content_edits() should edit the content of the Help icon', fakeAsync(() => {
-      let toastr = TestBed.inject(NgToasterComponent);
-      let djangoService = TestBed.inject(DjangoService);
-      let dataService = TestBed.inject(DataProviderService);
-      spyOn(djangoService, "ddm_rmp_landing_page_desc_text_put").and.returnValue(of("abc"));
-      spyOn(component, 'ngOnInit');      
-      let dataServiceSpy = spyOn(dataService, "changelookUpTableData");
-      let toastrSpy = spyOn(toastr, "success");
-      component.textChange = false;
-      component.lookup = { data: { desc_text: [{ ddm_rmp_desc_text_id: 1, module_name: "What is DDM", description: "" }] } }
-      component.description_text = { description: "description", module_name: "", ddm_rmp_desc_text_id: 1 }
-      component.namings = "description";
-      component.content_edits();
-      expect(component.editModes).toBeFalsy();
-      expect(component.readOnlyContentHelper).toBeTruthy();
-      // expect(component.lookup.data.desc_text[1]).toEqual("givenName");
-      expect(dataServiceSpy).toHaveBeenCalled();
-      expect(component.original_content).toEqual("description");
-      expect(toastrSpy).toHaveBeenCalled();
-    })
+    let toastr = TestBed.inject(NgToasterComponent);
+    let djangoService = TestBed.inject(DjangoService);
+    let dataService = TestBed.inject(DataProviderService);
+    spyOn(djangoService, "ddm_rmp_landing_page_desc_text_put").and.returnValue(of("abc"));
+    spyOn(component, 'ngOnInit');
+    let dataServiceSpy = spyOn(dataService, "changelookUpTableData");
+    let toastrSpy = spyOn(toastr, "success");
+    component.textChange = false;
+    component.lookup = { data: { desc_text: [{ ddm_rmp_desc_text_id: 1, module_name: "What is DDM", description: "" }] } }
+    component.description_text = { description: "description", module_name: "", ddm_rmp_desc_text_id: 1 }
+    component.namings = "description";
+    component.content_edits();
+    expect(component.editModes).toBeFalsy();
+    expect(component.readOnlyContentHelper).toBeTruthy();
+    expect(dataServiceSpy).toHaveBeenCalled();
+    expect(component.original_content).toEqual("description");
+    expect(toastrSpy).toHaveBeenCalled();
+  })
   );
 
   it('changeReportMessage() should set changeButtonStatus true', () => {
     let service = TestBed.inject(GeneratedReportService);
     component.changeReportMessage();
-    expect(component.report_message).toBeNull;   
-    expect(service.changeButtonStatus).toBeTruthy; 
+    expect(component.report_message).toBeNull;
+    expect(service.changeButtonStatus).toBeTruthy;
   });
 
   it('Calling changeReportMessage() should navigate to user/request-status', async(() => {
@@ -80,7 +79,7 @@ describe('DealerAllocationComponent', () => {
 
   it('printDiv() should navigate to user/request-status', async(() => {
     let component = fixture.componentInstance;
-    component.printDiv(); 
+    component.printDiv();
   }));
 
   // printDiv() {
@@ -91,12 +90,12 @@ describe('DealerAllocationComponent', () => {
   //   document.body.innerHTML = this.restorepage;
   //   location.reload(true);
   // }
-  
+
 
   it('textChanged() should check if text is updated', () => {
-    let data = {text: "Has text been updated"};
+    let data = { text: "Has text been updated" };
     component.textChanged(data);
-    expect(component.textChange).toBeTruthy();      
+    expect(component.textChange).toBeTruthy();
     expect(component.enableUpdateData).toBeTruthy();
   });
 
@@ -104,7 +103,7 @@ describe('DealerAllocationComponent', () => {
     component.original_content = "data";
     component.edit_True();
     expect(component.editModes).toBeFalsy();
-    expect(component.readOnlyContentHelper).toBeTruthy();    
+    expect(component.readOnlyContentHelper).toBeTruthy();
     expect(component.namings).toEqual("data");
   });
 
@@ -112,7 +111,7 @@ describe('DealerAllocationComponent', () => {
     component.original_content = "original data";
     component.editEnable();
     expect(component.editModes).toBeTruthy();
-    expect(component.readOnlyContentHelper).toBeFalsy();    
+    expect(component.readOnlyContentHelper).toBeFalsy();
     expect(component.namings).toEqual("original data");
   });
 

@@ -46,7 +46,7 @@ describe('MainMenuComponent', () => {
     component.role();
     expect(component.isButton).toBeFalsy;
     expect(sharedService.getRequestId()).toEqual(0);
-    }));
+  }));
 
   it('Calling role() should navigate to semantic', async(() => {
     let component = fixture.componentInstance;

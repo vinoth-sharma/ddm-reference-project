@@ -15,15 +15,15 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
   templateUrl: './main-menu-landing-page.component.html',
   styleUrls: ['./main-menu-landing-page.component.css']
 })
-export class MainMenuLandingPageComponent implements OnInit{
+export class MainMenuLandingPageComponent implements OnInit {
   content;
-  enable_edit = false;
-  content_loaded = false;
-  textChange = false;
+  enable_edit: boolean = false;
+  content_loaded: boolean = false;
+  textChange: boolean = false;
   original_content;
   naming: string = "Loading";
-  enable_edits = false
-  editModes = false;
+  enable_edits: boolean = false
+  editModes: boolean = false;
   main_menu_content: Array<object>
   newContent: boolean = false
   contentForm: FormGroup;
@@ -32,51 +32,51 @@ export class MainMenuLandingPageComponent implements OnInit{
   displayDelete: Boolean = true;
   data: () => Promise<{}>;
   data2: () => Promise<{}>;
-  user_name: string;
-  user_role : string;
-  readOnlyContentHelper = true;
-  enableUpdateData = false;
+  user_name: string = '';
+  user_role: string = '';
+  readOnlyContentHelper: boolean = true;
+  enableUpdateData: boolean = false;
 
   config = {
     toolbar: [
-      ['bold','italic','underline','strike'],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
-      [{'list' : 'ordered'}, {'list' : 'bullet'}],
-      [{'script' : 'sub'},{'script' : 'super'}],
-      [{'size':['small',false, 'large','huge']}],
-      [{'header':[1,2,3,4,5,6,false]}],
-      [{'color': []},{'background':[]}],
-      [{'font': []}],
-      [{'align': []}],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
       ['clean'],
       ['image']
     ]
   };
-  
+
   constructor(private django: DjangoService,
-    private auth_service:AuthenticationService, 
-    private dataProvider: DataProviderService, 
-    private fb: FormBuilder, 
+    private auth_service: AuthenticationService,
+    private dataProvider: DataProviderService,
+    private fb: FormBuilder,
     private router: Router,
     private toastr: NgToasterComponent) {
-        
+
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
       answer: ['', Validators.required],
       link_title_url: this.fb.array([])
     })
-    this.auth_service.myMethod$.subscribe(currentUser =>{
+    this.auth_service.myMethod$.subscribe(currentUser => {
       if (currentUser) {
         this.user_name = currentUser["first_name"] + " " + currentUser["last_name"]
         this.user_role = currentUser["role"]
-      } 
+      }
     })
 
     this.data = this.dataProvider.loadLookUpTableData
     this.data2 = this.dataProvider.loadLookUpData
   }
   parentSubject: Rx.Subject<any> = new Rx.Subject();
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();  
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
   restorepage: any;
   printcontent: any
 
@@ -99,7 +99,7 @@ export class MainMenuLandingPageComponent implements OnInit{
 
   ngOnInit() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
-      Utils.showSpinner();     
+      Utils.showSpinner();
       if (element) {
         this.dataProvider.changeIntialLoad(true)
         this.dataProvider.currentlookupData.subscribe(element2 => {
@@ -109,60 +109,60 @@ export class MainMenuLandingPageComponent implements OnInit{
             let ref = this.content['data']['desc_text']
             let temp = ref.find(function (element) {
               return element["ddm_rmp_desc_text_id"] == 4;
-            })            
-            if(temp){
+            })
+            if (temp) {
               this.original_content = temp.description;
             }
-            else{ this.original_content = ""}
+            else { this.original_content = "" }
             this.naming = this.original_content;
           }
         })
-        Utils.hideSpinner();       
+        Utils.hideSpinner();
       }
     })
 
   }
 
-    content_edits() {
-     if(!this.textChange || this.enableUpdateData) {
+  content_edits() {
+    if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
-        this.editModes = false;
-        this.readOnlyContentHelper = true;
-        this.description_text['description'] =  this.naming;
-        $('#edit_button').show()
-        this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-          let temp_desc_text = this.content['data']['desc_text']
-          temp_desc_text.map((element, index) => {
-            if (element['ddm_rmp_desc_text_id'] == 4) {
-              temp_desc_text[index] = this.description_text;
-            }
-          })
-          this.content['data']['desc_text'] = temp_desc_text;
-          this.dataProvider.changelookUpTableData(this.content);      
-          this.editModes = false;
-          this.ngOnInit();
-          this.original_content = this.naming;
-          this.toastr.success("Updated Successfully");
-          Utils.hideSpinner();
-        }, err => {
-          Utils.hideSpinner();
-          this.toastr.error("Data not Updated");
+      this.editModes = false;
+      this.readOnlyContentHelper = true;
+      this.description_text['description'] = this.naming;
+      $('#edit_button').show()
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+        let temp_desc_text = this.content['data']['desc_text']
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 4) {
+            temp_desc_text[index] = this.description_text;
+          }
         })
-     } else  {
+        this.content['data']['desc_text'] = temp_desc_text;
+        this.dataProvider.changelookUpTableData(this.content);
+        this.editModes = false;
+        this.ngOnInit();
+        this.original_content = this.naming;
+        this.toastr.success("Updated Successfully");
+        Utils.hideSpinner();
+      }, err => {
+        Utils.hideSpinner();
+        this.toastr.error("Data not Updated");
+      })
+    } else {
       this.toastr.error("Please enter the data");
-     }     
+    }
   }
 
   textChanged(event) {
     this.textChange = true;
-    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
-    this.naming = this.original_content;    
+    this.naming = this.original_content;
   }
 
   editEnable() {
@@ -188,7 +188,7 @@ export class MainMenuLandingPageComponent implements OnInit{
           if (index != 0) {
             this.LinkTitleURL.push(this.fb.group({ title: [url_content['title'], Validators.required], link: [url_content['link'], Validators.required] }));
           }
-        });        
+        });
       }
     });
   }
@@ -199,7 +199,7 @@ export class MainMenuLandingPageComponent implements OnInit{
 
   delete_confirmation() {
     Utils.showSpinner();
-    this.django.ddm_rmp_main_menu_description_text_delete(this.active_content_id).subscribe(response => {      
+    this.django.ddm_rmp_main_menu_description_text_delete(this.active_content_id).subscribe(response => {
       this.main_menu_content = this.main_menu_content.filter(element => {
         return element["ddm_rmp_main_menu_description_text_id"] != this.active_content_id
       })
@@ -249,7 +249,7 @@ export class MainMenuLandingPageComponent implements OnInit{
     this.LinkTitleURL.removeAt(index);
   }
 
-  route_url(url) {    
+  route_url(url) {
     this.router.navigateByUrl(url)
   }
 
@@ -262,12 +262,12 @@ export class MainMenuLandingPageComponent implements OnInit{
         "answer": this.contentForm.value['answer'],
         "link_title_url": this.contentForm.value['link_title_url']
       }
-      this.django.ddm_rmp_main_menu_description_text_put(response_json).subscribe(response => {       
+      this.django.ddm_rmp_main_menu_description_text_put(response_json).subscribe(response => {
         this.main_menu_content.map((element, index) => {
           if (this.active_content_id == element["ddm_rmp_main_menu_description_text_id"]) {
             this.main_menu_content[index] = response_json
-          }        
-        })        
+          }
+        })
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
         })
@@ -284,15 +284,15 @@ export class MainMenuLandingPageComponent implements OnInit{
     else if (this.newContent) {
       Utils.showSpinner();
       this.django.ddm_rmp_main_menu_description_text_post(this.contentForm.value).subscribe(response => {
-        let response_json = this.contentForm.value      
-        response_json["ddm_rmp_main_menu_description_text_id"] = response["data"]        
-        this.main_menu_content.push(response_json)     
+        let response_json = this.contentForm.value
+        response_json["ddm_rmp_main_menu_description_text_id"] = response["data"]
+        this.main_menu_content.push(response_json)
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
-        })        
+        })
         Utils.hideSpinner();
         this.toastr.success("New FAQ has been successfully created");
-      }, err => {        
+      }, err => {
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
         })

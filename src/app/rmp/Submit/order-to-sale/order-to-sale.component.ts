@@ -303,8 +303,6 @@ export class OrderToSaleComponent implements OnInit {
     
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
-        console.log(element);
-        
         this.lookupDateReassigning(element);
       }
     })

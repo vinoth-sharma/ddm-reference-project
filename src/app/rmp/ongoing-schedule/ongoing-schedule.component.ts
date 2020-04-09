@@ -502,8 +502,6 @@ public scheduleData = {
     if(this.scheduleData.custom_dates.length){
       this.scheduleData.custom_dates = [];
       // this.multiDateService.sendingDates = []; 
-      this.values = [];
-      this.datesSelected = []; // this clearance removes the yellow marking also
       this.toasterService.warning("All the multiple dates are removed!!")
       this.toasterService.success("Please select a new date!")
     }
@@ -524,6 +522,7 @@ public scheduleData = {
     // this.schedulingDates = this.multiDateService.sendingDates;
     if(this.schedulingDates){
     if(this.schedulingDates.length === 1){
+      // Do nothing
       // this.scheduleData.schedule_for_date = this.multiDateService.sendingDates[0].toString();
     }
     else{
@@ -575,26 +574,6 @@ public scheduleData = {
       this.isCollapsed = true;
       this.isDatePickerHidden = false;
     }
-  }
-  
-  change(value:NgbDateStruct[]){
-    if(value.length){
-      this.datesSelected=value;
-      this.dateValue = this.datesSelected[0].month + '/' + this.datesSelected[0].day + '/' + this.datesSelected[0].year;
-      this.values = [];
-      this.datesSelected.forEach(element => {
-        if(element.month === undefined ){ return }
-        this.values.push((element.month + '/' + element.day + '/' + element.year).toString());
-      });
-    }
-    else{
-      this.values = [];
-    }
-    // this.multiDateService.sendingDates = this.values;
-  }
-
-  public hideCalendar(){
-  this.calendarHide = !this.calendarHide;
   }
 
   public checkingDates(){
@@ -732,9 +711,6 @@ public scheduleData = {
   }
 
   getDuplicateMessage(data) {
-    // if (this.emails.includes(this.fruitCtrl.value)) {
-    //   this.isDuplicate = true;
-    // }  CHECKING THIS SIMILAR IMPLEMENTATION
     if (this.emails.includes(data)) {
       this.isDuplicate = true;
     }
@@ -756,11 +732,6 @@ public scheduleData = {
       this.pdfFile['nativeElement']['value'] = "";
     }
     this.fileUpload = false;
-  }
-
-
-  public triggerFileBtn() {
-    document.getElementById("valueInput").click();
   }
 
   public fetchSignatures(signatureNameStateObject? : any,callback = null) {
@@ -857,25 +828,6 @@ public scheduleData = {
       })
   };
 
-  public addTags() {
-    if (this.multipleAddresses.trim() == '') {
-        this.toasterService.error("Cannot save empty tags");
-    } else {
-        this.scheduleData.multiple_addresses.push(this.multipleAddresses);
-        this.multipleAddresses = '';
-    }
-  }
-
-  public removeTags(index) {
-    this.statusCheck = true;
-    this.exportTags.splice(index, 1);
-  }
-
-  public removeNewTags(index) {
-    this.scheduleData.multiple_addresses.splice(index, 1);
-  }
-
-
   public checkEmptyField(){
     this.isEmptyFields = false;
     if(this.scheduleData.report_name.length === 0 ){  
@@ -925,6 +877,8 @@ public scheduleData = {
       this.toasterService.error('Please provide valid description to schedule the report!');
       this.isEmptyFields = true;
     }
+
+    // TEMP fix for RMP standalone
     // else if(this.scheduleData.signature_html.length === 0){
     //   this.toasterService.error('Please select a valid signature to schedule the report!');
     //   this.isEmptyFields = true;

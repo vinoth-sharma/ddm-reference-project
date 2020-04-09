@@ -1076,10 +1076,10 @@ export class SelectReportCriteriaComponent implements OnInit {
           this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Line Status' from sidebar to complete the Request"
           this.report_id_service.changeMessage(this.message)
           Utils.hideSpinner();
-          this.toastr.success("Request created successfully with Request ID : #" + this.generated_report_id, "Success:")
+          this.toastr.success("Request created successfully with Request ID : #" + this.generated_report_id)
         }, err => {
           Utils.showSpinner();
-          this.toastr.error("Server problem encountered", "Error:")
+          this.toastr.error("Server problem encountered")
         })
       }
     }

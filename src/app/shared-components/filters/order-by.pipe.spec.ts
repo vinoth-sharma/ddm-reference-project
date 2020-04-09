@@ -1,6 +1,6 @@
 import { OrderByPipe } from './order-by.pipe';
 
-// Angular Pipe unit test cases developed by Deepak Urs G V
+// Angular Pipe unit test cases developed by Deepak Urs G V 
 
 describe('OrderByPipe', () => {
   it('create an instance', () => {

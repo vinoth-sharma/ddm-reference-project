@@ -45,7 +45,7 @@ export class HeaderComponent implements OnInit {
         this.user_role = role["role"]
         this.dataProvider.currentNotifications.subscribe((element:Array<any>) => {
           if (element) {
-               
+               console.log("element",element)
                 this.user_name = role["first_name"] + "" + role["last_name"]
                 this.user_role = role["role"]
                 this.notification_list = element.filter(element => {
@@ -57,6 +57,7 @@ export class HeaderComponent implements OnInit {
                 })
                 this.notification_set = new Set(setBuilder) 
                 this.notification_number = this.notification_set.size
+                console.log("element",this.notification_list)
           }
         })
       }

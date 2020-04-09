@@ -114,7 +114,6 @@ export class DdmAdminComponent implements OnInit {
 
   getCurrentFiles(){
     this.dataProvider.currentFiles.subscribe(ele => {
-      console.log("current file",ele)
       if (ele) {
         this.isAdmin['docs'] = []
         this.filesList = ele['list'];
@@ -128,7 +127,6 @@ export class DdmAdminComponent implements OnInit {
   }
   getCurrentTableLookupData(){
     this.dataProvider.currentlookUpTableData.subscribe(element => {
-      console.log("lookup",element)
       this.content = element;
     })
   }
@@ -170,7 +168,6 @@ export class DdmAdminComponent implements OnInit {
       this.description_text["description"] = this.namings;
       $('#edit_button').show()
       this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-        console.log("content",this.content)
         let temp_desc_text = this.content['data']['desc_text']
         temp_desc_text.map((element, index) => {
           if (element['ddm_rmp_desc_text_id'] == 9) {

@@ -131,7 +131,7 @@ export class OrderToSaleComponent implements OnInit {
   selectedItemsAllocation = [];
   dropdownSettingsAllocation = {};
   alloRadio: any;
-  allo: any;
+  allo: any = [];
   allocationFinalList = []
 
   selectedItemsMerchandize = {};
@@ -140,7 +140,7 @@ export class OrderToSaleComponent implements OnInit {
   merchandizeFinalList = [];
   merchandiseRadio: any;
   merchandizeSelecteditems: any;
-  merchandize: any;
+  merchandize: any = [];
 
   selectedItemsOrderType = [];
   dropdownSettingsOrderType = {};
@@ -513,6 +513,7 @@ export class OrderToSaleComponent implements OnInit {
 
   vehicleItemDeSelect(item: any) {
     this.vehicleIndex.splice(this.vehicleIndex.indexOf(item['ddm_rmp_lookup_dropdown_vehicle_line_brand_id']), 1)
+    
     this.vehicleSelection(this.vehicleIndex)
     this.vehicleDeSelection(this.vehicleIndex)
     this.allocationIndex = []
@@ -666,10 +667,7 @@ export class OrderToSaleComponent implements OnInit {
 
   //-----------------------------CHECKBOXES------------------------------------------------------------------------------------
 
-  DistributionEntityRadio(i,val, event) {
-
-
-    if(this.finalData.distribution_data){}
+  distributionEntityRadio(i,val, event) {
 
     let DistributionEntityId = event.target.id
     let DistributionEntityIdentifier = DistributionEntityId.charAt(6)

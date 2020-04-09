@@ -117,7 +117,7 @@
           <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let z=index">
             <td *ngFor="let subelement of radioButton; let j=index">
               <input type="radio" class="'DEinput'+j" [name]="'name'+i" [id]="'disSum'+i+j" [value]="subelement.ds_desc"
-                (change)="DistributionEntityRadio(i,element,$event)" [disabled]="disableCheck(i)">
+                (change)="distributionEntityRadio(i,element,$event)" [disabled]="disableCheck(i)">
               &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
               <!-- [checked]="Check(i,element,subelement.ds_desc)" -->
             </td>

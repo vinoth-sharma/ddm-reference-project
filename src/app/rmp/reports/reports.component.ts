@@ -514,8 +514,6 @@ export class ReportsComponent implements OnInit {
     scheduleTime = hours + ':' + minutes
 
     this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
-    // console.log("USER ID is",this.userId);
-
     //obtaining the report id of the od report from RMP reports
     this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i => i.ddm_rmp_post_report_id)
 

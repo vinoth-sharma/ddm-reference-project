@@ -7,9 +7,7 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import * as $ from "jquery";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
-import { elementAt } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 

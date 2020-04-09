@@ -19,7 +19,6 @@ export class ConstantService {
       .pipe(catchError(this.handleError));
   }
 
-
   public handleError(error: any): any {
     let errObj: any = {
       status: error.status,
@@ -31,7 +30,6 @@ export class ConstantService {
     }
     throw errObj;
   }
-
 
   public setFunctions(data: any, type: string) {
     (type === 'sql') ? this.sqlFunctions = data : this.aggFunctions = data;

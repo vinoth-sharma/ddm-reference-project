@@ -13,7 +13,7 @@ declare var $: any;
 
 import { SubmitLandingPageComponent } from './submit-landing-page.component';
 
-fdescribe('SubmitLandingPageComponent', () => {
+describe('SubmitLandingPageComponent', () => {
   let component: SubmitLandingPageComponent;
   let fixture: ComponentFixture<SubmitLandingPageComponent>;
 

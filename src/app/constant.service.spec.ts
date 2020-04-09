@@ -3,9 +3,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { ConstantService } from './constant.service';
 
-// Angular Service Unit Test Cases written by Deepak Urs G V
+//// Angular Service Unit Test Cases written by Deepak Urs G V
 
-describe('ConstantService', () => {
+fdescribe('ConstantService', () => {
   let injector: TestBed;
   let service: ConstantService;
   let httpMock: HttpTestingController;
@@ -34,15 +34,15 @@ describe('ConstantService', () => {
 
   it('should set data to "sqlFunctions" using the setFunctions()', () => {
     let testType = 'sql';
-
     service.setFunctions(data, testType);
+
     expect(service.sqlFunctions).toEqual(data);
   })
 
   it('should set data to "aggFunctions" using the setFunctions()', () => {
     let testType = 'aggregations';
-
     service.setFunctions(data, testType);
+
     expect(service.aggFunctions).toEqual(data);
   })
 

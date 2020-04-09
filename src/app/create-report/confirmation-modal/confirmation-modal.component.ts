@@ -13,7 +13,6 @@ export class ConfirmationModalComponent implements OnInit {
   option:string = "yes";
 
   ngOnInit() {
-    // console.log(this.data);
     
   }
 

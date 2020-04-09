@@ -6,14 +6,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FilterTablePipe implements PipeTransform {
   transform(items: any, filter: any, defaultFilter: boolean): any {
     if (!filter) {
-      console.log("returning because of no FILTER");
-      console.log("returning items", items)
       return items;
     }
 
     if (!Array.isArray(items)) {
-      console.log("returning because of no ARRAY");
-      console.log("returning items", items)
       return items;
     }
 
@@ -26,9 +22,6 @@ export class FilterTablePipe implements PipeTransform {
         data = data.filter(reportRow => allKeys.reduce((res, key) => res || (reportRow[key] ? reportRow[key].toString().toLowerCase().includes(globalFilter) : false), false));
       }
       data = data.filter(reportRow => keys.reduce((res, key) => res && (reportRow[key] ? reportRow[key].toString().toLowerCase().includes(filter[key].toLowerCase()) : false), true));
-
-      console.log("returning processed daat");
-      console.log("returning DATA", data)
       return data;
     }
   }

@@ -5,7 +5,7 @@ import { ConstantService } from './constant.service';
 
 //// Angular Service Unit Test Cases written by Deepak Urs G V
 
-fdescribe('ConstantService', () => {
+describe('ConstantService', () => {
   let injector: TestBed;
   let service: ConstantService;
   let httpMock: HttpTestingController;

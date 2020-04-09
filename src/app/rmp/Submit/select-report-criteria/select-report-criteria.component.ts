@@ -5,9 +5,10 @@ import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common'
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
-import { NgxSpinnerService } from "ngx-spinner";
+import Utils from '../../../../utils';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import { ToastrService } from "ngx-toastr";
+
+import { NgToasterComponent } from '../../../custom-directives/ng-toaster/ng-toaster.component';
 import { ReportCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
@@ -168,6 +169,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   self_email: string;
   onBehalf: any;
   readOnlyContentHelper = true;
+  public toastr: NgToasterComponent
 
   config = {
     toolbar: [
@@ -189,7 +191,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService, private auth_service: AuthenticationService,
     private report_id_service: GeneratedReportService,
-    private spinner: NgxSpinnerService, private toastr: ToastrService,
+    
     private reportDataService: ReportCriteriaDataService) {
     this.model = "";
     this.auth_service.myMethod$.subscribe(role => {
@@ -217,7 +219,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       if (element) {
         this.lookup_data = element
         this.getUserMarketInfo();
-        this.spinner.show()
+        Utils.showSpinner()
         this.reportDataService.getReportID().subscribe(ele => {
           this.reportId = ele;
         });
@@ -225,7 +227,7 @@ export class SelectReportCriteriaComponent implements OnInit {
           this.userMarketSelections = element;
           this.userSelectionInitialisation();
         }, err => {
-          this.spinner.hide()
+          Utils.showSpinner()
         })
 
         if (this.lookup) {
@@ -315,7 +317,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   content_edits() {
     if (!this.textChange || this.enableUpdateData) {
-      this.spinner.show()
+      Utils.showSpinner()
       this.editModes = false;
       this.readOnlyContentHelper = true;
       this.description_texts['description'] = this.namings;
@@ -333,9 +335,9 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.editModes = false;
         this.ngOnInit()
         this.original_contents = this.namings;
-        this.spinner.hide()
+        Utils.hideSpinner()
       }, err => {
-        this.spinner.hide()
+        Utils.hideSpinner()
       })
     } else {
       this.toastr.error("please enter the data");
@@ -373,7 +375,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   updateSelections() {
-    this.spinner.show();
+    Utils.showSpinner()
 
     if (this.selectedItems_report.length < 1) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Select at least one market to proceed forward</h5>";
@@ -394,7 +396,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       }
       else {
 
-        this.spinner.show()
+        Utils.showSpinner()
         this.jsonUpdate["report_id"] = localStorage.getItem('report_id')
         this.report_id_service.changeSelection(this.jsonUpdate["report_id"])
         this.jsonUpdate["market_selection"] = this.selectedItems_report
@@ -454,16 +456,16 @@ export class SelectReportCriteriaComponent implements OnInit {
 
     this.django.ddm_rmp_report_market_selection(this.jsonUpdate).subscribe(response => {
       this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
-      this.spinner.hide();
+      Utils.hideSpinner()
       this.toastr.success("Request updated successfully.")
     }, err => {
-      this.spinner.hide();
+      Utils.hideSpinner();
       this.toastr.error("Connection Problem")
     })
   }
 
   getUserMarketInfo() {
-    this.spinner.show()
+    Utils.showSpinner()
     this.dropdownList_report = this.lookup_data['market_data'].sort((a, b) => a.market > b.market ? 1 : -1);
     this.divisiondropdownList_report = this.lookup_data['division_data'].sort((a, b) => a.division_desc > b.division_desc ? 1 : -1);
     this.regiondropdownList_report = this.lookup_data['region_data'].sort((a, b) => a.region_desc > b.region_desc ? 1 : -1);
@@ -602,7 +604,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
     }
     else {
-      this.spinner.hide();
+      Utils.hideSpinner()
     }
 
     this.special_identifier = this.lookup.data.special_identifiers
@@ -676,7 +678,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       this.reportCriteriaCheckbox(localStorage.getItem('report_id'));
     }
     else {
-      this.spinner.hide()
+      Utils.hideSpinner()
     }
   }
 
@@ -1019,7 +1021,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         document.getElementById("errorTrigger").click()
       }
       else {
-        this.spinner.show()
+        Utils.showSpinner()
         this.jsonfinal["market_selection"] = this.selectedItems_report
         this.jsonfinal["division_selection"] = this.divisionselectedItems_report
         this.jsonfinal["country_region_selection"] = this.regionselectedItems_report
@@ -1073,11 +1075,11 @@ export class SelectReportCriteriaComponent implements OnInit {
           this.message = "Report " + " #" + localStorage.getItem('report_id') + " generated."
           this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Line Status' from sidebar to complete the Request"
           this.report_id_service.changeMessage(this.message)
-          this.spinner.hide();
-          this.toastr.success("Request created successfully with Request ID : #" + this.generated_report_id, "Success:")
+          Utils.hideSpinner();
+          this.toastr.success("Request created successfully with Request ID : #" + this.generated_report_id)
         }, err => {
-          this.spinner.hide()
-          this.toastr.error("Server problem encountered", "Error:")
+          Utils.showSpinner();
+          this.toastr.error("Server problem encountered")
         })
       }
     }
@@ -1141,7 +1143,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     if (report_id = localStorage.getItem('report_id') != null) {
       report_id = localStorage.getItem('report_id')
     }
-    this.spinner.show();
+    Utils.showSpinner()
     this.django.get_report_description(report_id).subscribe(element => {
       console.log(element);
       if(element['status'] == "Incomplete" || element['status'] == "Active" || 
@@ -1364,7 +1366,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       }
       catch (err) {
       }
-      this.spinner.hide()
+      Utils.hideSpinner()
     });
   }
 

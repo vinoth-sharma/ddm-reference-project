@@ -1,6 +1,6 @@
 <div class="container-fluid save-bar">
   <div class="row">
-    <div class="col-sm-5" style="padding-left:0px; padding-top:5px;">
+    <div class="col-sm-9" style="padding-left:0px; padding-top:5px;">
       <div class="row header">
         Vehicle Event Status
       </div>
@@ -12,23 +12,23 @@
         Please select at least one 'Type of Data'
       </span>
     </div>
-    <div class="col-sm-3">
-    </div>
-    <div class="col-sm-1 dealer-allo">
-      <svg style="width:48px;height:36px;padding-top:7%;" viewBox="0 0 24 24" (click)="back()">
-        <path id="back_icon" fill="#000000"
-          d="M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M18,11H10L13.5,7.5L12.08,6.08L6.16,12L12.08,17.92L13.5,16.5L10,13H18V11Z" />
-      </svg>
-    </div>
-    <div class="col-sm-2 dealer-allo">
-      <button (click)="validateInput()" data-toggle="modal" data-target="#order-review-selection" mat-button
+    <div class="col-sm-3 dealer-allo">
+      <div class="flex-box">
+        <svg style="width: 33px;" viewBox="0 0 24 24" (click)="back()">
+          <path id="back_icon" fill="#000000"
+            d="M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M18,11H10L13.5,7.5L12.08,6.08L6.16,12L12.08,17.92L13.5,16.5L10,13H18V11Z" />
+        </svg>
+        <button data-target="#helpModal" data-toggle="modal"  class="help-icon">
+          <a data-toggle="tooltip" title="HELP">
+            <i id="ic" class="material-icons" style="font-size: 33px;">help_outline</i>
+          </a>
+        </button>
+      </div>
+      <div class="row">
+        <button (click)="validateInput()" data-toggle="modal" data-target="#order-review-selection" mat-button
         class="review btn btn-primary">Review
         And Submit</button>
-    </div>
-    <div class="col-sm-1 dealer-allo press">
-      <button data-target="#helpModal" data-toggle="modal" style="padding-right:0px;">
-        <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
-      </button>
+      </div>
     </div>
   </div>
 </div>
@@ -58,10 +58,10 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="modelYearSelectedItems"
+          <angular4-multiselect class="dropdown"  [data]="modelYearSelectedItems"
             [(ngModel)]="selectedItemsModelYear" [settings]="dropdownSettingsModelYear"
             (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
-          </ng-multiselect-dropdown>
+          </angular4-multiselect>
         </div>
       </div>
       <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
@@ -77,11 +77,11 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="vehicleDataSelecteditems"
+          <angular4-multiselect class="dropdown" [data]="vehicleDataSelecteditems"
             [(ngModel)]="selectedItemsVehicleLine" [settings]="dropdownSettingsVehicleLine"
             (onSelect)="vehicleItemSelect($event)" (onDeSelect)="vehicleItemDeSelect($event)"
             (onSelectAll)="vehicleSelectAll($event)" (onDeSelectAll)="vehicleDeSelectAll($event)">
-          </ng-multiselect-dropdown>
+          </angular4-multiselect>
         </div>
       </div>
       <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
@@ -117,7 +117,7 @@
           <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let z=index">
             <td *ngFor="let subelement of radioButton; let j=index">
               <input type="radio" class="'DEinput'+j" [name]="'name'+i" [id]="'disSum'+i+j" [value]="subelement.ds_desc"
-                (change)="DistributionEntityRadio(i,element,$event)" [disabled]="disableCheck(i)">
+                (change)="distributionEntityRadio(i,element,$event)" [disabled]="disableCheck(i)">
               &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
               <!-- [checked]="Check(i,element,subelement.ds_desc)" -->
             </td>
@@ -130,10 +130,10 @@
             </td>
             <td class="col-sm-4">
               <tr>
-                <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="orderTypeSelecteditems"
+                <angular4-multiselect class="dropdown" [data]="orderTypeSelecteditems"
                   [(ngModel)]="selectedItemsOrderType" [settings]="dropdownSettingsOrderType"
                   (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
-                </ng-multiselect-dropdown>  
+                </angular4-multiselect>  
               </tr>
               <tr>
                 <i style="font-size: 12px;">For Fleet you must specify Order Type, and for others it is optional</i>
@@ -163,11 +163,11 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="allocationFinalList"
+              <angular4-multiselect class="dropdown"  [data]="allocationFinalList"
                 [(ngModel)]="selectedItemsAllocation" [settings]="dropdownSettingsAllocation"
                 (onSelect)="allocationItemsSelect($event)" (onDeSelect)="allocationItemDeSelect($event)"
                 (onDeSelectAll)="allocationDeSelectAll($event)" (onSelectAll)="allocationSelectAll($event)">
-              </ng-multiselect-dropdown>
+              </angular4-multiselect>
             </div>
           </div>
           <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
@@ -186,9 +186,9 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="merchandizeFinalList"
+              <angular4-multiselect class="dropdown" [data]="merchandizeFinalList"
                 [(ngModel)]="merchandizeItemsSelect" [settings]="dropdownSettingsMerchandize">
-              </ng-multiselect-dropdown>
+              </angular4-multiselect>
             </div>
           </div>
           <div class="row pad5" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
@@ -232,12 +232,6 @@
                 <option disabled selected value> --select-- </option>
                 <option *ngFor="let ele of dropdownOptions" value={{ele}}>{{ele}}</option>
               </select>
-              <!-- <ngx-select-dropdown id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-                (ngModelChange)="selectionChanged(element.ddm_rmp_lookup_ots_checkbox_values_id,$event)"
-                [multiple]="false" [(ngModel)]="dataModel" [config]="config" [options]="dropdownOptions"
-                [disabled]="targetProd">
-                {{dataModel}}
-              </ngx-select-dropdown> -->
             </div>
           </tr>
           </td>
@@ -328,7 +322,7 @@
                 <td *ngIf="i%2==0">
                   <input id="gross" (click)="CheckboxCheck(element,$event)"
                     value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
-                  <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
+                  <span [title]="element.tooltip?element.tooltip:''">{{element.field_values}}</span>
                 </td>
               </tr>
             </td>
@@ -337,7 +331,7 @@
               <td *ngIf="i%2!=0">
                 <input id="gross" (click)="CheckboxCheck(element,$event)"
                   value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
-                <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
+                <span [title]="element.tooltip?element.tooltip:''">{{element.field_values}}</span>
               </td>
             </tr>
           </td>
@@ -353,37 +347,31 @@
         </thead>
         <tbody>
           <tr class="d-flex" *ngFor="let element of dospDataAvailable">
-            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)"
+            <td class="col-sm-12">
+              <input (click)="CheckboxCheck(element,$event)"
                 value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
                 type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
           </tr>
-          <tr class="d-flex">
-            <td class="col-sm-6">Start Date:
-              <input name="fromDateDOSP" type="text" value="{{ customizedFromDateDOSP }}" id="fromDateDOSP"
-                disabled="disabled" style="max-width:50%">
+          <tr class="d-flex" *ngIf="!dosp_calendar_flag">
+            <td class="col-sm-6">
+                <mat-form-field>
+                  <mat-label>Start Date:</mat-label>
+                  <input matInput [matDatepicker]="fromDpDOSP" [formControl]="fromDateDOSP"
+                         (dateChange)="onDOSPDateSelection()" textEditable="false">
+                  <mat-datepicker-toggle matSuffix [for]="fromDpDOSP"></mat-datepicker-toggle>
+                  <mat-datepicker #fromDpDOSP></mat-datepicker>
+                </mat-form-field>
             </td>
-            <td class="col-sm-6">End Date:
-              <input name="toDateDOSP" type="text" value="{{ customizedToDateDOSP }}" id="toDateDOSP"
-                disabled="disabled" style="max-width:50%">
+            <td class="col-sm-6">
+                <mat-form-field >
+                  <mat-label>End Date:</mat-label>
+                  <input matInput [matDatepicker]="toDpDOSP" [formControl]="toDateDOSP" 
+                          [disabled]="!fromDateDOSP.value" [min]="minDate" textEditable="false"
+                         (dateChange)="onDOSPDateSelection()">
+                  <mat-datepicker-toggle matSuffix [for]="toDpDOSP"></mat-datepicker-toggle>
+                  <mat-datepicker #toDpDOSP></mat-datepicker>
+                </mat-form-field>
             </td>
-          </tr>
-          <tr class="d-flex">
-            <td class="col-sm-2"></td>
-            <td class="col-sm-8">
-              <div id="calendarsDOSP" [hidden]=dosp_calendar_flag>
-                <ngb-datepicker #dp (select)="onDateSelectionDOSP($event)" [displayMonths]="2" [dayTemplate]="t"
-                  outsideDays="hidden">
-                </ngb-datepicker>
-                <ng-template #t let-date let-focused="focused">
-                  <span class="custom-day" [class.focused]="focused" [class.range]="isRangeDOSP(date)"
-                    [class.faded]="isHoveredDOSP(date) || isInsideDOSP(date)" (mouseenter)="hoveredDateDOSP = date"
-                    (mouseleave)="hoveredDateDOSP = null">
-                    {{ date.day }}
-                  </span>
-                </ng-template>
-              </div>
-            </td>
-            <td class="col-sm-2"></td>
           </tr>
         </tbody>
       </table>
@@ -400,7 +388,7 @@
           <tr class="d-flex" *ngFor="let element of salesDataAvailable">
             <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)"
                 value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
-              <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
+              <span [title]="element.tooltip?element.tooltip:''">{{element.field_values}}</span>
             </td>
           </tr>
         </tbody>
@@ -424,10 +412,10 @@
           <tr class="row order-event">
             <div class="col-sm-12">
               <td>Order Event:</td>
-              <ng-multiselect-dropdown class="dropdown keyData" [placeholder]="'Search'" [data]="orderEvent"
+              <angular4-multiselect class="dropdown keyData"  [data]="orderEvent"
                 [(ngModel)]="selectedItemsOrderEvent" [settings]="dropdownSettingsOrderEvent"
                 (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
-              </ng-multiselect-dropdown>
+              </angular4-multiselect>
             </div>
           </tr>
           <tr>
@@ -454,32 +442,29 @@
           <tr class="d-flex">
             <td class="col-sm-12"><i>Please select an order event to specify the date range</i></td>
           </tr>
-          <tr class="d-flex">
-            <td class="col-sm-6">Start Date:
-              <input name="fromDate" type="text" value="{{ customizedFromDate }}" id="fromDate" textEditable="false"
-                style="max-width:50%" disabled="disabled">
-            </td>
-            <td class="col-sm-6">End Date:
-              <input name="toDate" type="text" value="{{ customizedToDate }}" id="toDate" disabled="disabled"
-                style="max-width:50%">
-            </td>
-          </tr>
-          <tr class="d-flex">
-            <td class="col-sm-12">
-              <div id="calendars" *ngIf="selectedItemsOrderEvent.length>0">
+          <tr class="d-flex" *ngIf="selectedItemsOrderEvent.length>0">
+            <td class="col-sm-6">
+                <mat-form-field >
+                  <mat-label>Start Date:</mat-label>
+                  <input matInput [matDatepicker]="fromOrderEvent" [formControl]="fromDate" 
+                          textEditable="false"
+                         (dateChange)="onOrderEventdateSelection()">
+                  <mat-datepicker-toggle matSuffix [for]="fromOrderEvent"></mat-datepicker-toggle>
+                  <mat-datepicker #fromOrderEvent></mat-datepicker>
+                </mat-form-field>
 
-                <ngb-datepicker #dp (select)="onDateSelection($event)" [(ngModel)]="dateSelect" [displayMonths]="2" [dayTemplate]="t"
-                  outsideDays="hidden">
-                </ngb-datepicker>
 
-                <ng-template #t let-date let-focused="focused">
-                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
-                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
-                    (mouseleave)="hoveredDate = null">
-                    {{ date.day }}
-                  </span>
-                </ng-template>
-              </div>
+
+            </td>
+            <td class="col-sm-6">
+                <mat-form-field >
+                  <mat-label>End Date:</mat-label>
+                  <input matInput [matDatepicker]="toOrderEvent" [formControl]="toDate" 
+                          [disabled]="!fromDate.value" [min]="minOrderEventDate" textEditable="false"
+                         (dateChange)="onOrderEventdateSelection()">
+                  <mat-datepicker-toggle matSuffix [for]="toOrderEvent"></mat-datepicker-toggle>
+                  <mat-datepicker #toOrderEvent></mat-datepicker>
+                </mat-form-field>
             </td>
           </tr>
         </tbody>
@@ -901,7 +886,6 @@
 </pre>
 
 <!-----------------------Error Modal----------------------->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <!-- <a id="errorOtsTrigger" role="button" data-toggle="modal" data-target="#errorOtsRequest" style="display:none">Error</a> -->
 <div id="errorOtsRequest" class="modal fade" role="dialog" tabindex="-1">
   <div class="modal-dialog" role="document">

@@ -20,7 +20,6 @@ import { SharedComponentsModule } from '../shared-components/shared-components.m
 // import { MatFormFieldModule, MatAutocomplete, MatCheckbox, MatCheckboxModule } from '@angular/material';
 import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
 import { InputValidatorDirective } from "./input-validator.directive";
-import { MultiSelectComponent } from "../custom-directives/multi-select/multi-select.component";
 import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
 import { MaterialModule } from "../material.module";
 import {MatSliderModule} from '@angular/material/slider';
@@ -128,7 +127,6 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
     SelectSheetComponent,
     SaveSheetDialogComponent,
     InputValidatorDirective,
-    MultiSelectComponent,
     PreviewTableContainerComponent,
     CalculatedColumnComponent,
     ConfirmationModalComponent

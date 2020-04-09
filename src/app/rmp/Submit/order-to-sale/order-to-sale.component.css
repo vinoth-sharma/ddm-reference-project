@@ -166,8 +166,8 @@ button {
   margin-right: initial;
   margin-left: initial;
   width: 100%;
-  margin-top: 1%;
-  margin-bottom: 1%;
+  /* margin-top: 1%;
+  margin-bottom: 1%; */
 }
 
 .div-radio {
@@ -335,11 +335,18 @@ svg {
   padding: 3px;
 }
 
-.press button {
+.help-icon {
+  width: auto;
   background: transparent;
   border: none;
 }
 
 ::ng-deep .quillEditor .quill .ql-container .ql-editor {
   max-height: 300px;
+}
+
+.flex-box{
+  display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }

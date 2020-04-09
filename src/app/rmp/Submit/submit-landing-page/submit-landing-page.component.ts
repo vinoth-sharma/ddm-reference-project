@@ -5,12 +5,12 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
-import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
+
 import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 declare var jsPDF: any;
-import { FormGroup, FormControl } from '@angular/forms';
+import Utils from '../../../../utils';
 
 @Component({
   selector: 'app-submit-landing-page',
@@ -20,77 +20,77 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class SubmitLandingPageComponent implements OnInit {
 
   public closeModal;
-  naming: string = "Loading";
-  message: string;
-  check: boolean;
-  contentForm;
-  loading = false;
-  textChange = false;
-  editMode: Boolean;
-  description_text = {
+  public naming: string = "Loading";
+  public message: string;
+  public check: boolean;
+  public contentForm;
+  public loading = false;
+  public textChange = false;
+  public editMode: Boolean;
+  public description_text = {
     "ddm_rmp_desc_text_id": 3,
     "module_name": "Submit Request",
     "description": ""
   };
 
-  description_text_disclaimer = {
+  public description_text_disclaimer = {
     "ddm_rmp_desc_text_id": 15,
     "module_name": "Disclaimer",
     "description": ""
   }
 
-  date: any;
-  discMandate;
-  finalData = {
+  public date: any;
+  public discMandate;
+  public finalData = {
     'disclaimer_ack': ""
   };
-  saved_timestamp: any;
-  disclaimer_timestamp: any;
-  saved_date: string;
-  disclaimer_message: string;
-  disclaimer_date: string;
-  saved;
-  original_content;
-  pdfGenerationProgress: number;
+  public saved_timestamp: any;
+  public disclaimer_timestamp: any;
+  public saved_date: string;
+  public disclaimer_message: string;
+  public disclaimer_date: string;
+  public saved;
+  public original_content;
+  public pdfGenerationProgress: number;
 
-  contents;
-  enable_edits = false
-  editModes = false;
-  editModes_disc = false;
-  readOnlyContent = true;
-  readOnlyContentDisclaimer = true;
-  readOnlyContentHelper = true;
-  original_contents;
-  original_contents_disclaimer;
-  namings: string = "Loading";
-  naming_disclaimer = "Loading";
-  check_disclaimer_status: boolean = false;
-  check_saved_status: boolean;
-  enableUpdateData = false;
+  public contents;
+  public enable_edits = false
+  public editModes = false;
+  public editModes_disc = false;
+  public readOnlyContent = true;
+  public readOnlyContentDisclaimer = true;
+  public readOnlyContentHelper = true;
+  public original_contents;
+  public original_contents_disclaimer;
+  public namings: string = "Loading";
+  public naming_disclaimer = "Loading";
+  public check_disclaimer_status: boolean = false;
+  public check_saved_status: boolean;
+  public enableUpdateData = false;
 
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  description_texts = {
+  public parentsSubject: Rx.Subject<any> = new Rx.Subject();
+  public description_texts = {
     "ddm_rmp_desc_text_id": 14,
     "module_name": "Help_SubmitRequest",
     "description": ""
   }
 
-  content_disc;
-  enable_edit_disc = false
-  editModess = false;
-  original_content_disc;
-  namingss: string = "Loading";
+  public content_disc;
+  public enable_edit_disc = false
+  public editModess = false;
+  public original_content_disc;
+  public namingss: string = "Loading";
 
-  parentsSubjectss: Rx.Subject<any> = new Rx.Subject();
-  description_textss = {
+  public parentsSubjectss: Rx.Subject<any> = new Rx.Subject();
+  public description_textss = {
     "ddm_rmp_desc_text_id": 15,
     "module_name": "Disclaimer",
     "description": ""
   }
-  user_role: string;
-  today: string;
+  public user_role: string;
+  public today: string;
 
-  config = {
+  public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
@@ -115,10 +115,10 @@ export class SubmitLandingPageComponent implements OnInit {
         this.user_role = role["role"]
       }
     })
-  // Conflicting change
-  //   this.contentForm = new FormGroup({
-  //     contentForm: new FormControl()
-  //  });
+    // Conflicting change for test case :: DO NOT DELETE
+    //   this.contentForm = new FormGroup({
+    //     contentForm: new FormControl()
+    //  });
   }
 
   notify() {
@@ -253,7 +253,7 @@ export class SubmitLandingPageComponent implements OnInit {
 
   content_edits() {
     if (!this.textChange || this.enableUpdateData) {
-      // // this.spinner.show()
+      Utils.showSpinner();
       this.editModes = false;
       this.readOnlyContentHelper = true;
       this.description_texts['description'] = this.namings;
@@ -272,9 +272,9 @@ export class SubmitLandingPageComponent implements OnInit {
         this.ngOnInit();
         this.original_contents = this.namings;
         this.toaster.success("Updated Successfully");
-        // this.spinner.hide()
+        Utils.hideSpinner()
       }, err => {
-        // this.spinner.hide()
+        Utils.hideSpinner()
         this.toaster.error("Server Error");
       })
     } else {
@@ -295,7 +295,7 @@ export class SubmitLandingPageComponent implements OnInit {
 
   content_edit() {
     if (!this.textChange || this.enableUpdateData) {
-      // this.spinner.show()
+      Utils.showSpinner()
       this.editMode = false;
       this.readOnlyContent = true;
       $('#edit_button').show();
@@ -312,10 +312,10 @@ export class SubmitLandingPageComponent implements OnInit {
         this.dataProvider.changelookUpTableData(this.saved);
         this.editModes_disc = false;
         this.ngOnInit();
-        // this.spinner.hide();
+        Utils.hideSpinner();
         this.toaster.success("Data updated");
       }, err => {
-        // this.spinner.hide();
+        Utils.hideSpinner();
         this.toaster.error("Server Error");
       })
     } else {
@@ -340,7 +340,7 @@ export class SubmitLandingPageComponent implements OnInit {
 
   disclaimer_confirmation() {
     if (!this.textChange || this.enableUpdateData) {
-      // this.spinner.show();
+      Utils.showSpinner();
       this.editModes_disc = false;
       this.readOnlyContentDisclaimer = true;
       $('#edit_button').show()
@@ -364,10 +364,8 @@ export class SubmitLandingPageComponent implements OnInit {
         this.editModes_disc = false;
         this.ngOnInit();
         this.toaster.success("Updated Successfully");
-        // this.spinner.hide();
         $("#disclaimerConfirmationModal").modal("hide");
       }, err => {
-        // this.spinner.hide()
         this.toaster.error("Server Error:")
       })
     } else {
@@ -387,7 +385,7 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   checkDisclaimer() {
-    // this.spinner.show()
+    Utils.showSpinner()
     this.django.getLookupValues().subscribe(data => {
       this.saved = data
     })
@@ -401,7 +399,7 @@ export class SubmitLandingPageComponent implements OnInit {
         this.django.getLookupValues().subscribe(data => {
           this.saved = data
           $('#disclaimer-modal').modal('hide');
-          // this.spinner.hide()
+          Utils.hideSpinner()
           this.toaster.success("Disclaimers Acknowledged")
         })
       }, err => {

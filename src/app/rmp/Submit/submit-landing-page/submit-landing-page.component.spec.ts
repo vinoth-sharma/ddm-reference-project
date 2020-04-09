@@ -1,31 +1,27 @@
-// import '../polyfills.ts';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-// import { InjectionToken } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuillModule, QuillEditorComponent } from "ngx-quill";
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatePipe } from '@angular/common';
-import { By } from '@angular/platform-browser';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-// import { MaterialModule } from '.'
 declare var $: any;
 
 import { SubmitLandingPageComponent } from './submit-landing-page.component';
 
-describe('SubmitLandingPageComponent', () => {
+//// Angular unit test cases written by Deepak Urs G V
+fdescribe('SubmitLandingPageComponent', () => {
   let component: SubmitLandingPageComponent;
   let fixture: ComponentFixture<SubmitLandingPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports : [ QuillModule.forRoot(), FormsModule, ReactiveFormsModule, RouterTestingModule, HttpClientTestingModule, MatSnackBarModule],
-      declarations: [ SubmitLandingPageComponent ],
-      providers : [ DatePipe, QuillEditorComponent ]
-      // QuillModule,
-      // exports : [ InjectionToken ]
+      imports: [QuillModule.forRoot(), FormsModule, ReactiveFormsModule, RouterTestingModule, HttpClientTestingModule, MatSnackBarModule],
+      declarations: [SubmitLandingPageComponent],
+      providers: [DatePipe, QuillEditorComponent]
+
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -42,7 +38,6 @@ describe('SubmitLandingPageComponent', () => {
     component.notify();
     expect(component.enable_edits).toBeTruthy();
     expect(component.editModes).toBeTruthy();
-    // expect(component.parentsSubject).toEqual(component.enable_edits) // TO BE CHECKED
   })
 
   it('should check notify_disc() parameters after activation', () => {
@@ -56,23 +51,23 @@ describe('SubmitLandingPageComponent', () => {
     expect(document.getElementById('disclaimer-modal').style.overflowY).toEqual('hidden');
   })
 
-  it('should test the changing of text and respective parameters',()=>{
-    let testEvent = { text : 'Hello world!'};
+  it('should test the changing of text and respective parameters', () => {
+    let testEvent = { text: 'Hello world!' };
     component.textChanged(testEvent);
 
     expect(component.textChange).toEqual(true);
     expect(component.enableUpdateData).toEqual(true);
   })
 
-  it('should test the changing of text and respective parameters',()=>{
-    let testEvent = { text : ' '};
+  it('should test the changing of text and respective parameters', () => {
+    let testEvent = { text: ' ' };
     component.textChanged(testEvent);
 
     expect(component.textChange).toEqual(true);
     expect(component.enableUpdateData).toEqual(false);
   })
 
-  it('should test the edit_True parameters',()=>{
+  it('should test the edit_True parameters', () => {
     component.editModes = true;
 
     component.edit_True();
@@ -82,21 +77,21 @@ describe('SubmitLandingPageComponent', () => {
     expect(component.namings).toEqual(component.original_contents);
   })
 
-  it('should check the parameters of the edit_True_disclaimer() being called',()=>{
+  it('should check the parameters of the edit_True_disclaimer() being called', () => {
     component.editModes_disc = true;
     component.content_edit_disclaimer();
     fixture.detectChanges();
 
     expect(component.editModes_disc).toEqual(true);
     expect(component.readOnlyContentDisclaimer).toEqual(true);
-    
+
   })
 
-  it('should check the parameters of the edit_True_disclaimer() being called',()=>{
+  it('should check the parameters of the edit_True_disclaimer() being called', () => {
     component.editModes_disc = false;
     component.content_edit_disclaimer();
     fixture.detectChanges();
-    
+
     expect(component.readOnlyContentDisclaimer).toEqual(true);
     expect(component.editModes_disc).toEqual(false);
   })

@@ -22,7 +22,7 @@ import { ScheduleService } from 'src/app/schedule/schedule.service';
 // })
 // class testingComponent { }
 
-fdescribe('OngoingScheduleComponent', () => {
+describe('OngoingScheduleComponent', () => {
   let component: OngoingScheduleComponent;
   let fixture: ComponentFixture<OngoingScheduleComponent>;
   let dataService;

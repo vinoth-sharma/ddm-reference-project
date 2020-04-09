@@ -13,7 +13,7 @@ declare var $: any;
 
 import { SubmitLandingPageComponent } from './submit-landing-page.component';
 
-describe('SubmitLandingPageComponent', () => {
+fdescribe('SubmitLandingPageComponent', () => {
   let component: SubmitLandingPageComponent;
   let fixture: ComponentFixture<SubmitLandingPageComponent>;
 
@@ -49,7 +49,6 @@ describe('SubmitLandingPageComponent', () => {
     component.notify_disc();
     expect(component.enable_edit_disc).toBeTruthy();
     expect(component.editModes_disc).toBeTruthy();
-    // expect($.hide()).toHaveBeenCalled(); // TO BE CHECKED
   })
 
   it('should check openDisclaimerModal() parameters after activation', () => {
@@ -57,14 +56,9 @@ describe('SubmitLandingPageComponent', () => {
     expect(document.getElementById('disclaimer-modal').style.overflowY).toEqual('hidden');
   })
 
-  it('should check closeDisclaimerModal() parameters after activation', () => {
-    // component.closeDisclaimerModal(); // throwing error
-    // expect(document.getElementById('disclaimer-modal').style.overflowY).toEqual('auto');
-  })
-
   it('should test the changing of text and respective parameters',()=>{
     let testEvent = { text : 'Hello world!'};
-    component.textChanged(testEvent); //or an event tracking check?
+    component.textChanged(testEvent);
 
     expect(component.textChange).toEqual(true);
     expect(component.enableUpdateData).toEqual(true);
@@ -78,17 +72,6 @@ describe('SubmitLandingPageComponent', () => {
     expect(component.enableUpdateData).toEqual(false);
   })
 
-  // edit_True() {
-  //   if (this.editModes) {
-  //     this.readOnlyContentHelper = true;
-  //   } else {
-  //     this.readOnlyContentHelper = false;
-  //   }
-  //   this.editModes = !this.editModes;
-  //   this.namings = this.original_contents;
-  //   $('#edit_button').show()
-  // }
-
   it('should test the edit_True parameters',()=>{
     component.editModes = true;
 
@@ -99,35 +82,12 @@ describe('SubmitLandingPageComponent', () => {
     expect(component.namings).toEqual(component.original_contents);
   })
 
-  // DECIDE THE BUTTON CLICK
-  // it('should test the call of content_edit_disclaimer',()=>{
-  //   spyOn(component,'content_edit_disclaimer');
-
-  //   let button = fixture.debugElement.nativeElement.querySelector('.save-test-ddm-tid');
-  //   button.click();
-
-  //   fixture.whenStable().then(()=> {
-  //     expect(component.content_edit_disclaimer).toHaveBeenCalled();
-  //   })
-  // })
-
-  // edit_True_disclaimer() {
-  //   if (this.editModes_disc) {
-  //     this.readOnlyContentDisclaimer = true;
-  //   } else {
-  //     this.readOnlyContentDisclaimer = false;
-  //   }
-  //   this.editModes_disc = !this.editModes_disc;
-  //   this.naming_disclaimer = this.original_contents_disclaimer;
-  //   $('#edit_button').show()
-  // }
-
   it('should check the parameters of the edit_True_disclaimer() being called',()=>{
     component.editModes_disc = true;
     component.content_edit_disclaimer();
     fixture.detectChanges();
 
-    expect(component.editModes_disc).toEqual(false);
+    expect(component.editModes_disc).toEqual(true);
     expect(component.readOnlyContentDisclaimer).toEqual(true);
     
   })
@@ -137,8 +97,8 @@ describe('SubmitLandingPageComponent', () => {
     component.content_edit_disclaimer();
     fixture.detectChanges();
     
-    expect(component.readOnlyContentDisclaimer).toEqual(false);
-    expect(component.editModes_disc).toEqual(true);
+    expect(component.readOnlyContentDisclaimer).toEqual(true);
+    expect(component.editModes_disc).toEqual(false);
   })
 
 });

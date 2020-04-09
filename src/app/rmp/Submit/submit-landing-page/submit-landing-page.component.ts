@@ -224,11 +224,6 @@ export class SubmitLandingPageComponent implements OnInit {
     })
   }
 
-  // Not being used
-  // navigate() {
-  //   this.router.navigate(["/user/main/user-profile"]);
-  // }
-
   disclaimerNotAcknowledged() {
     $('#disclaimer-modal').modal('show');
     this.disclaimer_message = "Acknowledgement Required";

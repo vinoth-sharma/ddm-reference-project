@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { QuillModule } from 'ngx-quill';
 import { DealerAllocationComponent } from './dealer-allocation.component';
 import { DjangoService } from '../../django.service';
@@ -29,6 +29,8 @@ describe('DealerAllocationComponent', () => {
     })
       .compileComponents();
   }));
+
+   //Unit test cases written by Aneesha Biju
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DealerAllocationComponent);
@@ -81,16 +83,6 @@ describe('DealerAllocationComponent', () => {
     let component = fixture.componentInstance;
     component.printDiv();
   }));
-
-  // printDiv() {
-  //   this.restorepage = document.body.innerHTML;
-  //   this.printcontent = document.getElementById('editable').innerHTML;
-  //   document.body.innerHTML = this.printcontent;
-  //   window.print();
-  //   document.body.innerHTML = this.restorepage;
-  //   location.reload(true);
-  // }
-
 
   it('textChanged() should check if text is updated', () => {
     let data = { text: "Has text been updated" };

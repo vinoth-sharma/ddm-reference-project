@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
@@ -350,10 +349,6 @@ export class DealerAllocationComponent implements OnInit {
       this.toastr.error("Please enter the data");
     }
   }
-
-  //   ddm_rmp_desc_text_id: 11
-  // module_name: "Help_DealerAllocation"
-  // description: "<p>Testing Musigma@123456789 xm,nm,nv,nmv,,ksd
 
   edit_True() {
     this.editModes = false;

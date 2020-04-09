@@ -14,7 +14,6 @@ import Utils from 'src/utils';
 import { Location } from "@angular/common";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
-// import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('MainMenuLandingPageComponent', () => {
   let component: MainMenuLandingPageComponent;
@@ -34,7 +33,8 @@ describe('MainMenuLandingPageComponent', () => {
     })
       .compileComponents();
   }));
-  // MatSnackBarModule, MatSnackBar,
+
+  //Unit test cases written by Aneesha Biju
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MainMenuLandingPageComponent);
@@ -76,7 +76,6 @@ describe('MainMenuLandingPageComponent', () => {
     let spy = spyOn(djangoService, "ddm_rmp_main_menu_description_text_post").and.returnValue(of({ data: { key: "value" } }))
     spyOn(component, 'ngOnInit');
     let toastrSpy = spyOn(toastr, "success");
-    // component.main_menu_content = [{ddm_rmp_main_menu_description_text_id: 12,question: "ABC?",answer: "Ans",link_title_url:{title: "a", link: "hi"}}];
     component.newContent = true;
     component.main_menu_content = []
     component.saveChanges();
@@ -103,7 +102,6 @@ describe('MainMenuLandingPageComponent', () => {
     let toastr = TestBed.get(NgToasterComponent);
     let tosterSpy = spyOn(toastr, "success")
     let djangoSpy = spyOn(djangoService, "ddm_rmp_main_menu_description_text_delete").and.returnValue(of({}));
-    // fixture.detectChanges();
     component.active_content_id = 12;
     component.main_menu_content = [{ ddm_rmp_main_menu_description_text_id: 12, question: "ABC?", answer: "Ans", link_title_url: { title: "a", link: "hi" } }]
     component.delete_confirmation();
@@ -131,7 +129,6 @@ describe('MainMenuLandingPageComponent', () => {
     dataProviderService.changelookUpTableData();
     expect(component.editModes).toBeFalsy();
     spyOn(component, 'ngOnInit');
-    // component.content['data']['desc_text'] = "abc";
     component.original_content = component.naming;
     expect(component.original_content).toEqual("abc");
     expect(tosterSpy).toHaveBeenCalled();

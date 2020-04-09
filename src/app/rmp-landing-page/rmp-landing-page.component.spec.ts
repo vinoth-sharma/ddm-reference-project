@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RmpLandingPageComponent } from './rmp-landing-page.component';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
@@ -15,6 +15,8 @@ describe('RmpLandingPageComponent', () => {
     })
       .compileComponents();
   }));
+
+   //Unit test cases written by Aneesha Biju
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RmpLandingPageComponent);

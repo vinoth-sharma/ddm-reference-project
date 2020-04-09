@@ -1,11 +1,10 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MainMenuComponent } from './main-menu.component';
 import { DebugElement } from "@angular/core";
-import { By } from "@angular/platform-browser";
 import { SharedDataService } from 'src/app/create-report/shared-data.service';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { RouterTestingModule } from "@angular/router/testing";
-import { Router, RouterModule } from "@angular/router";
+import { Router } from "@angular/router";
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BehaviorSubject } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
@@ -13,12 +12,7 @@ import { MaterialModule } from 'src/app/material.module';
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
   let fixture: ComponentFixture<MainMenuComponent>;
-  let sharedDataService: SharedDataService;
-  let authenticationService: AuthenticationService;
   let router: Router;
-
-  // SharedDataService provided to the TestBed
-  let el: DebugElement;
 
   beforeEach(async(() => {
     // refine the test module by declaring the test component
@@ -29,6 +23,8 @@ describe('MainMenuComponent', () => {
     })
       .compileComponents();
   }));
+
+  //Unit test cases written by Aneesha Biju
 
   beforeEach(() => {
     // create component and test fixture

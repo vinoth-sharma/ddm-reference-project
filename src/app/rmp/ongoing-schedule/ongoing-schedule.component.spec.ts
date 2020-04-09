@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material.module';
-import { NgModule } from '@angular/core';
 import { QuillModule } from 'ngx-quill';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,13 +13,7 @@ import { MultiDatePickerOngoingComponent } from '../multi-date-picker-ongoing/mu
 
 import { CreateReportLayoutService } from '../../create-report/create-report-layout/create-report-layout.service';
 import { MultiDatePickerOngoingService } from '../multi-date-picker-ongoing/multi-date-picker-ongoing.service';
-import { compilePipeFromMetadata } from '@angular/compiler';
 import { ScheduleService } from 'src/app/schedule/schedule.service';
-
-// @NgModule({
-//   imports : [ FormControl ]
-// })
-// class testingComponent { }
 
 describe('OngoingScheduleComponent', () => {
   let component: OngoingScheduleComponent;
@@ -221,7 +214,7 @@ describe('OngoingScheduleComponent', () => {
       request_id:'1',
       is_Dqm:'false'
   };
-  component.apply();
+  component.scheduleReport();
 
   expect(mdpService.datesChosen).not.toEqual([]);
   expect(scheduleService.scheduleReportIdFlag).toEqual(undefined);

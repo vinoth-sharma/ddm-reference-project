@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import { NgxSpinnerService } from "ngx-spinner";
+import Utils from '../../../../utils';
 import * as Rx from "rxjs";
 import * as $ from "jquery";
-import { ToastrService } from "ngx-toastr";
 import { AuthenticationService } from "src/app/authentication.service";
-
+import { NgToasterComponent } from '../../../custom-directives/ng-toaster/ng-toaster.component';
+import { utils } from 'protractor';
 @Component({
   selector: 'app-ddm-intro',
   templateUrl: './ddm-intro.component.html',
@@ -57,7 +57,10 @@ export class DdmIntroComponent implements OnInit {
   };
 
   user_role: string;
-  constructor(private django: DjangoService,private toastr: ToastrService, private auth_service : AuthenticationService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
+  public toaster: NgToasterComponent
+
+
+  constructor(private django: DjangoService, private auth_service : AuthenticationService ,private dataProvider: DataProviderService) {
     dataProvider.currentlookUpTableData.subscribe(element => {
       this.content = element
     })
@@ -107,7 +110,7 @@ export class DdmIntroComponent implements OnInit {
 
   content_edits() {
     if (!this.textChange || this.enableUpdateData) {
-      this.spinner.show()
+      Utils.showSpinner()
       this.editModes = false;
       this.readOnlyContentHelper = true;
       this.description_texts['description'] = this.namings;
@@ -125,14 +128,16 @@ export class DdmIntroComponent implements OnInit {
         this.editModes = false;
         this.ngOnInit();
         this.original_contents = this.namings;
-        this.toastr.success("Updated successfully")
-        this.spinner.hide()
+        
+        this.toaster.success("Condition saved successfully")
+ 
+        Utils.hideSpinner()
       }, err => {
-        this.spinner.hide()
-        this.toastr.error("Data not Updated")
+        Utils.hideSpinner()
+        this.toaster.error("error")
       })
     } else {
-      this.toastr.error("please enter the data");
+      this.toaster.error("error")
     }
   }
 
@@ -150,7 +155,7 @@ export class DdmIntroComponent implements OnInit {
 
   content_edit() {
     if (!this.textChange || this.enableUpdateData) {
-      this.spinner.show()
+      Utils.showSpinner()
       this.editMode = false;
       this.readOnlyContent = true;
       this.description_text['description'] = this.naming;
@@ -166,14 +171,14 @@ export class DdmIntroComponent implements OnInit {
         this.editMode = false;
         this.ngOnInit()
         this.original_content = this.naming;
-        this.toastr.success("Updated Successfully");
-        this.spinner.hide()
+        this.toaster.success("Updated Successfully");
+        Utils.hideSpinner()
       }, err => {
-        this.toastr.error("Server Error");
-        this.spinner.hide()
+        this.toaster.error("Server Error");
+        Utils.hideSpinner()
       })
     } else {
-      this.toastr.error("please enter the data");
+      this.toaster.error("please enter the data");
     }
   }
 

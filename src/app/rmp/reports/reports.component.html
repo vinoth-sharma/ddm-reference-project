@@ -124,7 +124,7 @@
             </tr>
           </thead>
           <tbody *ngIf="reports">
-            <tr *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 15, currentPage: p }; let i = index">
+            <tr *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ; let i = index">
               <td class="fav" scope="col">
                 <div style="width: 70px!important;">
                   <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
@@ -202,7 +202,13 @@
         </table>
       </div>
       <div style="padding-top: 0.7%;">
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+        <mat-paginator [length]="paginatorlength"
+               [pageSize]="paginatorpageSize"
+               [pageSizeOptions]="paginatorOptions"
+               (page)="onPaginationChange($event)">
+        </mat-paginator>
+
       </div>
 
     </div>
@@ -215,7 +221,7 @@
     <div class="modal-dialog">
 
       <!-- Modal content-->
-      <div class="modal-content">
+      <!-- <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Configurable DDM Report</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -285,12 +291,12 @@
             <button type="button" class="btn btn-success">Save Settings</button>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </div>
   </div>
   <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
-
+  <!-- <app-ng-custom-spinner></app-ng-custom-spinner> -->
   <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">

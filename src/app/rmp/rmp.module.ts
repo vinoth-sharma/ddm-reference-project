@@ -90,6 +90,7 @@ import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
     MatFormFieldModule,
     NgbModule,
     HttpClientModule,
+    CustomPipeModules,
     // MatIconModule, 
     // MatCheckboxModule , 
     // MatDatepickerModule,

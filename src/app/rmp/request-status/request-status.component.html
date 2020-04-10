@@ -27,7 +27,7 @@
       </div>
       <div class="col-4">
         <input placeholder="Search by Request Number/Requestor/Title/Status"
-          class="form-control" [(ngModel)]="filters.global" name="global" (input)="filterData()">
+          class="form-control" [(ngModel)]="filters.global" name="global" (input)="filterData()" [ngModelOptions]="{standalone: true}">
       </div>
       <div class="col-4" style="padding-right:0%;">
         <div class="icons">
@@ -70,7 +70,8 @@
                   <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                 </div>
                 <div style="width: 70px !important;">
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id">
+                  <input (input)="filterData()" placeholder="Search" class="form-control" 
+                   [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id" [ngModelOptions]="{standalone: true}">
                 </div>                
               </th>
               <th >
@@ -80,7 +81,8 @@
                   <div *ngIf="reports['created_on']">&#8595;</div>
                 </div>
                 <div style="width: 70px !important;">
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.created_on" name="filters.created_on">
+                  <input (input)="filterData()" placeholder="Search" class="form-control" 
+                  [(ngModel)]="filters.created_on" name="filters.created_on" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th >
@@ -90,7 +92,8 @@
                   <div *ngIf="reports['requestor']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.requestor" name="filters.requestor">
+                  <input (input)="filterData()" placeholder="Search" 
+                  class="form-control" [(ngModel)]="filters.requestor" name="filters.requestor" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -100,7 +103,8 @@
                   <div *ngIf="reports['on_behalf_of']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.on_behalf_of" name="filters.on_behalf_of">
+                  <input (input)="filterData()" placeholder="Search" 
+                  class="form-control" [(ngModel)]="filters.on_behalf_of" name="filters.on_behalf_of" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -110,7 +114,9 @@
                   <div *ngIf="reports['title']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.title" name="filters.title">
+                  <input (input)="filterData()" 
+                    placeholder="Search" class="form-control" [(ngModel)]="filters.title" 
+                    name="filters.title" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -120,7 +126,9 @@
                   <div *ngIf="reports['frequency']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.frequency" name="filters.frequency">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}"
+                   placeholder="Search" class="form-control" 
+                   [(ngModel)]="filters.frequency" name="filters.frequency">
                 </div>
               </th>
               <th>
@@ -130,7 +138,9 @@
                   <div *ngIf="reports['assigned_to']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.assigned_to" name="filters.assigned_to">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}"
+                     placeholder="Search" class="form-control" 
+                     [(ngModel)]="filters.assigned_to" name="filters.assigned_to">
                 </div>
               </th>
               <th style="min-width: 115px;">
@@ -148,7 +158,9 @@
                   <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                 </div>
                 <div style="width: 70px !important;">
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}"
+                  placeholder="Search" class="form-control" 
+                  [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
                 </div>
               </th>
               <th style="text-align:center">
@@ -365,7 +377,7 @@
       </div>
       <div class="modal-footer">
         <button style="color:transparent;border:none" data-dismiss="modal" (click)="extract_comment()">
-          <fa class="fa fa-paper-plane"></fa>
+          <i fa class="fa fa-paper-plane"></i>
         </button>
 
       </div>
@@ -448,13 +460,15 @@
           <div class="form-group">
             <label for="document-name" class="col-form-label">Link Title:<span style="color: red">*</span></label>
             <div><i>*Maximum 25 characters allowed</i></div>
-            <input type="text" class="form-control title-box" id="document-name" maxlength="25" required>
+            <input type="text" class="form-control title-box" [ngModelOptions]="{standalone: true}"
+            id="document-name"  maxlength="25" name="documentName" [(ngModel)]='documentName' ngDefaultControl required>
 
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">URL:<span style="color: red">*</span></label>
-            <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
-              id="document-url" required>
+            <input type="url" placeholder="https://example.com" 
+            pattern="https://.*" size="30" class="form-control" [ngModelOptions]="{standalone: true}"
+              id="document-url" name="documentUrl" [(ngModel)]='documentUrl' ngDefaultControl required>
           </div>
         </form>
       </div>
@@ -471,7 +485,6 @@
           <button type="button" class="btn btn-success" (click)="editDocument()">Save
             changes</button>
         </ng-container>
-
       </div>
     </div>
   </div>
@@ -710,7 +723,10 @@
       <div class="modal-header">
         <h3>Alert!</h3>
       </div>
-      <div class="modal-body" id="errorModalMessageRequest">
+      <div class="modal-body">
+        <h5 [(ngModel)]='errorModalMessageRequest' 
+            [ngModelOptions]="{standalone: true}" ngDefaultControl>
+        </h5>
       </div>
       <div class="modal-footer">
         <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="clearOnError()">Close</button>
@@ -777,9 +793,6 @@
       </div>
     </div>
   </div>
-
-
-
 
 <!--TBD-->
 <div class="modal fade" id="tbdModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -899,7 +912,7 @@
           </div>
           <div class="col-sm-7 dltext-div">
             <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control"
-              [(ngModel)]="model" [ngbTypeahead]="searchUserList" />
+              [(ngModel)]="model" [ngbTypeahead]="searchUserList" [ngModelOptions]="{standalone: true}"/>
             <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
           </div>
           <div class="col-sm-2"><button (click)="addContact()" class="button-add">Add</button></div>

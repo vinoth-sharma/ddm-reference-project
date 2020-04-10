@@ -14,7 +14,7 @@ import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClientModule,HttpErrorResponse } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
-import { ToastrModule } from 'ngx-toastr';
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,10 +28,10 @@ import { Observable } from 'rxjs';
 import { DjangoService } from '../django.service';
 import { DataProviderService } from '../data-provider.service';
 import 'jquery';
-import { NgxSpinnerService } from "ngx-spinner";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { AuthenticationService } from "src/app/authentication.service";
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import Utils from '../../../utils';
 
 describe('RmpLandingPageComponent', () => {
   let component: RmpLandingPageComponent;
@@ -39,6 +39,9 @@ describe('RmpLandingPageComponent', () => {
   let injector: TestBed;
   let httpMock: HttpTestingController;
   let djangoservice: DjangoService;
+  const datePipe: DatePipe = new DatePipe('en-US');
+  let authService: AuthenticationService;
+  let dataProvider: DataProviderService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -53,24 +56,27 @@ describe('RmpLandingPageComponent', () => {
                 MatIconModule,
                 AngularMultiSelectModule,
                 HttpClientTestingModule,
-                ToastrModule.forRoot(),
                 RouterTestingModule.withRoutes([]),
                 NoopAnimationsModule,
                 MatSnackBarModule
                 ],
       declarations: [ RmpLandingPageComponent, HeaderComponent,
-                      RequestOnBehalfComponent],
-      providers:[ DatePipe, NgxSpinnerService , 
-        MatSnackBar, AuthenticationService]
+                      RequestOnBehalfComponent, NgToasterComponent],
+      providers:[ DatePipe, MatSnackBar, AuthenticationService]
     })
     .compileComponents();
     injector = getTestBed();
     httpMock = TestBed.get(HttpTestingController);
+    authService = TestBed.get(AuthenticationService);
+    dataProvider = TestBed.get(DataProviderService);
+    djangoservice = TestBed.get(DjangoService);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RmpLandingPageComponent);
     component = fixture.debugElement.componentInstance;
+    spyOn(Utils, 'showSpinner');
+    spyOn(Utils, 'hideSpinner');
     fixture.detectChanges();
   });
 
@@ -79,21 +85,16 @@ describe('RmpLandingPageComponent', () => {
   });
 
   it('should execute getHeaderDetails method', fakeAsync(() => {
-    fixture.detectChanges();
     const a = {
         'role': 'admin',
         'first_name': 'Ganesh',
         'last_name': 'm'
     };
-    component.auth_service.myMethod(a,1, '');
-    fixture.detectChanges();
-    component.auth_service.myMethod$.subscribe(role =>{
-      expect(role).toEqual(a);
-    });
+    authService.myMethod(a,1, '');
+    authService.myMethod$.subscribe(role => expect(role).toEqual(a));
   }));
 
   it('should execute getCurrentLookUpTable method', fakeAsync(() =>{
-    fixture.detectChanges();
     const a = {
         'message':'success',
         'data': {
@@ -394,17 +395,14 @@ describe('RmpLandingPageComponent', () => {
           ]
         }
     };
-    component.dataProvider.changelookUpTableData(a);
-    tick();
-    fixture.detectChanges();
-    component.dataProvider.currentlookUpTableData.
+    dataProvider.changelookUpTableData(a);
+    tick(1500);
+    dataProvider.currentlookUpTableData.
       subscribe(res => {
         expect(res).toEqual(a);
-        fixture.detectChanges();
         expect(component.info).toEqual(res);
     });
   }));
-
 
   it('should ddm_rmp_admin_notes be service call', fakeAsync(async() => {
     const notes_details: object = {
@@ -414,14 +412,10 @@ describe('RmpLandingPageComponent', () => {
             'admin_flag': false,
             'admin_note_status': true
           };
-    let myService = TestBed.get(DjangoService);
-    let mySpy = spyOn(myService, 'ddm_rmp_admin_notes').and.callThrough(); //callThrough()
     spyOn(component, 'getDDmRmpAdminNotes').and.callThrough(); //callThrough()
-    component.getDDmRmpAdminNotes();
+    component.getDDmRmpAdminNotes(notes_details);
+    djangoservice.ddm_rmp_admin_notes(notes_details).subscribe(res =>  expect(res).toBe(notes_details));
     expect(component.getDDmRmpAdminNotes).toHaveBeenCalled();
-    expect(myService).toBeDefined();
-    expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1); 
   }));
 
   it('should check main menu tab', fakeAsync(() => {
@@ -445,41 +439,12 @@ describe('RmpLandingPageComponent', () => {
       component.addDocument();
       fixture.detectChanges();
       expect(component.addDocument).toHaveBeenCalled();
-      if(component && component.notes_details && component.notes_details['admin_note_status'])
-        expect(component.notes_details['admin_note_status']).toBe(true, 'admin_note_status');
-
-      if(component && component.disp_missing_notes)
-        expect(component.disp_missing_notes).toBe(true, 'disp_missing_notes');
-
-      if(component && component.disp_missing_start_date)
-        expect(component.disp_missing_start_date).toBe(true, 'disp_missing_start_date');
-
-      if(component && component.disp_missing_end_date )
-        expect(component.disp_missing_end_date).toBe(true, 'disp_missing_end_date');
-
-      if(component && component.notes_details.notes_content)
-        expect(component.notes_details.notes_content).toBe("", 'notes_content');
-
-      if(component && component.notes_details.admin_flag )
-        expect(component.notes_details.admin_flag).toBe(true, 'admin_flag');
-
-      if(component && component.notes_details.notes_start_date)
-        expect(component.notes_details.notes_start_date).toBe(undefined,'notes_start_date');
-
-      if(component && component.notes_details.notes_end_date)
-        expect(component.notes_details.notes_end_date).toBe(undefined, 'notes_end_date');
-
-     
   }));
 
   it('should clear message', fakeAsync(() => {
-    fixture.detectChanges();
     component.clearMessage();
-    tick(500);
-    fixture.detectChanges();
     expect(component.admin_notes).toEqual('');
   }));
-
 
   it('should previous message', fakeAsync(() => {
     const notes_details  = { admin_notes : [{
@@ -495,29 +460,7 @@ describe('RmpLandingPageComponent', () => {
     component.prevMessage();
     expect(component.prevMessage).toHaveBeenCalled();
     tick(500);
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      discardPeriodicTasks();
-      expect(component.notes).toBe(notes_details.admin_notes);
-    });
-  }));
-
-  it('should execute changeStartDateFormat', fakeAsync(() => {
-    fixture.detectChanges();
-    spyOn(component, 'changeStartDateFormat').and.callThrough(); //callThrough()
-    component.changeStartDateFormat();
-    fixture.detectChanges();
-    expect(component.customizedFromDate).toBe('21-Mar-2020');
-    expect(component.changeStartDateFormat).toHaveBeenCalled();
-  }));
-
-  it('should execute changeEndDateFormat' , fakeAsync(() => {
-    fixture.detectChanges();
-    spyOn(component, 'changeEndDateFormat').and.callThrough(); //callThrough()
-    component.changeEndDateFormat();
-    expect(component.customizedToDate).toBe('31-Mar-2020');
-    expect(component.changeEndDateFormat).toHaveBeenCalled();
+    expect(component.notes).toBe(notes_details.admin_notes);
   }));
 
   it('should execute getAdminNotes', fakeAsync(() => {

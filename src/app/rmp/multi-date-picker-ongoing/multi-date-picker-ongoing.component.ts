@@ -16,8 +16,8 @@
 
 import {Component,Input,Output,EventEmitter, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import { MultiDateService } from '../../multi-date-picker/multi-date.service'
-import { ToastrService } from 'ngx-toastr';
+import { MultiDateService } from '../../multi-date-picker/multi-date.service';
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
   one && two && two.year === one.year && two.month === one.month && two.day === one.day;
@@ -78,7 +78,7 @@ export class MultiDatePickerOngoingComponent implements OnInit, OnChanges {
 
   constructor(calendar: NgbCalendar,
               private multiDateService: MultiDateService,
-              public toasterService: ToastrService) {
+              public toasterService: NgToasterComponent) {
   }
 
   ngOnInit() {

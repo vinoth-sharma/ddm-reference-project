@@ -12,6 +12,7 @@ import { MultipleDatesSelectionService } from './multiple-dates-selection.servic
 export class MultipleDatesPickerComponent implements OnInit {
 
   @Input() loadingDates : any = this.multipleDatesSelectionService.datesChosen || [];
+  @Input() datePickerStatus : boolean = true;
   // @Output() datesChosen = new EventEmitter();.emit()
   
   constructor( public multipleDatesSelectionService : MultipleDatesSelectionService,
@@ -22,10 +23,19 @@ export class MultipleDatesPickerComponent implements OnInit {
 
   ngOnChanges(changes : SimpleChanges,calendar: any) {
     if('loadingDates' in changes){
-      console.log('CHANGES seen in TODAYs date : ',changes);
       this.daysSelected = this.multipleDatesSelectionService.datesChosen;
+      if(this.daysSelected.length && this.daysSelected.length ===1){
+        this.daysSelected = [this.daysSelected];
+      }
       this.daysSelectedDisplayed = this.daysSelected;
-      calendar.updateTodaysDate();
+      this.datePickerStatus = changes.datePickerStatus.currentValue;
+      if(this.datePickerStatus === undefined || null || ''){
+        this.datePickerStatus = true;
+      }
+      if(this.daysSelected && this.daysSelected.length){
+        calendar.updateTodaysDate();
+      }
+      
     }
   }
 
@@ -79,13 +89,16 @@ select(event: any, calendar: any) {
     this.daysSelectedDisplayed.splice(index, 1);
   }
 
+
+  this.daysSelected = this.removeDuplicates(this.daysSelected);
   this.multipleDatesSelectionService.datesChosen = [...this.daysSelected];
-  // this.datesChosen.emit()
-  // this.dateChosen.emit(JSON.stringify(this.daysSelected))
-  console.log("SELECTED DATES in the picker : ",this.daysSelected);
   this.daysSelectedDisplayed = [...this.daysSelected];
   
   calendar.updateTodaysDate();
 }
+
+public removeDuplicates(array) {
+  return array.filter((a, b) => array.indexOf(a) === b)
+};
 
 }

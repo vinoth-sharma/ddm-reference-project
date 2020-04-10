@@ -24,7 +24,7 @@ export class OndemandService {
     return this.http.post(serviceUrl,saveSettingsData);
   }
 
-  public putSaveSettings(saveSettingsData:any){
+  public editSaveSettings(saveSettingsData:any){
     let serviceUrl = `${environment.baseUrl}RMP/save_settings/?sheet_id=${saveSettingsData.sheet_id}&request_id=${saveSettingsData.request_id}`;
     return this.http.post(serviceUrl,saveSettingsData);
   }

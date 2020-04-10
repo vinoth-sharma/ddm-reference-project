@@ -2,16 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service'
 import { MarketselectionService } from 'src/app/rmp/marketselection.service';
 import { DatePipe } from '@angular/common';
-import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
-import { ToastrService } from "ngx-toastr";
 import * as $ from "jquery";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
-import { elementAt } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
+import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 
 
 
@@ -196,8 +194,8 @@ export class UserProfileComponent implements OnInit {
   user_disc_ack: any;
 
   constructor(private django: DjangoService, private marketService: MarketselectionService,
-    private DatePipe: DatePipe, private auth_service: AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
-    private toastr: ToastrService, private report_id_service: GeneratedReportService) {
+    public DatePipe: DatePipe, private auth_service: AuthenticationService, private spinner: NgLoaderService, private dataProvider: DataProviderService,
+    private toastr: NgToasterComponent, private report_id_service: GeneratedReportService) {
 
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -250,6 +248,25 @@ export class UserProfileComponent implements OnInit {
       this.check_saved_status = saved_status
     })
 
+   this.getUserInfo();
+
+    if(this.content? this.content['data'] : ''){
+      let ref = this.content['data']['desc_text']
+      let temp = ref.find(function (element) {
+        return element["ddm_rmp_desc_text_id"] == 6;
+      })
+      if (temp) {
+        this.original_content = temp.description;
+      }
+    }
+
+    else { this.original_content = "" }
+    this.naming = this.original_content;
+
+    $('#dropdownHolder').find('angular4-multiselect').find('.dropdown-list').css('position', 'relative');
+  }
+
+  getUserInfo(){
     this.django.division_selected().subscribe(response => {
       this.changed_settings = false
       this.user_info = response['user_text_notification_data']
@@ -261,6 +278,7 @@ export class UserProfileComponent implements OnInit {
       this.user_contact = this.user_info['contact_no']
       this.text_notification = this.user_info['alternate_number']
       if (this.text_notification != "" && this.text_notification != null) {
+      
         this.te_number = this.text_notification.split(/[-]/);
         this.text_number = this.te_number[1];
       }
@@ -277,21 +295,6 @@ export class UserProfileComponent implements OnInit {
       this.UserMarketSelections()
       this.spinner.hide()
     })
-
-    if(this.content? this.content['data'] : ''){
-      let ref = this.content['data']['desc_text']
-      let temp = ref.find(function (element) {
-        return element["ddm_rmp_desc_text_id"] == 6;
-      })
-      if (temp) {
-        this.original_content = temp.description;
-      }
-    }
-
-    else { this.original_content = "" }
-    this.naming = this.original_content;
-
-    $('#dropdownHolder').find('angular4-multiselect').find('.dropdown-list').css('position', 'relative');
   }
 
  
@@ -362,7 +365,6 @@ export class UserProfileComponent implements OnInit {
     $("#carrier").removeAttr("disabled");
     if (this.marketselections["user_text_notification_data"]["alternate_number"] != null && this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
       let cellPhoneHolder = this.marketselections["user_text_notification_data"]['alternate_number'];
-
       this.te_number = cellPhoneHolder.split(/[-]/);
       this.text_number = this.te_number[1];
 
@@ -603,7 +605,7 @@ export class UserProfileComponent implements OnInit {
         })
       }, err => {
         this.spinner.hide()
-        this.toastr.error("Server problem encountered", "Error:")
+        this.toastr.error("Server problem encountered")
       })
 
     }

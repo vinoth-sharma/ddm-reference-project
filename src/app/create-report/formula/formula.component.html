@@ -27,6 +27,6 @@
   </textarea>
   <button type="button" class="btn btn-sm btn-success ml-2 save-query " data-toggle="modal" data-target="#saveAsReportModal" data-backdrop="static" data-keyboard="false"
   [disabled]="!formulaTextarea">Save Query</button>
-  <button type="button" class="btn btn-sm btn-warning ml-2 navigate-back " [disabled]="!formulaTextarea" (click)="goToView()">Preview</button>
+  <button type="button" id="preview-btn" class="btn btn-sm btn-warning ml-2 navigate-back " [disabled]="!formulaTextarea" (click)="goToView()">Preview</button>
 </div>
 <app-generate-report-modal [fromPath]="'create-report'" (saveData)="saveReport($event)"></app-generate-report-modal>

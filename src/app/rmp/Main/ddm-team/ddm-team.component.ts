@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
-import { NgxSpinnerService } from "ngx-spinner";
+import Utils from "../../../../utils";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
 
 @Component({
   selector: 'app-ddm-team',
@@ -55,7 +55,8 @@ export class DdmTeamComponent implements OnInit {
     ]
   };
 
-  constructor(private django: DjangoService, private toastr: ToastrService, private auth_service: AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
+  constructor(private django: DjangoService, private toastr: NgToasterComponent, 
+              private auth_service: AuthenticationService, private dataProvider: DataProviderService) {
     this.editMode = false;
     dataProvider.currentlookUpTableData.subscribe(element => {
       this.content = element;
@@ -109,7 +110,7 @@ export class DdmTeamComponent implements OnInit {
 
   content_edits() {
     if(!this.textChange || this.enableUpdateData) {
-      this.spinner.show();
+      Utils.showSpinner();
       this.editModes = false;
       this.readOnlyContentHelper = true;
       this.description_texts['description'] = this.namings;
@@ -128,9 +129,9 @@ export class DdmTeamComponent implements OnInit {
         this.ngOnInit()
         this.original_contents = this.namings;
         this.toastr.success("Updated successfully")
-        this.spinner.hide()
+        Utils.hideSpinner();
       }, err => {
-        this.spinner.hide()
+        Utils.hideSpinner();
         this.toastr.error("Data not Updated")
       })
     } else  {
@@ -153,7 +154,7 @@ export class DdmTeamComponent implements OnInit {
 
   content_edit() {
     if(!this.textChange || this.enableUpdateData) {
-      this.spinner.show()
+      Utils.showSpinner();
       this.editMode = false;
       this.readOnlyContent = true;
       this.description_text['description'] = this.naming;
@@ -170,10 +171,10 @@ export class DdmTeamComponent implements OnInit {
         this.ngOnInit()
         this.original_content = this.naming;
         this.toastr.success("Updated Successfully");
-        this.spinner.hide()
+        Utils.hideSpinner();
       }, err => {
+        Utils.hideSpinner();
         this.toastr.error("Server Error");
-        this.spinner.hide()
       })
   } else  {
     this.toastr.error("please enter the data");

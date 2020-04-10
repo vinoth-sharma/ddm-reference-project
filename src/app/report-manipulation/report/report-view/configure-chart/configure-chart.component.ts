@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { ReportViewService } from '../report-view.service';
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
+import { ReportViewService } from '../report-view.service';
 @Component({
   selector: 'app-configure-chart',
   templateUrl: './configure-chart.component.html',

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HierarchyComponent } from './hierarchy.component';
+import { NgCustomSpinnerComponent } from './ng-custom-spinner.component';
 
-describe('HierarchyComponent', () => {
-  let component: HierarchyComponent;
-  let fixture: ComponentFixture<HierarchyComponent>;
+describe('NgCustomSpinnerComponent', () => {
+  let component: NgCustomSpinnerComponent;
+  let fixture: ComponentFixture<NgCustomSpinnerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HierarchyComponent ]
+      declarations: [ NgCustomSpinnerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HierarchyComponent);
+    fixture = TestBed.createComponent(NgCustomSpinnerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

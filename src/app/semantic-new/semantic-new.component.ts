@@ -159,6 +159,7 @@ export class SemanticNewComponent {
       Utils.showSpinner();
       if(this.sls != undefined){
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
+        console.log(res, 'result of the data------');
         this.columns = res["data"]["sl_table"];
         // console.log("this.columns data format INITIAL : ",this.columns)
         // this.columns.sort(function(a,b){

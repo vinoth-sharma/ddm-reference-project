@@ -4,12 +4,13 @@ import { spaceFormaterString } from "./spaceFormaterString.pipe";
 import { ButtonCssDirective } from "./button-css.directive";
 import { NgToasterComponent } from "./ng-toaster/ng-toaster.component";
 import { NgLoaderService } from './ng-loader/ng-loader.service';
+import { NgCustomSpinnerComponent } from './ng-custom-spinner/ng-custom-spinner.component';
 import { MultiSelectComponent } from "./multi-select/multi-select.component";
 @NgModule({
-    declarations : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent],
+    declarations : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,NgCustomSpinnerComponent],
     providers:[NgLoaderService],
     imports : [MaterialModule],
-    exports : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent]
+    exports : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,NgCustomSpinnerComponent]
 })
 export class CustomPipeModules{
 
@@ -17,6 +18,6 @@ export class CustomPipeModules{
         return {
             ngModule: CustomPipeModules,
             providers : []
-        }
+        } 
     }
 }

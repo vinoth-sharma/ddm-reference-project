@@ -57,12 +57,10 @@ export class DataProviderService {
 
   changelookUpTableData(message: object) {
     this.lookUpTableData.next(message)
-    //console.log(this.lookUpTableData)
   }
 
   changelookUpData(message: object) {
     this.lookUpTableData.next(message)
-    //console.log(this.lookUpData)
   }
 
   changebacData(data:object){
@@ -109,9 +107,6 @@ export class DataProviderService {
     return new Promise((resolve, reject) => {
       this.django.getLookupValues().subscribe(response => {
         this.lookUpTableData.next(response);
-
-        // lo
-
         resolve(true);
       })
     })

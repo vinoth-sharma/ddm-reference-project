@@ -50,7 +50,6 @@ export class PreviewTableContainerComponent implements OnInit {
       .pipe(
         startWith({}),
         switchMap(() => {
-          // console.log(this.sort.active);
           this.isLoadingResults = true;
           this.isQueryError = false;
           return this.getData(this.paginator.pageIndex, this.paginator.pageSize)
@@ -108,7 +107,6 @@ export class PreviewTableContainerComponent implements OnInit {
   }
 
   getData(pageI,pageSize){
-    // console.log(pageI,pageSize);
     // let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:250};
     
     let request =  {

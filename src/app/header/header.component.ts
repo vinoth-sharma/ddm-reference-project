@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router,  } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { AuthSsoService } from '../auth-sso.service';
 import { NgToasterComponent } from '../custom-directives/ng-toaster/ng-toaster.component';
@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private route: Router,
     private authenticationService:AuthenticationService,
-    private activatedRoute:ActivatedRoute,
+    // private activatedRoute:ActivatedRoute,
     private authSsoService:AuthSsoService,
     private toastrService: NgToasterComponent,
     private dataProvider:DataProviderService) 

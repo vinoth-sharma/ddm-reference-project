@@ -31,9 +31,7 @@ describe('HeaderComponent', () => {
         { provide: AuthenticationService, useClass: AuthenticationMockMockService },
         { provide: DataProviderService, useClass: DataProviderMockMockService }
       ],
-      imports: [BrowserAnimationsModule, MaterialModule, HttpClientTestingModule, ToastrModule.forRoot({
-        preventDuplicates: true
-      }), RouterTestingModule]
+      imports: [BrowserAnimationsModule, MaterialModule, HttpClientTestingModule, ]
     })
       .compileComponents();
   }));

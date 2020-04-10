@@ -383,14 +383,14 @@ ngb-datepicker-navigation{
 
 .lds-dual-ring {
   display: inline-block;
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
 }
 .lds-dual-ring:after {
   content: " ";
   display: block;
-  width: 140px;
-  height: 140px;
+  width: 100px;
+  height: 100px;
   margin: 8px;
   border-radius: 50%;
   border: 6px solid #2843a5;

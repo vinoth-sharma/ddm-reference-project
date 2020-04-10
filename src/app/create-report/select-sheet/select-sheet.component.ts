@@ -1,5 +1,4 @@
-import { Component, OnInit, Output, Inject } from '@angular/core';
-import { EventEmitter } from 'events';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -9,7 +8,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class SelectSheetComponent implements OnInit {
 
-  // @Output() selectedSheet = new EventEmitter();
   selectedSheet : number ;
   selectedIndex : string;
   enableEditBtn:boolean = false;

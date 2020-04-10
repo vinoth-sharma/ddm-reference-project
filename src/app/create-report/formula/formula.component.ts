@@ -99,7 +99,7 @@ export class FormulaComponent implements OnInit {
   }
 
   public getUserDetails() {
-    this.router.config?.forEach(element => {
+    this.router.config.forEach(element => {
       if (element.path == "semantic") {
         this.semanticId = element.data["semantic_id"];
       }
@@ -138,11 +138,11 @@ export class FormulaComponent implements OnInit {
   }
 
   public isNewReport(){
-      return this.activateRoute.snapshot?.queryParams.report?false:true;
+      return this.activateRoute.snapshot.queryParams.report?false:true;
   }
 
   public getListId(){
-    if(this.activateRoute.snapshot?.queryParams.report){
+    if(this.activateRoute.snapshot.queryParams.report){
       return this.activateRoute.snapshot.queryParams.report
     }else{
       return 0;
@@ -150,7 +150,7 @@ export class FormulaComponent implements OnInit {
   }
 
   public getSheetId(){
-    if(this.activateRoute.snapshot?.queryParams.sheet){
+    if(this.activateRoute.snapshot.queryParams.sheet){
       return this.activateRoute.snapshot.queryParams.sheet
     }else{
       return 0;

@@ -156,7 +156,6 @@ export class DjangoService {
 
   //File upload functionality
   ddm_rmp_file_data(filedata) {
-    // //console.log("FD :"+JSON.stringify(filedata));
     return this.httpClient.post(`${environment.baseUrl}RMP/upload_documents/`, filedata)
     // return this.httpClient.post('https://ddm1.apps.pcfepg2wi.gm.com/RMP/upload_documents/',filedata)
     // return this.httpClient.post("https://frameworktest.apps.pcfepg2wi.gm.com/upload_document/?file_upload", filedata)
@@ -164,12 +163,10 @@ export class DjangoService {
 
 
   ddm_rmp_order_to_sales_post(order_to_sales_report) {
-    // //console.log(order_to_sales_report)
     return this.httpClient.post(`${environment.baseUrl}RMP/order_to_sales_report/`, order_to_sales_report)
   }
 
   ddm_rmp_report_market_selection(report_market_selection) {
-    //console.log(report_market_selection)
     return this.httpClient.post(`${environment.baseUrl}RMP/user_market_selection/`, report_market_selection)
   }
 

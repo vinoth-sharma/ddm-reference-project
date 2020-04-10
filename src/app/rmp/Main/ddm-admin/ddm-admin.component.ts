@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import { ToastrService } from "ngx-toastr";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service"; 
+import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 
 @Component({
   selector: 'app-ddm-admin',
@@ -72,7 +72,7 @@ export class DdmAdminComponent implements OnInit {
 
   readOnlyContentHelper = true;
 
-  constructor(private django: DjangoService, public auth_service: AuthenticationService, private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, public dataProvider: DataProviderService) {
+  constructor(private django: DjangoService, public auth_service: AuthenticationService, private toastr: NgToasterComponent, private router: Router, private spinner: NgLoaderService, public dataProvider: DataProviderService) {
     this.editMode = false;
     this.getCurrentFiles();
     this.getCurrentTableLookupData();
@@ -114,7 +114,6 @@ export class DdmAdminComponent implements OnInit {
 
   getCurrentFiles(){
     this.dataProvider.currentFiles.subscribe(ele => {
-      console.log("current file",ele)
       if (ele) {
         this.isAdmin['docs'] = []
         this.filesList = ele['list'];
@@ -128,7 +127,6 @@ export class DdmAdminComponent implements OnInit {
   }
   getCurrentTableLookupData(){
     this.dataProvider.currentlookUpTableData.subscribe(element => {
-      console.log("lookup",element)
       this.content = element;
     })
   }
@@ -170,7 +168,6 @@ export class DdmAdminComponent implements OnInit {
       this.description_text["description"] = this.namings;
       $('#edit_button').show()
       this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-        console.log("content",this.content)
         let temp_desc_text = this.content['data']['desc_text']
         temp_desc_text.map((element, index) => {
           if (element['ddm_rmp_desc_text_id'] == 9) {
@@ -261,20 +258,20 @@ export class DdmAdminComponent implements OnInit {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_admin_documents;
-          if(this.editid) this.toastr.success("Document updated", "Success:");
-          else this.toastr.success("New document added", "Success:");
+          if(this.editid) this.toastr.success("Document updated");
+          else this.toastr.success("New document added", );
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
           this.editid = undefined;
           this.spinner.hide()
         }, err => {
           this.spinner.hide()
-          this.toastr.error("Server problem encountered", "Error:")
+          this.toastr.error("Server problem encountered")
         })
 
       }, err => {
         this.spinner.hide()
-        this.toastr.error("Server problem encountered", "Error:")
+        this.toastr.error("Server problem encountered")
       });
       this.naming.push(this.document_details);
     }
@@ -293,11 +290,11 @@ export class DdmAdminComponent implements OnInit {
     this.spinner.show()
     this.django.ddm_rmp_admin_documents_delete(id).subscribe(response => {
       document.getElementById("editable" + index).style.display = "none"
-      this.toastr.success("Document deleted", "Success:");
+      this.toastr.success("Document deleted");
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
-      this.toastr.error("Server problem encountered", "Error:")
+      this.toastr.error("Server problem encountered")
     })
   }
 
@@ -305,11 +302,11 @@ export class DdmAdminComponent implements OnInit {
     this.spinner.show();
     this.django.delete_upload_doc(id).subscribe(res => {
       document.getElementById("upload_doc" + index).style.display = "none"
-      this.toastr.success("Document deleted", "Success:");
+      this.toastr.success("Document deleted");
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
-      this.toastr.error("Server problem encountered", "Error:")
+      this.toastr.error("Server problem encountered")
     })
   }
 
@@ -387,19 +384,19 @@ export class DdmAdminComponent implements OnInit {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_admin_documents;
-          this.toastr.success("Document updated", "Success:");
+          this.toastr.success("Document updated", );
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
           this.changeDoc = false;
           this.spinner.hide()
         }, err => {
           this.spinner.hide()
-          this.toastr.error("Server problem encountered", "Error:")
+          this.toastr.error("Server problem encountered")
         })
 
       }, err => {
         this.spinner.hide()
-        this.toastr.error("Server problem encountered", "Error:")
+        this.toastr.error("Server problem encountered")
       });
     }
   }

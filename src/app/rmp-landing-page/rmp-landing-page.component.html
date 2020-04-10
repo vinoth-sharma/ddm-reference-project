@@ -1,115 +1,109 @@
 <app-header> </app-header>
 
 
-  <div class="container holder">
-    <div class="flex-container row tool-header">
-      <div class="default"></div>
+<div class="container holder">
+  <div class="flex-container row tool-header">
+    <div class="default"></div>
 
-      <div class="tab-style">
-        <div class="tab">
-          <button class="btn btn-primary">Main Menu</button>
-          <button class="btn btn-primary">Submit Request</button>
-          <button class="btn btn-primary">Request Status</button>
-          <button class="btn btn-primary">Reports</button>
-          <button class="btn btn-primary">Metrics</button>
-        </div>
-      </div>
-    </div>
-
-    <div></div>
-
-    <div class="flex-container row tool-body">
-      <!--                            Left Tabs                                 -->
-      <div class="left-tabs">
-        <div class="tabs">
-          <button class="btn btn-primary">What is DDM?</button>
-          <button class="btn btn-primary">User Profile</button>
-          <button class="btn btn-primary">DDM Team</button>
-          <button class="btn btn-primary">Reference Documents</button>
-          <button *ngIf="roles.role_id == 1 || roles.role_id == 2" class="btn btn-primary">DDM
-            {{roleName.role_name}}istrator</button>
-          <button *ngIf="roles.role_id == 1 || roles.role_id == 2" class="btn btn-primary" (click)="role()">Go
-            To Tool</button>
-        </div>
-      </div>
-      <!--                            Main Body Content                         -->
-      <div class="main-tool-body">
-        <div class="main-tool-body-header">
-          <div class="heading">
-            <div class="buffer">
-            </div>
-            <div class="caption-style">
-              <b>What is DDM ?</b>
-            </div>
-            <div class="buffer">
-
-            </div>
-            <!-- <span style="height:100%; width:100%;"><b> What is DDM ?</b></span> -->
-          </div>
-
-          <div class="icons">
-            <div class="press">
-              <a href="#"><i class="material-icons">print</i></a>
-            </div>
-            <div class="press">
-              <a href="#"><i class="material-icons">get_app</i></a>
-            </div>
-            <div class="press">
-                <a><i class="material-icons">mode_edit</i></a>
-            </div>
-            <div class="press">
-              <a href="#"><i class="material-icons">help_outline</i></a>
-            </div>
-          </div>
-        </div>
-        <div class="main-tool-body-content">
-          <p contenteditable="false" class="main-style">
-            Distribution DataMart (DDM) is a repository of end-to-end order date from various GM source
-            systems that is
-            managed by the Order Fulfillment DDM Team to create ad hoc reports for a variety of GM entities
-            and vendors.
-            User can define report criteria in this portal and the DDM Team will generate report(s) based
-            on those requirements.
-            DDM is updated nightly and has a two-day lag as outlined below:<br>
-            <br>
-            Monday through previous Friday <br>
-            Tuesday through previous Saturday <br>
-            Wednesday through previous Monday <br>
-            Thursday through previous Tuesday <br>
-            Friday through previous Wednesday <br>
-            <br>
-            DDM recieves data from the following source systems: <br>
-            - Vehicle Order Database (VOD) <br>
-            - Vehicle Information Database (VID) <br>
-            - Dealer Information Database (GM DID) <br>
-            - Vehicle Order Management Specifications (VOM specs) <br>
-            - Sales planning & Allocation (SPA) <br>
-            - Vehicle Transportation Information Management System (VTIMS) <br>
-            <br>
-            DDM contains 3 current model years plus the ramp up of one new model year. It also includes US
-            orders meant
-            for US consumption. GM of Canada and Export (formerly NAIPC). Vehicle owner information is not
-            available. <br>
-            <br>
-            The DDM database includes all orders placed in GM's ordering system through to the time the
-            vehicle is sold.
-            Order number through VIN data showing initial order entry (retail,fleet,other) and option
-            content is available. The
-            order, and all events as it moves through each stage (ordered, placed, produced, transported,
-            inventory) and is
-            ultimately sold by the dealer. DDM also provides metrics and summary reports that can be
-            requested. User can
-            define order type distribution entity.
-          </p>
-
-          <button class="btn btn-success" id="saving" class="display-none">Save</button>
-        </div>
+    <div class="tab-style">
+      <div class="tab">
+        <button class="btn btn-primary">Main Menu</button>
+        <button class="btn btn-primary">Submit Request</button>
+        <button class="btn btn-primary">Request Status</button>
+        <button class="btn btn-primary">Reports</button>
+        <button class="btn btn-primary">Metrics</button>
       </div>
     </div>
   </div>
-  <ngx-spinner bdColor= "rgba(51,51,51,0.8)" size= "default" color= "#fff" type= "line-spin-clockwise-fade"></ngx-spinner>
 
-<!-- <app-footer> </app-footer> -->
-<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
-  <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner> -->
+  <div></div>
+
+  <div class="flex-container row tool-body">
+    <!--                            Left Tabs                                 -->
+    <div class="left-tabs">
+      <div class="tabs">
+        <button class="btn btn-primary">What is DDM?</button>
+        <button class="btn btn-primary">User Profile</button>
+        <button class="btn btn-primary">DDM Team</button>
+        <button class="btn btn-primary">Reference Documents</button>
+        <button *ngIf="roles.role_id == 1 || roles.role_id == 2" class="btn btn-primary">DDM
+          {{roleName.role_name}}istrator</button>
+        <button *ngIf="roles.role_id == 1 || roles.role_id == 2" class="btn btn-primary" (click)="role()">Go
+          To Tool</button>
+      </div>
+    </div>
+    <!--                            Main Body Content                         -->
+    <div class="main-tool-body">
+      <div class="main-tool-body-header">
+        <div class="heading">
+          <div class="buffer">
+          </div>
+          <div class="caption-style">
+            <b>What is DDM ?</b>
+          </div>
+          <div class="buffer">
+
+          </div>
+        </div>
+
+        <div class="icons">
+          <div class="press">
+            <a href="#"><i class="material-icons">print</i></a>
+          </div>
+          <div class="press">
+            <a href="#"><i class="material-icons">get_app</i></a>
+          </div>
+          <div class="press">
+            <a><i class="material-icons">mode_edit</i></a>
+          </div>
+          <div class="press">
+            <a href="#"><i class="material-icons">help_outline</i></a>
+          </div>
+        </div>
+      </div>
+      <div class="main-tool-body-content">
+        <p contenteditable="false" class="main-style">
+          Distribution DataMart (DDM) is a repository of end-to-end order date from various GM source
+          systems that is
+          managed by the Order Fulfillment DDM Team to create ad hoc reports for a variety of GM entities
+          and vendors.
+          User can define report criteria in this portal and the DDM Team will generate report(s) based
+          on those requirements.
+          DDM is updated nightly and has a two-day lag as outlined below:<br>
+          <br>
+          Monday through previous Friday <br>
+          Tuesday through previous Saturday <br>
+          Wednesday through previous Monday <br>
+          Thursday through previous Tuesday <br>
+          Friday through previous Wednesday <br>
+          <br>
+          DDM recieves data from the following source systems: <br>
+          - Vehicle Order Database (VOD) <br>
+          - Vehicle Information Database (VID) <br>
+          - Dealer Information Database (GM DID) <br>
+          - Vehicle Order Management Specifications (VOM specs) <br>
+          - Sales planning & Allocation (SPA) <br>
+          - Vehicle Transportation Information Management System (VTIMS) <br>
+          <br>
+          DDM contains 3 current model years plus the ramp up of one new model year. It also includes US
+          orders meant
+          for US consumption. GM of Canada and Export (formerly NAIPC). Vehicle owner information is not
+          available. <br>
+          <br>
+          The DDM database includes all orders placed in GM's ordering system through to the time the
+          vehicle is sold.
+          Order number through VIN data showing initial order entry (retail,fleet,other) and option
+          content is available. The
+          order, and all events as it moves through each stage (ordered, placed, produced, transported,
+          inventory) and is
+          ultimately sold by the dealer. DDM also provides metrics and summary reports that can be
+          requested. User can
+          define order type distribution entity.
+        </p>
+
+        <button class="btn btn-success" id="saving" class="display-none">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="default" color="#fff" type="line-spin-clockwise-fade"></ngx-spinner>

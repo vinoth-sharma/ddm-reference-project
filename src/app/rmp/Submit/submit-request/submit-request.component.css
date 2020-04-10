@@ -19,9 +19,7 @@ button.btn.btn-primary {
     height: 100%;
     width: 80%;
     float: left;
-    /* overflow: scroll; */
     padding: 1%;
-    /* overflow-x: hidden; */
     margin-bottom: 0;
     background-color: white;
 }

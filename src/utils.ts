@@ -24,8 +24,10 @@ export default class Utils {
   }
 
   static hideSpinner() {
+    if(this.spinner){
     setTimeout(() => {
       this.spinner.hide();
     }, 500);
   }
+}
 }

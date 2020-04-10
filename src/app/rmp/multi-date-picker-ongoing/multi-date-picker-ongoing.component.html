@@ -1,16 +1,11 @@
-<ngb-datepicker #dp [displayMonths]="1" [dayTemplate]="t">
-</ngb-datepicker>
-
-<!-- [minDate]="minstartDate" [markDisabled]="isDisabled"-->
-
-<ng-template #t let-date="date" let-focused="focused">
-  <span class="custom-day" (click)="onDateSelection($event,date)"
-        [class.focused]="focused"
-        [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)"
-        [class.faded]="isHovered(date) || isInside(date)"
-        [class.selected]="isDateSelected(date)"
-        (mouseenter)="hoveredDate = date"
-        (mouseleave)="hoveredDate = null">
-    {{ date.day }}
-  </span>
-</ng-template>
+<input type='text' class="form-control pre-height" [(ngModel)]="daysSelectedDisplayed" title='{{ daysSelectedDisplayed }}' readonly="all"/>
+<!-- <button mat-icon-button [matMenuTriggerFor]="appMenu">  [hidden]="datePickerStatus"-->
+  <mat-icon mat-icon-button *ngIf="!datePickerStatus" [matMenuTriggerFor]="appMenu">calendar_today</mat-icon>
+<!-- </button> -->
+<mat-menu #appMenu="matMenu" class="drop-calendar" >
+    <div (click)="$event.stopPropagation()">
+        <mat-calendar #calendar (selectedChange)="select($event,calendar)" [dateClass]="isSelected"></mat-calendar>
+    </div> 
+</mat-menu>
+<!-- {{daysSelected|json}} -->
+<!-- </pre> -->

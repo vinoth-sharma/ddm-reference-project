@@ -1,25 +1,238 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../material.module';
+import { NgModule } from '@angular/core';
+import { QuillModule } from 'ngx-quill';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MultiDatePickerMaterialModule } from '../custom-directives/multiple-dates-picker/material-module'
+import { By } from '@angular/platform-browser';
 
 import { ScheduleComponent } from './schedule.component';
+import { MultipleDatesPickerComponent } from '../custom-directives/multiple-dates-picker/multiple-dates-picker.component'
+import { ShowSignatureSchedularComponent } from '../show-signature-schedular/show-signature-schedular.component'
+
+import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
+import { MultipleDatesSelectionService } from '../custom-directives/multiple-dates-picker/multiple-dates-selection.service';
+import { ScheduleService } from './schedule.service'
+
+@NgModule({
+  imports : [ FormControl ]
+})
+class testingComponent { }
+
 
 describe('ScheduleComponent', () => {
   let component: ScheduleComponent;
   let fixture: ComponentFixture<ScheduleComponent>;
+  let dataService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ScheduleComponent ]
+      declarations: [ ScheduleComponent, MultipleDatesPickerComponent, ShowSignatureSchedularComponent ],
+      imports: [ MultiDatePickerMaterialModule, RouterTestingModule, HttpClientTestingModule, FormsModule, ReactiveFormsModule, MaterialModule, QuillModule.forRoot() ],
+      providers: [ ScheduleService, CreateReportLayoutService, { provide: MultipleDatesSelectionService, useClass: MockMultipleDateService }, ]
     })
     .compileComponents();
   }));
-
   beforeEach(() => {
     fixture = TestBed.createComponent(ScheduleComponent);
     component = fixture.componentInstance;
+    dataService = TestBed.inject(MultipleDatesSelectionService);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should test the changeDeliveryMethod parameters',()=>{
+    let testdeliveryMethod = 1;
+    fixture = TestBed.createComponent(ScheduleComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    component.changeDeliveryMethod(testdeliveryMethod);
+    fixture.detectChanges();
+    expect(component.isFtpHidden).toEqual(true);
+  })
+
+  it('should test the changeDeliveryMethod parameters',()=>{
+    let testdeliveryMethod = 2;
+    fixture = TestBed.createComponent(ScheduleComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    component.changeDeliveryMethod(testdeliveryMethod);
+    fixture.detectChanges();
+    expect(component.isFtpHidden).toEqual(false);
+  })
+
+  it('should assign the single date to "scheduleData.schedule_for_date" ',()=>{
+    let mdpService = TestBed.inject(MultipleDatesSelectionService)
+    mdpService.datesChosen = [ '03/04/2020' ]
+    
+    component.getSchedulingDates();
+
+    expect([component.scheduleData.schedule_for_date]).toEqual(mdpService.datesChosen)
+  })
+
+  it('should assign the multiple date to "scheduleData.custom_dates" ',()=>{
+    let mdpService = TestBed.inject(MultipleDatesSelectionService)
+    mdpService.datesChosen = [ '03/04/2020', '04/04/2020' ]
+    
+    component.getSchedulingDates();
+
+    expect(component.scheduleData.custom_dates).toEqual(mdpService.datesChosen)
+    expect(component.scheduleData.schedule_for_date).toEqual('')
+  })
+
+  it('should set the email values',()=>{
+    let testEmails = [];
+    component = fixture.componentInstance;
+    component.setMultipleAddressListValues();
+    expect(component.scheduleData.multiple_addresses).toEqual(testEmails)
+  })
+
+
+  it('should test the notification value',()=>{
+    let testNotificationValue = 'true';
+    component.setNotificationValue(testNotificationValue);
+    fixture.detectChanges();
+
+    expect(component.scheduleData.notification_flag).toEqual(testNotificationValue);
+  })
+
+  it('should test the notification value',()=>{
+    let testNotificationValue = 'false';
+    component.setNotificationValue(testNotificationValue);
+    fixture.detectChanges();
+
+    expect(component.scheduleData.notification_flag).toEqual(testNotificationValue);
+  })
+
+  it('should test the setRecurringFlag and no custom_dates',()=>{
+    let testValue = 'true';
+    let mdpService = TestBed.inject(MultipleDatesSelectionService)
+
+    component.setRecurringFlag(testValue);
+
+    expect(component.isDatePickerHidden).toEqual(false);
+    expect(component.isSetFrequencyHidden).toEqual(false);
+    expect(mdpService.recurrencePattern).toEqual('');
+    expect(component.scheduleData.recurring_flag).toEqual(testValue);
+    expect(mdpService.isRecurringDatesMode).toEqual(true);
+    expect(component.scheduleData.recurrence_pattern).toEqual('');
+  })
+
+  it('should test the setRecurringFlag and having custom_dates',()=>{
+    let testValue = 'false';
+    let mdpService = TestBed.inject(MultipleDatesSelectionService)
+    component.scheduleData.custom_dates = [ '03/04/2020', '04/04/2020' ]
+
+    component.setRecurringFlag(testValue);
+
+    expect(component.isDatePickerHidden).toEqual(false);
+    expect(component.isSetFrequencyHidden).toEqual(true);
+    expect(mdpService.recurrencePattern).toEqual('');
+    expect(component.scheduleData.recurring_flag).toEqual(testValue);
+    expect(mdpService.isRecurringDatesMode).toEqual(false);
+    expect(component.scheduleData.recurrence_pattern).toEqual('');
+    expect(component.scheduleData.custom_dates).toEqual([])
+
+
+  })
+
+  it('should test the getRecipientList()',()=>{
+    let mockRequestId: number = 11;
+    fixture = TestBed.createComponent(ScheduleComponent);
+    component = fixture.componentInstance;
+    let service = fixture.debugElement.injector.get(CreateReportLayoutService);
+    fixture.detectChanges();
+    service.getRequestDetails(mockRequestId).subscribe(res=>{
+      expect(component.emails).toEqual(res['dl_list'].map(i=>i.distribution_list))
+      expect(component.scheduleData.multiple_addresses).toEqual(component.emails)
+    })
+  })
+
+  it('should test the reset of the dates',()=>{
+    component.schedulingDates = [ '03/04/2020', '04/04/2020']
+    component.setSendingDates();
+
+    expect(component.scheduleData.schedule_for_date).toEqual('')
+  })
+
+  it('should test the reset of the dates',()=>{
+    component.schedulingDates = [ '03/04/2020' ]
+    component.scheduleData.custom_dates = [ '03/04/2020' ]
+    component.setSendingDates();
+
+    expect(component.scheduleData.custom_dates).toEqual([])
+  })
+
+  it('should test the valid dates',()=>{
+    component.isEditingMode = false;
+    let mdpService = TestBed.inject(MultipleDatesSelectionService)
+    mdpService.datesChosen = [ '05/05/2020' ] // new date
+
+    expect(component.stopSchedule).toEqual(false);
+  })
+
+  it('should check the unique email address',()=>{
+    let testEmail = 'abcd@gm.com';
+    component.emails = ['abcd@gm.com'];
+    component.getDuplicateMessage(testEmail);
+    expect(component.isDuplicate).toEqual(true)
+  })
+
+  it('should schedule the report with given details',()=>{
+    let testScheduleData = { data : 'testData'}
+    let mdpService = TestBed.inject(MultipleDatesSelectionService)
+    let scheduleService = TestBed.inject(ScheduleService);
+    mdpService.datesChosen = [ '03/04/2020', '04/04/2020' ]
+    component.scheduleData = {
+      sl_id:'',
+      created_by:'',
+      report_list_id:'',
+      report_request_id: '',
+      report_name:'testName',
+      schedule_for_date:'',
+      schedule_for_time:'09:09',
+      custom_dates:[ '03/04/2020', '04/04/2020' ],
+      recurring_flag:'true',
+      recurrence_pattern:'5',
+      export_format:'1',
+      notification_flag:'true',
+      sharing_mode:'1',
+      multiple_addresses:['abc@gm.com'],
+      dl_list_flag:'',
+      ftp_port:'',
+      ftp_folder_path:'',
+      ftp_address: '',
+      ftp_user_name:'',
+      ftp_pd:'',
+      modified_by:'',
+      dl_list:[],
+      description:'testDescription',
+      signature_html:'testSignature',
+      is_file_uploaded:'false',
+      uploaded_file_name:'',
+      ecs_file_object_name:'',
+      ecs_bucket_name:'',
+      request_id:'1',
+      is_Dqm:'false'
+  };
+  component.apply();
+
+  expect(mdpService.datesChosen).not.toEqual([]);
+  expect(scheduleService.scheduleReportIdFlag).toEqual(undefined);
+
+  })
+
 });
+
+class MockMultipleDateService{
+  public datesChosen : any = [];
+  public recurrencePattern : any;
+  public isRecurringDatesMode : any;
+}

@@ -131,7 +131,6 @@ export class SelectTablesComponent implements OnInit{
     this.resetState();
   }
 
-  // 
   public getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins']));
@@ -401,21 +400,23 @@ export class SelectTablesComponent implements OnInit{
   public updateSelectedTables() {
     let isDiffKeyFound: boolean = false;
     this.selectedTables.forEach((item, index) => {
-      if (item && item['table'] && item['table']['custom_table_name'] &&
-        item['table']['mapped_table_name']) {
-        let tableName = item['table']['custom_table_name'] ||
+      if(item &&  item['table']) {
+        if(item['table']['custom_table_name'] ||
+        item['table']['mapped_table_name']){
+          item.table.select_table_name = item['table']['custom_table_name'] ||
           item['table']['mapped_table_name'];
-          item.table.select_table_name = tableName,
-          // TODO: remove and use item.tableId
+        }
+        // TODO: remove and use item.tableId
+        if(item['table']['custom_table_id'] || item['table']['sl_tables_id'] ||
+        item['table']['mapped_table_id']){
           item.table.select_table_id =
           item['table']['custom_table_id'] || item['table']['sl_tables_id'] ||
-          item['table']['mapped_table_id'],
+          item['table']['mapped_table_id']
+        }
+        
+      }
           item.select_table_alias = this.getTableAlias(item);
-        // if (item['keys'][0].primaryKey && item['keys'][0].foreignKey &&
-        //   item['keys'][0].primaryKey['data_type'] !== item['keys'][0].foreignKey['data_type']) {
-        //    isDiffKeyFound = true;
-        // }
-        if (item['keys']) {
+        if (item['keys'] && item['keys'].length) {
           item['keys'].forEach(element => {
             if (element.primaryKey && element.foreignKey &&
               element.primaryKey['data_type'] !==
@@ -424,8 +425,6 @@ export class SelectTablesComponent implements OnInit{
             }
           });
         }
-      }
-
     });
     if (isDiffKeyFound) {
       this.isDiffKeys = true;
@@ -676,8 +675,7 @@ export class SelectTablesComponent implements OnInit{
           this.selectedTables[1].tables['related tables'] = [];
         });
   }
-
-
+  
   // to filter the respected table
   public filterTable(search,rowIndex) {
     if(!search) {

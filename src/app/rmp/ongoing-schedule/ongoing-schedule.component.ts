@@ -11,7 +11,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ScheduleService } from '../../schedule/schedule.service';
 import { MultiDateService } from '../../multi-date-picker/multi-date.service'
 import Utils from 'src/utils';
-import { ToastrService } from 'ngx-toastr';
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 // import { scheduled } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 declare var $: any;
@@ -157,7 +157,7 @@ export class OngoingScheduleComponent implements OnInit {
 
   constructor(public scheduleService: ScheduleService,
               public multiDateService: MultiDateService,
-              public toasterService: ToastrService,
+              public toasterService: NgToasterComponent,
               private router: Router,
               public authenticationService: AuthenticationService,
               private shareReportService: ShareReportService,
@@ -510,7 +510,7 @@ export class OngoingScheduleComponent implements OnInit {
     let fileValues = {};
     fileValues['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
     this.scheduleService.uploadPdf(fileValues).subscribe(res => {
-      this.toasterService.success('Successfully uploaded ',this.fileName);
+      this.toasterService.success('Successfully uploaded '+ this.fileName);
       this.scheduleData.is_file_uploaded = 'true'; // Not needed as true always???
       this.scheduleData['uploaded_file_name'] = res['uploaded_file_name'];
       this.scheduleData['ecs_file_object_name'] = res['ecs_file_object_name'];
@@ -666,7 +666,7 @@ export class OngoingScheduleComponent implements OnInit {
 
   public addTags() {
     if (this.multipleAddresses.trim() == '') {
-        this.toasterService.info("Cannot save empty tags");
+        this.toasterService.success("Cannot save empty tags");
     } else {
         this.scheduleData.multiple_addresses.push(this.multipleAddresses);
         this.multipleAddresses = '';

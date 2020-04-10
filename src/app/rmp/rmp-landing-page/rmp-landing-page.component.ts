@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
-import { NgbDate, NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
@@ -9,30 +8,30 @@ import { AuthenticationService } from "src/app/authentication.service";
 import Utils from '../../../utils';
 declare var $: any;
 import 'jquery';
+import { MatCalendarCellCssClasses } from '@angular/material/datepicker';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { FormControl, FormGroupDirective, 
+         NgForm, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-rmp-landing-page',
   templateUrl: './rmp-landing-page.component.html',
-  styleUrls: ['./rmp-landing-page.component.css']
+  styleUrls: ['./rmp-landing-page.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RmpLandingPageComponent implements OnInit{
   
   public content;
   public info;
-  public notes_details = {
-    "notes_content": "",
-    "notes_start_date": "",
-    "notes_end_date": "",
-    "admin_flag": false
-  };
   public notes = [];
   public startTime = { hour: 0, minute: 0 };
   public endTime = { hour: 23, minute: 59 };
   public startMeridian = true;
   public endMeridian = true;
-  public hoveredDate: NgbDate;
-  public fromDate: NgbDate;
-  public toDate: NgbDate;
+  public fromDate: any;
+  public toDate: any;
   public dateCheck: Date;
   public admin_notes: any = '';
   public note_status: boolean;
@@ -46,26 +45,49 @@ export class RmpLandingPageComponent implements OnInit{
   public disp_missing_start_date = false;
   public disp_missing_end_date = false;
   public disclaimer_encounter_flag = 0;
-  public customizedToDate: any;
-  public customizedFromDate: any;
+  public customizedToDate: any = '';
+  public customizedFromDate: any = '';
   public notification_list: any = null;
   public user_name: string;
   public notification_set: Set<number>;
   public notification_number: number;
-  public serviceData;
+  public myForm: FormGroup;
+  public matcher = new MyErrorStateMatcher();
+  public targetStart = "";
+  public targetend = "";
+  public dateClass;
+  public targetStartDate;
+  public targetEndDate; 
+  public targetStartMonth;
+  public targetEndMonth;
+
   constructor(
     public django: DjangoService, 
     private DatePipe: DatePipe,
-    public calendar: NgbCalendar, 
     private report_id_service: GeneratedReportService,
     public dataProvider: DataProviderService, 
     public  auth_service: AuthenticationService, 
-    private toastr: NgToasterComponent) {
-        this.fromDate = calendar.getToday();
-        this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+    private toastr: NgToasterComponent,
+    private formBuilder: FormBuilder) {
+        this.myForm = this.formBuilder.group({
+          'startDate': [''],
+          'endDate': ['']
+        }, { validator: this.checkDates });
+    
+        this.myForm.setValue({
+          startDate: this.targetStart,
+          endDate: this.targetend
+        });
   }
 
-  ngOnInit() { 
+  public checkDates(group: FormGroup) {
+    if (group.controls.endDate.value < group.controls.startDate.value) {
+      return { endDateLessThanStartDate: true }
+    }
+    return null;
+  }
+  
+  public ngOnInit() { 
     this.getHeaderDetails();
     this.getCurrentLookUpTable();
     this.report_id_service.buttonStatus.subscribe(showButton => this.showButton = showButton);
@@ -73,41 +95,33 @@ export class RmpLandingPageComponent implements OnInit{
 
   // adding new important notes 
   public addDocument() {
-    this.notes_details["admin_note_status"] = $("#display-notes-status").prop("checked") ? false: true;
+    let notes_details = {
+      "notes_content": "",
+      "notes_start_date": "",
+      "notes_end_date": "",
+      "admin_flag": false
+    };
+    notes_details["admin_note_status"] = $("#display-notes-status").prop("checked") ? false: true;
     this.disp_missing_notes = (this.admin_notes === "") ? true : false;
-    this.disp_missing_start_date = (this.customizedFromDate === "--") ? true: false;
-    this.disp_missing_end_date = (this.customizedToDate === "--") ? true : false;
+    this.disp_missing_start_date = (this.customizedFromDate === "") ? true: false;
+    this.disp_missing_end_date = (this.customizedToDate === "") ? true : false;
     
-    if (!(this.admin_notes === "") || !(this.customizedFromDate === "--")
-           || !(this.customizedToDate === "--")) {
-        let notes_start_timestamp: any;
-        let notes_end_timestamp: any;
-        if(this.customizedToDate && this.startTime['hour'] && this.startTime['minute'])      {
-           notes_start_timestamp = this.DatePipe.transform(new Date(this.customizedFromDate.toString() + " " +
-          (this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
-        }
-        if(this.customizedToDate && this.endTime['hour'] && this.endTime['minute']) {
-          notes_end_timestamp = this.DatePipe.transform(new Date(this.customizedToDate.toString() + " " + 
-                                  (this.endTime['hour']).toString() + ":" + (this.endTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
-        }
-        Utils.showSpinner();
-        this.notes_details["notes_content"] = this.admin_notes;
-        this.notes_details["notes_start_date"] = notes_start_timestamp;
-        this.notes_details["notes_end_date"] = notes_end_timestamp;
-        this.getDDmRmpAdminNotes();
+    if (!(this.admin_notes === "") || !(this.customizedFromDate === "")
+           || !(this.customizedToDate === "")) {
+        notes_details["notes_start_date"] = undefined;
+        notes_details["notes_end_date"] = this.customizedToDate + ' '+ '23:59';
+        notes_details["notes_content"] = this.admin_notes;
+        this.getDDmRmpAdminNotes(notes_details);
     }
   }
 
   // calling api to add new important notes
-  getDDmRmpAdminNotes(){
-    this.django.ddm_rmp_admin_notes(this.notes_details).subscribe(response => {
-      this.serviceData = response;
+  public getDDmRmpAdminNotes(notes_details){
+    this.django.ddm_rmp_admin_notes(notes_details).subscribe(response => {
       $('#AdminNotesModal').modal('hide');
       $('.modal-backdrop').removeClass('modal-backdrop');
-      Utils.hideSpinner();
       this.toastr.success("Admin Notes updated successfully");
     }, err => {
-      Utils.hideSpinner();
         this.toastr.error("Selection is incomplete")
       });
   }
@@ -132,8 +146,11 @@ export class RmpLandingPageComponent implements OnInit{
 
   // to get the important notes of admin
   public getAdminNotes() {
-    this.changeStartDateFormat();
-    this.changeEndDateFormat();
+    this.customizedFromDate = this.dateFormat(new Date());
+    let newDate = new Date();
+    this.customizedToDate  = this.dateFormat(new Date(newDate.getFullYear(),
+                                                    newDate.getMonth(),
+                                                    newDate.getDate()+10));                                         
     if (this.info.data.admin_note[0])
       this.updateAdminNotesParams(this.info.data.admin_note[0]);
   }
@@ -157,42 +174,56 @@ export class RmpLandingPageComponent implements OnInit{
     $('#display-notes-status').prop("checked", true);
   }
 
-  /*------------------------Calendar---------------------------*/
-  public changeStartDateFormat() {
-    this.customizedFromDate = this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), "dd-MMM-yyyy");
-  }
-  public changeEndDateFormat() {
-    this.customizedToDate = this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day), "dd-MMM-yyyy");
+  // select from date
+  public startDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+    this.targetStart = new Date(this.dateFormat(event.value)).toISOString();
+    this.customizedFromDate = this.dateFormat(event.value);
+    this.targetStartDate = new Date(event.value).getDate();
+    this.targetStartMonth = new Date(event.value).getMonth()+1;
+    this.markDates();
   }
 
-  // selecting from and to date selection
-  public onDateSelection(date: NgbDate) {
-    if (!this.fromDate && !this.toDate) {
-          this.fromDate = date;
-          this.changeStartDateFormat();
-    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
-                this.toDate = date;
-                this.changeEndDateFormat();
-    } else {
-      this.toDate = null;
-      this.fromDate = date;
-      this.changeStartDateFormat();
+  // select to date
+  public endDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+    this.targetEndDate = new Date(event.value).getDate();
+    this.targetend = new Date(this.dateFormat(event.value)).toISOString();
+    this.customizedToDate  = this.dateFormat(event.value);
+    this.targetEndMonth = new Date(event.value).getMonth()+1;
+    this.markDates();
+  }
+
+  // heighligth background color dates from fromDate to endDate
+  public markDates(){
+    if(this.targetStartMonth && this.targetEndMonth) { 
+      this.dateClass = (d: Date): MatCalendarCellCssClasses => {
+        const date = d.getDate();
+        const m = d.getMonth()+1;
+        if(m === this.targetStartMonth && m === this.targetEndMonth) {
+             if(date > this.targetStartDate && date < this.targetEndDate) 
+                return 'custom-date-class';
+        } else if(m >= this.targetStartMonth && m <= this.targetEndMonth) {
+            if(m > this.targetStartMonth && m < this.targetEndMonth) 
+                return 'custom-date-class';
+            else if(m === this.targetStartMonth) {
+                if(date > this.targetStartDate) 
+                  return 'custom-date-class';
+            } else if(m === this.targetEndMonth) {
+                    if(date < this.targetEndDate) 
+                      return 'custom-date-class';
+            }
+        }
+      };
     }
   }
 
-  // while selecting date in calendar in important notes 
-  public isHovered(date: NgbDate) {
-    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+  // formating date 
+  public dateFormat(str:any) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
   }
 
-  public isInside(date: NgbDate) {
-    return date.after(this.fromDate) && date.before(this.toDate);
-  }
-
-  // it's selected date range of important notes display
-  public isRange(date: NgbDate) {
-    return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
-  }
 
   // to get full data of rmp landing page
   public getCurrentLookUpTable() {
@@ -228,4 +259,13 @@ export class RmpLandingPageComponent implements OnInit{
     })
   }
 
+}
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const invalidCtrl = !!(control && control.invalid);
+    const invalidParent = !!(control && control.parent && control.parent.invalid);
+
+    return (invalidCtrl || invalidParent);
+  }
 }

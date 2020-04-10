@@ -73,19 +73,27 @@
               <span *ngIf="disp_missing_end_date" style="color:red;font-weight: bold;">Please select end date</span>
             </div>
             <div class="row form-group calendar-styling" id="calendars">
-              <div class="col-2"></div>
-              <div class="col-8">
-              <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
-                outsideDays="hidden"></ngb-datepicker>
-              <ng-template #t let-date let-focused="focused">
-                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
-                  [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
-                  (mouseleave)="hoveredDate = null">
-                  {{ date.day }}
-                </span>
-              </ng-template>
-              </div>
-              <div class="col-2"></div>
+                <form [formGroup]="myForm" class="target-date">
+                  <mat-form-field>
+                    <mat-label>Choose a start date</mat-label>
+                    <input #startDatepicker1 matInput [matDatepicker]="startDatepicker"  
+                           (dateInput)="startDateEvent('input', $event)" 
+                           formControlName="startDate">
+                    <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
+                    <mat-datepicker [dateClass]="dateClass" #startDatepicker></mat-datepicker>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Choose a end date</mat-label>
+                    <input #endDatepicker1 matInput [matDatepicker]="endDatepicker" 
+                          (dateInput)="endDateEvent('input', $event)" 
+                          formControlName="endDate" [errorStateMatcher]="matcher">
+                    <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
+                    <mat-datepicker [dateClass]="dateClass" #endDatepicker></mat-datepicker>
+                    <mat-error *ngIf="myForm.hasError('endDateLessThanStartDate')">
+                          End date cannot be earlier than start date
+                     </mat-error>
+                  </mat-form-field>
+                </form>
             </div>
           </form>
           <div class="row">
@@ -102,7 +110,7 @@
             </div>
             <div class="col-sm-1"></div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-sm-6">
               <div><b>Select Start Time<span class="mandatory-fields">*</span>:</b></div>
               <ngb-timepicker [(ngModel)]="startTime" [meridian]="startMeridian"></ngb-timepicker>
@@ -111,7 +119,14 @@
               <div><b>Select End Time<span class="mandatory-fields">*</span>:</b></div>
               <ngb-timepicker [(ngModel)]="endTime" [meridian]="endMeridian"></ngb-timepicker>
             </div>
-          </div>
+          </div> -->
+          <!-- <div class="container">
+            <form class="demo-form">
+              <material-timepicker color="primary" label="Hour" [userTime]="exportTime" 
+                (change)="onChangeHour($event)" revertLabel="Remove" submitLabel="Ok">
+              </material-timepicker>
+            </form>
+          </div> -->
           <br>
         </div>
         <div class="modal-footer">

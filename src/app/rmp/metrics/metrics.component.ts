@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
-import { NgxSpinnerService } from "ngx-spinner";
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { DatePipe } from '@angular/common';
 import * as Rx from "rxjs";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-
+import Utils from '../../../utils';
 @Component({
   selector: 'app-metrics',
   templateUrl: './metrics.component.html',
@@ -16,33 +15,32 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 })
 export class MetricsComponent implements OnInit {
 
-  namings: any;
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  description_texts = {
+  public namings: any;
+  public parentsSubject: Rx.Subject<any> = new Rx.Subject();
+  public description_texts = {
     "ddm_rmp_desc_text_id": 24,
     "module_name": "Help_Metrics",
     "description": ""
   };
-  editModes = false;
-  dataLoad: boolean = false;
+  public editModes = false;
+  public dataLoad: boolean = false;
   public searchText;
   public editing;
   public p;
-  model1;
-  model2;
-  summary: Object;
-  report_id: number
-  reports: any;
-  metrics: any;
-  generated_id_service: any;
-  order: any;
-  reverse: boolean;
-  user_role: string;
-  param: any;
-  orderType: any;
-  textChange = false
-  cancelledReports ;
-  
+  public model1;
+  public model2;
+  public summary: Object;
+  public report_id: number
+  public reports: any;
+  public metrics: any;
+  public generated_id_service: any;
+  public order: any;
+  public reverse: boolean;
+  public user_role: string;
+  public param: any;
+  public orderType: any;
+  public textChange = false
+  public cancelledReports ;
   public filters = {
     // global: '',
     ddm_rmp_post_report_id: '',
@@ -57,7 +55,6 @@ export class MetricsComponent implements OnInit {
     freq: '',    
     description: '',
   }
-
   public weekDayDict = {
     Monday: 'M',
     Tuesday: 'T',
@@ -70,34 +67,33 @@ export class MetricsComponent implements OnInit {
     'W',
     'Th',
     'F'];
-  
-  metrics_start_date: any;
-  content: object;
-  Status_List: { 'status_id': number; 'status': string; }[];
-  statusFilter = [];
-  original_contents: any;
-  metrics_end_date: any;
-  monday_average: any;
-  averageByDay = [];
-  reportByDay = [];
-  totalReports = [];
-  reportByMonth = [];
-  reportByOrg = [];
-  reportByQuarter = [];
-  tbddropdownListfinal_report = [];
-  selectedItems = [];
-  admin_selection = {};
-  admin_dropdown = []
-  enable_edits = false
-  full_name: string;
-  obj: any
-  StatusSelectedItem = [];
-  StatusDropdownSettings = {};
-  StatusDropdownList = [];
-  readOnlyContentHelper = true;
-  enableUpdateData = false;
-
-  config = {
+  public metrics_start_date: any;
+  public content: object;
+  public Status_List: { 'status_id': number; 'status': string; }[];
+  public statusFilter = [];
+  public original_contents: any;
+  public metrics_end_date: any;
+  public monday_average: any;
+  public averageByDay = [];
+  public reportByDay = [];
+  public totalReports = [];
+  public reportByMonth = [];
+  public reportByOrg = [];
+  public reportByQuarter = [];
+  public tbddropdownListfinal_report = [];
+  public selectedItems = [];
+  public admin_selection = {};
+  public admin_dropdown = []
+  public enable_edits = false
+  public full_name: string;
+  public obj: any
+  public StatusSelectedItem = [];
+  public StatusDropdownSettings = {};
+  public StatusDropdownList = [];
+  public readOnlyContentHelper = true;
+  public enableUpdateData = false;
+  public searchObj: any;
+  public config = {
     toolbar: [
       ['bold','italic','underline','strike'],
       ['blockquote'],
@@ -113,30 +109,27 @@ export class MetricsComponent implements OnInit {
     ]
   };
   
-  constructor(private django: DjangoService, private auth_service: AuthenticationService, private generated_report_service: GeneratedReportService,
-    private spinner: NgxSpinnerService, private DatePipe: DatePipe, private toastr: ToastrService, private dataProvider: DataProviderService) {
-    auth_service.myMethod$.subscribe(role => {
-      if (role) {
-        this.user_role = role["role"]
-      }
-    })
-
+  constructor(public django: DjangoService, 
+              public auth_service: AuthenticationService, 
+              private generated_report_service: GeneratedReportService,
+              private DatePipe: DatePipe, 
+              private toastr: NgToasterComponent,
+              public dataProvider: DataProviderService) {
+              auth_service.myMethod$.subscribe(role => {
+                if (role) 
+                  this.user_role = role["role"];
+              });
 
     dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
-        this.content = element
-        let refs = this.content['data']['desc_text']
-        let temps = refs.find(function (element) {
-          return element["ddm_rmp_desc_text_id"] == 24;
-        })
-        if (temps) {
-          this.original_contents = temps.description;
-        }
-        else { this.original_contents = "" }
+        this.content = element;
+        let refs = this.content['data']['desc_text'];
+        let temps = refs.find(element => element["ddm_rmp_desc_text_id"] == 24);
+        if (temps)  this.original_contents = temps.description;
+        else this.original_contents = "" 
         this.namings = this.original_contents;
       }
-    })
-
+    });
 
     this.Status_List = [      
       { 'status_id': 1, 'status': 'Completed' },
@@ -144,31 +137,25 @@ export class MetricsComponent implements OnInit {
     ]
   }
 
-  notify() {
-    this.enable_edits = !this.enable_edits
-    this.parentsSubject.next(this.enable_edits)
-    this.editModes = true
-    $('#edit_button').hide()
+  public notify() {
+    this.enable_edits = !this.enable_edits;
+    this.parentsSubject.next(this.enable_edits);
+    this.editModes = true;
+    $('#edit_button').hide();
   }
 
-  ngOnInit() {
-    setTimeout(() => {
-      this.generated_report_service.changeButtonStatus(false)
-    })
+  public ngOnInit() {
+    this.generated_report_service.changeButtonStatus(false);
 
     this.django.getAllAdmins().subscribe(element => {
       if (element) {
         element['admin_list'].forEach(ele => {
-         
           this.full_name = ele['first_name'] + " " + ele['last_name'];
-          this.admin_dropdown.push({ 'full_name': this.full_name, 'users_table_id': ele.users_table_id, 'role_id': 1 })
-         
+          this.admin_dropdown.push({ 'full_name': this.full_name, 'users_table_id': ele.users_table_id, 'role_id': 1 });
         });
-        this.admin_dropdown.push({ 'full_name': 'Non-Admin', 'users_table_id': '', 'role_id': 2 })
+        this.admin_dropdown.push({ 'full_name': 'Non-Admin', 'users_table_id': '', 'role_id': 2 });
       }
     })
-    // console.log("Check");
-    // console.log(this.admin_dropdown);
     this.StatusDropdownSettings = {
       text: "Status",
       singleSelection: true,     
@@ -186,13 +173,11 @@ export class MetricsComponent implements OnInit {
       maxHeight: '200'
     };
 
-
-    this.spinner.show();
+    // Utils.showSpinner();
     this.django.get_report_matrix().subscribe(list => {
       if (list) {
         this.reports = list['data'];
         this.dataLoad = true;
-        console.log(this.reports);
 
         // this.reports.forEach(element=>{
         //   if(element['status'] == 'Cancelled'){
@@ -220,11 +205,9 @@ export class MetricsComponent implements OnInit {
         //   }
         // })
 
-
-
         this.reports.map(reportRow => {
-          reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy')
-          reportRow['created_on'] = this.DatePipe.transform(reportRow['created_on'], 'dd-MMM-yyyy')
+          reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy');
+          reportRow['created_on'] = this.DatePipe.transform(reportRow['created_on'], 'dd-MMM-yyyy');
           if (reportRow['frequency_data']) {
             reportRow['frequency_data'].forEach(weekDate => {
               reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y';
@@ -234,34 +217,32 @@ export class MetricsComponent implements OnInit {
 
         for (var i = 0; i < this.reports.length; i++) {
           if (this.reports[i]['frequency_data']) {
-            this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other'))
+            let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Other'];
+            this.reports[i]['frequency_data_filtered'] = 
+            this.reports[i]['frequency_data'].filter(element => !days.includes(element));
           }
         }
       }
-      this.spinner.hide()
+      // Utils.hideSpinner();
     })
   }
 
-  filterData() {
-    console.log("Data", this.statusFilter);
-    if (this.statusFilter.length) {
+  public filterData() {
+    if (this.statusFilter.length)
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
-      console.log("Data", this.filters);
-    } else {
-      this.filters.status = '';
-    }
+    else  this.filters.status = '';
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
-  textChanged(event) {
+  public textChanged(event) {
     this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
-  content_edits() {
+  public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
-      this.spinner.show();
+      Utils.showSpinner();
       this.editModes = false;
       this.readOnlyContentHelper = true;
       this.description_texts["description"] = this.namings;
@@ -280,9 +261,9 @@ export class MetricsComponent implements OnInit {
         this.ngOnInit();
         this.original_contents = this.namings;
         this.toastr.success("Updated Successfully");
-        this.spinner.hide();
+        Utils.hideSpinner();
       }, err => {
-        this.spinner.hide()
+        Utils.hideSpinner();
         this.toastr.error("Data not Updated")
       })
     } else {
@@ -290,27 +271,26 @@ export class MetricsComponent implements OnInit {
     }
   }
 
-  edit_True() {
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
 
-  editEnable() {
+  public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_contents;
   }
 
-
-  sort(typeVal) {
+  public sort(typeVal) {
     this.param = typeVal.toLowerCase().replace(/\s/g, "_");
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
   }
 
-  xlsxJson() {
+  public xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
@@ -343,34 +323,37 @@ export class MetricsComponent implements OnInit {
     });
   }
 
-  getMetricsData() {
-
-    this.metrics_start_date = ((<HTMLInputElement>document.getElementById('metrics_start_date')).value);
-    this.metrics_end_date = ((<HTMLInputElement>document.getElementById('metrics_end_date')).value);
-    console.log("One Selection")
-    console.log(this.selectedItems[0])
+  public getMetricsData() {
     if (this.selectedItems.length > 0) {
     let arrayOfIds = [];
-      this.selectedItems.forEach(item => arrayOfIds.push(item.users_table_id))
-      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': arrayOfIds.join(), 'role_id':this.selectedItems[0].role_id }
+      this.selectedItems.forEach(item => arrayOfIds.push(item.users_table_id));
+      this.obj = { 
+                    'start_date': this.metrics_start_date, 
+                    'end_date': this.metrics_end_date, 
+                    'users_table_id': arrayOfIds.join(), 
+                    'role_id':this.selectedItems[0].role_id 
+                 };   
     } else {
-      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': '', 'role_id':'' }
+      this.obj = { 
+                    'start_date': this.metrics_start_date, 
+                    'end_date': this.metrics_end_date, 
+                    'users_table_id': '', 'role_id':'' 
+                 }; 
     }
 
-    this.spinner.show()
+    Utils.showSpinner();
     this.django.metrics_aggregate(this.obj).subscribe(list => {
-      console.log(list, 'list---------------------***********');
-      this.metrics = list
+      this.metrics = list;
       this.totalReports = this.metrics['data']['report_count'];
       //this.averageByDay = this.metrics['avg_by_days']
-      this.reportByDay = this.metrics['data']['report_by_weekday']
-      this.reportByMonth = this.metrics['data']['report_by_month']
-      this.reportByOrg = this.metrics['data']['report_by_organization']
-      this.reportByQuarter = this.metrics['data']['report_by_quarter']
-      this.cancelledReports = this.metrics['data']['cancelled_reports']
-      this.spinner.hide();
+      this.reportByDay = this.metrics['data']['report_by_weekday'];
+      this.reportByMonth = this.metrics['data']['report_by_month'];
+      this.reportByOrg = this.metrics['data']['report_by_organization'];
+      this.reportByQuarter = this.metrics['data']['report_by_quarter'];
+      this.cancelledReports = this.metrics['data']['cancelled_reports'];
+      Utils.hideSpinner();
     }, err => {
-      this.spinner.hide();
+      Utils.hideSpinner();
       this.toastr.error("Server Error");
     })
   }
@@ -383,10 +366,8 @@ export class MetricsComponent implements OnInit {
   //   'requestor': this.searchText, 'organization': this.searchText, 'recipients_count': this.searchText,
   //   'freq': this.searchText, 'report_count': this.searchText, 'description': this.searchText
   // }
-
-  searchObj;
   
-  columnSearch(event, obj) {
+  public columnSearch(event, obj) {
     this.searchObj = {
       [obj]: event.target.value
     }

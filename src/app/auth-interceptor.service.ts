@@ -28,9 +28,7 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(tap(event => {
             
                     }, error => {
-                        // console.error(error,'inside interceptor');
                         if(error.status == '403'){
-                            // //console.log(error,'error');
                             window.location.href = error.error.redirect_url;
                             // location.reload();
                         }

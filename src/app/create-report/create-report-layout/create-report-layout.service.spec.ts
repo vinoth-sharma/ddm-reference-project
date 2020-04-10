@@ -38,9 +38,8 @@ describe('CreateReportLayoutService', () => {
                           'report': "661",
                           'sheet': "1082" 
                         };                       
-        createReportLayoutService.getAllForEdit(inputparams).subscribe(res => {
-          expect(res).toBe(result);
-        });
+        createReportLayoutService.getAllForEdit(inputparams)
+        .subscribe(res => expect(res).toBe(result));
         
         const request = httpMock.expectOne((request: HttpRequest<any>) : any => {
           expect(request.url).toEqual(`${environment.baseUrl}reports/get_report_edit_data?report_id=661&sheet_id=1082`);
@@ -54,9 +53,8 @@ describe('CreateReportLayoutService', () => {
 
   it('should return expected getRequestDetails method', fakeAsync(() => {
         const expectedResult = [{ id: 1, name: 'A' }, { id: 2, name: 'B' }];
-        createReportLayoutService.getRequestDetails(3142).subscribe(res => {
-          expect(res).toBe(expectedResult);
-        });
+        createReportLayoutService.getRequestDetails(3142).
+        subscribe(res =>  expect(res).toBe(expectedResult));
 
         const request = httpMock.expectOne((request: HttpRequest<any>) : any => {
           expect(request.url).toEqual(`${environment.baseUrl}RMP/get_report_description/?report_id=3142`);

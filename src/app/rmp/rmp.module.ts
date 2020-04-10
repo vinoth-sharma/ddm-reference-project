@@ -1,4 +1,4 @@
-import { NgModule,APP_INITIALIZER } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RMPRoutingModule } from './rmp-routing.module';
 import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
@@ -21,24 +21,16 @@ import { OrderToSaleComponent } from './Submit/order-to-sale/order-to-sale.compo
 import { SelectReportCriteriaComponent } from './Submit/select-report-criteria/select-report-criteria.component';
 import { SubmitLandingPageComponent } from './Submit/submit-landing-page/submit-landing-page.component';
 import { FilterTablePipe } from './filter-table.pipe'; 
-import { OrderModule } from 'ngx-order-pipe';
 import { RequestOnBehalfComponent } from './request-on-behalf/request-on-behalf.component';
 import { MainMenuLandingPageComponent } from './Main/main-menu-landing-page/main-menu-landing-page.component';
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
-import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { DatePipe } from '@angular/common';
-import { NgxSpinnerModule } from "ngx-spinner";
 import { DataProviderService } from "./data-provider.service";
-import { ToastrModule } from "ngx-toastr";
-import { NgxPaginationModule } from 'ngx-pagination';
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
-import { TagInputModule } from 'ngx-chips';
 import { CustomModalsModule } from './custom-modals/custom-modals.module';
 import { OngoingScheduleComponent } from './ongoing-schedule/ongoing-schedule.component'
-import { MultiDatePickerOngoingComponent } from './multi-date-picker-ongoing/multi-date-picker-ongoing.component'
-import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule} from '@angular/material/form-field';
+import { MultiDatePickerOngoingComponent } from './multi-date-picker-ongoing/multi-date-picker-ongoing.component';
 import { QuillModule } from "ngx-quill";
 import { MaterialModule } from "../material.module";
 import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
@@ -66,50 +58,26 @@ import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
     MainMenuLandingPageComponent,
     OngoingScheduleComponent,
     MultiDatePickerOngoingComponent
-    // ScheduleComponent
   ],
   imports: [
     QuillModule.forRoot(),
-    // AppModule,
     RMPRoutingModule,
     CustomModalsModule,
     FormsModule,
     ReactiveFormsModule,
-    TagInputModule,
-    // BrowserModule,
     CommonModule,
-    OrderModule,
-    MatChipsModule,
-    MatFormFieldModule,
     NgbModule,
     HttpClientModule,
     CustomPipeModules,
-    // MatIconModule, 
-    // MatCheckboxModule , 
-    // MatDatepickerModule,
-    // MatNativeDateModule, 
-    // MatProgressSpinnerModule, 
-    // MatSelectModule, 
-    // MatGridListModule, 
-    // MatInputModule, 
-    // MatExpansionModule,
-
-    // MatAutocompleteModule,
     AngularMultiSelectModule,
     Angular2FontawesomeModule,
-    NgMultiSelectDropDownModule.forRoot(),
-    NgxSpinnerModule,
-    ToastrModule.forRoot(),
     MaterialModule.forRoot(),
     CustomPipeModules.forRoot(),
-    NgxPaginationModule,
     SharedComponentsModule
-    // ,SelectDropDownModule
   ],
   providers: [
     DatePipe,
     DataProviderService
-    // { provide: APP_INITIALIZER, useFactory: dataProviderFactory, deps: [DataProviderService], multi: true }
   ],
 })
 export class RMPModule { }

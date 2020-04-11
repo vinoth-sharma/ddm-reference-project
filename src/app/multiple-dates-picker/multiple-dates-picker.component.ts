@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
-import { NgToasterComponent } from "../../custom-directives/ng-toaster/ng-toaster.component";
+import { NgToasterComponent } from "../custom-directives/ng-toaster/ng-toaster.component";
 
 import { MultipleDatesSelectionService } from './multiple-dates-selection.service'
 

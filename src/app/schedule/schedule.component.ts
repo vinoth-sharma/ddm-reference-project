@@ -8,10 +8,10 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { FormControl, Validators } from '@angular/forms';
 
 import { ScheduleService } from './schedule.service';
-import { MultiDateService } from '../multi-date-picker/multi-date.service'
+import { MultiDateService } from './multi-date.service'
 import Utils from 'src/utils';
 import { NgToasterComponent } from "../custom-directives/ng-toaster/ng-toaster.component";
-import { MultipleDatesSelectionService } from '../custom-directives/multiple-dates-picker/multiple-dates-selection.service';
+import { MultipleDatesSelectionService } from '../multiple-dates-picker/multiple-dates-selection.service';
 import { ShareReportService } from '../share-reports/share-report.service';
 import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
 import { SemanticReportsService } from '../semantic-reports/semantic-reports.service';

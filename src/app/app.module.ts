@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { MultiDatePickerMaterialModule } from './custom-directives/multiple-dates-picker/material-module'
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -66,7 +65,7 @@ import { QuillModule } from "ngx-quill";
 import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privileges/scheduler-privileges.component';
 import { ShowSignatureSchedularComponent } from './show-signature-schedular/show-signature-schedular.component';
 // import { MaterialModule } from "./material.module";
-import { MultipleDatesPickerComponent } from './custom-directives/multiple-dates-picker/multiple-dates-picker.component';
+import { MultipleDatesPickerComponent } from './multiple-dates-picker/multiple-dates-picker.component';
 import { CommonModuleDdmRmp } from "./custom-directives/common.module";
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
@@ -123,7 +122,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    MultiDatePickerMaterialModule,
     HttpClientModule,
     BrowserAnimationsModule,
     CustomModalsModule,

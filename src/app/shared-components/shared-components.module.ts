@@ -7,8 +7,6 @@ import { PropertyComponent } from "../property/property.component";
 import { CreateLovComponent } from "../modallist/create-lov/create-lov.component";
 import { VisibilityComponent } from "../visibility/visibility.component";
 import { ModallistComponent } from "../modallist/modallist.component";
-import { ModalColumnComponent } from "../modal-column/modal-column.component";
-import { ModalRolesComponent } from "../modal-roles/modal-roles.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
@@ -53,8 +51,6 @@ import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
     PropertyComponent,
     VisibilityComponent,
     ModallistComponent,
-    ModalColumnComponent,
-    ModalRolesComponent,
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     ValidatorDirective,
@@ -74,8 +70,6 @@ import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
     ObjectExplorerSidebarComponent,
     PropertyComponent,
     ModallistComponent,
-    ModalColumnComponent,
-    ModalRolesComponent,
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     ValidatorDirective,

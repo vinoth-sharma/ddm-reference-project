@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
 import { RmpLandingPageComponent } from './rmp-landing-page/rmp-landing-page.component';
 import { MainMenuLandingPageComponent } from './Main/main-menu-landing-page/main-menu-landing-page.component';
 import { DdmIntroComponent } from './Main/ddm-intro/ddm-intro.component';
@@ -19,7 +18,6 @@ import { SelectReportCriteriaComponent} from './Submit/select-report-criteria/se
 import { SubmitLandingPageComponent } from './Submit/submit-landing-page/submit-landing-page.component';
 
 export const RMP_Routes = [
-  // {path:'',component:DdmLandingPageComponent},
   {path:'',component:RmpLandingPageComponent,children:[
     {path:'main',component:MainMenuComponent,
       children:[

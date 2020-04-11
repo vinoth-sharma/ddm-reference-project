@@ -19,8 +19,6 @@ import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
 import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
 import { SemanticExistingComponent } from "./semantic-existing/semantic-existing.component";
 import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
-import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component";
-import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
 import { SortTableComponent } from "./sort-table/sort-table.component";
 import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.component";
 import { ScheduleComponent } from "./schedule/schedule.component";
@@ -83,11 +81,9 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     SemanticReportsComponent,
     SemanticSLComponent,
     SaveReportComponent,
-    DdmLandingPageComponent,
     SemanticRMPComponent,
     SemanticExistingComponent,
     SemanticNewComponent,
-    RmpLandingPageComponent,
     SortTableComponent,
     ScheduleComponent,
     TagmodalComponent,

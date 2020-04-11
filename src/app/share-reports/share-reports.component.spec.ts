@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ShareReportsComponent } from './share-reports.component';
 
-xdescribe('ShareReportsComponent', () => {
+describe('ShareReportsComponent', () => {
   let component: ShareReportsComponent;
   let fixture: ComponentFixture<ShareReportsComponent>;
 

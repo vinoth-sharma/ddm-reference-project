@@ -38,7 +38,6 @@ import { CreateReportModule } from './create-report/create-report.module';
 import { setAppInjector } from '../app-injector';
 import { AppRoutingModule } from './app-routing.module';
 import { ShareReportsComponent } from "./share-reports/share-reports.component";
-import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
 // import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
 import { LogEntryComponent } from './log-entry/log-entry.component';
 // RMP
@@ -95,7 +94,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ReportsComponent,
     QueryBuilderComponent,
     InfoModalComponent,
-    MultiDatePicker,
     // MultiDatesPickerComponent,
     LogEntryComponent,
     ScheduledReportsComponent,

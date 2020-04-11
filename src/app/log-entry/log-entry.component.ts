@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SecurityModalService } from '../security-modal/security-modal.service';
-import { ToastrService } from "ngx-toastr";
 
 import { MatTableDataSource } from "@angular/material/table";
 import { MatDatepickerInputEvent } from "@angular/material/datepicker";
@@ -67,7 +66,6 @@ export class LogEntryComponent implements OnInit {
   //       this.rolesDataSource.filter = filterValue.trim().toLowerCase();
   // }
   constructor(private semanticModalService: SecurityModalService,
-    private toasterService: ToastrService,
     private router: Router) { }
 
   ngOnInit() {

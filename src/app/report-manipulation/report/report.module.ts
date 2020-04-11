@@ -28,14 +28,13 @@ import { ManageTableParametersComponent } from './report-view/manage-parameters/
 import { ConfirmationDialogComponent } from './report-view/custom-components/confirmation-dialog/confirmation-dialog.component';
 import { PivotTableWrapperComponent } from './report-view/pivot-table-wrapper/pivot-table-wrapper.component';
 import { ConfigureChartComponent } from './report-view/configure-chart/configure-chart.component'
-// import { ColorPickerModule } from 'ngx-color-picker';
 import { ConfigurePivotComponent } from './report-view/configure-pivot/configure-pivot.component';
 import { EditParametersComponent } from './report-view/edit-parameters/edit-parameters.component';
 import { CloneParametersComponent } from './report-view/clone-parameters/clone-parameters.component';
 import { ConfigureTableComponent } from './report-view/configure-table/configure-table.component'
 import { InputValidatorDirectiveReportView } from "./report-view/custom-directives/input-validator.directive";
 import { CustomPipeModules } from "../../custom-directives/custom.pipes.module";
-import { MaterialModule } from "../../material.module";
+// import { MaterialModule } from "../../material.module";
 
 @NgModule({
   declarations: [
@@ -75,9 +74,8 @@ import { MaterialModule } from "../../material.module";
     ReactiveFormsModule,
     FlexLayoutModule,
     SharedComponentsModule,
-    // ColorPickerModule,
     CustomPipeModules.forRoot(),
-    MaterialModule.forRoot()
+    // MaterialModule.forRoot()
   ],
   entryComponents: [
     ChartsComponent,

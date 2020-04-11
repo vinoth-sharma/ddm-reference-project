@@ -4,7 +4,6 @@ import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MultiDatePickerMaterialModule } from './custom-directives/multiple-dates-picker/material-module'
-// import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -45,8 +44,6 @@ import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
 // import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
 import { LogEntryComponent } from './log-entry/log-entry.component';
 // RMP
-// import { RMPModule } from "./rmp/rmp.module";
-// import {RMPRoutingModule} from "./rmp/rmp-routing.module"
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
 import { ShowSignatureComponent } from './show-signature/show-signature.component'; 
 import { ShareReportService } from './share-reports/share-report.service';
@@ -63,23 +60,17 @@ import { ManageConditionComponent } from './condition-modal/manage-condition/man
 import { ConditionsService } from "./condition-modal/conditions.service";
 import { CalculatedColumnComponent } from './calculated-column/calculated-column.component';
 import { RelationLayoutComponent } from './relations/relation-layout/relation-layout.component';
-// import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
-// import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
-// import { RelationsService } from '../app/relations/';
-// import { ButtonCssDirective } from "./custom-directives/button-css.directive";
 import { InputValidatorDirective } from "./custom-directives/input-validator.directive";
 import { CreateParametersComponent } from './parameters-modal/create-parameters/create-parameters.component';
 import { ManageParametersComponent } from './parameters-modal/manage-parameters/manage-parameters.component';
 import { ParametersContainerComponent } from './parameters-modal/parameters-container/parameters-container.component';
-// import { MultiSelectComponent } from "./custom-directives/multi-select/multi-select.component";
-// import { spaceFormaterString } from "./custom-directives/spaceFormaterString.pipe";
 import { CustomPipeModules } from "./custom-directives/custom.pipes.module";
 import { QuillModule } from "ngx-quill";
 import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privileges/scheduler-privileges.component';
-// import { MaximumCharacterPipe } from './maximum-character.pipe';
 import { ShowSignatureSchedularComponent } from './show-signature-schedular/show-signature-schedular.component';
-import { MaterialModule } from "./material.module";
+// import { MaterialModule } from "./material.module";
 import { MultipleDatesPickerComponent } from './custom-directives/multiple-dates-picker/multiple-dates-picker.component';
+
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
 }
@@ -128,10 +119,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     SchedulerPrivilegesComponent,
     ShowSignatureSchedularComponent,
     MultipleDatesPickerComponent
-    // MaximumCharacterPipe
-    // MultiSelectComponent
-    // OndemandConfigReportsComponent,
-    // OndemandReportsComponent
   ],
   imports: [
     BrowserModule,
@@ -142,7 +129,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ReactiveFormsModule,
     NgbModule,
     MultiDatePickerMaterialModule,
-    // Ng2SmartTableModule,
     HttpClientModule,
     BrowserAnimationsModule,
     CustomModalsModule,
@@ -159,7 +145,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     CreateReportModule,
     // NgbModule.forRoot(),
     CustomPipeModules.forRoot(),
-    MaterialModule.forRoot()
+    // MaterialModule.forRoot()
     // RMP
     // FooterComponent,
     // HeaderComponent,
@@ -168,7 +154,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
   ],
   providers: [
     SecurityModalService,
-    // MatDatepickerModule,
     CookieService,
     PrivilegeModalService,
     QueryBuilderService,

@@ -169,7 +169,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   self_email: string;
   onBehalf: any;
   readOnlyContentHelper = true;
-  public toastr: NgToasterComponent
+  // public toastr: NgToasterComponent
 
   config = {
     toolbar: [
@@ -191,7 +191,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService, private auth_service: AuthenticationService,
     private report_id_service: GeneratedReportService,
-    
+    public toastr:NgToasterComponent,
     private reportDataService: ReportCriteriaDataService) {
     this.model = "";
     this.auth_service.myMethod$.subscribe(role => {

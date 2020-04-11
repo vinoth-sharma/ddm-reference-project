@@ -413,7 +413,7 @@ describe('RmpLandingPageComponent', () => {
             'admin_note_status': true
           };
     spyOn(component, 'getDDmRmpAdminNotes').and.callThrough(); //callThrough()
-    component.getDDmRmpAdminNotes();
+    component.getDDmRmpAdminNotes(notes_details);
     djangoservice.ddm_rmp_admin_notes(notes_details).subscribe(res =>  expect(res).toBe(notes_details));
     expect(component.getDDmRmpAdminNotes).toHaveBeenCalled();
   }));
@@ -439,31 +439,6 @@ describe('RmpLandingPageComponent', () => {
       component.addDocument();
       fixture.detectChanges();
       expect(component.addDocument).toHaveBeenCalled();
-      if(component && component.notes_details && component.notes_details['admin_note_status'])
-        expect(component.notes_details['admin_note_status']).toBe(true, 'admin_note_status');
-
-      if(component && component.disp_missing_notes)
-        expect(component.disp_missing_notes).toBe(true, 'disp_missing_notes');
-
-      if(component && component.disp_missing_start_date)
-        expect(component.disp_missing_start_date).toBe(true, 'disp_missing_start_date');
-
-      if(component && component.disp_missing_end_date )
-        expect(component.disp_missing_end_date).toBe(true, 'disp_missing_end_date');
-
-      if(component && component.notes_details.notes_content)
-        expect(component.notes_details.notes_content).toBe("", 'notes_content');
-
-      if(component && component.notes_details.admin_flag )
-        expect(component.notes_details.admin_flag).toBe(true, 'admin_flag');
-
-      if(component && component.notes_details.notes_start_date)
-        expect(component.notes_details.notes_start_date).toBe(undefined,'notes_start_date');
-
-      if(component && component.notes_details.notes_end_date)
-        expect(component.notes_details.notes_end_date).toBe(undefined, 'notes_end_date');
-
-     
   }));
 
   it('should clear message', fakeAsync(() => {
@@ -486,37 +461,6 @@ describe('RmpLandingPageComponent', () => {
     expect(component.prevMessage).toHaveBeenCalled();
     tick(500);
     expect(component.notes).toBe(notes_details.admin_notes);
-  }));
-
-  it('should execute changeStartDateFormat', fakeAsync(() => {
-    fixture.detectChanges();
-    let d = new Date();
-    component.fromDate = {
-      year: d.getFullYear(),
-      month: d.getMonth(),
-      day: d.getDate()
-    };
-    let result = datePipe.transform(new Date(d.getFullYear(),  d.getMonth() - 1, d.getDate()), "dd-MMM-yyyy");
-    fixture.detectChanges();
-    spyOn(component, 'changeStartDateFormat').and.callThrough(); //callThrough()
-    component.changeStartDateFormat();
-    expect(component.customizedFromDate).toEqual(result);
-    expect(component.changeStartDateFormat).toHaveBeenCalled();
-  }));
-
-  it('should execute changeEndDateFormat' , fakeAsync(() => {
-    let d = new Date();
-    component.toDate = {
-      year: d.getFullYear(),
-      month: d.getMonth(),
-      day: d.getDate()+10
-    };
-    let result = datePipe.transform(new Date(d.getFullYear(),  d.getMonth() - 1, d.getDate()+10), "dd-MMM-yyyy");
-    fixture.detectChanges();
-    spyOn(component, 'changeEndDateFormat').and.callThrough(); //callThrough()
-    component.changeEndDateFormat();
-    expect(component.customizedToDate).toEqual(result);
-    expect(component.changeEndDateFormat).toHaveBeenCalled();
   }));
 
   it('should execute getAdminNotes', fakeAsync(() => {

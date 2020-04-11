@@ -5,7 +5,6 @@ import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
 import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
 import { SemanticExistingComponent } from "./semantic-existing/semantic-existing.component";
 import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
-import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component"
 // import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
 import { LogEntryComponent } from "./log-entry/log-entry.component"; 
 import { SortTableComponent } from "./sort-table/sort-table.component";
@@ -22,11 +21,6 @@ import { RMP_Routes } from "./rmp/rmp-routing.module"
 import { CalculatedColumnComponent } from './calculated-column/calculated-column.component';
 
 const routes: Routes = [
-  {
-    path: "module",
-    component: DdmLandingPageComponent,
-    canActivate: [AuthGuard]
-  },
   {
     path: "user",
     loadChildren : ()=>import("./rmp/rmp.module").then(m=>m.RMPModule),

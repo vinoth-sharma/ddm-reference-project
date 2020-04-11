@@ -4,7 +4,6 @@ import { MaterialModule } from '../../material.module';
 import { QuillModule } from 'ngx-quill';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MultiDatePickerMaterialModule } from '../../custom-directives/multiple-dates-picker/material-module'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { OngoingScheduleComponent } from './ongoing-schedule.component';
@@ -25,7 +24,8 @@ describe('OngoingScheduleComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ OngoingScheduleComponent, ShowSignatureSchedularComponent, MultiDatePickerOngoingComponent ],
-      imports: [ BrowserAnimationsModule, MultiDatePickerMaterialModule, RouterTestingModule, HttpClientTestingModule, FormsModule, ReactiveFormsModule, MaterialModule, QuillModule.forRoot() ],
+      imports: [ BrowserAnimationsModule , RouterTestingModule, HttpClientTestingModule, FormsModule, 
+        ReactiveFormsModule, MaterialModule.forRoot(), QuillModule.forRoot() ],
       providers: [ CreateReportLayoutService, { provide: MultiDatePickerOngoingService, useClass: MockMultipleDateService }, ]
     })
     .compileComponents();

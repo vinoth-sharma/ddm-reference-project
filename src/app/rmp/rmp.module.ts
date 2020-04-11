@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RMPRoutingModule } from './rmp-routing.module';
-import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { RmpLandingPageComponent } from './rmp-landing-page/rmp-landing-page.component';
@@ -32,7 +31,7 @@ import { DataProviderService } from "./data-provider.service";
 import { ToastrModule } from "ngx-toastr";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
-import { SharedComponentsModule } from '../shared-components/shared-components.module';
+// import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { TagInputModule } from 'ngx-chips';
 import { CustomModalsModule } from './custom-modals/custom-modals.module';
 import { OngoingScheduleComponent } from './ongoing-schedule/ongoing-schedule.component'
@@ -40,12 +39,12 @@ import { MultiDatePickerOngoingComponent } from './multi-date-picker-ongoing/mul
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { QuillModule } from "ngx-quill";
-import { MaterialModule } from "../material.module";
+// import { MaterialModule } from "../material.module";
 import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
+import { CommonModuleDdmRmp } from "../custom-directives/common.module";
 
 @NgModule({
   declarations: [
-    DdmLandingPageComponent,
     RmpLandingPageComponent,
     MainMenuComponent,
     DdmIntroComponent,
@@ -86,10 +85,11 @@ import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
     ToastrModule.forRoot(),
-    MaterialModule.forRoot(),
+    // MaterialModule.forRoot(),
     CustomPipeModules.forRoot(),
-    NgxPaginationModule,
-    SharedComponentsModule
+    CommonModuleDdmRmp.forRoot(),
+    NgxPaginationModule
+    // SharedComponentsModule
   ],
   providers: [
     DatePipe,

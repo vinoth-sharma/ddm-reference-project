@@ -7,8 +7,6 @@ import { PropertyComponent } from "../property/property.component";
 import { CreateLovComponent } from "../modallist/create-lov/create-lov.component";
 import { VisibilityComponent } from "../visibility/visibility.component";
 import { ModallistComponent } from "../modallist/modallist.component";
-import { ModalColumnComponent } from "../modal-column/modal-column.component";
-import { ModalRolesComponent } from "../modal-roles/modal-roles.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
@@ -17,29 +15,18 @@ import { TablesSelectionModalComponent } from "../tables-selection-modal/tables-
 import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import { SaveAsModalComponent } from './saveAs-modal/saveAs-modal.component';
 import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar/related-tables-sidebar.component';
-import { OrderByPipe } from "./filters/order-by.pipe";
 import { ValidatorDirective } from "./directives/validator.directive";
-import { FooterComponent } from "../footer/footer.component";
-import { HeaderComponent } from "../header/header.component";
-// import { MatProgressSpinnerModule, MatFormFieldModule, 
-//   MatGridListModule, MatIconModule, MatAutocompleteModule , 
-//   MatChipsModule, MatCardModule, MatInputModule,
-//    MatButtonModule, MatTabsModule, MatExpansionModule } from '@angular/material';
 import { MatSelectModule } from "@angular/material/select";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerService } from "ngx-spinner"
-import { from } from 'rxjs';
 import { EditDescriptionComponent } from './sidebars/edit-description/edit-description.component';
-// import { MatMenuModule } from '@angular/material/menu';
-// import { MatBadgeModule } from "@angular/material/badge";
 import { LovContainerComponent } from '../modallist/lov-container/lov-container.component';
 import { ShowLovComponent } from '../modallist/show-lov/show-lov.component';
 import { JoinsHelpOptionComponent } from '../create-report/joins-help-option/joins-help-option.component';
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MaximumCharacterPipe } from './maximum-character.pipe';
 import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
-import { MaterialModule } from "../material.module";
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+// import { MaterialModule } from "../material.module";
 
 @NgModule({
   imports: [
@@ -51,22 +38,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ReactiveFormsModule,
     MatSelectModule,
     NgxSpinnerModule,
-    // MatProgressSpinnerModule,
-    // MatInputModule,
-    // MatFormFieldModule,
-    // MatGridListModule,
-    // MatIconModule,
-    // MatAutocompleteModule,
-    // MatChipsModule,
-    // MatCardModule,
-    // MatButtonModule,
-    // MatMenuModule,
-    // MatBadgeModule,
-    // MatTabsModule,
-    // MatExpansionModule,
     MatSlideToggleModule,
     CustomPipeModules.forRoot(),
-    MaterialModule.forRoot()
+    // MaterialModule.forRoot()
   ],
   declarations: [
     InlineEditComponent,
@@ -77,22 +51,15 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     PropertyComponent,
     VisibilityComponent,
     ModallistComponent,
-    ModalColumnComponent,
-    ModalRolesComponent,
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
-    OrderByPipe,
     ValidatorDirective,
-    HeaderComponent,
-    FooterComponent,
     EditDescriptionComponent,
     CreateLovComponent,
     ShowLovComponent,
     LovContainerComponent,
     JoinsHelpOptionComponent,
     MaximumCharacterPipe,
-   
-    // CalculatedColumnComponent
   ],
   exports: [
     InlineEditComponent,
@@ -103,15 +70,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ObjectExplorerSidebarComponent,
     PropertyComponent,
     ModallistComponent,
-    ModalColumnComponent,
-    ModalRolesComponent,
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
-    OrderByPipe,
     ValidatorDirective,
-    HeaderComponent,
-    FooterComponent,
-    // MatProgressSpinnerModule,
     JoinsHelpOptionComponent,
     MaximumCharacterPipe
     // CalculatedColumnComponent

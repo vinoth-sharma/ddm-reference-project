@@ -20,7 +20,7 @@ import { ScheduleService } from '../schedule/schedule.service'
 import { ScheduledReportsComponent } from './scheduled-reports.component';
 import { ScheduleComponent } from '../schedule/schedule.component';
 import { ShowSignatureSchedularComponent } from '../show-signature-schedular/show-signature-schedular.component'
-import { MultipleDatesPickerComponent } from '../custom-directives/multiple-dates-picker/multiple-dates-picker.component';
+import { MultipleDatesPickerComponent } from '../multiple-dates-picker/multiple-dates-picker.component';
 
 
 @Component({

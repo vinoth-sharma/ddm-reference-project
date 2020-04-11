@@ -6,11 +6,15 @@ import { NgToasterComponent } from "./ng-toaster/ng-toaster.component";
 import { NgLoaderService } from './ng-loader/ng-loader.service';
 import { NgCustomSpinnerComponent } from './ng-custom-spinner/ng-custom-spinner.component';
 import { MultiSelectComponent } from "./multi-select/multi-select.component";
+import { OrderByPipe } from "./filters/order-by.pipe";
+
 @NgModule({
-    declarations : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,NgCustomSpinnerComponent],
+    declarations : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,
+                    NgCustomSpinnerComponent,OrderByPipe],
     providers:[NgLoaderService],
     imports : [MaterialModule],
-    exports : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,NgCustomSpinnerComponent]
+    exports : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,
+        NgCustomSpinnerComponent,MaterialModule,OrderByPipe]
 })
 export class CustomPipeModules{
 

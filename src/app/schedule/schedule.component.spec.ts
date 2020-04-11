@@ -5,15 +5,13 @@ import { NgModule } from '@angular/core';
 import { QuillModule } from 'ngx-quill';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MultiDatePickerMaterialModule } from '../custom-directives/multiple-dates-picker/material-module'
-import { By } from '@angular/platform-browser';
 
 import { ScheduleComponent } from './schedule.component';
-import { MultipleDatesPickerComponent } from '../custom-directives/multiple-dates-picker/multiple-dates-picker.component'
+import { MultipleDatesPickerComponent } from '../multiple-dates-picker/multiple-dates-picker.component'
 import { ShowSignatureSchedularComponent } from '../show-signature-schedular/show-signature-schedular.component'
 
 import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
-import { MultipleDatesSelectionService } from '../custom-directives/multiple-dates-picker/multiple-dates-selection.service';
+import { MultipleDatesSelectionService } from '../multiple-dates-picker/multiple-dates-selection.service';
 import { ScheduleService } from './schedule.service'
 
 @NgModule({
@@ -30,7 +28,7 @@ describe('ScheduleComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ScheduleComponent, MultipleDatesPickerComponent, ShowSignatureSchedularComponent ],
-      imports: [ MultiDatePickerMaterialModule, RouterTestingModule, HttpClientTestingModule, FormsModule, ReactiveFormsModule, MaterialModule, QuillModule.forRoot() ],
+      imports: [ MaterialModule, RouterTestingModule, HttpClientTestingModule, FormsModule, ReactiveFormsModule, MaterialModule, QuillModule.forRoot() ],
       providers: [ ScheduleService, CreateReportLayoutService, { provide: MultipleDatesSelectionService, useClass: MockMultipleDateService }, ]
     })
     .compileComponents();

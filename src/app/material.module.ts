@@ -30,8 +30,17 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatBadgeModule } from '@angular/material/badge';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import {A11yModule} from '@angular/cdk/a11y';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {PortalModule} from '@angular/cdk/portal';
+import {ScrollingModule} from '@angular/cdk/scrolling';
+import {CdkStepperModule} from '@angular/cdk/stepper';
+import {CdkTableModule} from '@angular/cdk/table';
+import {CdkTreeModule} from '@angular/cdk/tree';
 import { CommonModule } from '@angular/common';
+import {MatTreeModule} from '@angular/material/tree';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 
 @NgModule({
@@ -69,7 +78,16 @@ import { CommonModule } from '@angular/common';
     MatSortModule,
     MatPaginatorModule,
     MatBadgeModule,
-    DragDropModule
+    DragDropModule,
+    A11yModule,
+    PortalModule,
+    ScrollingModule,
+    CdkStepperModule,
+    CdkTableModule,
+    CdkTreeModule,
+    MatTreeModule,
+    MatBottomSheetModule,
+    MatMomentDateModule
   ],
   exports: [
     CommonModule,
@@ -105,7 +123,16 @@ import { CommonModule } from '@angular/common';
     MatSortModule,
     MatPaginatorModule,
     MatBadgeModule,
-    DragDropModule
+    DragDropModule,
+    A11yModule,
+    PortalModule,
+    ScrollingModule,
+    CdkStepperModule,
+    CdkTableModule,
+    CdkTreeModule,
+    MatTreeModule,
+    MatBottomSheetModule,
+    MatMomentDateModule
   ],
 
 })

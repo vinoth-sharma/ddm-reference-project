@@ -2,24 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
-import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
-import { NgxSpinnerService } from "ngx-spinner";
+import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ReportCriteriaDataService } from "../../services/report-criteria-data.service";
 import "../../../../assets/debug.js";
 declare var jsPDF: any;
 declare var $: any;
-
-import { ToastrService } from "ngx-toastr";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import Utils from 'src/utils';
 
 @Component({
   selector: 'app-dealer-allocation',
   templateUrl: './dealer-allocation.component.html',
   styleUrls: ['./dealer-allocation.component.css']
 })
-export class DealerAllocationComponent implements OnInit{
+export class DealerAllocationComponent implements OnInit {
   generated_report_status: string;
   division_index = [];
   dealer_allocation_selection: object;
@@ -32,14 +31,14 @@ export class DealerAllocationComponent implements OnInit{
   year = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 
   title = 'Stand-Alone';
-  flag = true
-  summary_flag = true
-  my_flag = false
-  ag_flag = false
-  date_flag = false
-  consensus_flag = false
-  modal_validation_flag = false
-  date_validation_flag = true
+  flag: boolean = true;
+  summary_flag: boolean = true;
+  my_flag: boolean = false;
+  ag_flag: boolean = false;
+  date_flag: boolean = false;
+  consensus_flag: boolean = false;
+  modal_validation_flag: boolean = false;
+  date_validation_flag: boolean = true;
   concencusDataCheckbox = {};
   startMonth: "--Select Month--";
   endMonth: "--Select Month--";
@@ -48,7 +47,7 @@ export class DealerAllocationComponent implements OnInit{
   startYear: "--Select Year--";
   endYear: "--Select Year--";
   dealerobj = {
-    "startCycle" : "Cycle1",
+    "startCycle": "Cycle1",
     "endCycle": "Cycle2",
     "dealerRadio": "Display",
     "modelRadio": "Display",
@@ -83,7 +82,7 @@ export class DealerAllocationComponent implements OnInit{
   Report = {
     "Title": "",
     "Requirements": ""
-  } 
+  }
   textChange = false;
 
   selectedItemsDivision = {};
@@ -105,7 +104,7 @@ export class DealerAllocationComponent implements OnInit{
   modelYearDrop: any;
   division: any;
   selectedItemsAllocation: any[];
-  dropdownSettingsAllocation: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
+  dropdownSettingsAllocation: { singleSelection: boolean; primaryKey: string; labelKey: string; selectAllText: string; unSelectAllText: string; badgeShowLimit: number; allowSearchFilter: boolean; };
   modelYearSelectedItems: any;
   allocationGroupselecteditems: any;
   divisionRadioSelection: any;
@@ -113,12 +112,12 @@ export class DealerAllocationComponent implements OnInit{
   alloRadio: any;
   divData: Array<object>;
 
-  date: string;
-  report_message: string;
+  date: string = '';
+  report_message: string = '';
   summary: Object;
   lookup;
   divDataSelected = []
- ;
+    ;
   allocation_g = []
   restorepage: any;
   printcontent: any;
@@ -131,8 +130,8 @@ export class DealerAllocationComponent implements OnInit{
   contact_flag: boolean;
 
   contents;
-  enable_edits = false
-  editModes = false;
+  enable_edits: boolean = false
+  editModes: boolean = false;
   original_content;
   namings: any;
 
@@ -154,7 +153,7 @@ export class DealerAllocationComponent implements OnInit{
     "module_name": "Help_DealerAllocation",
     "description": ""
   }
-  
+
   user_role: string;
   user_name: string;
   bac_description: any;
@@ -171,27 +170,27 @@ export class DealerAllocationComponent implements OnInit{
 
   config = {
     toolbar: [
-      ['bold','italic','underline','strike'],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
-      [{'list' : 'ordered'}, {'list' : 'bullet'}],
-      [{'script' : 'sub'},{'script' : 'super'}],
-      [{'size':['small',false, 'large','huge']}],
-      [{'header':[1,2,3,4,5,6,false]}],
-      [{'color': []},{'background':[]}],
-      [{'font': []}],
-      [{'align': []}],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
       ['clean'],
       ['image']
     ]
   };
   styling = {
-    maxHeight:'300px',
+    maxHeight: '300px',
     height: 'auto'
   };
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
-    private DatePipe: DatePipe, private auth_service: AuthenticationService,
-    private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
+    private DatePipe: DatePipe, private auth_service: AuthenticationService, private dataProvider: DataProviderService,
+    private toastr: NgToasterComponent,
     private reportDataService: ReportCriteriaDataService) {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -200,7 +199,7 @@ export class DealerAllocationComponent implements OnInit{
       }
     })
     dataProvider.currentlookUpTableData.subscribe(element => {
-      
+
       if (element) {
         this.lookup = element
         this.allo = this.lookup.data.allocation_grp_da.sort((a, b) => a.allocation_group > b.allocation_group ? 1 : -1);
@@ -225,7 +224,6 @@ export class DealerAllocationComponent implements OnInit{
 
         this.report_id_service.currentSelections.subscribe(report_id => {
           this.generated_report_id = report_id
-          // //console.log("Received Report Id : "+this.generated_report_id)
         })
         this.report_id_service.currentstatus.subscribe(status => {
           this.generated_report_status = status
@@ -264,41 +262,41 @@ export class DealerAllocationComponent implements OnInit{
 
         this.dropdownSettingsDivision = {
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_division_id',
-          textField: 'division_desc',
+          primaryKey: 'ddm_rmp_lookup_division_id',
+          labelKey: 'division_desc',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 3,
+          badgeShowLimit: 3,
           allowSearchFilter: true
         };
 
         this.dropdownSettingsModelYear = {
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_dropdown_model_year_id',
-          textField: 'model_year',
+          primaryKey: 'ddm_rmp_lookup_dropdown_model_year_id',
+          labelKey: 'model_year',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 3,
+          badgeShowLimit: 3,
           allowSearchFilter: true
         };
 
         this.dropdownSettingsAllocation = {
           singleSelection: false,
-          idField: 'ddm_rmp_lookup_dropdown_allocation_group_da_id',
-          textField: 'allocation_group',
+          primaryKey: 'ddm_rmp_lookup_dropdown_allocation_group_da_id',
+          labelKey: 'allocation_group',
           selectAllText: 'Select All',
           unSelectAllText: 'UnSelect All',
-          itemsShowLimit: 3,
+          badgeShowLimit: 3,
           allowSearchFilter: true
         };
         this.getDealerAllocatonInfo();
 
         if (localStorage.getItem('report_id')) {
-          this.spinner.show();
+          Utils.showSpinner();
           this.previousSelections(localStorage.getItem('report_id'));
         }
-        else{
-          this.spinner.hide();
+        else {
+          Utils.hideSpinner();
         }
       }
 
@@ -306,7 +304,7 @@ export class DealerAllocationComponent implements OnInit{
     })
   }
 
- 
+
   notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
@@ -314,41 +312,41 @@ export class DealerAllocationComponent implements OnInit{
     $('#edit_button').hide()
   }
 
-  
+
 
   textChanged(event) {
     this.textChange = true;
-    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
 
   content_edits() {
-    if(!this.textChange || this.enableUpdateData) {
-    this.spinner.show()
-    this.editModes = false;
-    this.readOnlyContentHelper= true;
-    this.description_text['description'] = this.namings;
-    $('#edit_button').show()
-    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-
-      let temp_desc_text = this.lookup['data']['desc_text']
-      temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] == 12) {
-          temp_desc_text[index] = this.description_text
-        }
-      })
-      this.lookup['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.lookup)
+    if (!this.textChange || this.enableUpdateData) {
+      Utils.showSpinner();
       this.editModes = false;
-      this.ngOnInit()
-      this.original_content = this.namings;
-      this.spinner.hide()
-    }, err => {
-      this.spinner.hide()
-    })
-  } else  {
-    this.toastr.error("please enter the data");
+      this.readOnlyContentHelper = true;
+      this.description_text['description'] = this.namings;
+      $('#edit_button').show()
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+
+        let temp_desc_text = this.lookup['data']['desc_text']
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 12) {
+            temp_desc_text[index] = this.description_text
+          }
+        })
+        this.lookup['data']['desc_text'] = temp_desc_text
+        this.dataProvider.changelookUpTableData(this.lookup)
+        this.editModes = false;
+        this.ngOnInit()
+        this.original_content = this.namings;
+        Utils.hideSpinner();
+      }, err => {
+        Utils.hideSpinner();
+      })
+    } else {
+      this.toastr.error("Please enter the data");
     }
   }
 
@@ -363,7 +361,9 @@ export class DealerAllocationComponent implements OnInit{
     this.readOnlyContentHelper = false;
     this.namings = this.original_content;
   }
-  ngOnInit() { }
+  ngOnInit() {
+    $('#dropdownHolder').find('angular4-multiselect').find('col-sm-12');
+  }
 
   getDealerData() {
     this.django.getNewData().subscribe((lookup: any) => {
@@ -375,7 +375,6 @@ export class DealerAllocationComponent implements OnInit{
   getDealerAllocatonInfo() {
     this.check = { "value": 1, "id": 2 };
     this.modelYearSelectedItems = this.lookup.data.model_year;
-
     this.dropdownLookup = this.lookup.data.drop_downs_da;
     this.consensusData = this.lookup.data.concensus_data_da;
     this.displaySummary = this.lookup.data.display_summary;
@@ -383,7 +382,6 @@ export class DealerAllocationComponent implements OnInit{
     this.cycle = Array.of(this.cycle)
     this.displaySummary = Array.of(this.displaySummary)
     this.consensusData = Array.of(this.consensusData)
-    console.log(this.consensusData);
     $("#AGDisplay").prop("checked", true);
   }
 
@@ -429,11 +427,11 @@ export class DealerAllocationComponent implements OnInit{
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     var formData = new FormData();
     formData.append('file_upload', this.file);
-    this.spinner.show();
+    Utils.showSpinner();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      this.spinner.hide()
+      Utils.hideSpinner();
     }, err => {
-      this.spinner.hide();
+      Utils.hideSpinner();
     });
   }
 
@@ -509,47 +507,47 @@ export class DealerAllocationComponent implements OnInit{
       this.summary_flag = true;
       $("#review_close:button").click()
       this.modal_validation_flag = false;
-      this.spinner.show();
+      Utils.showSpinner();
       this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": this.dealerobj.modelRadio }
-      console.log(this.selectedItemsModelYear);
       this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": this.dealerobj.alloRadio }
-      console.log(this.selectedItemsAllocation)
       this.finalData["division_selected"] = { "radio_button": this.dealerobj.dealerRadio }
       this.finalData["report_id"] = this.generated_report_id;
       if (this.reportId != 0) {
         this.getDADefaultSelection();
       }
-  
-      if(this.report_create == null || this.report_create == "" || this.report_create == undefined){
+
+      if (this.report_create == null || this.report_create == "" || this.report_create == undefined) {
         this.finalData['report_detail']['created_on'] = "";
         this.report_create = "";
       }
-  
-      if(this.assigned_to == null || this.assigned_to == "" || this.assigned_to == undefined){
+
+      if (this.assigned_to == null || this.assigned_to == "" || this.assigned_to == undefined) {
         this.finalData['report_detail']['assigned_to'] == "";
         this.assigned_to = "";
       }
 
-      if(this.report_status == "" || this.report_status == null || this.report_status == undefined){
+      if (this.report_status == "" || this.report_status == null || this.report_status == undefined) {
         this.finalData['report_detail']['status'] = "Pending"
         this.report_status = "Pending"
       }
-      
-  
+
+
       this.date = "";
       this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
-      this.finalData["report_detail"] = { "title": this.Report_title,
-      "assigned_to": this.assigned_to, 
-      "additional_req": this.Report_Req,
-       "created_on": this.report_create, 
-       "report_type": "da", 
-       "status": this.report_status, 
-       "status_date": this.date, 
-       "on_behalf_of": this.report_on_behalf, 
-       "link_to_results": "", 
-       "query_criteria": "", 
-       "link_title": "",
-       "requestor": this.user_name }
+      this.finalData["report_detail"] = {
+        "title": this.Report_title,
+        "assigned_to": this.assigned_to,
+        "additional_req": this.Report_Req,
+        "created_on": this.report_create,
+        "report_type": "da",
+        "status": this.report_status,
+        "status_date": this.date,
+        "on_behalf_of": this.report_on_behalf,
+        "link_to_results": "",
+        "query_criteria": "",
+        "link_title": "",
+        "requestor": this.user_name
+      }
       this.dealer_allocation_selection = this.finalData
       this.django.ddm_rmp_dealer_allocation_post(this.dealer_allocation_selection).subscribe(response => {
         this.getReportSummery();
@@ -558,19 +556,18 @@ export class DealerAllocationComponent implements OnInit{
         }
         localStorage.removeItem("report_id")
         this.report_id_service.changeUpdate(false)
-        this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id, "Success:");
+        this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id);
       }, err => {
-        this.spinner.hide()
-        this.toastr.error("Selections are incomplete", "Error:")
+        Utils.hideSpinner();
+        this.toastr.error("Selections are incomplete");
       }
       )
       this.report_id_service.changeSavedChanges(false)
     }
-    console.log(this.dealer_allocation_selection);
   }
 
   getReportSummery() {
-    this.spinner.show();
+    Utils.showSpinner();
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
       let tempArray = []
@@ -732,7 +729,7 @@ export class DealerAllocationComponent implements OnInit{
         this.fan_desc = []
       }
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      this.spinner.hide();
+      Utils.hideSpinner();
 
 
       if (this.summary['frequency_data'].length == 0) {
@@ -780,7 +777,6 @@ export class DealerAllocationComponent implements OnInit{
       }
     }
     catch (err) {
-      // //console.log("Error Occ");
     }
     var dateData = ele.da_data.concensus_time_date[0];
     $('#Smonth').val(dateData.ddm_rmp_start_month);
@@ -837,43 +833,42 @@ export class DealerAllocationComponent implements OnInit{
   }
 
 
-  previousSelections(requestId){
-    this.spinner.show();
+  previousSelections(requestId) {
+    Utils.showSpinner();
     this.django.get_report_description(requestId).subscribe(element => {
-      console.log(element);
-      if(element['da_data']){
+      if (element['da_data']) {
         this.selectedItemsModelYear = []
-        element['da_data']['model_year'].forEach(res=>{
+        element['da_data']['model_year'].forEach(res => {
           this.model_year_id.push(res.ddm_rmp_lookup_dropdown_model_year)
         })
-        this.modelYearSelectedItems.forEach(eleMy=>{
-          if(this.model_year_id.includes(eleMy['ddm_rmp_lookup_dropdown_model_year_id'])){
+        this.modelYearSelectedItems.forEach(eleMy => {
+          if (this.model_year_id.includes(eleMy['ddm_rmp_lookup_dropdown_model_year_id'])) {
             this.selectedItemsModelYear.push(eleMy)
           }
         })
 
         this.selectedItemsAllocation = []
-        this.allocationGroupselecteditems.forEach(eleAllo=>{
-          element['da_data']['allocation_grp'].forEach(resAllo=>{
-            if(eleAllo['ddm_rmp_lookup_dropdown_allocation_group_da_id'] == resAllo['ddm_rmp_lookup_dropdown_allocation_group']){
+        this.allocationGroupselecteditems.forEach(eleAllo => {
+          element['da_data']['allocation_grp'].forEach(resAllo => {
+            if (eleAllo['ddm_rmp_lookup_dropdown_allocation_group_da_id'] == resAllo['ddm_rmp_lookup_dropdown_allocation_group']) {
               this.selectedItemsAllocation.push(eleAllo)
             }
           })
         })
-        
+
         var subData = element['da_data']['concensus_data']
         var temp = this.finalData;
         temp.concensus_data = [];
-        for(var x=0; x <= subData.length - 1; x++){
+        for (var x = 0; x <= subData.length - 1; x++) {
           $('.events').each(function (i, obj) {
-            if(subData[x]['ddm_rmp_lookup_da_consensus_data_id'] == obj.value){
+            if (subData[x]['ddm_rmp_lookup_da_consensus_data_id'] == obj.value) {
               obj.checked = true;
               this.concencusDataCheckbox = { "value": subData[x].cd_values, "id": subData[x].ddm_rmp_lookup_da_consensus_data_id };
               temp.concensus_data.push(this.concencusDataCheckbox);
             }
           })
-        } 
-        
+        }
+
 
         var subDate = element['da_data']['concensus_time_date'][0]
         this.startMonth = subDate.ddm_rmp_start_month
@@ -889,36 +884,38 @@ export class DealerAllocationComponent implements OnInit{
         var report_data = element['report_data']
         this.Report_title = report_data.title
         this.Report_Req = report_data.additional_req
-        if(report_data.status == "Completed"){
+        if (report_data.status == "Completed") {
           this.report_status = "Pending"
           this.assigned_to = ""
         }
-        else if(report_data.status == "Active"){
+        else if (report_data.status == "Active") {
           this.report_status = "Active"
           this.assigned_to = report_data.assigned_to
         }
-        else{
+        else {
           this.report_status = "Pending"
         }
-        
+
         this.report_create = report_data.created_on
         this.report_on_behalf = report_data.on_behalf_of
-       
+
         this.user_name = report_data.requestor
 
-        temp.concensus_time_date = { "startM": this.startMonth, "startY": this.startYear, "endM": this.endMonth, "endY": this.endYear,
-        "startCycle": this.dealerobj.startCycle, "endCycle": this.dealerobj.endCycle };
+        temp.concensus_time_date = {
+          "startM": this.startMonth, "startY": this.startYear, "endM": this.endMonth, "endY": this.endYear,
+          "startCycle": this.dealerobj.startCycle, "endCycle": this.dealerobj.endCycle
+        };
 
         this.finalData["model_year"]
-        temp['model_year'] = { 'dropdown': this.selectedItemsModelYear, 'radio_button': this.dealerobj.modelRadio}
-        temp['allocation_group'] = { 'dropdown': this.selectedItemsAllocation, 'radio_button': this.dealerobj.alloRadio}
-        temp['division_selected'] = { 'radio_button': this.dealerobj.dealerRadio}
-        
+        temp['model_year'] = { 'dropdown': this.selectedItemsModelYear, 'radio_button': this.dealerobj.modelRadio }
+        temp['allocation_group'] = { 'dropdown': this.selectedItemsAllocation, 'radio_button': this.dealerobj.alloRadio }
+        temp['division_selected'] = { 'radio_button': this.dealerobj.dealerRadio }
 
-        
+
+
         this.finalData = temp
       } //if ends here
     })
-    this.spinner.hide();
+    Utils.hideSpinner();
   }
 }

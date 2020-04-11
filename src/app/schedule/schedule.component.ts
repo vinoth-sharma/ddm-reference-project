@@ -52,7 +52,7 @@ export class ScheduleComponent implements OnInit {
   public dateValue : string;
   public calendarHide : boolean;
   public values : any = [];
-  public isNotSelectable:boolean = true;
+  public isDatePickerHidden:boolean = true;
 
   datesSelected:NgbDateStruct[]=[]; 
 
@@ -315,7 +315,7 @@ public scheduleData = {
 
     if('scheduleReportData' in changes && this.scheduleReportData) {
       this.isEditingMode = true;
-      this.isNotSelectable = false;
+      this.isDatePickerHidden = false;
       this.scheduleData.request_id = ''; // as the this.scheduleData.request_id was not being reset
       this.scheduleData.report_list_id = '';
       this.scheduleData.report_name = '';
@@ -353,7 +353,7 @@ public scheduleData = {
         descInpBox.innerHTML = this.scheduleData.description;
       }
 
-      if(this.scheduleData.signature_html.length){
+      if(this.scheduleData.signature_html && this.scheduleData.signature_html.length){
         this.signatures.forEach(t=> { 
           if(t.signature_html === this.scheduleData.signature_html )
           {
@@ -369,7 +369,7 @@ public scheduleData = {
         //   year: scheduledDate.getFullYear(),
         //   day: scheduledDate.getDate()
         // }];
-        this.multipleDatesSelectionService.datesChosen = this.scheduleData.schedule_for_date;
+        this.multipleDatesSelectionService.datesChosen = [this.scheduleData.schedule_for_date];
       }
         else if(this.scheduleData.custom_dates){
         // this.values = this.scheduleData.custom_dates.map(date => {
@@ -455,6 +455,7 @@ public scheduleData = {
       this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
         // ,this.reportIdProcuredFromChanges
         this.toasterService.success('Report scheduled successfully');
+        this.multipleDatesSelectionService.datesChosen = [];
         this.scheduleService.scheduleReportIdFlag = undefined;
         Utils.hideSpinner();
         Utils.closeModals();
@@ -492,7 +493,8 @@ public scheduleData = {
   }
 
   public setRecurringFlag(value){
-    this.isNotSelectable = true;    
+    // this.isDatePickerHidden = true;
+    this.isDatePickerHidden = false;
     this.isSetFrequencyHidden = true;
     if(value == 'true'){ //  || value == true
       this.isSetFrequencyHidden = false;
@@ -514,9 +516,9 @@ public scheduleData = {
       this.multipleDatesSelectionService.isRecurringDatesMode = false;
     }
     
-    if(value.length != 0){
-      this.isNotSelectable = false;
-    }
+    // if(value.length != 0){
+    //   this.isDatePickerHidden = false;
+    // }
     
     if(this.scheduleData.custom_dates.length){
       this.scheduleData.custom_dates = [];
@@ -561,7 +563,7 @@ public scheduleData = {
   public setCollapse(recurrencePattern: string){
     this.multipleDatesSelectionService.recurrencePattern = recurrencePattern;
     if(recurrencePattern === "1"){
-      this.isNotSelectable = true;
+      this.isDatePickerHidden = true;
       let todaysDateObject = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
       this.todaysDate = todaysDateObject.month+'/'+todaysDateObject.day+'/'+todaysDateObject.year
       this.multipleDatesSelectionService.datesChosen = [this.todaysDate];
@@ -580,7 +582,7 @@ public scheduleData = {
         this.multipleDatesSelectionService.datesChosen = [];
         // this.values = []; 
       }
-      this.isNotSelectable = false;
+      this.isDatePickerHidden = false;
       this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
       this.setSendingDates();
     }
@@ -592,7 +594,7 @@ public scheduleData = {
         // this.values = []; 
       }
       this.isCollapsed = true;
-      this.isNotSelectable = false;
+      this.isDatePickerHidden = false;
     }
   }
   
@@ -1010,5 +1012,7 @@ public scheduleData = {
     this.file= null;
     this.fileUpload = false;
     this.recurringButtonValue = false;
+    this.multipleDatesSelectionService.datesChosen = [];
+    this.isDatePickerHidden = true;
   }
 }

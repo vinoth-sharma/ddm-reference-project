@@ -1,13 +1,9 @@
 import { Component,Output, EventEmitter, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Http, Response } from '@angular/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ToastrService } from 'ngx-toastr';
 // import { DataProviderService } from "../rmp/data-provider.service";
-import { NgxSpinnerService } from "ngx-spinner"
 
 @Component({
   selector: 'app-login',
@@ -31,7 +27,7 @@ export class LoginComponent implements OnInit {
   public slid; arr; semdet; roles; 
   public isDisabled = false;
 
-  constructor(private http: Http,private spinner : NgxSpinnerService,private toastr: ToastrService, private user:AuthenticationService,private router:Router) { 
+  constructor(private http: Http, private user:AuthenticationService,private router:Router) { 
     // this.users=this.user.userData;
     // this.successMsg= false;
     // //console.log(this.users);

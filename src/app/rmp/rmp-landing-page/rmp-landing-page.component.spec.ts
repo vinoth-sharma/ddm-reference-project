@@ -4,12 +4,12 @@ import { RmpLandingPageComponent } from './rmp-landing-page.component';
 import { HeaderComponent } from '../../header/header.component';
 import { RequestOnBehalfComponent } from '../request-on-behalf/request-on-behalf.component';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxSpinnerModule } from 'ngx-spinner';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatIconModule } from '@angular/material/icon';
+// // import { NgxSpinnerModule } from 'ngx-spinner';
+// import { MatMenuModule } from '@angular/material/menu';
+// import { MatBadgeModule } from '@angular/material/badge';
+// import { MatIconModule } from '@angular/material/icon';
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClientModule,HttpErrorResponse } from '@angular/common/http';
@@ -28,10 +28,12 @@ import { Observable } from 'rxjs';
 import { DjangoService } from '../django.service';
 import { DataProviderService } from '../data-provider.service';
 import 'jquery';
-import { MatSnackBar } from "@angular/material/snack-bar";
+// import { MatSnackBar } from "@angular/material/snack-bar";
 import { AuthenticationService } from "src/app/authentication.service";
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+// import { MatSnackBarModule } from '@angular/material/snack-bar';
 import Utils from '../../../utils';
+import { MaterialModule } from "../../material.module";
+import { MatNativeDateModule } from '@angular/material/core';
 
 describe('RmpLandingPageComponent', () => {
   let component: RmpLandingPageComponent;
@@ -46,23 +48,26 @@ describe('RmpLandingPageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        MatNativeDateModule,
                 RouterModule,
                 FormsModule, 
                 NgbDatepickerModule,
                 NgbTimepickerModule, 
-                NgxSpinnerModule, 
-                MatMenuModule,
-                MatBadgeModule,
-                MatIconModule,
+                // NgxSpinnerModule, 
+                // MatMenuModule,
+                // MatBadgeModule,
+                // MatIconModule,
                 AngularMultiSelectModule,
                 HttpClientTestingModule,
                 RouterTestingModule.withRoutes([]),
                 NoopAnimationsModule,
-                MatSnackBarModule
+                // MatSnackBarModule,
+                MaterialModule,
+                ReactiveFormsModule
                 ],
       declarations: [ RmpLandingPageComponent, HeaderComponent,
                       RequestOnBehalfComponent, NgToasterComponent],
-      providers:[ DatePipe, MatSnackBar, AuthenticationService]
+      providers:[ DatePipe , AuthenticationService]
     })
     .compileComponents();
     injector = getTestBed();

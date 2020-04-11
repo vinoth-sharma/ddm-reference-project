@@ -40,6 +40,8 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public fieldType = 'string';
   public isButton;
   public scheduleDataToBeSent:any = {};
+  public reportListIdToSchedule : number = null;
+
   public enableUpdateData = false;
   public textChange = false;
   public StatusSelectedItem = [];
@@ -349,7 +351,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
   public ngOnChanges() {
     let s = $(".report_id_checkboxes:checkbox:checked").length;
-    console.log(s, 'cheking----s');
   }
 
   public textChanged(event) {
@@ -1351,14 +1352,15 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public openScheduler(requestId : number){
     this.scheduleService.getScheduleReportData(requestId,1).subscribe(res=>{
       Utils.showSpinner();
-        if(res){
-          this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null; // to separate the post() and put()
-          this.scheduleDataToBeSent = res['data'];
-          Utils.hideSpinner(); 
-          $('#ongoingScheduleModal').modal('show');
-        }
-    }, 
-    error => {
+      if(res){
+      this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null; // to separate the post() and put()
+      this.scheduleDataToBeSent = res['data'];
+      this.reportListIdToSchedule = this.scheduleDataToBeSent.request_id
+      Utils.hideSpinner(); 
+      $('#ongoingScheduleModal').modal('show');
+      }
+      }, 
+      error => {
       Utils.hideSpinner();
       this.toastr.error('Scheduled report loading failed');
     });

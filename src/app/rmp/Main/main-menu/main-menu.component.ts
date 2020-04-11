@@ -11,8 +11,8 @@ import { SharedDataService } from '../../../create-report/shared-data.service';
 })
 export class MainMenuComponent implements OnInit {
   public isButton: boolean;
-  public user_role: string;
-  
+  public user_role: string = '';
+
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
     public authenticationService: AuthenticationService,
@@ -25,7 +25,7 @@ export class MainMenuComponent implements OnInit {
       }
     })
   }
-  
+
   ngOnInit() {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)

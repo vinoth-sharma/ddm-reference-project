@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { SemanticNewService } from '../semantic-new/semantic-new.service';
 import { AuthenticationService } from '../authentication.service';
-import { NgxSpinnerService } from "ngx-spinner";
 import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
@@ -10,7 +9,6 @@ import { Router, NavigationEnd } from '@angular/router';
   templateUrl: './semantic-sl.component.html',
   styleUrls: ['./semantic-sl.component.css']
 })
-
 export class SemanticSLComponent implements OnInit {
 
   public semanticLayers = [];
@@ -19,7 +17,7 @@ export class SemanticSLComponent implements OnInit {
   public isLoading: boolean;
   public userRole;
 
-  constructor(private router: Router,private toastrService: ToastrService,private spinner : NgxSpinnerService ,private semanticNewService: SemanticNewService, private authenticationService: AuthenticationService) {
+  constructor(private router: Router,private toastrService: ToastrService,private semanticNewService: SemanticNewService, private authenticationService: AuthenticationService) {
     
     this.semanticNewService.dataMethod$.subscribe((semanticLayers) => { this.semanticLayers = semanticLayers })
     this.authenticationService.Method$.subscribe(

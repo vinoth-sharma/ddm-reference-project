@@ -32,7 +32,7 @@ import { DataProviderService } from "./data-provider.service";
 import { ToastrModule } from "ngx-toastr";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
-import { SharedComponentsModule } from '../shared-components/shared-components.module';
+// import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { TagInputModule } from 'ngx-chips';
 import { CustomModalsModule } from './custom-modals/custom-modals.module';
 import { OngoingScheduleComponent } from './ongoing-schedule/ongoing-schedule.component'
@@ -42,6 +42,7 @@ import { MatFormFieldModule} from '@angular/material/form-field';
 import { QuillModule } from "ngx-quill";
 // import { MaterialModule } from "../material.module";
 import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
+import { CommonModuleDdmRmp } from "../custom-directives/common.module";
 
 @NgModule({
   declarations: [
@@ -88,8 +89,9 @@ import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
     ToastrModule.forRoot(),
     // MaterialModule.forRoot(),
     CustomPipeModules.forRoot(),
-    NgxPaginationModule,
-    SharedComponentsModule
+    CommonModuleDdmRmp.forRoot(),
+    NgxPaginationModule
+    // SharedComponentsModule
   ],
   providers: [
     DatePipe,

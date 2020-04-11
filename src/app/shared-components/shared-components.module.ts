@@ -17,10 +17,7 @@ import { TablesSelectionModalComponent } from "../tables-selection-modal/tables-
 import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import { SaveAsModalComponent } from './saveAs-modal/saveAs-modal.component';
 import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar/related-tables-sidebar.component';
-import { OrderByPipe } from "./filters/order-by.pipe";
 import { ValidatorDirective } from "./directives/validator.directive";
-import { FooterComponent } from "../footer/footer.component";
-import { HeaderComponent } from "../header/header.component";
 import { MatSelectModule } from "@angular/material/select";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerService } from "ngx-spinner"
@@ -60,18 +57,13 @@ import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
     ModalRolesComponent,
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
-    OrderByPipe,
     ValidatorDirective,
-    HeaderComponent,
-    FooterComponent,
     EditDescriptionComponent,
     CreateLovComponent,
     ShowLovComponent,
     LovContainerComponent,
     JoinsHelpOptionComponent,
     MaximumCharacterPipe,
-   
-    // CalculatedColumnComponent
   ],
   exports: [
     InlineEditComponent,
@@ -86,10 +78,7 @@ import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
     ModalRolesComponent,
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
-    OrderByPipe,
     ValidatorDirective,
-    HeaderComponent,
-    FooterComponent,
     JoinsHelpOptionComponent,
     MaximumCharacterPipe
     // CalculatedColumnComponent

@@ -70,6 +70,7 @@ import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privil
 import { ShowSignatureSchedularComponent } from './show-signature-schedular/show-signature-schedular.component';
 // import { MaterialModule } from "./material.module";
 import { MultipleDatesPickerComponent } from './custom-directives/multiple-dates-picker/multiple-dates-picker.component';
+import { CommonModuleDdmRmp } from "./custom-directives/common.module";
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -145,6 +146,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     CreateReportModule,
     // NgbModule.forRoot(),
     CustomPipeModules.forRoot(),
+    CommonModuleDdmRmp.forRoot()
     // MaterialModule.forRoot()
     // RMP
     // FooterComponent,

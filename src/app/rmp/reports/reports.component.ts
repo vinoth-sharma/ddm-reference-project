@@ -8,7 +8,6 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { Router } from '@angular/router';
 import Utils from "../../../utils"
 declare var $: any;
-import { CreateReportLayoutService } from '../../create-report/create-report-layout/create-report-layout.service';
 
 import { ScheduleService } from '../../schedule/schedule.service';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
@@ -174,8 +173,8 @@ export class ReportsComponent implements OnInit {
     private DatePipe: DatePipe,
     public scheduleService: ScheduleService,
     public router: Router,
-    private toasterService: NgToasterComponent,
-    private createReportLayoutService: CreateReportLayoutService) {
+    private toasterService: NgToasterComponent
+    ) {
       this.readUserRole()
       this.getLookUptableData()
     this.editModes = false;

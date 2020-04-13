@@ -7,9 +7,6 @@ import { BehaviorSubject, of } from 'rxjs';
 import { MaterialModule } from '../material.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 import { Router, RouterState } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ToastrService, ToastrModule } from 'ngx-toastr';
-import { SortTableComponent } from '../sort-table/sort-table.component';
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

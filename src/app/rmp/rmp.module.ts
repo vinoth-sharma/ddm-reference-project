@@ -28,7 +28,6 @@ import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { DataProviderService } from "./data-provider.service";
-import { ToastrModule } from "ngx-toastr";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
 // import { SharedComponentsModule } from '../shared-components/shared-components.module';
@@ -84,7 +83,6 @@ import { CommonModuleDdmRmp } from "../custom-directives/common.module";
     Angular2FontawesomeModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
-    ToastrModule.forRoot(),
     // MaterialModule.forRoot(),
     CustomPipeModules.forRoot(),
     CommonModuleDdmRmp.forRoot(),

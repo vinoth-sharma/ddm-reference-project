@@ -8,7 +8,6 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppComponent } from "./app.component";
@@ -66,9 +65,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     OwlNativeDateTimeModule,
     NgxPaginationModule,
     NgxSpinnerModule,
-    ToastrModule.forRoot({
-      preventDuplicates: true
-    }),
     NgMultiSelectDropDownModule.forRoot(),
     AppRoutingModule,
     // NgbModule.forRoot(),

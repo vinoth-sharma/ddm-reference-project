@@ -7,11 +7,12 @@ import { NgLoaderService } from './ng-loader/ng-loader.service';
 import { NgCustomSpinnerComponent } from './ng-custom-spinner/ng-custom-spinner.component';
 import { MultiSelectComponent } from "./multi-select/multi-select.component";
 import { OrderByPipe } from "./filters/order-by.pipe";
+import { CustomCookieService } from "./ng-custom-cookies-service/custom.cookies.service";
 
 @NgModule({
     declarations : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,
                     NgCustomSpinnerComponent,OrderByPipe],
-    providers:[NgLoaderService],
+    providers:[NgLoaderService,CustomCookieService],
     imports : [MaterialModule],
     exports : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,
         NgCustomSpinnerComponent,MaterialModule,OrderByPipe]

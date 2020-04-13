@@ -1,14 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
-import { Http } from '@angular/http';
 import { environment } from '../environments/environment';
 import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from './authentication.service';
-// import { ConstantsComponent } from './constants/constants.component';
 import { ConstantService } from './constant.service';
-// import { getFunctions } from '../constants'
+import { CustomCookieService } from './custom-directives/ng-custom-cookies-service/custom.cookies.service'
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,7 +27,7 @@ export class AuthSsoService {
   }
 
   public get cookies() {
-    return this.injector.get(CookieService);
+    return this.injector.get(CustomCookieService);
   }
 
   authLoad() {
@@ -77,17 +76,9 @@ export class AuthSsoService {
   }
 
   getAllFunctions(){
-    // this.constantService.getFunctions().subscribe(
-    //   res => {
-    //       this.constantService.setFunctions(res['data'][0],'sql');
-    //   },
-    //   err => {
-    //     this.constantService.setFunctions([],'sql');
-    //   }
-    // )
+
     this.constantService.getAggregationFunctions().subscribe(
       res => {
-        // this.constantService.setFunctions(res['data'][0],'aggregation');
         this.constantService.setFunctions(res['data'],'aggregation');        
       },
       err => {

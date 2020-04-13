@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { OrderByPipe } from 'angular-pipes';
 import { FilterTablePipe } from '../filter-table.pipe';
 import { MaterialModule } from 'src/app/material.module';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { QuillModule, QuillEditorComponent } from 'ngx-quill';
 // import { OndemandReportsComponent } from '../custom-modals/ondemand-reports/ondemand-reports.component';
 // import { OndemandConfigReportsComponent } from '../custom-modals/ondemand-config-reports/ondemand-config-reports.component';
@@ -87,7 +86,7 @@ describe('ReportsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ReportsComponent,OrderByPipe,NgCustomSpinnerComponent,FilterTablePipe,OndemandReportsComponent,OndemandConfigReportsComponent,NgToasterComponent],
-      imports:[FormsModule,MaterialModule,NgMultiSelectDropDownModule,BrowserAnimationsModule,
+      imports:[FormsModule,MaterialModule,BrowserAnimationsModule,
         HttpClientTestingModule,RouterTestingModule,QuillModule.forRoot({})],
       providers:[DatePipe]
     })

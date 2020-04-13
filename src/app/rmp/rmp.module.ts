@@ -24,7 +24,6 @@ import { OrderModule } from 'ngx-order-pipe';
 import { RequestOnBehalfComponent } from './request-on-behalf/request-on-behalf.component';
 import { MainMenuLandingPageComponent } from './Main/main-menu-landing-page/main-menu-landing-page.component';
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
-import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { DatePipe } from '@angular/common';
 import { DataProviderService } from "./data-provider.service";
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -80,7 +79,6 @@ import { CommonModuleDdmRmp } from "../custom-directives/common.module";
     CustomPipeModules,
     AngularMultiSelectModule,
     Angular2FontawesomeModule,
-    NgMultiSelectDropDownModule.forRoot(),
     // MaterialModule.forRoot(),
     CustomPipeModules.forRoot(),
     CommonModuleDdmRmp.forRoot(),

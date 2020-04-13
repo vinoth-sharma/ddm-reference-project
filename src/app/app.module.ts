@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -63,7 +62,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     NgxPaginationModule,
-    NgMultiSelectDropDownModule.forRoot(),
     AppRoutingModule,
     // NgbModule.forRoot(),
     CustomPipeModules.forRoot(),

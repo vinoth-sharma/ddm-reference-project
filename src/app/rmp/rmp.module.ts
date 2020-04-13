@@ -26,7 +26,6 @@ import { MainMenuLandingPageComponent } from './Main/main-menu-landing-page/main
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { DatePipe } from '@angular/common';
-import { NgxSpinnerModule } from "ngx-spinner";
 import { DataProviderService } from "./data-provider.service";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
@@ -82,7 +81,6 @@ import { CommonModuleDdmRmp } from "../custom-directives/common.module";
     AngularMultiSelectModule,
     Angular2FontawesomeModule,
     NgMultiSelectDropDownModule.forRoot(),
-    NgxSpinnerModule,
     // MaterialModule.forRoot(),
     CustomPipeModules.forRoot(),
     CommonModuleDdmRmp.forRoot(),

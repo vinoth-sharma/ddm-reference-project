@@ -2,8 +2,6 @@ import { Injectable, Injector } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { ConstantService } from "../constant.service";
 import { ToastrService } from "ngx-toastr";
 import { Subject } from 'rxjs';

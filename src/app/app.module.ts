@@ -45,7 +45,6 @@ import { ShowSignatureComponent } from './show-signature/show-signature.componen
 import { ShareReportService } from './share-reports/share-report.service';
 import { AuthSsoService } from './auth-sso.service';
 import { AuthInterceptor } from './auth-interceptor.service';
-import { CookieService } from 'ngx-cookie-service';
 // import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
 import { CustomModalsModule } from './rmp/custom-modals/custom-modals.module';
 import { CreateRelationComponent } from './relations/create-relation/create-relation.component';
@@ -148,7 +147,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
   ],
   providers: [
     SecurityModalService,
-    CookieService,
     PrivilegeModalService,
     QueryBuilderService,
     {

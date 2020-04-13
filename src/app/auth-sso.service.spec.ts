@@ -5,11 +5,11 @@ import { HttpRequest } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthenticationService } from './authentication.service';
 import { environment } from '../environments/environment';
-import { CookieService } from 'ngx-cookie-service';
 import { of, BehaviorSubject } from 'rxjs';
 import { ConstantService } from './constant.service';
+import { CustomPipeModules } from "./custom-directives/custom.pipes.module";
 
-describe('AuthSsoService', () => {
+fdescribe('AuthSsoService', () => {
   let injector: TestBed;
   let service: AuthSsoService;
   let httpMock: HttpTestingController;
@@ -17,9 +17,10 @@ describe('AuthSsoService', () => {
   beforeEach(() =>{ TestBed.configureTestingModule({
                     imports:[ 
                         HttpClientTestingModule,
-                        RouterTestingModule.withRoutes([])
+                        RouterTestingModule.withRoutes([]),
+                        CustomPipeModules.forRoot()
                       ],
-                    providers: [ AuthenticationService, CookieService ]  
+                    providers: [ AuthenticationService ]  
                   });
                   injector = getTestBed();
                   service = injector.get(AuthSsoService);

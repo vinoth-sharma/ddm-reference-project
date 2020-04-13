@@ -15,7 +15,7 @@ import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4
 import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { MetricsComponent } from './metrics.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { OrderByPipe } from '../../shared-components/filters/order-by.pipe';
+import { OrderByPipe } from '../../custom-directives/filters/order-by.pipe';
 import { FilterTablePipe } from '../filter-table.pipe';
 import { QuillModule } from "ngx-quill";
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';

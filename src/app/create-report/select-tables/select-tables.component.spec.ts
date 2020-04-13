@@ -9,7 +9,7 @@ import { async,
 import { SelectTablesComponent } from './select-tables.component';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { OrderByPipe } from '../../shared-components/filters/order-by.pipe';
+import { OrderByPipe } from '../../custom-directives/filters/order-by.pipe';
 import { MaximumCharacterPipe } from '../../shared-components/maximum-character.pipe';
 import { spaceFormaterString } from '../../custom-directives/spaceFormaterString.pipe';
 import { MatGridListModule } from '@angular/material/grid-list';

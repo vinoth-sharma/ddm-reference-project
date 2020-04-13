@@ -9,7 +9,7 @@ import { of, BehaviorSubject } from 'rxjs';
 import { ConstantService } from './constant.service';
 import { CustomPipeModules } from "./custom-directives/custom.pipes.module";
 
-fdescribe('AuthSsoService', () => {
+describe('AuthSsoService', () => {
   let injector: TestBed;
   let service: AuthSsoService;
   let httpMock: HttpTestingController;

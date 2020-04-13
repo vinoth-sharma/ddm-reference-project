@@ -13,8 +13,11 @@
                     Documents</button></a>
             <a *ngIf="user_role == 'Admin'" routerLink="ddm-admin" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">DDM Administrator</button></a>
-            <a *ngIf="user_role != 'Business-user'"><button class="btn btn-primary" (click)='role()'>Go To
-                    Tool</button></a>
+            <a *ngIf="user_role != 'Business-user'">
+                <button class="btn btn-primary" (click)='role()' disabled="true">
+                     Go To Tool
+                </button>
+            </a>
         </div>
     </div>
     <!--                            Main Body Content                         -->

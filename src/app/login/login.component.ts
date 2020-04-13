@@ -1,7 +1,6 @@
 import { Component,Output, EventEmitter, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Http, Response } from '@angular/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 // import { DataProviderService } from "../rmp/data-provider.service";
 
@@ -27,7 +26,7 @@ export class LoginComponent implements OnInit {
   public slid; arr; semdet; roles; 
   public isDisabled = false;
 
-  constructor(private http: Http, private user:AuthenticationService,private router:Router) { 
+  constructor( private user:AuthenticationService,private router:Router) { 
     // this.users=this.user.userData;
     // this.successMsg= false;
     // //console.log(this.users);

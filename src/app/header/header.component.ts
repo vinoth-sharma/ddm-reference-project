@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit {
         this.user_role = role["role"]
         this.dataProvider.currentNotifications.subscribe((element:Array<any>) => {
           if (element) {
-                this.user_name = role["first_name"] + "" + role["last_name"]
+                this.user_name = role["first_name"] + " " + role["last_name"]
                 this.user_role = role["role"]
                 this.notification_list = element.filter(element => {
                 return element.commentor != this.user_name
@@ -100,7 +100,6 @@ export class HeaderComponent implements OnInit {
   // }
 
   redirect(value:string){
-    console.log('CLICKED HELP SECTION is :',value);
     Utils.showSpinner();
     this.authenticationService.getHelpRedirection(value).subscribe(res=>{
       let pdfFile = new Blob([res], {type: 'application/pdf'});

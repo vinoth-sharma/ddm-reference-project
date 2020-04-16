@@ -1,5 +1,5 @@
 
-import {map} from 'rxjs/operators';
+import {map, catchError} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from "../../environments/environment";
@@ -30,6 +30,8 @@ export class DjangoService {
         return res['data'].filter(v => v.toLowerCase().indexOf(user.toLowerCase()) > -1)
       }
       else return [];
+    }),catchError(error =>{
+      return []
     }))
   }
 

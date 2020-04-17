@@ -31,17 +31,12 @@
       </div>
       <div class="col-4" style="padding-right:0%;">
         <div class="icons">
-          <div class="press">
+          <div class="press" title="The OD/C report creation feature has been temporarily suspended">
               <button *ngIf="user_role=='Admin' && showODCBtn" class="btn btn-primary" data-toggle="modal" data-target="#onDemandScheduleConfigurableModal"
-                data-backdrop="static" data-keyboard="false" (click)="mimicODC(finalData)"
-                  class="btn btn-primary pointer" style="margin-right : 1vw"> 
-              Create OD/C Report
+                data-backdrop="static" data-keyboard="false" class="btn btn-primary pointer" style="margin-right : 1vw" disabled> 
+                  Create OD/C Report
               </button>
-              <!-- routerLink="../../semantic/sem-reports/home"
-              routerLinkActive="active-route" 
-              [routerLinkActiveOptions]="{ exact: true } -->
-              
-              <!-- (click)="getRequestIds([314,379,382])" (click)="getRequestIds(element.ddm_rmp_post_report_id)"  -->
+              <!-- DO NOT DELETE (click)="mimicODC(finalData)" -->
             <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
               data-backdrop="static" data-keyboard="false">
               User Details
@@ -296,8 +291,6 @@
                     [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)"
                     style="font-size: 12px;font-weight: 600;padding: 8px 6px;width: 103%;">
                     Create Report
-                    <!-- <span *ngIf="element.frequency == 'On Demand'">Create On Demand Report</span><span *ngIf="showODCBtn">Create On Demand Configurable Report</span>
-                    <span *ngIf="element.frequency != 'On Demand' && !showODCBtn">Create Report</span> -->
                   </button>
                 </div>
               </td>
@@ -944,5 +937,3 @@
 </div>
 
 <app-ongoing-schedule [scheduleReportData]="scheduleDataToBeSent" [reportId]="reportListIdToSchedule" (confirmOnGoing)="changeOngoingStatus($event)"></app-ongoing-schedule>
-<!-- <app-schedule ></app-schedule> -->
-<!-- [scheduleReportData]="scheduleDataToBeSent" (update)="tableSorting()" --> 

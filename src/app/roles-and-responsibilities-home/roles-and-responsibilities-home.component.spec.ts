@@ -12,7 +12,7 @@ import { HttpClientTestingModule  } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import Utils from '../../utils';
 
-import { SortTableComponent } from './sort-table.component';
+import { RolesAndResponsibilitiesHomeComponent } from './roles-and-responsibilities-home.component';
 import { HeaderComponent } from "../header/header.component";
 import { SecurityModalComponent } from '../security-modal/security-modal.component';
 import { PrivilegeModalComponent } from '../privilege-modal/privilege-modal.component';
@@ -26,13 +26,13 @@ import { PrivilegeModalComponent } from '../privilege-modal/privilege-modal.comp
 // import { Component } from '@angular/core';
 // import { NgModule } from '@angular/core';
 
-describe('SortTableComponent', () => {
-  let component: SortTableComponent;
-  let fixture: ComponentFixture<SortTableComponent>;
+describe('RolesAndResponsibilitiesHomeComponent', () => {
+  let component: RolesAndResponsibilitiesHomeComponent;
+  let fixture: ComponentFixture<RolesAndResponsibilitiesHomeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SortTableComponent,HeaderComponent,SecurityModalComponent,PrivilegeModalComponent, NgToasterComponent],
+      declarations: [ RolesAndResponsibilitiesHomeComponent,HeaderComponent,SecurityModalComponent,PrivilegeModalComponent, NgToasterComponent],
       imports : [MaterialModule,CommonModule,FormsModule, ReactiveFormsModule, NgPipesModule, HttpClientTestingModule, RouterTestingModule,BrowserAnimationsModule]
       // providers : [ { provide: Utils, useClass: trialService } ]
     })
@@ -40,7 +40,7 @@ describe('SortTableComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SortTableComponent);
+    fixture = TestBed.createComponent(RolesAndResponsibilitiesHomeComponent);
     component = fixture.componentInstance;
     let spyVar = spyOn(Utils,'showSpinner')
     fixture.detectChanges();

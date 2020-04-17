@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LogEntryComponent } from "./log-entry/log-entry.component"; 
-import { SortTableComponent } from "./sort-table/sort-table.component";
+import { RolesAndResponsibilitiesHomeComponent } from "./roles-and-responsibilities-home/roles-and-responsibilities-home.component";
 import { RMPModule } from "./rmp/rmp.module";
 import { AuthGuard } from "./auth.guard";
 import { RMP_Routes } from "./rmp/rmp-routing.module"
@@ -19,7 +19,7 @@ const routes: Routes = [
   },
   {
     path: "roles",
-    component: SortTableComponent,
+    component: RolesAndResponsibilitiesHomeComponent,
     canActivate: [AuthGuard]
   },
   {

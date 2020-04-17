@@ -1,4 +1,3 @@
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import {  MatPaginator } from '@angular/material/paginator';
@@ -12,12 +11,12 @@ import Utils from "../../utils";
 
 
 @Component({
-  selector: 'app-sort-table',
-  templateUrl: './sort-table.component.html',
-  styleUrls: ['./sort-table.component.css']
+  selector: 'app-rar-home',
+  templateUrl: './roles-and-responsibilities-home.component.html',
+  styleUrls: ['./roles-and-responsibilities-home.component.css']
 })
 
-export class SortTableComponent implements OnInit {
+export class RolesAndResponsibilitiesHomeComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;

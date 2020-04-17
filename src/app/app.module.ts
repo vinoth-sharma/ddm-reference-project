@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppComponent } from "./app.component";
-import { SortTableComponent } from "./sort-table/sort-table.component";
+import { RolesAndResponsibilitiesHomeComponent } from "./roles-and-responsibilities-home/roles-and-responsibilities-home.component";
 import { LoginComponent } from "./login/login.component";
 import { SecurityModalComponent } from './security-modal/security-modal.component';
 import { PrivilegeModalComponent } from './privilege-modal/privilege-modal.component';
@@ -38,7 +38,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
 @NgModule({
   declarations: [
     AppComponent,
-    SortTableComponent,
+    RolesAndResponsibilitiesHomeComponent,
     LoginComponent,
     SecurityModalComponent,
     PrivilegeModalComponent,

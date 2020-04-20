@@ -24,11 +24,11 @@ describe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HeaderComponent, DummyComponent],
       providers: [
-        
+
         { provide: AuthenticationService, useClass: AuthenticationMockMockService },
         { provide: DataProviderService, useClass: DataProviderMockMockService }
       ],
-      imports: [BrowserAnimationsModule, MaterialModule, HttpClientTestingModule, ]
+      imports: [BrowserAnimationsModule, MaterialModule, HttpClientTestingModule,]
     })
       .compileComponents();
   }));
@@ -85,46 +85,40 @@ describe('HeaderComponent', () => {
 
   it("should route to /roles when clicked on Roles And Responsibilities button", async(() => {
     let buttonSelector = ".rolesAndResponsibilities"
-    let trh = new TestRouteHandling(component,TestBed,fixture,buttonSelector)
+    let trh = new TestRouteHandling(component, TestBed, fixture, buttonSelector)
     expect(trh.whenClickedOnMenuItems()).toHaveBeenCalledWith(['roles'])
-  }))
-
-  it("should route to /logs when clicked on Log Entry button", async(() => {
-    let buttonSelector = ".logEntry"
-    let trh = new TestRouteHandling(component,TestBed,fixture,buttonSelector)
-    expect(trh.whenClickedOnMenuItems()).toHaveBeenCalledWith(['logs'])
   }))
 
   it("should route to /user when clicked header Image", async(() => {
     let buttonSelector = "#DDM_logo"
-    let trh = new TestRouteHandling(component,TestBed,fixture,buttonSelector)
+    let trh = new TestRouteHandling(component, TestBed, fixture, buttonSelector)
     expect(trh.whenClickedOnButton()).toHaveBeenCalledWith(['user'])
   }))
 
-  it("should open a new window and show the downloaded blob", fakeAsync(()=>{
+  it("should open a new window and show the downloaded blob", fakeAsync(() => {
     let authService = fixture.debugElement.injector.get(AuthenticationService)
-       let data = {foo:'bar'}
-       let openSpy = spyOn(window,"open");
-       let urlSpy = spyOn(URL,'createObjectURL').and.returnValue(data)
-       let spys = spyOn(authService,"getHelpRedirection").and.returnValue(of(new Blob()));
-       let spinneropenSpy = spyOn(Utils,'showSpinner')
-       let spinnerCloseSpy = spyOn(Utils,'hideSpinner')
-       component.redirect("RMP");
-       tick();
-       expect(urlSpy).toHaveBeenCalled()
-       expect(urlSpy).toHaveBeenCalled()
+    let data = { foo: 'bar' }
+    let openSpy = spyOn(window, "open");
+    let urlSpy = spyOn(URL, 'createObjectURL').and.returnValue(data)
+    let spys = spyOn(authService, "getHelpRedirection").and.returnValue(of(new Blob()));
+    let spinneropenSpy = spyOn(Utils, 'showSpinner')
+    let spinnerCloseSpy = spyOn(Utils, 'hideSpinner')
+    component.redirect("RMP");
+    tick();
+    expect(urlSpy).toHaveBeenCalled()
+    expect(urlSpy).toHaveBeenCalled()
   }))
 });
 
 
 class AuthenticationMockMockService {
- public myMethodSubject = new BehaviorSubject<any>("");
- public myMethod$ = this.myMethodSubject.asObservable();
+  public myMethodSubject = new BehaviorSubject<any>("");
+  public myMethod$ = this.myMethodSubject.asObservable();
 
   myMethod(data, dummyOne, dummyTwo) {
     this.myMethodSubject.next(data)
   }
-  getHelpRedirection(value:string){
+  getHelpRedirection(value: string) {
   }
 }
 class DataProviderMockMockService {
@@ -145,24 +139,23 @@ class TestRouteHandling {
   public urlSpy;
   public authService;
 
-  constructor(public component,public testbed,public fixture,public buttonSelector){
+  constructor(public component, public testbed, public fixture, public buttonSelector) {
     this.element = this.fixture.debugElement.nativeElement;
     this.router = this.testbed.get(Router);
     this.spy = spyOn(this.router, 'navigate');
     this.button = this.element.querySelector('.menuList');
     this.authService = this.fixture.debugElement.injector.get(AuthenticationService)
   }
-  whenClickedOnMenuItems(){
+  whenClickedOnMenuItems() {
     this.component.roleName.role = "Admin";
     this.button.click();
     this.fixture.debugElement.query(By.css(this.buttonSelector)).triggerEventHandler('click', null)
     return this.spy;
   }
-  whenClickedOnButton(){
+  whenClickedOnButton() {
     this.button = this.element.querySelector(this.buttonSelector)
     this.button.click();
     return this.spy;
   }
 }
 
- 

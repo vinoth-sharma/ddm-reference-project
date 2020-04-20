@@ -1,58 +1,4 @@
-<!-- <div class="top" id="tp">
-  <div id="DDM_logo">
-    <img src="/assets/OFT_Logo.jpg" (click)="role()" width="100%" height="125%">
-  </div>
-  <div id="ddm-text">Distribution Data Mart</div>
-  <div id="user_logo">
-    <div id="messageButton">
-        <button type="button" style="width:100%" class="btn btn-primary dropdown-toggle" data-target="#notification_dropdown" data-toggle="dropdown">
-            Messages <span class="badge badge-light" *ngIf="notification_number != 0">{{notification_number}}</span>
-            </button>
-            <ng-container *ngIf="notification_list">
-                <div class="dropdown-menu" id="notification_dropdown" style="width: 30%;left:63%">
-                    <ng-container *ngIf="notification_set.size != 0">
-                        <div *ngFor="let element of notification_set" style="padding-left:2%">
-                            You have unread messages in Request #{{element}}
-                        </div>
-                    </ng-container>
-                    <ng-container *ngIf="notification_set.size == 0">
-                            <div style="padding-left:2%">
-                                No unread messages
-                            </div>
-                    </ng-container>
-                </div>
-            </ng-container>
-    </div>
-    <div id="role-text" class="userDetsWrapper">
-      <div class="userName">{{roles.first_name}} {{roles.last_name}} </div>
-      <div class="userRole">{{roleName.role}}</div>
-    </div>
-    <div class="userIconWrapper">
-      <button type="button" class="btn btn-primary dropdown-toggle " id="user" data-target="#list1" data-toggle="dropdown"
-        style="border-color: #003748;padding: 0px;left: 94%;position: absolute;top: 1%;height: 6.5%;">
-        <img src="..\assets\account.png" class="app-uistyles">
-      </button>
-    </div>
-    <div *ngIf="roleName.role == 'Admin'" class="dropdown-menu" id="list1">
-      <div class="astyles1" (click)="callRolespage()">Roles and Responsibilties</div>
-      <hr class="hrp">
-      <div class="astyles1" (click)="callLogEntryView()">Log Entry</div>
-      <hr class="hrp">
-      <div class="dropdown-submenu">
-        <a class="dropdown-item" tabindex="-1" style="padding-left:20px;">Preferences</a>
-        <ul class="dropdown-menu sub-menu">
-          <li class="dropdown-item"><a tabindex="-1" class="allowed">English</a></li>
-          <li class="dropdown-item"><a tabindex="-1" class="disabled">Español</a></li>
-          <li class="dropdown-item"><a tabindex="-1" class="disabled">Italiano</a></li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</div> -->
-
-<!-- ------------------------------- -->
-<div class="header-container" >
+<div class="header-container">
   <div class="header-cont-part">
     <img id="DDM_logo" src="/assets/OFT_Logo.jpg" (click)="role()">
     <div class="header-title">
@@ -61,12 +7,14 @@
   </div>
   <div class="header-cont-part" style="justify-content: flex-end;">
     <button mat-icon-button style="margin-right: 55px;" [matMenuTriggerFor]="notifcations">
-      <mat-icon [matBadge]="notification_number" matBadgeColor="warn" class="notification-icon">notifications_active</mat-icon>
+      <mat-icon [matBadge]="notification_number" matBadgeColor="warn" class="notification-icon">notifications_active
+      </mat-icon>
     </button>
     <mat-menu #notifcations="matMenu" class="notification-list">
       <ng-container *ngIf="notification_list">
         <ng-container *ngIf="notification_set.size != 0">
-          <button mat-menu-item *ngFor="let element of notification_set" title="You have unread messages in Request #{{element}}">
+          <button mat-menu-item *ngFor="let element of notification_set"
+            title="You have unread messages in Request #{{element}}">
             You have unread messages in Request #{{element}}
           </button>
         </ng-container>
@@ -76,24 +24,25 @@
       </ng-container>
     </mat-menu>
 
-    <div style="" class="user-data-container">
+    <div class="user-data-container">
       <div>
-        <mat-icon [matMenuTriggerFor]="menu" style="font-size: 6.4vh;color: white;cursor: pointer;">perm_identity</mat-icon>
+        <mat-icon [matMenuTriggerFor]="menu" style="font-size: 6.4vh;color: white;cursor: pointer;">perm_identity
+        </mat-icon>
       </div>
       <div id="role-text" class="user-details">
         <div>{{roles.first_name}} {{roles.last_name}} </div>
         <div style="text-align: right;">{{roleName.role}}</div>
       </div>
       <div style="margin-left : 12px;">
-        <button mat-icon-button [matMenuTriggerFor]="menu" class="menuList" >
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="menuList">
           <mat-icon style="color: white;font-size : 30px;">arrow_drop_down</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
           <ng-container *ngIf="roleName.role == 'Admin'" class="dropdown-menu" id="list1">
-            <button mat-menu-item class="rolesAndResponsibilities" (click)="callRolespage()">Roles and Responsibilties</button>
-            <button mat-menu-item class="logEntry"(click)="callLogEntryView()">Log Entry</button>
-            <button mat-menu-item class="preferences"[matMenuTriggerFor]="language">Preferences</button>
-            <button mat-menu-item class="help"[matMenuTriggerFor]="help">Help</button>
+            <button mat-menu-item class="rolesAndResponsibilities" (click)="callRolespage()">Roles and
+              Responsibilties</button>
+            <button mat-menu-item class="preferences" [matMenuTriggerFor]="language">Preferences</button>
+            <button mat-menu-item class="help" [matMenuTriggerFor]="help">Help</button>
           </ng-container>
           <ng-container *ngIf="roleName.role != 'Admin'" class="dropdown-menu" id="list1">
             <button mat-menu-item [matMenuTriggerFor]="help">Help</button>
@@ -105,7 +54,7 @@
           <button mat-menu-item disabled>français</button>
         </mat-menu>
         <mat-menu #help="matMenu">
-          <button mat-menu-item class="button-rmp"(click)="redirect('RMP')">RMP</button>
+          <button mat-menu-item class="button-rmp" (click)="redirect('RMP')">RMP</button>
           <button mat-menu-item (click)="redirect('DDM')">Semantic Layer</button>
         </mat-menu>
       </div>

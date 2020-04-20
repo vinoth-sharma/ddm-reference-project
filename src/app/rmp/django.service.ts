@@ -272,16 +272,16 @@ export class DjangoService {
   ddm_rmp_main_menu_description_text_delete(id) {
     return this.httpClient.delete(`${environment.baseUrl}RMP/main_menu_description_text/?ddm_rmp_main_menu_description_text_id=` + id)
   }
-  metrics_aggregate(obj) {
-    return this.httpClient.get(`${environment.baseUrl}RMP/matrix_of_report/`, {
-      params: {
-        'start_date': obj.start_date,
-        'end_date' : obj.end_date,
-        'users_table_id' : obj.users_table_id,
-        'role_id' : obj.role_id
-      }
-    })
-  }
+  // metrics_aggregate(obj) {
+  //   return this.httpClient.get(`${environment.baseUrl}RMP/matrix_of_report/`, {
+  //     params: {
+  //       'start_date': obj.start_date,
+  //       'end_date' : obj.end_date,
+  //       'users_table_id' : obj.users_table_id,
+  //       'role_id' : obj.role_id
+  //     }
+  //   })
+  // }
   
 }
 

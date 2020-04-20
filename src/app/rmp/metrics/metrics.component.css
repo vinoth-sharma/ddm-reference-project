@@ -6,7 +6,8 @@ h3 {
 .tableMetrics    { overflow-y: auto; height: 435px; overflow-x: auto }
 .tableMetrics thead th { position: sticky; top: 0;z-index: 10; }
 .tableMetrics {
-  width: 80%;
+  
+  width: 100%;
   overflow-x: auto;
 }
 

@@ -39,6 +39,9 @@ import { QuillModule } from "ngx-quill";
 // import { MaterialModule } from "../material.module";
 import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
 import { CommonModuleDdmRmp } from "../custom-directives/common.module";
+import { NotesWrapperComponent } from './admin-notes/notes-wrapper/notes-wrapper.component';
+import { DisplayNotesComponent } from './admin-notes/display-notes/display-notes.component';
+import { ExistingNotesContainerComponent } from './admin-notes/existing-notes-container/existing-notes-container.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,10 @@ import { CommonModuleDdmRmp } from "../custom-directives/common.module";
     RequestOnBehalfComponent,
     MainMenuLandingPageComponent,
     OngoingScheduleComponent,
-    MultiDatePickerOngoingComponent
+    MultiDatePickerOngoingComponent,
+    NotesWrapperComponent,
+    DisplayNotesComponent,
+    ExistingNotesContainerComponent
   ],
   imports: [
     QuillModule.forRoot(),
@@ -89,5 +95,6 @@ import { CommonModuleDdmRmp } from "../custom-directives/common.module";
     DatePipe,
     DataProviderService
   ],
+  entryComponents : [DisplayNotesComponent,NotesWrapperComponent]
 })
 export class RMPModule { }

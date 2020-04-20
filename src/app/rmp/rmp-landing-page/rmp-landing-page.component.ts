@@ -13,6 +13,9 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FormControl, FormGroupDirective, 
          NgForm, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { DisplayNotesComponent } from '../admin-notes/display-notes/display-notes.component';
+
 
 @Component({
   selector: 'app-rmp-landing-page',
@@ -67,6 +70,7 @@ export class RmpLandingPageComponent implements OnInit{
     public dataProvider: DataProviderService, 
     public  auth_service: AuthenticationService, 
     private toastr: NgToasterComponent,
+    private dialog: MatDialog,
     private formBuilder: FormBuilder) {
         this.myForm = this.formBuilder.group({
           'startDate': [''],
@@ -168,7 +172,12 @@ export class RmpLandingPageComponent implements OnInit{
 
     if (this.note_status) {
       if(today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
-          $('#DisplayNotesModal').modal('show');
+          this.dialog.open(DisplayNotesComponent,{
+            // width : '135vh',
+            // height : '75vh',
+            data : { notes : adminNotes.notes_content }
+          })
+          // $('#DisplayNotesModal').modal('show');
     } else 
     $('#display-notes-status').prop("checked", true);
   }

@@ -1,0 +1,55 @@
+.modal-container{
+    width: 70vw;
+    height: 70vh;
+    overflow: hidden;
+}
+.modal-body{
+    height: 74%;
+    overflow: auto;
+    padding: 25px;
+}
+button{
+    margin-right: 20px;
+}
+
+
+/*Display Notes styling*/
+/* 
+.displayNotesStyling {
+    background-color: rgb(255, 228, 155);
+    color: black;
+    border: none;
+    font-size: 150%;
+  }
+  
+  .displayHeaderStyling {
+    background-color: rgb(230, 204, 132);
+    color: black;
+    border: none;
+    font-size: 150%;
+  }
+  
+  .open {
+    display: block !important;
+    top: 14.3%;
+    right: 33px;
+    left: 74%;
+  }
+  
+  button.btn.btn-link.ngb-dp-arrow-btn:active {
+    border: none;
+  }
+  
+  .custom-date-class {
+    background: rgba(2, 117, 216, 0.5) !important;
+    border-radius: 100%;
+  }
+  
+  .target-date mat-form-field:nth-last-child(1) {
+    margin-left: 12px;
+  }
+  
+  .target-date {
+    display: flex;
+  } */
+  

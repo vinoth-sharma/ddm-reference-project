@@ -132,31 +132,18 @@
   }
 
   .name-width{
-    flex: 0 0 15% !important;
-    width:15% !important;
+    flex: 0 0 20% !important;
+    width:20% !important;
   }
 
   .userid-width{
-    flex: 0 0 7.5% !important;
-    width:7.5% !important;
+    flex: 0 0 20% !important;
+    width:20% !important;
   }
 
   .role-width{
-    flex: 0 0 7.5% !important;
-    width:7.5% !important;
-  }
-
-  .asl-width{
-    flex: 0 0 50% !important;
-    width:50% !important;
-    flex-wrap: wrap;
-  }
-
-  .privileges-width{
-    flex: 0 0 20% !important;
-    width:20% !important;
-    overflow: hidden;
-    text-overflow: ellipsis; 
+    flex: 0 0 60% !important;
+    width:60% !important;
   }
 
   .empty-msg-div{

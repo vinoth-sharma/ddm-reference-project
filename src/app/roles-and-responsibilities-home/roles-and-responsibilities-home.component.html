@@ -19,26 +19,13 @@
       </ng-container>
 
       <ng-container matColumnDef="user_id">
-        <mat-header-cell class=" userid-width" *matHeaderCellDef mat-sort-header><b>User id</b></mat-header-cell>
+        <mat-header-cell class=" userid-width" *matHeaderCellDef mat-sort-header><b>User-Id</b></mat-header-cell>
         <mat-cell *matCellDef="let result" class=" userid-width">{{result.user_id}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="role">
         <mat-header-cell class=" role-width" *matHeaderCellDef mat-sort-header><b>Role</b></mat-header-cell>
         <mat-cell *matCellDef="let result" class=" role-width">{{result.role}}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="semantic_layers">
-        <mat-header-cell class=" asl-width" *matHeaderCellDef mat-sort-header><b>Accessed semantic layers </b>
-        </mat-header-cell>
-        <mat-cell *matCellDef="let result" class=" asl-width">
-          <span class="result" *ngFor="let result of result.semantic_layers">{{result}}</span>
-        </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="privilages">
-        <mat-header-cell class=" privileges-width" *matHeaderCellDef mat-sort-header><b>Privileges</b></mat-header-cell>
-        <mat-cell *matCellDef="let result" class=" privileges-width">{{result.privilages}}</mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns;sticky:true" color="grey"></mat-header-row>

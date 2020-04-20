@@ -8,7 +8,6 @@ import { Router } from "@angular/router"
 
 import Utils from "../../utils";
 
-
 @Component({
   selector: 'app-rar-home',
   templateUrl: './roles-and-responsibilities-home.component.html',
@@ -23,7 +22,7 @@ export class RolesAndResponsibilitiesHomeComponent implements OnInit {
   public dataSource: any;
   public rarList: any;
   public allUserList = [];
-  public displayedColumns = ['name', 'user_id', 'role', 'semantic_layers', 'privilages'];
+  public displayedColumns = ['name', 'user_id', 'role'];
   public show: boolean = false;
   public buttonName: any = '▼';
   public reverse: boolean = false;

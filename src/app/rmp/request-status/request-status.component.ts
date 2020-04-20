@@ -5,7 +5,6 @@ import { DatePipe } from '@angular/common';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
-// import { ReportCriteriaDataService } from ".../services/report-criteria-data.service";
 import { ReportCriteriaDataService } from "../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
@@ -195,13 +194,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public file_path: any;
   public ongoingStatusResult: any;
   public checkbox_length: number;
-
-  // notify() {
-  //   this.enable_edits = !this.enable_edits
-  //   this.parentsSubject.next(this.enable_edits)
-  //   this.editModes = true
-  //   $('#edit_button').hide()
-  // }
 
   constructor(private generated_id_service: GeneratedReportService, 
               private router: Router, 
@@ -420,7 +412,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
           localStorage.setItem('report_id', element.ddm_rmp_post_report_id);
       } else ele.isChecked = false;
     });
-    // mimicODC
   }
   
   public open(event, element) {
@@ -1077,23 +1068,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     else {
       this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.router.navigate(["user/submit-request/select-report-criteria"]);
-      // var i = 0
-      // if (this.finalData[0].status == "Incomplete") {
-      //   this.generated_id_service.changeUpdate(true)
-      //   this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-      //   this.router.navigate(["user/submit-request/select-report-criteria"]);
-      // }
-      // else if(this.finalData[0].status == "Active" || this.finalData[0].status == "Pending"){
-      //   this.generated_id_service.changeUpdate(true)
-      //   this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-      //   this.router.navigate(["user/submit-request/select-report-criteria"]);
-      // }
-      // else {
-      //   this.generated_id_service.changeUpdate(false)
-      //   this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-      //   this.router.navigate(["user/submit-request/select-report-criteria"]);
-      // }
-
     }
   }
 
@@ -1101,7 +1075,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     Utils.showSpinner();
     this.sharedDataService.setObjectExplorerPathValue(false);
     if (element.requestor != 'TBD') {
-      // mimicODC here and then reroute if frequency is not ODC/OD?
       this.django.get_report_description(element.ddm_rmp_post_report_id).subscribe(response => {
         if(response){
         this.summary = response;
@@ -1110,8 +1083,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
           this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
           this.toastr.error(" Please click on the CREATE ODC REPORT and continue !! ");
           Utils.hideSpinner();
-          // this.router.navigate(['../../semantic/'])
-          // this.router.navigate(['../../semantic/sem-reports/home'])
         }
         else {
           Utils.hideSpinner();
@@ -1121,7 +1092,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
         }
       }
       })
-      // this.router.navigate(['../../semantic/'])
     }
     else {
       Utils.hideSpinner();
@@ -1154,33 +1124,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
           window.open(`${environment.baseUrl}` + file_path_details, '_blank');
           Utils.hideSpinner();
         })
-      }
-    })
-  }
-
-  public mimicODC(OdcRequestId) {
-    let onDemandConfigurableRequestId = OdcRequestId.map(t => t.ddm_rmp_post_report_id);
-
-    Utils.showSpinner();
-    // using onDemandConfigurableRequestId[0] because we've an array which causes error later
-    this.django.get_report_description(onDemandConfigurableRequestId[0]).subscribe(response => {
-      // let isODC = this.summary["frequency_data"][0]["description"];
-      let isODC = response["frequency_data"][0]['select_frequency_values'];
-      this.summary = response;
-      //or
-      // let isODC = this.summary["frequency_value"][0]['frequency']
-
-      if (isODC === "On Demand Configurable" || isODC === "On Demand" ) {
-        // this.sharedDataService.setRequestIds(onDemandConfigurableRequestId);
-        this.sharedDataService.setRequestId(onDemandConfigurableRequestId[0]);
-        this.sharedDataService.setObjectExplorerPathValue(false);
-        Utils.hideSpinner();
-        // this.router.navigate(['../../semantic/sem-reports/home']);
-      }
-      else {
-        Utils.hideSpinner();
-        this.toastr.error("Your chosen request is not an ON DEMAND CONFIGURABLE request!");
-        return;
       }
     })
   }
@@ -1280,55 +1223,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     'assigned_to': this.searchText, 
     'status': this.searchText
   };
-  
-
-  // globalSearch(event) {
-  //   this.searchText = event.target.value;
-  //   this.searchGlobalObj["ddm_rmp_post_report_id"] = event.target.value;
-  //   this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
-  //   this.searchGlobalObj["created_on"] = event.target.value;
-  //   this.searchGlobalObj["title"] = event.target.value;
-  //   this.searchGlobalObj["requestor"] = event.target.value;
-  //   this.searchGlobalObj["on_behalf_of"] = event.target.value;
-  //   this.searchGlobalObj["assigned_to"] = event.target.value;
-  //   this.searchGlobalObj['status'] = event.target.value;
-  //   this.searchObj = this.searchGlobalObj;
-  //   setTimeout(() => {
-  //     this.reports = this.reports.slice();
-  //   }, 0);
-  // }
-
-  // onItemSelectStatus(event, status) {
-  //   this.searchGlobalObj['status'] = event.status
-  //   this.searchGlobalObj["ddm_rmp_post_report_id"] = event.status;
-  //   this.searchGlobalObj["ddm_rmp_status_date"] = event.status;
-  //   this.searchGlobalObj["created_on"] = event.status;
-  //   this.searchGlobalObj["title"] = event.status;
-  //   this.searchGlobalObj["requestor"] = event.status;
-  //   this.searchGlobalObj["on_behalf_of"] = event.status;
-  //   this.searchGlobalObj["assigned_to"] = event.status;
-
-  //   this.searchObj = this.searchGlobalObj;
-  //   setTimeout(() => {
-  //     this.reports = this.reports.slice();
-  //   }, 0);
-  // }
-
-  // onItemDeSelectStatus(event, status) {
-  //   this.searchGlobalObj['status'] = "";
-  //   this.searchGlobalObj["ddm_rmp_post_report_id"] = "";
-  //   this.searchGlobalObj["ddm_rmp_status_date"] = "";
-  //   this.searchGlobalObj["created_on"] = "";
-  //   this.searchGlobalObj["title"] = "";
-  //   this.searchGlobalObj["requestor"] = "";
-  //   this.searchGlobalObj["on_behalf_of"] = "";
-  //   this.searchGlobalObj["assigned_to"] = "";
-
-  //   this.searchObj = this.searchGlobalObj;
-  //   setTimeout(() => {
-  //     this.reports = this.reports.slice();
-  //   }, 0);
-  // }
 
   public filterData() {
     if (this.statusFilter.length) 
@@ -1388,7 +1282,5 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     },err=>{
       Utils.hideSpinner();
     })
-    //extract values andthen update ongoing status and then call refresh api
-    // this.cancel_report
   }
 }

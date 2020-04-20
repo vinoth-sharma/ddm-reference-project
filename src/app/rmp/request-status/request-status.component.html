@@ -23,7 +23,6 @@
     <div class="row" style="margin: 0%;height:100%;">
       <div class="col-4">
         <h3>Request Status</h3>
-        <h5 *ngIf="showODCBtn" style="color:red">*Choose CREATE ODC REPORT if frequency is OD/C only!</h5>
       </div>
       <div class="col-4">
         <input placeholder="Search by Request Number/Requestor/Title/Status"
@@ -31,12 +30,7 @@
       </div>
       <div class="col-4" style="padding-right:0%;">
         <div class="icons">
-          <div class="press" title="The OD/C report creation feature has been temporarily suspended">
-              <button *ngIf="user_role=='Admin' && showODCBtn" class="btn btn-primary" data-toggle="modal" data-target="#onDemandScheduleConfigurableModal"
-                data-backdrop="static" data-keyboard="false" class="btn btn-primary pointer" style="margin-right : 1vw" disabled> 
-                  Create OD/C Report
-              </button>
-              <!-- DO NOT DELETE (click)="mimicODC(finalData)" -->
+          <div class="press">
             <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
               data-backdrop="static" data-keyboard="false">
               User Details

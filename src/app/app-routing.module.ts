@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LogEntryComponent } from "./log-entry/log-entry.component"; 
 import { RolesAndResponsibilitiesHomeComponent } from "./roles-and-responsibilities-home/roles-and-responsibilities-home.component";
 import { RMPModule } from "./rmp/rmp.module";
 import { AuthGuard } from "./auth.guard";
@@ -24,7 +23,6 @@ const routes: Routes = [
   },
   {
     path: "logs",
-    component: LogEntryComponent,
     canActivate: [AuthGuard]
   },
   { 

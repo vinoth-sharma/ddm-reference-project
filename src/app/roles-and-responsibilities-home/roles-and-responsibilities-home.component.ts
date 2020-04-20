@@ -6,7 +6,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { NgToasterComponent } from "../custom-directives/ng-toaster/ng-toaster.component";
 import { Router } from "@angular/router"
 
-import { SecurityModalService } from '../security-modal/security-modal.service';
 import Utils from "../../utils";
 
 
@@ -24,7 +23,6 @@ export class RolesAndResponsibilitiesHomeComponent implements OnInit {
   public dataSource: any;
   public rarList: any;
   public allUserList = [];
-  public allSemanticList = [];
   public displayedColumns = ['name', 'user_id', 'role', 'semantic_layers', 'privilages'];
   public show: boolean = false;
   public buttonName: any = '▼';
@@ -33,7 +31,6 @@ export class RolesAndResponsibilitiesHomeComponent implements OnInit {
   public defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private user: AuthenticationService,
-    private semanticModalService: SecurityModalService,
     private toasterService: NgToasterComponent,
     private router: Router
   ) { }
@@ -49,9 +46,7 @@ export class RolesAndResponsibilitiesHomeComponent implements OnInit {
       Utils.showSpinner();
       this.rarList = res;
       this.dataSource = this.rarList['data'];
-      // //console.log("SORTING DATA IS:",this.dataSource)
       if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {
-        // display error message 
         this.isEmptyTables = true;
       }
 
@@ -73,10 +68,6 @@ export class RolesAndResponsibilitiesHomeComponent implements OnInit {
 
   public routeBack() {
     this.router.navigate(['semantic/sem-sl/sem-existing']);
-  }
-
-  public refreshRoles() {
-    this.tableSorting();
   }
 
 }

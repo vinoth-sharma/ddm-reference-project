@@ -10,14 +10,6 @@
         <b class="bsizing">Roles and Responsibilities</b>
       </div>
       <div class="col-xs-1"></div>
-      <div class="roles-margin col-xs-2">
-        <div class="dropdown mt-1" aria-disabled="true">
-          <button class="btn btn-primary" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false" title="The button relating to SECURITY and PRIVILEGES has been temporarily suspended">
-            Edit Roles
-          </button>
-        </div>
-      </div>
     </div>
 
     <mat-table [dataSource]="dataSource" matSort class="changes">
@@ -59,7 +51,3 @@
 
   </div>
 </body>
-
-<app-security-modal [allSemanticList]="allSemanticList"></app-security-modal>
-
-<app-privilege-modal (updatePrivileges)="refreshRoles()"></app-privilege-modal>

@@ -74,7 +74,6 @@ export class HeaderComponent implements OnInit {
   }
 
   redirect(value: string) {
-    console.log('CLICKED HELP SECTION is :', value);
     Utils.showSpinner();
     this.authenticationService.getHelpRedirection(value).subscribe(res => {
       let pdfFile = new Blob([res], { type: 'application/pdf' });

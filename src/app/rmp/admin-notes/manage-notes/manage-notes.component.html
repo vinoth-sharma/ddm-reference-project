@@ -1,3 +1,34 @@
-<p>
-  manage-notes works!
-</p>
+<div style="padding: 0px 15px 0px 15px">
+  <div class="row-one">
+    <mat-checkbox>Check me!</mat-checkbox>
+    <button mat-raised-button color="primary">Save Note</button>
+    <button mat-raised-button color="warn">Clear</button>
+  </div>
+  <div class="date-container">
+    <div class="date-section">
+      <mat-form-field >
+        <mat-label>Start Date:</mat-label>
+        <input matInput [matDatepicker]="noteDisplayFrom" [formControl]="fromDate" 
+                textEditable="false"
+               (dateChange)="dateSelectionDone()">
+        <mat-datepicker-toggle matSuffix [for]="noteDisplayFrom"></mat-datepicker-toggle>
+        <mat-datepicker #noteDisplayFrom></mat-datepicker>
+      </mat-form-field>
+      <app-ng-time-picker></app-ng-time-picker>
+    </div>
+    <div class="date-section" style="text-align: right;">
+      <mat-form-field >
+        <mat-label>Start Date:</mat-label>
+        <input matInput [matDatepicker]="noteDisplayTo" [formControl]="toDate" 
+                textEditable="false"
+               (dateChange)="dateSelectionDone()">
+        <mat-datepicker-toggle matSuffix [for]="noteDisplayTo"></mat-datepicker-toggle>
+        <mat-datepicker #noteDisplayTo></mat-datepicker>
+      </mat-form-field>
+      <app-ng-time-picker></app-ng-time-picker>
+    </div>
+  </div>
+  <div style="text-align: center;border-radius: 14px 14px 0px;">
+     <textarea name="note" id="note" cols="30" rows="10" style="width: 85%;"></textarea>
+</div>
+</div>

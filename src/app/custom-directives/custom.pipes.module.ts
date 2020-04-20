@@ -16,7 +16,7 @@ import { NgTimePickerComponent } from './ng-time-picker/ng-time-picker.component
     providers:[NgLoaderService,CustomCookieService],
     imports : [MaterialModule],
     exports : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,
-        NgCustomSpinnerComponent,MaterialModule,OrderByPipe]
+        NgCustomSpinnerComponent,MaterialModule,OrderByPipe,NgTimePickerComponent]
 })
 export class CustomPipeModules{
 

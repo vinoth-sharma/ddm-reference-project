@@ -10,19 +10,12 @@
         <b class="bsizing">Roles and Responsibilities</b>
       </div>
       <div class="col-xs-1"></div>
-      <div class="roles-margin col-xs-2" >
+      <div class="roles-margin col-xs-2">
         <div class="dropdown mt-1" aria-disabled="true">
           <button class="btn btn-primary" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false" title="The button relating to SECURITY and PRIVILEGES has been temporarily suspended">
-              Edit Roles
+            Edit Roles
           </button>
-          <!-- DO NOT DELETE THE BELOW CODE -->
-          <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item anchor-design" (click)="getSecurityDetails()" data-toggle="modal"
-              data-target="#semanticModal" data-backdrop="static" data-keyboard="false" >Security</a>
-            <hr class="hrp">
-            <a class="dropdown-item anchor-design" data-toggle="modal" data-target="#privilegeModal" data-backdrop="static" data-keyboard="false" >Privileges</a>
-          </div> -->
         </div>
       </div>
     </div>
@@ -47,7 +40,7 @@
         <mat-header-cell class=" asl-width" *matHeaderCellDef mat-sort-header><b>Accessed semantic layers </b>
         </mat-header-cell>
         <mat-cell *matCellDef="let result" class=" asl-width">
-            <span class="result" *ngFor="let result of result.semantic_layers">{{result}}</span>
+          <span class="result" *ngFor="let result of result.semantic_layers">{{result}}</span>
         </mat-cell>
       </ng-container>
 
@@ -67,7 +60,6 @@
   </div>
 </body>
 
-<!-- <app-security-modal [allUserList]="allUserList" [allSemanticList]="allSemanticList"></app-security-modal> -->
 <app-security-modal [allSemanticList]="allSemanticList"></app-security-modal>
 
 <app-privilege-modal (updatePrivileges)="refreshRoles()"></app-privilege-modal>

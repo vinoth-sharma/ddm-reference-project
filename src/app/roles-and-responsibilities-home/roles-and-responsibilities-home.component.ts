@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import {  MatPaginator } from '@angular/material/paginator';
-import {  MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgToasterComponent } from "../custom-directives/ng-toaster/ng-toaster.component";
 import { Router } from "@angular/router"
@@ -24,7 +24,7 @@ export class RolesAndResponsibilitiesHomeComponent implements OnInit {
   public dataSource: any;
   public rarList: any;
   public allUserList = [];
-  public allSemanticList = [];  
+  public allSemanticList = [];
   public displayedColumns = ['name', 'user_id', 'role', 'semantic_layers', 'privilages'];
   public show: boolean = false;
   public buttonName: any = '▼';
@@ -33,10 +33,10 @@ export class RolesAndResponsibilitiesHomeComponent implements OnInit {
   public defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private user: AuthenticationService,
-              private semanticModalService: SecurityModalService,
-              private toasterService: NgToasterComponent,
-              private router: Router
-              ) { }
+    private semanticModalService: SecurityModalService,
+    private toasterService: NgToasterComponent,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.tableSorting();
@@ -58,12 +58,11 @@ export class RolesAndResponsibilitiesHomeComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.dataSource);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string) => 
-      {
-        if(typeof data[sortHeaderId] === 'string')
+      this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string) => {
+        if (typeof data[sortHeaderId] === 'string')
           return data[sortHeaderId].toLocaleLowerCase();
 
-          return data[sortHeaderId];
+        return data[sortHeaderId];
       }
       Utils.hideSpinner();
     }, error => {
@@ -72,26 +71,11 @@ export class RolesAndResponsibilitiesHomeComponent implements OnInit {
     });
   };
 
-  /**
-   * getSecurityDetails
-   */
-  public getSecurityDetails() {
-    this.semanticModalService.getAllUserandSemanticList().subscribe(
-      res => {
-        this.allUserList = res['data']["users list"];
-        this.allSemanticList = res['data']["semantic_layers"];
-      },
-      err => {
-        this.allUserList = [];
-        this.allSemanticList = [];
-      });
-  }
-
-  public routeBack(){
+  public routeBack() {
     this.router.navigate(['semantic/sem-sl/sem-existing']);
   }
 
-  public refreshRoles(){
+  public refreshRoles() {
     this.tableSorting();
   }
 

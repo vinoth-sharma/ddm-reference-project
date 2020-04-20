@@ -15,6 +15,7 @@ import { FormControl, FormGroupDirective,
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { DisplayNotesComponent } from '../admin-notes/display-notes/display-notes.component';
+import { NotesWrapperComponent } from '../admin-notes/notes-wrapper/notes-wrapper.component';
 
 
 @Component({
@@ -252,6 +253,12 @@ export class RmpLandingPageComponent implements OnInit{
     })
   }
 
+  openNotesModal(){
+    this.dialog.open(NotesWrapperComponent,{
+      data : ""
+    })
+  }
+  
   // to get role and name user details
  public getHeaderDetails() {
     this.auth_service.myMethod$.subscribe(role => {

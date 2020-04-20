@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-notes-wrapper',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotesWrapperComponent implements OnInit {
 
-  constructor() { }
+  selected = new FormControl(0);
+
+  constructor(public dialogRef: MatDialogRef<NotesWrapperComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+    // console.log(this.data);
   }
 
+  closeDailog(): void {
+    this.dialogRef.close();
+  }
 }

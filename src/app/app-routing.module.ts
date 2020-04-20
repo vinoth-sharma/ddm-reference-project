@@ -21,10 +21,6 @@ const routes: Routes = [
     component: RolesAndResponsibilitiesHomeComponent,
     canActivate: [AuthGuard]
   },
-  {
-    path: "logs",
-    canActivate: [AuthGuard]
-  },
   { 
     path: "**", 
     redirectTo: "" 

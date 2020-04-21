@@ -8,6 +8,7 @@ import { Router } from "@angular/router"
 
 import Utils from "../../utils";
 
+// Angular component developed by Deepak Urs G V
 @Component({
   selector: 'app-rar-home',
   templateUrl: './roles-and-responsibilities-home.component.html',
@@ -23,15 +24,13 @@ export class RolesAndResponsibilitiesHomeComponent implements OnInit {
   public rarList: any;
   public allUserList = [];
   public displayedColumns = ['name', 'user_id', 'role'];
-  public show: boolean = false;
-  public buttonName: any = '▼';
   public reverse: boolean = false;
   public isEmptyTables: boolean;
   public defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private user: AuthenticationService,
-    private toasterService: NgToasterComponent,
-    private router: Router
+    public toasterService: NgToasterComponent,
+    public router: Router
   ) { }
 
   ngOnInit() {
@@ -40,6 +39,7 @@ export class RolesAndResponsibilitiesHomeComponent implements OnInit {
     Utils.showSpinner();
   }
 
+  // to sort and display the tables in the mat-table
   public tableSorting() {
     this.user.getUser().subscribe(res => {
       Utils.showSpinner();

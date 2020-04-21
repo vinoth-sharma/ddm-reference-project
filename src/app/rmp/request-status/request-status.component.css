@@ -485,16 +485,8 @@ angular4-multiselect > div.c-btn{
   cursor: pointer;
 }
 .report_table tbody tr {
-  /* padding-top: 20px; */
 }
-/* .custom-changes-edit:hover::before{
-  display: inline-block;
-  content:"";
-  width: 20px;
-  height: 20px;
-  background-color: #007bff;
-  border-radius: 50%;
-} */
+
 
 #changeStatusModal .modal-body{
   height : 120px;

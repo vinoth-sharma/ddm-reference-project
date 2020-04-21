@@ -247,7 +247,7 @@
                 </div>
               </td>
               <td>
-                <div *ngIf="element.status != 'Recurring'" style="width: 115px !important;">
+                <div *ngIf="element.status != 'Recurring' && element.status != 'Active'" style="width: 115px !important;">
                   {{element.status}}
                 </div>
                 <div *ngIf="element.status == 'Recurring'" style="width: 115px !important;">
@@ -258,14 +258,23 @@
                     </button>
                   </div>
                 </div>
+                <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
+                  {{element.status}}
+                  <div *ngIf="user_role=='Admin'">
+                    <button class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#changeStatusModal"
+                    (click)="openEditStatusModal(element)">
+                      Edit
+                    </button>
+                  </div>
+                </div>
               </td>
               <td>
                 <div style="width: 70px !important;">
                   {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
                 </div>
               </td>
-              <td>
-                <div style="width: 50px !important;">
+              <td style="position: relative;">
+                <!-- <div style="width: 50px !important;">
                   <button 
                     class="btn btn-primary" 
                     *ngIf="element.status == 'Completed'"
@@ -276,14 +285,32 @@
                       <i id="ic" class="material-icons" style="width:100%;padding-right: 7px;color: white;">get_app</i>
                     </a>
                   </button>
-                </div>
+                </div> -->
+               
+                <!-- <button class="btn" style="position: relative;" *ngIf="element.link_to_results != ''" >
+                  <a data-toggle="tooltip" [title]="'Go To : '+element.link_to_results"><i id="ic" class="material-icons custom-changes-edit">create</i></a>
+                  <a data-toggle="tooltip" [title]="'Go To : '+element.link_to_results"><i id="ic" class="material-icons custom-changes-icon">open_in_new</i></a>
+                </button> -->
+                <a data-toggle="tooltip"  data-toggle="modal" data-target="#addUrl" title="edit" (click)="addLinkUrl(element,'edit')" ><i id="ic" *ngIf="element.link_to_results != ''"  class="material-icons custom-changes-edit">create</i></a>
+                <button class="btn btn-outline-primary" [title]="element.link_to_results"
+                (click)="openNewWindow(element.link_to_results)" *ngIf="element.link_to_results != ''"
+                style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;margin-top: 10px;">
+                Url&nbsp;&nbsp;&#10145;
+              </button>
+                <button class="btn btn-outline-primary" 
+                  data-toggle="modal" data-target="#addUrl" (click)="addLinkUrl(element,'create')" *ngIf="element.link_to_results == ''"
+                  style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;margin-top: 10px;">
+                  Add Url
+                </button>
+
+
               </td>
 
               <td *ngIf="element.status != 'Incomplete'">
                 <div style="width: 80px !important;">
                   <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
                     data-toggle="modal" data-target="#queryCriteria"
-                    style="    width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
+                    style="    width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;margin-top: 10px;">
                     QueryCriteria
                   </button>
                 </div>
@@ -946,3 +973,58 @@
 <app-ongoing-schedule [scheduleReportData]="scheduleDataToBeSent" [reportId]="reportListIdToSchedule" (confirmOnGoing)="changeOngoingStatus($event)"></app-ongoing-schedule>
 <!-- <app-schedule ></app-schedule> -->
 <!-- [scheduleReportData]="scheduleDataToBeSent" (update)="tableSorting()" --> 
+
+<!-- add url modal -->
+<div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <div class="col-sm-2" style="padding-right:0;">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+          </div>
+          <div class="col-sm-10" style="margin:0;">
+            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b> {{addUrlTitle}}</b></h2>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body" style="min-height:300px;">
+        <input id="add-url-input" type="text" placeholder="add Url" class="form-control"/>
+            <!-- <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success"  (click)="saveLinkURL()">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTBD_Assigned()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- edit Status Modal -->
+<div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <div class="col-sm-2" style="padding-right:0;">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+          </div>
+          <div class="col-sm-10" style="margin:0;">
+            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b> Edit Status</b></h2>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body" >
+       <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%" id="selectReportStatus"> 
+         <option value="Active" > Active </option>
+         <option value="Completed"> Completed </option>
+       </select>
+            <!-- <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'" (click)="saveReportStatus()">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTBD_Assigned()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

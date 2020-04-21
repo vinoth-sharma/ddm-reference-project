@@ -256,6 +256,16 @@ export class DjangoService {
   ddm_rmp_assign_to(assign){
     return this.httpClient.put(`${environment.baseUrl}RMP/owner_assign/`, assign)
   }
+
+  add_link_to_url(assign){
+    return this.httpClient.put(`${environment.baseUrl}RMP/update_link_to_results_or_status/`, assign)
+  }
+
+  update_report_status(assign){
+    return this.httpClient.put(`${environment.baseUrl}RMP/update_link_to_results_or_status/`, assign)
+  }
+
+
   // ###############################################################################//
   // <--                             DELETE Methods                             --> //
   // ###############################################################################//

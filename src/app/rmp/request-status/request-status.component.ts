@@ -195,6 +195,9 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public file_path: any;
   public ongoingStatusResult: any;
   public checkbox_length: number;
+  public linkUrlId : number
+  public addUrlTitle : String = "";
+  public selectReportStatus = ""
 
   // notify() {
   //   this.enable_edits = !this.enable_edits
@@ -208,7 +211,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
               private reportDataService: ReportCriteriaDataService,
               private django: DjangoService, private DatePipe: DatePipe,
               private sharedDataService: SharedDataService, 
-              private semanticReportsService: SemanticReportsService,
               private dataProvider: DataProviderService, 
               private auth_service: AuthenticationService, 
               private toastr: NgToasterComponent, 
@@ -298,7 +300,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
             element['created_on'] = this.DatePipe.transform(element['created_on'], 'dd-MMM-yyyy')
             element['ddm_rmp_post_report_id'] = isNaN(+element['ddm_rmp_post_report_id']) ? 99999 : +element['ddm_rmp_post_report_id'];
 
-            if(element && element.isChecked) element.isChecked = false;
+            if(element && element.isChecked) element.isChecked = false;  
           });
           list["report_list"] = list["report_list"].sort((a, b) => {
             if (b['unread'] == a['unread']) {
@@ -1390,5 +1392,73 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     })
     //extract values andthen update ongoing status and then call refresh api
     // this.cancel_report
+  }
+
+  addLinkUrl(element,type){
+    this.linkUrlId = element.ddm_rmp_post_report_id;
+    if(type == "create"){
+      this.addUrlTitle = "ADD URL"
+      document.querySelector("#add-url-input")["value"] = "";
+    }else{
+      this.addUrlTitle = "EDIT URL"
+      document.querySelector("#add-url-input")["value"] = element.link_to_results;
+    }
+  }
+
+  saveLinkURL(){
+    let link = document.querySelector("#add-url-input")["value"]
+    let data = {request_id:this.linkUrlId,link_to_results:link}
+    Utils.showSpinner();
+    this.django.add_link_to_url(data).subscribe(response =>{
+     if(response['message'] == "updated successfully"){
+      document.querySelector("#add-url-input")["value"] = "";
+      $('#addUrl').modal('hide');
+      this.toastr.success("URL Added Successfully !")
+      Utils.hideSpinner()
+      this.reports.map(item =>{
+        if(item.ddm_rmp_post_report_id == this.linkUrlId){
+          item.link_to_results = link
+        }
+      })
+     }
+    },error =>{
+      this.toastr.error("Failed To Add URL, Please Try Again")
+      Utils.hideSpinner()
+    })
+   
+  }
+
+  openNewWindow(url){
+    window.open(url)
+  }
+
+  openEditStatusModal(element){
+    this.linkUrlId = element.ddm_rmp_post_report_id;
+    document.querySelector("#selectReportStatus")["value"] = "Active"
+  }
+
+  setselectReportStatus(){
+    this.selectReportStatus = document.querySelector("#selectReportStatus")["value"]
+  }
+
+  saveReportStatus(){
+    let link = document.querySelector("#add-url-input")["value"]
+    let data = {request_id:this.linkUrlId,status:"Completed"}
+    Utils.showSpinner();
+    this.django.update_report_status(data).subscribe(response =>{
+      if(response['message'] == "updated successfully"){
+        $('#changeStatusModal').modal('hide');
+        this.toastr.success("Status updated Successfully !")
+        Utils.hideSpinner()
+        this.reports.map(item =>{
+          if(item.ddm_rmp_post_report_id == this.linkUrlId){
+            item.status = "Completed"
+          }
+        })
+       }
+      },error =>{
+        this.toastr.error("Failed To Change Status, Please Try Again")
+        Utils.hideSpinner()
+      })
   }
 }

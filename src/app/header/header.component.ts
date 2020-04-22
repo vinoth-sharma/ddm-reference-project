@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
-import { AuthSsoService } from '../auth-sso.service';
-import { NgToasterComponent } from '../custom-directives/ng-toaster/ng-toaster.component';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import Utils from '../../utils';
 
@@ -22,16 +20,13 @@ export class HeaderComponent implements OnInit {
   public notification_number: any;
   public notification_set: Set<any>;
 
-  constructor(
-    private route: Router,
+  constructor(private route: Router,
     private authenticationService: AuthenticationService,
-    private authSsoService: AuthSsoService,
-    private toastrService: NgToasterComponent,
     private dataProvider: DataProviderService) {
     this.subscribeToService()
   }
 
-  subscribeToService() {
+  public subscribeToService() {
     this.authenticationService.myMethod$.subscribe((arr) => {
       this.arr = arr;
       this.roles = { 'first_name': this.arr.first_name, 'last_name': this.arr.last_name };
@@ -61,19 +56,15 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() { }
 
-  callRolespage() {
-    this.route.navigate(['roles']);
-  }
-
-  role() {
+  public role() {
     this.route.navigate(['user'])
   }
 
-  modulePageRoute() {
+  public modulePageRoute() {
     this.route.navigate(['user'])
   }
 
-  redirect(value: string) {
+  public redirect(value: string) {
     Utils.showSpinner();
     this.authenticationService.getHelpRedirection(value).subscribe(res => {
       let pdfFile = new Blob([res], { type: 'application/pdf' });

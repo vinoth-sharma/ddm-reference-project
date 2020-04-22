@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RolesAndResponsibilitiesHomeComponent } from "./roles-and-responsibilities-home/roles-and-responsibilities-home.component";
 import { AuthGuard } from "./auth.guard";
 
 const routes: Routes = [
@@ -12,11 +11,6 @@ const routes: Routes = [
   {
     path: "",
     loadChildren: () => import("./rmp/rmp.module").then(m => m.RMPModule)
-  },
-  {
-    path: "roles",
-    component: RolesAndResponsibilitiesHomeComponent,
-    canActivate: [AuthGuard]
   },
   {
     path: "**",

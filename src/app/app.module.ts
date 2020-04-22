@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppComponent } from "./app.component";
-import { RolesAndResponsibilitiesHomeComponent } from "./roles-and-responsibilities-home/roles-and-responsibilities-home.component";
 import { LoginComponent } from "./login/login.component";
 import { setAppInjector } from '../app-injector';
 import { AppRoutingModule } from './app-routing.module';
@@ -31,7 +30,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
 @NgModule({
   declarations: [
     AppComponent,
-    RolesAndResponsibilitiesHomeComponent,
     LoginComponent,
     InputValidatorDirective,
     SchedulerPrivilegesComponent,
@@ -39,7 +37,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
   imports: [
     BrowserModule,
     QuillModule,
-    // CommonModule,
     NgPipesModule,
     FormsModule,
     ReactiveFormsModule,
@@ -70,8 +67,8 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
   ],
   bootstrap: [AppComponent],
   entryComponents: [SchedulerPrivilegesComponent
-    ],
-  exports:[]
+  ],
+  exports: []
 })
 export class AppModule {
   constructor(injector: Injector) {

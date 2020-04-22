@@ -83,12 +83,6 @@ describe('HeaderComponent', () => {
     })
   })
 
-  it("should route to /roles when clicked on Roles And Responsibilities button", async(() => {
-    let buttonSelector = ".rolesAndResponsibilities"
-    let trh = new TestRouteHandling(component, TestBed, fixture, buttonSelector)
-    expect(trh.whenClickedOnMenuItems()).toHaveBeenCalledWith(['roles'])
-  }))
-
   it("should route to /user when clicked header Image", async(() => {
     let buttonSelector = "#DDM_logo"
     let trh = new TestRouteHandling(component, TestBed, fixture, buttonSelector)

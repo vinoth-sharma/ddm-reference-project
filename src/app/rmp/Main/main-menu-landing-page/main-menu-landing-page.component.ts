@@ -272,6 +272,7 @@ export class MainMenuLandingPageComponent implements OnInit {
           $("#mainMenuModal #modal_close_button").click();
         })
         Utils.hideSpinner();
+        $('#mainMenuModal').modal('hide');
         this.toastr.success("FAQ has been edited successfully");
       }, err => {
         Utils.hideSpinner();
@@ -291,6 +292,7 @@ export class MainMenuLandingPageComponent implements OnInit {
           $("#mainMenuModal #modal_close_button").click();
         })
         Utils.hideSpinner();
+        $('#mainMenuModal').modal('hide');
         this.toastr.success("New FAQ has been successfully created");
       }, err => {
         $(function () {

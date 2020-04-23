@@ -9,12 +9,13 @@ import { MultiSelectComponent } from "./multi-select/multi-select.component";
 import { OrderByPipe } from "./filters/order-by.pipe";
 import { CustomCookieService } from "./ng-custom-cookies-service/custom.cookies.service";
 import { NgTimePickerComponent } from './ng-time-picker/ng-time-picker.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,
                     NgCustomSpinnerComponent,OrderByPipe, NgTimePickerComponent],
     providers:[NgLoaderService,CustomCookieService],
-    imports : [MaterialModule],
+    imports : [MaterialModule,FormsModule],
     exports : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,
         NgCustomSpinnerComponent,MaterialModule,OrderByPipe,NgTimePickerComponent]
 })

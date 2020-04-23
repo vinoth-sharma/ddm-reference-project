@@ -255,7 +255,7 @@ export class RmpLandingPageComponent implements OnInit{
 
   openNotesModal(){
     this.dialog.open(NotesWrapperComponent,{
-      data : ""
+      data : this.info.data.admin_note
     })
   }
   

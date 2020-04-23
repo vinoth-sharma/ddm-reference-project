@@ -21,4 +21,8 @@ export class NotesWrapperComponent implements OnInit {
   closeDailog(): void {
     this.dialogRef.close();
   }
+
+
+
+
 }

@@ -31,10 +31,10 @@ export class ExistingNotesContainerComponent implements OnInit {
   getPreviousNotesData(){
     Utils.showSpinner();
     this.django.get_admin_notes().subscribe(response => {
-      response['admin_notes'].forEach(item => {
-        item.notes_end_date = new Date(new Date(item.notes_end_date)
-                                .toLocaleString("en-US",{timeZone:"America/New_York"}));
-      });
+      // response['admin_notes'].forEach(item => {
+      //   item.notes_end_date = new Date(new Date(item.notes_end_date)
+      //                           .toLocaleString("en-US",{timeZone:"America/New_York"}));
+      // });
       this.existingData = response['admin_notes'];
       console.log(this.existingData);
       this.dataSource = new MatTableDataSource<any>(this.existingData);

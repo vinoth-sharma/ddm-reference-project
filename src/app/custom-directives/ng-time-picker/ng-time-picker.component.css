@@ -25,8 +25,8 @@
   }
   
   input {
-    --color: #945;
-    --bgColor: #d89;
+    --color: #3e8ba6;;
+    --bgColor: rgb(19, 34, 85);
     --size: 2rem;
     --border: calc(var(--size) * 0.125);
     --borderRadius: calc(var(--size) * 0.5);
@@ -37,8 +37,8 @@
     background-position: var(--margin) 50%;
     background-repeat: no-repeat;
     background-size: var(--size) var(--size);
-    border: var(--border) solid var(--color);
-    border-radius: var(--borderRadius);
+    border: 1.5px solid var(--color);
+    border-radius: 2px;
     color: #222;
     font-size: var(--size);
     padding: var(--margin) var(--margin) var(--margin) var(--marginLeft);
@@ -46,6 +46,6 @@
   }
   
   input:focus {
-    outline: 2px dashed #945;
+    outline: 1px dashed #945;
     outline-offset: 3px;
   }

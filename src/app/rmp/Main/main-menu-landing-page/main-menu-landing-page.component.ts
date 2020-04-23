@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import * as $ from 'jquery';
+declare var $ : any;
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { AuthenticationService } from "src/app/authentication.service";
@@ -142,6 +142,7 @@ export class MainMenuLandingPageComponent implements OnInit {
         this.ngOnInit();
         this.original_content = this.naming;
         this.toastr.success("Updated Successfully");
+        $('#helpModal').modal('hide');
         Utils.hideSpinner();
       }, err => {
         Utils.hideSpinner();

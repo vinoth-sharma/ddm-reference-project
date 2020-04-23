@@ -758,7 +758,7 @@
 
 <!-- ---------------------Cancel Permanently---------------- -->
 <div class="modal fade" id="CancelPermanently" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog cancel-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <div class="row">
@@ -770,12 +770,12 @@
             </div>
           </div>
         </div>
-        <div class="modal-body">
+        <div class="modal-body cancel-body">
         Are you sure you want to cancel the request permanently?
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="Cancel()">Cancel</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancel_modal()">Close</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" (click)="Cancel()">Yes</button>
         </div>
       </div>
     </div>

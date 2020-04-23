@@ -1261,24 +1261,24 @@ describe('RequestStatusComponent', () => {
 
    }));
 
-   it('should execute mimicODC method', fakeAsync(()=> {
-      let OdcRequestId = [1, 2, 3, 4, 5];
-      const result = {
-        frequency_data:[{
-            select_frequency_values:["On Demand Configurable","On Demand"]
-          }]
-      };
-      spyOn(component, 'mimicODC').and.callThrough(); //callThrough()
-      let djangoService = fixture.debugElement.injector.get(DjangoService);
-      let mySpy = spyOn(djangoService, 'get_report_description').and.
-                returnValues(of(result)); 
-      component.mimicODC(OdcRequestId);
-      tick(1500);
-      fixture.detectChanges();
-      expect(component.summary).toEqual(result);
-      expect(component.mimicODC).toHaveBeenCalled(); 
+  //  it('should execute mimicODC method', fakeAsync(()=> {
+  //     let OdcRequestId = [1, 2, 3, 4, 5];
+  //     const result = {
+  //       frequency_data:[{
+  //           select_frequency_values:["On Demand Configurable","On Demand"]
+  //         }]
+  //     };
+  //     spyOn(component, 'mimicODC').and.callThrough(); //callThrough()
+  //     let djangoService = fixture.debugElement.injector.get(DjangoService);
+  //     let mySpy = spyOn(djangoService, 'get_report_description').and.
+  //               returnValues(of(result)); 
+  //     component.mimicODC(OdcRequestId);
+  //     tick(1500);
+  //     fixture.detectChanges();
+  //     expect(component.summary).toEqual(result);
+  //     expect(component.mimicODC).toHaveBeenCalled(); 
       
-   }));
+  //  }));
 
    it('should execute getLink method', fakeAsync(() => {
       const result = {

@@ -8,6 +8,8 @@ import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import Utils from '../../../utils';
+declare var $: any;
+
 @Component({
   selector: 'app-metrics',
   templateUrl: './metrics.component.html',
@@ -178,6 +180,7 @@ export class MetricsComponent implements OnInit {
       if (list) {
         this.reports = list['data'];
         this.dataLoad = true;
+        console.log("reports met",this.reports)
 
         // this.reports.forEach(element=>{
         //   if(element['status'] == 'Cancelled'){
@@ -262,6 +265,7 @@ export class MetricsComponent implements OnInit {
         this.original_contents = this.namings;
         this.toastr.success("Updated Successfully");
         Utils.hideSpinner();
+        $('#helpModal').modal('hide');
       }, err => {
         Utils.hideSpinner();
         this.toastr.error("Data not Updated")

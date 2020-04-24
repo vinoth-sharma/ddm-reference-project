@@ -259,6 +259,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public currentLookUpTableData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
+        console.log("lookupdata",element)
         this.lookup = element;
         for (let i = 1; i <= 100; i++) {
           this.collection.push(`item ${i}`);
@@ -309,6 +310,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
             return b['unread'] > a['unread'] ? 1 : -1;
           });
           this.reports = list["report_list"];
+          console.log("reports",this.reports)
         });
       }
     });
@@ -378,6 +380,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
         this.ngOnInit();
         this.original_contents = this.namings;
         this.toastr.success("Updated Successfully");
+        $('#helpModal').modal('hide');
         Utils.hideSpinner();
       }, err => {
         Utils.hideSpinner();
@@ -1413,7 +1416,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
      if(response['message'] == "updated successfully"){
       document.querySelector("#add-url-input")["value"] = "";
       $('#addUrl').modal('hide');
-      this.toastr.success("URL Added Successfully !")
+      this.toastr.success("URL Updated Successfully !")
       Utils.hideSpinner()
       this.reports.map(item =>{
         if(item.ddm_rmp_post_report_id == this.linkUrlId){
@@ -1443,7 +1446,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
   saveReportStatus(){
     let link = document.querySelector("#add-url-input")["value"]
-    let data = {request_id:this.linkUrlId,status:"Completed"}
+    let data = {request_id:this.linkUrlId,status:"Completed",status_date:new Date()}
     Utils.showSpinner();
     this.django.update_report_status(data).subscribe(response =>{
       if(response['message'] == "updated successfully"){
@@ -1453,6 +1456,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
         this.reports.map(item =>{
           if(item.ddm_rmp_post_report_id == this.linkUrlId){
             item.status = "Completed"
+            item.ddm_rmp_status_date = new Date()
           }
         })
        }

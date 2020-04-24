@@ -291,16 +291,20 @@
                   <a data-toggle="tooltip" [title]="'Go To : '+element.link_to_results"><i id="ic" class="material-icons custom-changes-edit">create</i></a>
                   <a data-toggle="tooltip" [title]="'Go To : '+element.link_to_results"><i id="ic" class="material-icons custom-changes-icon">open_in_new</i></a>
                 </button> -->
-                <a data-toggle="tooltip"  data-toggle="modal" data-target="#addUrl" title="edit" (click)="addLinkUrl(element,'edit')" ><i id="ic" *ngIf="element.link_to_results != ''"  class="material-icons custom-changes-edit">create</i></a>
+                <!-- <a data-toggle="tooltip"  data-toggle="modal" data-target="#addUrl" title="edit" (click)="addLinkUrl(element,'edit')" ><i id="ic" *ngIf="element.link_to_results != ''"  class="material-icons custom-changes-edit">create</i></a> -->
                 <button class="btn btn-outline-primary" [title]="element.link_to_results"
-                (click)="openNewWindow(element.link_to_results)" *ngIf="element.link_to_results != ''"
-                style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;margin-top: 10px;">
+                (click)="openNewWindow(element.link_to_results)" *ngIf="element.link_to_results != '' && element.status=='Completed'"
+                style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                 Url&nbsp;&nbsp;&#10145;
               </button>
                 <button class="btn btn-outline-primary" 
-                  data-toggle="modal" data-target="#addUrl" (click)="addLinkUrl(element,'create')" *ngIf="element.link_to_results == ''"
-                  style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;margin-top: 10px;">
+                  data-toggle="modal" data-target="#addUrl" (click)="addLinkUrl(element,'create')" *ngIf="element.link_to_results == '' && element.status=='Completed'"
+                  style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                   Add Url
+                </button>
+                <button *ngIf="element.link_to_results != '' && element.status=='Completed'" class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
+                (click)="addLinkUrl(element,'edit')">
+                  Edit
                 </button>
 
 
@@ -310,7 +314,7 @@
                 <div style="width: 80px !important;">
                   <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
                     data-toggle="modal" data-target="#queryCriteria"
-                    style="    width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;margin-top: 10px;">
+                    style="    width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                     QueryCriteria
                   </button>
                 </div>
@@ -988,7 +992,7 @@
           </div>
         </div>
       </div>
-      <div class="modal-body" style="min-height:300px;">
+      <div class="modal-body" >
         <input id="add-url-input" type="text" placeholder="add Url" class="form-control"/>
             <!-- <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span> -->
       </div>

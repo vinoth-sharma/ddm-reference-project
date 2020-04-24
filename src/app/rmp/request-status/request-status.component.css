@@ -493,3 +493,8 @@ angular4-multiselect > div.c-btn{
   min-height: 120px;
 }
 
+#addUrl .modal-body{
+  height :80px;
+  min-height: 80px;
+}
+

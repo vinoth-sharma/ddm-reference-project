@@ -164,6 +164,8 @@ export class ReportsComponent implements OnInit {
   paginatorOptions :number[] = [5,10,25,100] 
   paginatorLowerValue = 0;
   paginatorHigherValue = 10;
+  public linkUrlId : number
+  public addUrlTitle : String = "";
 // 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service: AuthenticationService,
@@ -415,6 +417,7 @@ export class ReportsComponent implements OnInit {
         this.original_contents = this.namings;
         this.toasterService.success("Updated Successfully");
         this.spinner.hide()
+        $('#helpModal').modal('hide');
       }, err => {
         this.spinner.hide()
         this.toasterService.error("Data not Updated")
@@ -1072,4 +1075,41 @@ export class ReportsComponent implements OnInit {
   this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   }
 
+  addLinkUrl(element,type){
+    this.linkUrlId = element.ddm_rmp_post_report_id;
+    if(type == "create"){
+      this.addUrlTitle = "ADD URL"
+      document.querySelector("#add-url-input")["value"] = "";
+    }else{
+      this.addUrlTitle = "EDIT URL"
+      document.querySelector("#add-url-input")["value"] = element.link_to_results;
+    }
+  }
+
+  saveLinkURL(){
+    let link = document.querySelector("#add-url-input")["value"]
+    let data = {request_id:this.linkUrlId,link_to_results:link}
+    Utils.showSpinner();
+    this.django.add_link_to_url(data).subscribe(response =>{
+     if(response['message'] == "updated successfully"){
+      document.querySelector("#add-url-input")["value"] = "";
+      $('#addUrl').modal('hide');
+      this.toasterService.success("URL Updated Successfully !")
+      Utils.hideSpinner()
+      this.reports.map(item =>{
+        if(item.ddm_rmp_post_report_id == this.linkUrlId){
+          item.link_to_results = link
+        }
+      })
+     }
+    },error =>{
+      this.toasterService.error("Failed To Add URL, Please Try Again")
+      Utils.hideSpinner()
+    })
+   
+  }
+
+  openNewWindow(url){
+    window.open(url)
+  }
 }

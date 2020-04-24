@@ -230,6 +230,11 @@ export class DdmAdminComponent implements OnInit {
   }
 
   addDocument() {
+    this.document_details = {
+      "title": "",
+      "url": "",
+      "admin_flag": false
+    }
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];

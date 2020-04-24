@@ -59,6 +59,7 @@ export class OndemandConfigReportsComponent implements OnInit {
     this.odcName = this.name;
     this.odcReportId = this.reportId;
 
+    if(this.odcReportId != undefined && this.odcReportId != null && this.odcRequestNumber != undefined && this.odcRequestNumber != null)
     this.onDemandService.getOnDemandConfigDetails(this.odcReportId, this.odcRequestNumber).subscribe(res => {
       this.odcRecievedDetails = res;
       this.sheetNames = this.odcRecievedDetails['data'].map(i => i.sheet_name);

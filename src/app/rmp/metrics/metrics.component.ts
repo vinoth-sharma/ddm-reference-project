@@ -24,11 +24,11 @@ export class MetricsComponent implements OnInit {
   };
   public editModes = false;
   public dataLoad: boolean = false;
-  public searchText;
-  public editing;
-  public p;
-  public model1;
-  public model2;
+  public searchText: any;
+  public editing: any;
+  public p: any;
+  public model1: any;
+  public model2: any;
   public summary: Object;
   public report_id: number
   public reports: any;
@@ -40,9 +40,8 @@ export class MetricsComponent implements OnInit {
   public param: any;
   public orderType: any;
   public textChange = false
-  public cancelledReports ;
+  public cancelledReports: any ;
   public filters = {
-    // global: '',
     ddm_rmp_post_report_id: '',
     ddm_rmp_status_date: '',
     created_on:'',
@@ -147,6 +146,7 @@ export class MetricsComponent implements OnInit {
   public ngOnInit() {
     this.generated_report_service.changeButtonStatus(false);
 
+    // get all admin details
     this.django.getAllAdmins().subscribe(element => {
       if (element) {
         element['admin_list'].forEach(ele => {
@@ -227,6 +227,7 @@ export class MetricsComponent implements OnInit {
     })
   }
 
+  // filter for global search
   public filterData() {
     if (this.statusFilter.length)
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
@@ -234,6 +235,7 @@ export class MetricsComponent implements OnInit {
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
+  // detect changes in quill editor
   public textChanged(event) {
     this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
@@ -372,10 +374,4 @@ export class MetricsComponent implements OnInit {
       [obj]: event.target.value
     }
   }
-
-  
-  // filterData() {
-  //   //console.log('Filters: ', this.filters);
-  //   this.searchObj = JSON.parse(JSON.stringify(this.filters));
-  // }
 }

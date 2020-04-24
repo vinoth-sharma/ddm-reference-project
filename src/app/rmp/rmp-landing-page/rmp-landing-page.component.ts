@@ -3,11 +3,9 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
-// import { DatePipe } from '@angular/common';
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from '../../../utils';
 declare var $: any;
-// import 'jquery';
 import { MatCalendarCellCssClasses } from '@angular/material/datepicker';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FormControl, FormGroupDirective, 
@@ -22,8 +20,8 @@ import { ErrorStateMatcher } from '@angular/material/core';
 })
 export class RmpLandingPageComponent implements OnInit{
   
-  public content;
-  public info;
+  public content: any;
+  public info: any;
   public notes = [];
   public startTime = { hour: 0, minute: 0 };
   public endTime = { hour: 23, minute: 59 };
@@ -54,15 +52,14 @@ export class RmpLandingPageComponent implements OnInit{
   public matcher = new MyErrorStateMatcher();
   public targetStart = "";
   public targetend = "";
-  public dateClass;
-  public targetStartDate;
-  public targetEndDate; 
-  public targetStartMonth;
-  public targetEndMonth;
+  public dateClass: any;
+  public targetStartDate: any;
+  public targetEndDate: any; 
+  public targetStartMonth: any;
+  public targetEndMonth: any;
 
   constructor(
-    public django: DjangoService, 
-    // private DatePipe: DatePipe,
+    public django: DjangoService,
     private report_id_service: GeneratedReportService,
     public dataProvider: DataProviderService, 
     public  auth_service: AuthenticationService, 

@@ -5,7 +5,6 @@ import { DatePipe } from '@angular/common';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
-// import { ReportCriteriaDataService } from ".../services/report-criteria-data.service";
 import { ReportCriteriaDataService } from "../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
@@ -19,7 +18,6 @@ import { environment } from "./../../../environments/environment"
 import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from 'src/utils';
 
-
 @Component({
   selector: 'app-request-status',
   templateUrl: './request-status.component.html',
@@ -27,18 +25,18 @@ import Utils from 'src/utils';
 })
 export class RequestStatusComponent implements OnInit, OnChanges{
 
-  public searchText;
-  public p;
-  public frequency_flag;
-  public changeDoc;
-  public comment_text;
-  public divDataSelected;
-  public printDiv;
-  public captureScreen;
+  public searchText: any;
+  public p: any;
+  public frequency_flag: any;
+  public changeDoc: any;
+  public comment_text: any;
+  public divDataSelected: any;
+  public printDiv: any;
+  public captureScreen: any;
   public param = "open_count";
   public orderType = 'desc';
   public fieldType = 'string';
-  public isButton;
+  public isButton: any;
   public scheduleDataToBeSent:any = {};
   public reportListIdToSchedule : number = null;
 
@@ -95,12 +93,12 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     "request_id": null,
     "dl_list": []
   };
-  public contents;
+  public contents: any;
   public enable_edits = false
   public editModes = false;
   public original_contents;
   public namings: string = "Loading";
-  public lookup;
+  public lookup: any;
   public user_role: string;
   public market_description: any;
   public zone_description: any;
@@ -169,7 +167,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public onGoingStatus = {
     "cancel_reports": []
   };
-  public searchObj;
+  public searchObj: any;
   public config = {
     toolbar: [
       ['bold','italic','underline','strike'],
@@ -195,6 +193,14 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public file_path: any;
   public ongoingStatusResult: any;
   public checkbox_length: number;
+
+  // paginator params
+  public paginatorlength = 100;
+  public paginatorpageSize = 10;
+  public paginatorOptions :number[] = [5,10,25,100] 
+  public paginatorLowerValue = 0;
+  public paginatorHigherValue = 10;
+// 
 
   // notify() {
   //   this.enable_edits = !this.enable_edits
@@ -226,9 +232,9 @@ export class RequestStatusComponent implements OnInit, OnChanges{
           ];
           this.contacts = [];
           this.currentLookUpTableData();
-
   }
 
+  //get current notification details
   public getCurrentNotifications() {
     this.dataProvider.currentNotifications.subscribe((element:Array<any>) => {
       if (element) {
@@ -244,6 +250,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     });
   }
 
+  // get user details
   public getRoleDetails() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -254,6 +261,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     });
   }
 
+  // get report list of user
   public currentLookUpTableData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
@@ -313,6 +321,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   }
 
   public ngOnInit() {
+    // get lookup values
     this.django.getLookupValues().subscribe(check_user_data => {
       check_user_data['data']['users_list'].forEach(ele => {
         this.fullName = ele.first_name + ' ' + ele.last_name;
@@ -1391,4 +1400,10 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     //extract values andthen update ongoing status and then call refresh api
     // this.cancel_report
   }
+
+
+  public onPaginationChange(event){
+    this.paginatorLowerValue = event.pageIndex * event.pageSize;
+    this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
+    }
 }

@@ -230,7 +230,8 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  getScheduledReports(){
+  public getScheduledReports(){
+    if(this.semanticLayerId != undefined && this.semanticLayerId != null){
     this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res => {
       this.reportDataSource = res['data'];
       Utils.hideSpinner();
@@ -238,6 +239,7 @@ export class ReportsComponent implements OnInit {
       Utils.hideSpinner();
     }
     );
+  }
   }
 
   getReportList(){

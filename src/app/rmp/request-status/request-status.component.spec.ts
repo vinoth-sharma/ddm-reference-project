@@ -41,8 +41,9 @@ import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from '../../../utils';
+import { MaterialModule } from 'src/app/material.module';
 
-describe('RequestStatusComponent', () => {
+fdescribe('RequestStatusComponent', () => {
   let location: Location;
   let router: Router;
   let component: RequestStatusComponent;
@@ -710,7 +711,7 @@ describe('RequestStatusComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports:[ FormsModule, AngularMultiSelectModule, 
+      imports:[ FormsModule, AngularMultiSelectModule, MaterialModule,
                 RouterTestingModule.withRoutes([]), 
                 QuillModule.forRoot(),
                 NgxPaginationModule, MatProgressSpinnerModule, 
@@ -1378,4 +1379,68 @@ describe('RequestStatusComponent', () => {
         expect(component.ongoingStatusResult).toEqual(result);                        
 
     }));
+
+    // Test cases for newly implemented features by Bharath
+
+    fit('should set report id and set modal title',()=>{
+      let data = {
+        ddm_rmp_post_report_id:1,link_to_results:"abc"
+      }
+      component.addLinkUrl(data,"create");
+      expect(component.linkUrlId).toEqual(data.ddm_rmp_post_report_id);
+      expect(component.addUrlTitle).toEqual("ADD URL")
+    })
+
+    fit('should call django service and save url',()=>{
+      component.linkUrlId = 2;
+      document.querySelector("#add-url-input")["value"] = "value"
+      let data = {
+        request_id:2,link_to_results:"value"
+      }
+      let djangoService = TestBed.inject(DjangoService)
+      let spy = spyOn(djangoService,"add_link_to_url").and.returnValue(of({}))
+      component.saveLinkURL();
+      expect(spy).toHaveBeenCalledWith(data)
+    
+    })
+
+    fit('should open a new window with the gieven url',()=>{
+      let spy = spyOn(window,"open");
+      component.openNewWindow("abc");
+      expect(spy).toHaveBeenCalledWith('abc')
+    })
+
+    fit('should set linkUrlId',()=>{
+      let data = {
+        ddm_rmp_post_report_id:1,link_to_results:"abc"
+      }
+      let template = fixture.debugElement.nativeElement;
+      component.openEditStatusModal(data);
+      expect(component.linkUrlId).toEqual(data.ddm_rmp_post_report_id);
+      expect(template.querySelector("#selectReportStatus")["value"]).toEqual("Active")
+    })
+
+    fit("read report status from ui",()=>{
+      document.querySelector("#selectReportStatus")["value"] = "Active";
+      component.setselectReportStatus();
+      expect(component.selectReportStatus).toEqual("Active")
+    })
+
+    fit('should call django service and set status',()=>{
+      component.linkUrlId = 2;
+      document.querySelector("#add-url-input")["value"] = "value"
+      let data = {
+        request_id:2,status:"Completed"
+      }
+      let djangoService = TestBed.inject(DjangoService)
+      let spy = spyOn(djangoService,"update_report_status").and.returnValue(of({}))
+      component.saveReportStatus();
+      expect(spy).toHaveBeenCalledWith(data)
+    
+    })
+
+
+
+
+
 });

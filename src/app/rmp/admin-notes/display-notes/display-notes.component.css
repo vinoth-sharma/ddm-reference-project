@@ -1,0 +1,105 @@
+.modal-container{
+  width: 65vw;
+  height: 75vh;
+  overflow: hidden;
+  position: relative;
+}
+.modal-body{
+    height: 74%;
+    overflow: auto;
+    padding: 25px;
+}
+button{
+    margin-right: 20px;
+}
+.note-container{
+  width: 100%;
+  font-size: 16px;
+  height: 90%;
+  overflow: auto;
+  padding: 15px 20px 10px 8%;
+  color: #283f52;
+}
+.inner-container{
+  position: relative;
+  top: 23%;
+  height: 77%;
+}
+.modal-container::after{
+  content: "Important Note";
+  width: 100%;
+  height: 23%;
+  position: absolute;
+  top: 0px;
+  text-align: center;
+  /* z-index: 0; */
+  left: 0px;
+  /* opacity: 0.3; */
+  background: linear-gradient(315deg,#445860e8,#1c2b38);
+  font-size: 31px;
+  padding-top: 50px;
+  font-weight: 800;
+  color: white;
+}
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  margin-left: 10%;
+  border-top: 20px solid #283f52;
+}
+
+.close-dialog{
+  font-size: 25px;
+  color: white;
+  top: -1px;
+  position: absolute;
+  right: -1px;
+  z-index: 2;
+  cursor: pointer;
+}
+::ng-deep .mat-dialog-container{
+  border-radius: 8px;
+}
+/*Display Notes styling*/
+/* 
+.displayNotesStyling {
+    background-color: rgb(255, 228, 155);
+    color: black;
+    border: none;
+    font-size: 150%;
+  }
+  
+  .displayHeaderStyling {
+    background-color: rgb(230, 204, 132);
+    color: black;
+    border: none;
+    font-size: 150%;
+  }
+  
+  .open {
+    display: block !important;
+    top: 14.3%;
+    right: 33px;
+    left: 74%;
+  }
+  
+  button.btn.btn-link.ngb-dp-arrow-btn:active {
+    border: none;
+  }
+  
+  .custom-date-class {
+    background: rgba(2, 117, 216, 0.5) !important;
+    border-radius: 100%;
+  }
+  
+  .target-date mat-form-field:nth-last-child(1) {
+    margin-left: 12px;
+  }
+  
+  .target-date {
+    display: flex;
+  } */
+  

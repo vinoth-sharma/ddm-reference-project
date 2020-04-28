@@ -4,10 +4,13 @@
   <div class="fluid-container holder">
     <div class="flex-container row tool-header">
       <div class="default">
-        <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#AdminNotesModal"
-          data-backdrop="static" data-keyboard="false">
+        <!-- <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#AdminNotesModal"
+          data-backdrop="static" data-keyboard="false" (click)="openNotesModal()">
           Add Important Notes
-        </button>
+        </button> -->
+        <button *ngIf="user_role=='Admin'" class="btn btn-primary" (click)="openNotesModal()">
+        Add Important Notes
+      </button>
       </div>
       <div class="tab-style">
         <div class="tab" style="float:left;">

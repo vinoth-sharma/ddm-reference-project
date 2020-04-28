@@ -459,19 +459,3 @@ angular4-multiselect > div.c-btn{
   height:400px;
   overflow: auto;
 }
-
-.cancel-body{
-  height: 60px;
-}
-
-.cancel-dialog{
-  top: 27.5%;
-}
-
-.modal-comment-body{
-  height: 29vh;
-}
-
-.comment-dialog{
-  top: 20%;
-}

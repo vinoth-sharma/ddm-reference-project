@@ -16,7 +16,6 @@ import { OrderByPipe } from '../../custom-directives/filters/order-by.pipe';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { QuillModule } from "ngx-quill";
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
-import { MultiDatePickerOngoingComponent } from '../multi-date-picker-ongoing/multi-date-picker-ongoing.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
@@ -716,8 +715,7 @@ describe('RequestStatusComponent', () => {
         MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatIconModule,
         NgbDatepickerModule, NgbTimepickerModule, HttpClientTestingModule,
         MatSnackBarModule, NoopAnimationsModule],
-      declarations: [RequestStatusComponent, OrderByPipe,
-        MultiDatePickerOngoingComponent, NgToasterComponent],
+      declarations: [RequestStatusComponent, OrderByPipe, NgToasterComponent],
       providers: [DatePipe, MatSnackBar, DataProviderService, AuthenticationService
       ],
     })
@@ -807,16 +805,6 @@ describe('RequestStatusComponent', () => {
 
   it('should execute content_edits method', fakeAsync(() => {
 
-  }));
-
-  it('should execute resetHelpParams method', fakeAsync(() => {
-    component.editModes = true;
-    component.readOnlyContentHelper = false;
-    component.original_contents = 'testing content';
-    component.resetHelpParams();
-    expect(component.editModes).toBeFalsy();
-    expect(component.readOnlyContentHelper).toBeTruthy();
-    expect(component.namings).toEqual(component.original_contents);
   }));
 
   it('should execute editEnable method', fakeAsync(() => {

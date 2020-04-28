@@ -30,7 +30,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
 import { TagInputModule } from 'ngx-chips';
 import { CustomModalsModule } from './custom-modals/custom-modals.module';
-import { MultiDatePickerOngoingComponent } from './multi-date-picker-ongoing/multi-date-picker-ongoing.component'
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { QuillModule } from "ngx-quill";
@@ -61,7 +60,6 @@ import { ManageNotesComponent } from './admin-notes/manage-notes/manage-notes.co
     FilterTablePipe,
     RequestOnBehalfComponent,
     MainMenuLandingPageComponent,
-    MultiDatePickerOngoingComponent,
     NotesWrapperComponent,
     DisplayNotesComponent,
     ExistingNotesContainerComponent,

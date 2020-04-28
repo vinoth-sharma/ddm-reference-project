@@ -81,9 +81,9 @@ export class SemanticReportsService {
       .pipe(catchError(this.handleError));
   }
 
-  public getRequestIdsFromRMP(){
-    let serviceUrl = `${environment.baseUrl}RMP/active_reports_selection`;
+  // public getRequestIdsFromRMP(){
+  //   let serviceUrl = `${environment.baseUrl}RMP/active_reports_selection`;
 
-    return this.http.get(serviceUrl).pipe(catchError(this.handleError));
-  }
+  //   return this.http.get(serviceUrl).pipe(catchError(this.handleError));
+  // }
 }

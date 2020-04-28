@@ -26,11 +26,11 @@ export class MetricsComponent implements OnInit {
   };
   public editModes = false;
   public dataLoad: boolean = false;
-  public searchText;
-  public editing;
-  public p;
-  public model1;
-  public model2;
+  public searchText: any;
+  public editing: any;
+  public p: any;
+  public model1: any;
+  public model2: any;
   public summary: Object;
   public report_id: number
   public reports: any;
@@ -42,9 +42,8 @@ export class MetricsComponent implements OnInit {
   public param: any;
   public orderType: any;
   public textChange = false
-  public cancelledReports ;
+  public cancelledReports: any ;
   public filters = {
-    // global: '',
     ddm_rmp_post_report_id: '',
     ddm_rmp_status_date: '',
     created_on:'',
@@ -110,6 +109,13 @@ export class MetricsComponent implements OnInit {
       ['image']
     ]
   };
+
+  // paginator params
+   public paginatorlength = 100;
+   public paginatorpageSize = 10;
+   public paginatorOptions :number[] = [5,10,25,100] 
+   public paginatorLowerValue = 0;
+   public paginatorHigherValue = 10;
   
   constructor(public django: DjangoService, 
               public auth_service: AuthenticationService, 
@@ -139,16 +145,11 @@ export class MetricsComponent implements OnInit {
     ]
   }
 
-  public notify() {
-    this.enable_edits = !this.enable_edits;
-    this.parentsSubject.next(this.enable_edits);
-    this.editModes = true;
-    $('#edit_button').hide();
-  }
-
+  // initialization of application
   public ngOnInit() {
     this.generated_report_service.changeButtonStatus(false);
 
+    // get all admin details
     this.django.getAllAdmins().subscribe(element => {
       if (element) {
         element['admin_list'].forEach(ele => {
@@ -175,37 +176,10 @@ export class MetricsComponent implements OnInit {
       maxHeight: '200'
     };
 
-    // Utils.showSpinner();
     this.django.get_report_matrix().subscribe(list => {
       if (list) {
         this.reports = list['data'];
         this.dataLoad = true;
-
-        // this.reports.forEach(element=>{
-        //   if(element['status'] == 'Cancelled'){
-        //     element['other'] = element.status;
-        //   }
-        //   else{
-        //     if(element['freq'] == 'One time'){
-        //       element['other'] = element.status;
-        //     }
-        //     else if(element['freq'] == 'Recurring'){
-        //       element['other'] = 'Active'
-        //     }
-        //     else if(element['freq'] == 'On Demand' && element['frequency_data'].length > 1){
-        //       element['other'] = 'Active'
-        //     }
-        //     else if(element['freq'] == 'On Demand Configurable' && element['frequency_data'].length > 1){
-        //       element['other'] = 'Active'
-        //     }
-        //     else if(element['freq'] == 'On Demand' && element['frequency_data'].length == 1){
-        //       element['other'] = 'Completed'
-        //     }
-        //     else if(element['freq'] == 'On Demand Configurable' && element['frequency_data'].length == 1){
-        //       element['other'] = 'Completed'
-        //     }
-        //   }
-        // })
 
         this.reports.map(reportRow => {
           reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy');
@@ -225,10 +199,10 @@ export class MetricsComponent implements OnInit {
           }
         }
       }
-      // Utils.hideSpinner();
     })
   }
 
+  // filter for global search
   public filterData() {
     if (this.statusFilter.length)
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
@@ -236,12 +210,14 @@ export class MetricsComponent implements OnInit {
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
+  // detect changes in quill editor
   public textChanged(event) {
     this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
+  // saving edited content of help
   public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
@@ -274,18 +250,21 @@ export class MetricsComponent implements OnInit {
     }
   }
 
-  public edit_True() {
+  // reset help parameters
+  public resetHelp() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
 
+  // enable help edit parametrs
   public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_contents;
   }
 
+  // set the order type and parametrs
   public sort(typeVal) {
     this.param = typeVal.toLowerCase().replace(/\s/g, "_");
     this.param = typeVal;
@@ -293,6 +272,7 @@ export class MetricsComponent implements OnInit {
     this.orderType = this.reports[typeVal];
   }
 
+  // convert json to excel sheet
   public xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
@@ -351,6 +331,7 @@ export class MetricsComponent implements OnInit {
   }
 
 
+  // get list of metrics data based on selected parameters
   public getMetricsData() {
     if (this.selectedItems.length > 0) {
     let arrayOfIds = [];
@@ -373,7 +354,6 @@ export class MetricsComponent implements OnInit {
     this.django.metrics_aggregate(this.obj).subscribe(list => {
       this.metrics = list;
       this.totalReports = this.metrics['data']['report_count'];
-      //this.averageByDay = this.metrics['avg_by_days']
       this.reportByDay = this.metrics['data']['report_by_weekday'];
       this.reportByMonth = this.metrics['data']['report_by_month'];
       this.reportByOrg = this.metrics['data']['report_by_organization'];
@@ -386,24 +366,9 @@ export class MetricsComponent implements OnInit {
     })
   }
 
-  /*--------------------Global Search---------------------*/
-
-  // public searchGlobalObj = {
-  //   'ddm_rmp_post_report_id': this.searchText, 'created_on': this.searchText,
-  //   'ddm_rmp_status_date': this.searchText, 'status': this.searchText, 'assigned_to': this.searchText,
-  //   'requestor': this.searchText, 'organization': this.searchText, 'recipients_count': this.searchText,
-  //   'freq': this.searchText, 'report_count': this.searchText, 'description': this.searchText
-  // }
-  
-  public columnSearch(event, obj) {
-    this.searchObj = {
-      [obj]: event.target.value
+ // updating pagination page number
+  public onPaginationChange(event){
+    this.paginatorLowerValue = event.pageIndex * event.pageSize;
+    this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
     }
-  }
-
-  
-  // filterData() {
-  //   //console.log('Filters: ', this.filters);
-  //   this.searchObj = JSON.parse(JSON.stringify(this.filters));
-  // }
 }

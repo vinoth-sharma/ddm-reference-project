@@ -32,11 +32,11 @@ describe('OndemandConfigReportsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should test the ngOnInit()',()=>{
+  it('should test the ngOnInit()', () => {
     expect(component.isLoading).toEqual(true);
   })
 
-  it('should test the ngOnChanges()',()=>{
+  it('should test the ngOnChanges()', () => {
     let testOdcReportId = 1
     let testOdcRequestNumber = 2
     let service = fixture.debugElement.injector.get(OndemandService);
@@ -149,10 +149,10 @@ describe('OndemandConfigReportsComponent', () => {
     })
   });
 
-  it('testing setSheetVaalues', ()=>{
+  it('testing setSheetVaalues', () => {
     component.miniSpinner = true;
     let testSheetName = 'testingSheet';
-    let testSheetId = 1 ;
+    let testSheetId = 1;
     let testOdcRequestNumber = 2;
 
     fixture = TestBed.createComponent(OndemandConfigReportsComponent);
@@ -164,7 +164,7 @@ describe('OndemandConfigReportsComponent', () => {
       expect(component.saveSettingsData).toEqual(testsaveSettingsData)
       expect(component.miniSpinner).toEqual(false);
     })
-    
+
 
   })
 

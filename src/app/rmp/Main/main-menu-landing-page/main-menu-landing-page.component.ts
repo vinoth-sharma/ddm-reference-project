@@ -61,10 +61,10 @@ export class MainMenuLandingPageComponent implements OnInit {
     private toastr: NgToasterComponent) {
 
     this.contentForm = this.fb.group({
-      question: ['', Validators.required],
-      answer: ['', Validators.required],
-      link_title_url: this.fb.array([])
-    })
+                        question: ['', Validators.required],
+                        answer: ['', Validators.required],
+                        link_title_url: this.fb.array([])
+                      });
     this.auth_service.myMethod$.subscribe(currentUser => {
       if (currentUser) {
         this.user_name = currentUser["first_name"] + " " + currentUser["last_name"]
@@ -143,6 +143,7 @@ export class MainMenuLandingPageComponent implements OnInit {
         this.ngOnInit();
         this.original_content = this.naming;
         this.toastr.success("Updated Successfully");
+        $('#helpModal').modal('hide');
         Utils.hideSpinner();
         $('#helpModal').modal('hide');
       }, err => {
@@ -174,18 +175,22 @@ export class MainMenuLandingPageComponent implements OnInit {
 
   content_edit(element_id) {
     this.newContent = false;
-    this.active_content_id = element_id
-    let target_object: any
+    this.active_content_id = element_id;
+    let target_object = {
+                          question: [],
+                          answer: []
+                        };
     this.main_menu_content.map(element => {
       if (element['ddm_rmp_main_menu_description_text_id'] == element_id) {
-        target_object = element
-        this.contentForm = this.fb.group({
-          question: [],
-          answer: [],
-          link_title_url: this.fb.array([this.fb.group({ title: ['', Validators.required], link: ['', Validators.required] })])
-        })
-        this.contentForm.patchValue(target_object);
-        target_object['link_title_url'].forEach((url_content, index) => {
+        if(element['link_title_url'].length) {
+          target_object['link_title_url'] = this.fb.array([this.fb.group({ title: ['', Validators.required], link: ['', Validators.required] })]);
+          this.contentForm = this.fb.group(target_object);
+        } else if(!element['link_title_url'].length) {
+          target_object['link_title_url'] = this.fb.array([]);
+          this.contentForm = this.fb.group(target_object);
+        }
+        this.contentForm.patchValue(element);
+        element['link_title_url'].forEach((url_content, index) => {
           if (index != 0) {
             this.LinkTitleURL.push(this.fb.group({ title: [url_content['title'], Validators.required], link: [url_content['link'], Validators.required] }));
           }
@@ -274,6 +279,7 @@ export class MainMenuLandingPageComponent implements OnInit {
         })
         $('#mainMenuModal').modal('hide');
         Utils.hideSpinner();
+        $('#mainMenuModal').modal('hide');
         this.toastr.success("FAQ has been edited successfully");
       }, err => {
         Utils.hideSpinner();
@@ -293,6 +299,7 @@ export class MainMenuLandingPageComponent implements OnInit {
           $("#mainMenuModal #modal_close_button").click();
         })
         Utils.hideSpinner();
+        $('#mainMenuModal').modal('hide');
         this.toastr.success("New FAQ has been successfully created");
         $('#mainMenuModal').modal('hide');
       }, err => {

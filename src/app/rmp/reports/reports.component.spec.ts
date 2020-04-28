@@ -411,7 +411,6 @@ it("should get data from get_report_description and assegin values to a few prop
     bac_data:[{bac_desc:["a","b"]}],
     fan_data:[{fan_data:["a","b"]}],
     user_data:[{alternate_number:222}]
-
   }
   spyOn(djangoService,"get_report_description").and.returnValue(of(serverData));
   component.query_criteria_report(1);

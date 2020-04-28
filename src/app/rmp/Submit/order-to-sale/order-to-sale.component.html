@@ -234,6 +234,29 @@
                 <option *ngFor="let ele of dropdownOptions" value={{ele}}>{{ele}}</option>
               </select>
             </div>
+            <div style="display: flex;" *ngIf="!targetProd">
+              <form [formGroup]="myForm" class="target-date">
+                <mat-form-field>
+                  <mat-label>Choose a start date</mat-label>
+                  <input matInput [matDatepicker]="startDatepicker"  
+                         (dateInput)="startDateEvent('input', $event)" 
+                         formControlName="startDate">
+                  <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
+                  <mat-datepicker [dateClass]="dateClass" #startDatepicker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Choose a end date</mat-label>
+                  <input matInput [matDatepicker]="endDatepicker" 
+                        (dateInput)="endDateEvent('input', $event)" 
+                        formControlName="endDate" [errorStateMatcher]="matcher">
+                  <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
+                  <mat-datepicker [dateClass]="dateClass" #endDatepicker></mat-datepicker>
+                  <mat-error *ngIf="myForm.hasError('endDateLessThanStartDate')">
+                        End date cannot be earlier than start date
+                   </mat-error>
+                </mat-form-field>
+              </form>
+            </div>
           </tr>
           </td>
           </tr>
@@ -676,6 +699,13 @@
               <span *ngFor="let element of summary?.ost_data.data_date_range">
                 <b>Start Date:</b>&nbsp;{{element?.dosp_start_date | date : 'dd-MMM-yyyy'}}
                 <b>End Date:</b>&nbsp;{{element?.dosp_end_date | date : 'dd-MMM-yyyy'}}
+              </span>
+            </div>
+            <div class="div-wrap">
+              <b style="font-size: 17px;">Target Date Range</b> &nbsp;&nbsp;
+              <span *ngFor="let element of summary?.ost_data.data_date_range">
+                <b>Start Date:</b>&nbsp;{{element?.tpd_start_date | date : 'dd-MMM-yyyy'}}
+                <b>End Date:</b>&nbsp;{{element?.tpd_end_date | date : 'dd-MMM-yyyy'}}
               </span>
             </div>
           </div>

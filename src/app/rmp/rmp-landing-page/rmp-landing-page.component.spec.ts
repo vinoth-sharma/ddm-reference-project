@@ -6,9 +6,6 @@ import { RequestOnBehalfComponent } from '../request-on-behalf/request-on-behalf
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
-// import { MatMenuModule } from '@angular/material/menu';
-// import { MatBadgeModule } from '@angular/material/badge';
-// import { MatIconModule } from '@angular/material/icon';
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClientModule,HttpErrorResponse } from '@angular/common/http';
@@ -17,19 +14,10 @@ import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaste
 import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpRequest } from '@angular/common/http';
-import { environment } from "../../../environments/environment";
-import { of, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { DjangoService } from '../django.service';
 import { DataProviderService } from '../data-provider.service';
 import 'jquery';
-// import { MatSnackBar } from "@angular/material/snack-bar";
 import { AuthenticationService } from "src/app/authentication.service";
-// import { MatSnackBarModule } from '@angular/material/snack-bar';
 import Utils from '../../../utils';
 import { MaterialModule } from "../../material.module";
 import { MatNativeDateModule } from '@angular/material/core';
@@ -52,15 +40,10 @@ describe('RmpLandingPageComponent', () => {
                 FormsModule, 
                 NgbDatepickerModule,
                 NgbTimepickerModule, 
-                // NgxSpinnerModule, 
-                // MatMenuModule,
-                // MatBadgeModule,
-                // MatIconModule,
                 AngularMultiSelectModule,
                 HttpClientTestingModule,
                 RouterTestingModule.withRoutes([]),
                 NoopAnimationsModule,
-                // MatSnackBarModule,
                 MaterialModule,
                 ReactiveFormsModule
                 ],
@@ -408,20 +391,6 @@ describe('RmpLandingPageComponent', () => {
     });
   }));
 
-  it('should ddm_rmp_admin_notes be service call', fakeAsync(async() => {
-    const notes_details: object = {
-            'notes_content': "second important . This message has to be displayed =.ds change of things",
-            'notes_start_date': "2020-03-03 00:00",
-            'notes_end_date': "2020-03-13 23:59",
-            'admin_flag': false,
-            'admin_note_status': true
-          };
-    spyOn(component, 'getDDmRmpAdminNotes').and.callThrough(); //callThrough()
-    component.getDDmRmpAdminNotes(notes_details);
-    djangoservice.ddm_rmp_admin_notes(notes_details).subscribe(res =>  expect(res).toBe(notes_details));
-    expect(component.getDDmRmpAdminNotes).toHaveBeenCalled();
-  }));
-
   it('should check main menu tab', fakeAsync(() => {
     fixture.detectChanges();
     const bannerDe: DebugElement = fixture.debugElement;
@@ -429,43 +398,43 @@ describe('RmpLandingPageComponent', () => {
     expect(bannerEl.querySelector('.main-menu').textContent).toEqual('Main Menu');
   }));
 
-  it('should add addDocuments', fakeAsync(() => {
-    fixture = TestBed.createComponent(RmpLandingPageComponent);
-    fixture.detectChanges();
-    const notes_details: object = {
-      'notes_content': "second important . This message has to be displayed =.ds change of things",
-      'notes_start_date': "2020-03-03 00:00",
-      'notes_end_date': "2020-03-13 23:59",
-      'admin_flag': false,
-      'admin_note_status': true
-    };  
-    spyOn(component, 'addDocument').and.callThrough(); //callThrough()        
-      component.addDocument();
-      fixture.detectChanges();
-      expect(component.addDocument).toHaveBeenCalled();
-  }));
+  // it('should add addDocuments', fakeAsync(() => {
+  //   fixture = TestBed.createComponent(RmpLandingPageComponent);
+  //   fixture.detectChanges();
+  //   const notes_details: object = {
+  //     'notes_content': "second important . This message has to be displayed =.ds change of things",
+  //     'notes_start_date': "2020-03-03 00:00",
+  //     'notes_end_date': "2020-03-13 23:59",
+  //     'admin_flag': false,
+  //     'admin_note_status': true
+  //   };  
+  //   spyOn(component, 'addDocument').and.callThrough(); //callThrough()        
+  //     component.addDocument();
+  //     fixture.detectChanges();
+  //     expect(component.addDocument).toHaveBeenCalled();
+  // }));
 
-  it('should clear message', fakeAsync(() => {
-    component.clearMessage();
-    expect(component.admin_notes).toEqual('');
-  }));
+  // it('should clear message', fakeAsync(() => {
+  //   component.clearMessage();
+  //   expect(component.admin_notes).toEqual('');
+  // }));
 
-  it('should previous message', fakeAsync(() => {
-    const notes_details  = { admin_notes : [{
-      'notes_content': "second important . This message has to be displayed =.ds change of things",
-      'notes_start_date': "2020-03-03 00:00",
-      'notes_end_date': "2020-03-13 23:59",
-      'admin_flag': false,
-      'admin_note_status': true
-    }]};   
-    let service = fixture.debugElement.injector.get(DjangoService);
-    let  spy = spyOn(service,"get_admin_notes").and.returnValue(of(notes_details));
-    spyOn(component, 'prevMessage').and.callThrough(); //callThrough()
-    component.prevMessage();
-    expect(component.prevMessage).toHaveBeenCalled();
-    tick(500);
-    expect(component.notes).toBe(notes_details.admin_notes);
-  }));
+  // it('should previous message', fakeAsync(() => {
+  //   const notes_details  = { admin_notes : [{
+  //     'notes_content': "second important . This message has to be displayed =.ds change of things",
+  //     'notes_start_date': "2020-03-03 00:00",
+  //     'notes_end_date': "2020-03-13 23:59",
+  //     'admin_flag': false,
+  //     'admin_note_status': true
+  //   }]};   
+  //   let service = fixture.debugElement.injector.get(DjangoService);
+  //   let  spy = spyOn(service,"get_admin_notes").and.returnValue(of(notes_details));
+  //   spyOn(component, 'prevMessage').and.callThrough(); //callThrough()
+  //   component.prevMessage();
+  //   expect(component.prevMessage).toHaveBeenCalled();
+  //   tick(500);
+  //   expect(component.notes).toBe(notes_details.admin_notes);
+  // }));
 
   it('should execute getAdminNotes', fakeAsync(() => {
     const adminNote = {

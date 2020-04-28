@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SecurityModalComponent } from './security-modal.component';
+import { DisplayNotesComponent } from './display-notes.component';
 
-describe('SecurityModalComponent', () => {
-  let component: SecurityModalComponent;
-  let fixture: ComponentFixture<SecurityModalComponent>;
+describe('DisplayNotesComponent', () => {
+  let component: DisplayNotesComponent;
+  let fixture: ComponentFixture<DisplayNotesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SecurityModalComponent ]
+      declarations: [ DisplayNotesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SecurityModalComponent);
+    fixture = TestBed.createComponent(DisplayNotesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

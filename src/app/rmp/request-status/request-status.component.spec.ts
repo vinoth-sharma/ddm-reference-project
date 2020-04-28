@@ -1,23 +1,21 @@
-import { async, 
-          ComponentFixture,
-          TestBed, 
-          inject, 
-          fakeAsync, 
-          tick, 
-          getTestBed,
-          discardPeriodicTasks 
-        } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  inject,
+  fakeAsync,
+  tick,
+  getTestBed,
+  discardPeriodicTasks
+} from '@angular/core/testing';
 import { RequestStatusComponent } from './request-status.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
-import { NgxPaginationModule } from 'ngx-pagination';
 import { OrderByPipe } from '../../custom-directives/filters/order-by.pipe';
-import { FilterTablePipe } from '../filter-table.pipe';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { QuillModule } from "ngx-quill";
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
-import { OngoingScheduleComponent } from '../ongoing-schedule/ongoing-schedule.component';
 import { MultiDatePickerOngoingComponent } from '../multi-date-picker-ongoing/multi-date-picker-ongoing.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -317,7 +315,7 @@ fdescribe('RequestStatusComponent', () => {
         }
       ],
       user: 2,
-      display_summary:[
+      display_summary: [
         {
           ddm_rmp_lookup_display_summary_id: 1,
           ds_desc: "Display"
@@ -414,324 +412,322 @@ fdescribe('RequestStatusComponent', () => {
         }
       ]
     }
-    };
+  };
 
-    const lookupValues = {
-        data: {
-              order_event: [
-                {
-                  ddm_rmp_lookup_dropdown_order_event_id: 1,
-                  order_event: "1000  Order Request Accepted by GM(Non-Retail)"
-                },
-                {
-                  ddm_rmp_lookup_dropdown_order_event_id: 2,
-                  order_event: "1100  Preliminary Order Added(Retail)"
-                }
-              ],
-              merchandising_data: [
-                {
-                  ddm_rmp_lookup_dropdown_merchandising_model_id: 1,
-                  merchandising_model: "CC15706",
-                  ddm_rmp_lookup_dropdown_allocation_group: 1,
-                  ddm_rmp_lookup_dropdown_vehicle_line_brand: 115,
-                  ddm_rmp_lookup_division: 13
-                },
-                {
-                  ddm_rmp_lookup_dropdown_merchandising_model_id: 2,
-                  merchandising_model: "1DU48",
-                  ddm_rmp_lookup_dropdown_allocation_group: 2,
-                  ddm_rmp_lookup_dropdown_vehicle_line_brand: 113,
-                  ddm_rmp_lookup_division: 13
-                }
-              ],
-              allocation_grp_da: [
-                {
-                  ddm_rmp_lookup_dropdown_allocation_group_da_id: 1,
-                  allocation_group: "TAHOE",
-                  ddm_rmp_lookup_division: 13
-                },
-                {
-                  ddm_rmp_lookup_dropdown_allocation_group_da_id: 2,
-                  allocation_group: "SPARK",
-                  ddm_rmp_lookup_division: 13
-                }
-              ],
-              desc_text_reference_documents: [
-                {
-                  title: "Test URL 18Sep19",
-                  ddm_rmp_desc_text_reference_documents_id: 22,
-                  admin_flag: false,
-                  url: "https://ddm-dev-temp.apps.pcfepg2wi.gm.com/#/user/main/reference"
-                },
-                {
-                  title: "ckjckjcxnc,xnkddljhfhjkcccc",
-                  ddm_rmp_desc_text_reference_documents_id: 25,
-                  admin_flag: false,
-                  url: "Yahoo.com"
-                }
-              ],
-              admin_note: [
-                {
-                  ddm_rmp_admin_notes_id: 400,
-                  notes_content: "second important. ahsjkhauyw zjhkfhjkz bxv v cvmnv",
-                  notes_start_date: null,
-                  notes_end_date: "2020-04-04T03:59:00-04:00",
-                  admin_flag: false,
-                  admin_note_status: false
-                }
-              ],
-              yesNo_frequency: [
-                {
-                  ddm_rmp_lookup_yes_no_frequency_id: 1,
-                  frequency_desc: "Yes"
-                },
-                {
-                  ddm_rmp_lookup_yes_no_frequency_id: 2,
-                  frequency_desc: "No"  
-                }
-              ],
-              allocation_grp: [
-                {
-                  ddm_rmp_lookup_dropdown_allocation_group_id: 1,
-                  allocation_group: "TAHOE",
-                  ddm_rmp_lookup_dropdown_vehicle_line_brand: 115,
-                  ddm_rmp_lookup_division: 13
-                },
-                {
-                  ddm_rmp_lookup_dropdown_allocation_group_id: 2,
-                  allocation_group: "SPARK",
-                  ddm_rmp_lookup_dropdown_vehicle_line_brand: 113,
-                  ddm_rmp_lookup_division: 13
-                }
-              ],
-              special_identifiers: [
-                {
-                  ddm_rmp_lookup_special_identifiers: 1,
-                  spl_desc: "Business Elite (US and Canada)"
-                },
-                {
-                  ddm_rmp_lookup_special_identifiers: 2,
-                  spl_desc: "Primary Fleet Account Number (FAN)"
-                }
-              ],
-              type_data: [
-                {
-                  ddm_rmp_lookup_ots_type_data_id: 1,
-                  type_data_desc: "Retail Only"
-                },
-                {
-                  ddm_rmp_lookup_ots_type_data_id: 2,
-                  type_data_desc: "Non-Retail (Includes Fleet)"
-                }
-              ],
-              users_list: [
-                {
-                  users_table_id: 46,
-                  user_id: "QZZ2PZ",
-                  first_name: "Kenneth",
-                  last_name: "Griessel",
-                  dl_list: null,
-                  sl_name: null,
-                  privileges_name: null,
-                  changed_by_user_id: "",
-                  email: "kenn.griessel@gm.com",
-                  contact_no: "+1 586-419-0477",
-                  disclaimer_ack: null,
-                  saved_setting: null,
-                  designation: "Allocation Manager",
-                  office_address: "Detroit, Michigan",
-                  department: "Sales, Service & Marketing",
-                  carrier: null,
-                  region: "North America",
-                  telephone: "+1 313-667-1018",
-                  alternate_number: null,
-                  role: 1
-                },
-                {
-                  users_table_id: 9,
-                  user_id: "QZ9YH2",
-                  first_name: "Hari N",
-                  last_name: "Gautam",
-                  dl_list: null,
-                  sl_name: ["Test_SL_001"],
-                  privileges_name: ["Create/Edit query"],
-                  changed_by_user_id: "",
-                  email: "hari.gautam@gm.com",
-                  contact_no: "+1 928-380-1277",
-                  disclaimer_ack: "2019-08-21T03:35:05.497000-04:00",
-                  saved_setting: "2019-09-24T16:48:56.890000-04:00",
-                  designation: "Performance Engineer",
-                  office_address: "Austin, Texas",
-                  department: "Information Technology",
-                  carrier: "c-spire",
-                  region: "North America",
-                  telephone: "+1 512-840-2303",
-                  alternate_number: "148-3224143",
-                  role: 1
-                }
-              ],
-              display_summary: [
-                {
-                  ddm_rmp_lookup_display_summary_id: 1,
-                  ds_desc: "Display"
-                },
-                {
-                  ddm_rmp_lookup_display_summary_id: 2,
-                  ds_desc: "Summary"
-                }
-              ],
-              desc_text_admin_documents: [
-                {
-                  title: "sdaskldjaskl",
-                  admin_flag: false,
-                  ddm_rmp_desc_text_admin_documents_id: 1,
-                  url: "https://html.com"
-                },
-                {
-                  title: "newref link 19Oct",
-                  admin_flag: false,
-                  ddm_rmp_desc_text_admin_documents_id: 3,
-                  url: "https://ddm1.apps.pcfepg2wi.gm.com/#/user/main/reference-documents"
-                }
-              ],
-              checkbox_data: [
-                {
-                  checkbox_desc: "Commonly Requested Fields Available for Display",
-                  field_values: "Order Number",
-                  ddm_rmp_lookup_ots_checkbox_values_id: 1,
-                  ddm_rmp_ots_checkbox_group_id: 1,
-                  description: false,
-                  tooltip: null
-                },
-                {
-                  checkbox_desc: "Commonly Requested Fields Available for Display",
-                  field_values: "Vehicle Information Number (VIN)",
-                  ddm_rmp_lookup_ots_checkbox_values_id: 2,
-                  ddm_rmp_ots_checkbox_group_id: 1,
-                  description: false,
-                  tooltip: null
-                }
-              ],
-              concensus_data_da: [
-                {
-                  ddm_rmp_lookup_da_consensus_data_id: 4,
-                  cd_values: "Monthly Demand",
-                  tooltip: null
-                },
-                {
-                  ddm_rmp_lookup_da_consensus_data_id: 3,
-                  cd_values: "Final Allocation",
-                  tooltip: "Final volume earned by a dealer after Variance Resolution is ↵complete(resolves +/- differences between Estimated Shipments and Production Consensus across the dealer network)"
-                }
-              ],
-              desc_text: [
-                {
-                  ddm_rmp_desc_text_id: 25,
-                  module_name: "DDM Team",
-                  description: "<p>TESTING</p><p>Hari Gautam 2- PT Lead</p>"
-                },
-                {
-                  ddm_rmp_desc_text_id: 26,
-                  module_name: "DDM Team",
-                  description: "<p>TESTING</p><p>Hari Gautam 3- PT Lead</p>"
-                }
-              ],
-              report_frequency: [
-                {
-                  report_frequency_values: "Daily/Weekly (Monday to Friday) only",
-                  select_frequency_description: false,
-                  ddm_rmp_lookup_select_frequency_id: 18,
-                  ddm_rmp_lookup_report_frequency_id: 1,
-                  select_frequency_values: "Monday"
-                },
-                {
-                  report_frequency_values: "Daily/Weekly (Monday to Friday) only",
-                  select_frequency_description: false,
-                  ddm_rmp_lookup_select_frequency_id: 19,
-                  ddm_rmp_lookup_report_frequency_id: 1,
-                  select_frequency_values: "Tuesday"
-                }
-              ],
-              cycle_data_da: [
-                {
-                  ddm_rmp_lookup_cycle_id: 1,
-                  cycle_desc: "Cycle1"
-                },
-                {
-                  ddm_rmp_lookup_cycle_id: 2,
-                  cycle_desc: "Cycle2"
-                }
-              ],
-              vehicle_data: [
-                {
-                  ddm_rmp_lookup_dropdown_vehicle_line_brand_id: 1,
-                  vehicle_line_brand: "Cascada",
-                  ddm_rmp_lookup_division: 1
-                },
-                {
-                  ddm_rmp_lookup_dropdown_vehicle_line_brand_id: 2,
-                  vehicle_line_brand: "Enclave",
-                  ddm_rmp_lookup_division: 1
-                }
-              ],
-              model_year: [
-                {
-                  ddm_rmp_lookup_dropdown_model_year_id: 1,
-                  model_year: "2017"
-                },
-                {
-                  ddm_rmp_lookup_dropdown_model_year_id: 2,
-                  model_year: "2018"
-                }
-              ],
-              date_data_da: [
-                {
-                  ddm_rmp_lookup_da_date_id: 1,
-                  date_desc: "Start Date"
-                },
-                {
-                  ddm_rmp_lookup_da_date_id: 2,
-                  date_desc: "End Date"
-                }
-              ],
-              order_type: [
-                {
-                  ddm_rmp_lookup_dropdown_order_type_id: 1,
-                  order_type: "T RE"
-                },
-                {
-                  ddm_rmp_lookup_dropdown_order_type_id: 2,
-                  order_type: "F DR"
-                }
-              ],
-              user: 2
+  const lookupValues = {
+    data: {
+      order_event: [
+        {
+          ddm_rmp_lookup_dropdown_order_event_id: 1,
+          order_event: "1000  Order Request Accepted by GM(Non-Retail)"
         },
-      message: "success"
-    }; 
+        {
+          ddm_rmp_lookup_dropdown_order_event_id: 2,
+          order_event: "1100  Preliminary Order Added(Retail)"
+        }
+      ],
+      merchandising_data: [
+        {
+          ddm_rmp_lookup_dropdown_merchandising_model_id: 1,
+          merchandising_model: "CC15706",
+          ddm_rmp_lookup_dropdown_allocation_group: 1,
+          ddm_rmp_lookup_dropdown_vehicle_line_brand: 115,
+          ddm_rmp_lookup_division: 13
+        },
+        {
+          ddm_rmp_lookup_dropdown_merchandising_model_id: 2,
+          merchandising_model: "1DU48",
+          ddm_rmp_lookup_dropdown_allocation_group: 2,
+          ddm_rmp_lookup_dropdown_vehicle_line_brand: 113,
+          ddm_rmp_lookup_division: 13
+        }
+      ],
+      allocation_grp_da: [
+        {
+          ddm_rmp_lookup_dropdown_allocation_group_da_id: 1,
+          allocation_group: "TAHOE",
+          ddm_rmp_lookup_division: 13
+        },
+        {
+          ddm_rmp_lookup_dropdown_allocation_group_da_id: 2,
+          allocation_group: "SPARK",
+          ddm_rmp_lookup_division: 13
+        }
+      ],
+      desc_text_reference_documents: [
+        {
+          title: "Test URL 18Sep19",
+          ddm_rmp_desc_text_reference_documents_id: 22,
+          admin_flag: false,
+          url: "https://ddm-dev-temp.apps.pcfepg2wi.gm.com/#/user/main/reference"
+        },
+        {
+          title: "ckjckjcxnc,xnkddljhfhjkcccc",
+          ddm_rmp_desc_text_reference_documents_id: 25,
+          admin_flag: false,
+          url: "Yahoo.com"
+        }
+      ],
+      admin_note: [
+        {
+          ddm_rmp_admin_notes_id: 400,
+          notes_content: "second important. ahsjkhauyw zjhkfhjkz bxv v cvmnv",
+          notes_start_date: null,
+          notes_end_date: "2020-04-04T03:59:00-04:00",
+          admin_flag: false,
+          admin_note_status: false
+        }
+      ],
+      yesNo_frequency: [
+        {
+          ddm_rmp_lookup_yes_no_frequency_id: 1,
+          frequency_desc: "Yes"
+        },
+        {
+          ddm_rmp_lookup_yes_no_frequency_id: 2,
+          frequency_desc: "No"
+        }
+      ],
+      allocation_grp: [
+        {
+          ddm_rmp_lookup_dropdown_allocation_group_id: 1,
+          allocation_group: "TAHOE",
+          ddm_rmp_lookup_dropdown_vehicle_line_brand: 115,
+          ddm_rmp_lookup_division: 13
+        },
+        {
+          ddm_rmp_lookup_dropdown_allocation_group_id: 2,
+          allocation_group: "SPARK",
+          ddm_rmp_lookup_dropdown_vehicle_line_brand: 113,
+          ddm_rmp_lookup_division: 13
+        }
+      ],
+      special_identifiers: [
+        {
+          ddm_rmp_lookup_special_identifiers: 1,
+          spl_desc: "Business Elite (US and Canada)"
+        },
+        {
+          ddm_rmp_lookup_special_identifiers: 2,
+          spl_desc: "Primary Fleet Account Number (FAN)"
+        }
+      ],
+      type_data: [
+        {
+          ddm_rmp_lookup_ots_type_data_id: 1,
+          type_data_desc: "Retail Only"
+        },
+        {
+          ddm_rmp_lookup_ots_type_data_id: 2,
+          type_data_desc: "Non-Retail (Includes Fleet)"
+        }
+      ],
+      users_list: [
+        {
+          users_table_id: 46,
+          user_id: "QZZ2PZ",
+          first_name: "Kenneth",
+          last_name: "Griessel",
+          dl_list: null,
+          sl_name: null,
+          privileges_name: null,
+          changed_by_user_id: "",
+          email: "kenn.griessel@gm.com",
+          contact_no: "+1 586-419-0477",
+          disclaimer_ack: null,
+          saved_setting: null,
+          designation: "Allocation Manager",
+          office_address: "Detroit, Michigan",
+          department: "Sales, Service & Marketing",
+          carrier: null,
+          region: "North America",
+          telephone: "+1 313-667-1018",
+          alternate_number: null,
+          role: 1
+        },
+        {
+          users_table_id: 9,
+          user_id: "QZ9YH2",
+          first_name: "Hari N",
+          last_name: "Gautam",
+          dl_list: null,
+          sl_name: ["Test_SL_001"],
+          privileges_name: ["Create/Edit query"],
+          changed_by_user_id: "",
+          email: "hari.gautam@gm.com",
+          contact_no: "+1 928-380-1277",
+          disclaimer_ack: "2019-08-21T03:35:05.497000-04:00",
+          saved_setting: "2019-09-24T16:48:56.890000-04:00",
+          designation: "Performance Engineer",
+          office_address: "Austin, Texas",
+          department: "Information Technology",
+          carrier: "c-spire",
+          region: "North America",
+          telephone: "+1 512-840-2303",
+          alternate_number: "148-3224143",
+          role: 1
+        }
+      ],
+      display_summary: [
+        {
+          ddm_rmp_lookup_display_summary_id: 1,
+          ds_desc: "Display"
+        },
+        {
+          ddm_rmp_lookup_display_summary_id: 2,
+          ds_desc: "Summary"
+        }
+      ],
+      desc_text_admin_documents: [
+        {
+          title: "sdaskldjaskl",
+          admin_flag: false,
+          ddm_rmp_desc_text_admin_documents_id: 1,
+          url: "https://html.com"
+        },
+        {
+          title: "newref link 19Oct",
+          admin_flag: false,
+          ddm_rmp_desc_text_admin_documents_id: 3,
+          url: "https://ddm1.apps.pcfepg2wi.gm.com/#/user/main/reference-documents"
+        }
+      ],
+      checkbox_data: [
+        {
+          checkbox_desc: "Commonly Requested Fields Available for Display",
+          field_values: "Order Number",
+          ddm_rmp_lookup_ots_checkbox_values_id: 1,
+          ddm_rmp_ots_checkbox_group_id: 1,
+          description: false,
+          tooltip: null
+        },
+        {
+          checkbox_desc: "Commonly Requested Fields Available for Display",
+          field_values: "Vehicle Information Number (VIN)",
+          ddm_rmp_lookup_ots_checkbox_values_id: 2,
+          ddm_rmp_ots_checkbox_group_id: 1,
+          description: false,
+          tooltip: null
+        }
+      ],
+      concensus_data_da: [
+        {
+          ddm_rmp_lookup_da_consensus_data_id: 4,
+          cd_values: "Monthly Demand",
+          tooltip: null
+        },
+        {
+          ddm_rmp_lookup_da_consensus_data_id: 3,
+          cd_values: "Final Allocation",
+          tooltip: "Final volume earned by a dealer after Variance Resolution is ↵complete(resolves +/- differences between Estimated Shipments and Production Consensus across the dealer network)"
+        }
+      ],
+      desc_text: [
+        {
+          ddm_rmp_desc_text_id: 25,
+          module_name: "DDM Team",
+          description: "<p>TESTING</p><p>Hari Gautam 2- PT Lead</p>"
+        },
+        {
+          ddm_rmp_desc_text_id: 26,
+          module_name: "DDM Team",
+          description: "<p>TESTING</p><p>Hari Gautam 3- PT Lead</p>"
+        }
+      ],
+      report_frequency: [
+        {
+          report_frequency_values: "Daily/Weekly (Monday to Friday) only",
+          select_frequency_description: false,
+          ddm_rmp_lookup_select_frequency_id: 18,
+          ddm_rmp_lookup_report_frequency_id: 1,
+          select_frequency_values: "Monday"
+        },
+        {
+          report_frequency_values: "Daily/Weekly (Monday to Friday) only",
+          select_frequency_description: false,
+          ddm_rmp_lookup_select_frequency_id: 19,
+          ddm_rmp_lookup_report_frequency_id: 1,
+          select_frequency_values: "Tuesday"
+        }
+      ],
+      cycle_data_da: [
+        {
+          ddm_rmp_lookup_cycle_id: 1,
+          cycle_desc: "Cycle1"
+        },
+        {
+          ddm_rmp_lookup_cycle_id: 2,
+          cycle_desc: "Cycle2"
+        }
+      ],
+      vehicle_data: [
+        {
+          ddm_rmp_lookup_dropdown_vehicle_line_brand_id: 1,
+          vehicle_line_brand: "Cascada",
+          ddm_rmp_lookup_division: 1
+        },
+        {
+          ddm_rmp_lookup_dropdown_vehicle_line_brand_id: 2,
+          vehicle_line_brand: "Enclave",
+          ddm_rmp_lookup_division: 1
+        }
+      ],
+      model_year: [
+        {
+          ddm_rmp_lookup_dropdown_model_year_id: 1,
+          model_year: "2017"
+        },
+        {
+          ddm_rmp_lookup_dropdown_model_year_id: 2,
+          model_year: "2018"
+        }
+      ],
+      date_data_da: [
+        {
+          ddm_rmp_lookup_da_date_id: 1,
+          date_desc: "Start Date"
+        },
+        {
+          ddm_rmp_lookup_da_date_id: 2,
+          date_desc: "End Date"
+        }
+      ],
+      order_type: [
+        {
+          ddm_rmp_lookup_dropdown_order_type_id: 1,
+          order_type: "T RE"
+        },
+        {
+          ddm_rmp_lookup_dropdown_order_type_id: 2,
+          order_type: "F DR"
+        }
+      ],
+      user: 2
+    },
+    message: "success"
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports:[ FormsModule, AngularMultiSelectModule, MaterialModule,
-                RouterTestingModule.withRoutes([]), 
-                QuillModule.forRoot(),
-                NgxPaginationModule, MatProgressSpinnerModule, 
-                NgbTypeaheadModule, MatChipsModule, MatAutocompleteModule,
-                MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatIconModule,
-                NgbDatepickerModule, NgbTimepickerModule, HttpClientTestingModule,
-                MatSnackBarModule, NoopAnimationsModule],
-      declarations: [ RequestStatusComponent , OrderByPipe, 
-                      FilterTablePipe, OngoingScheduleComponent,
-                      MultiDatePickerOngoingComponent, NgToasterComponent],
-      providers: [DatePipe, MatSnackBar,DataProviderService,AuthenticationService 
-      ],                
+      imports: [FormsModule, AngularMultiSelectModule,
+        RouterTestingModule.withRoutes([]),
+        QuillModule.forRoot(),MatProgressSpinnerModule,
+        NgbTypeaheadModule, MatChipsModule, MatAutocompleteModule,
+        MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatIconModule,
+        NgbDatepickerModule, NgbTimepickerModule, HttpClientTestingModule,
+        MatSnackBarModule, NoopAnimationsModule],
+      declarations: [RequestStatusComponent, OrderByPipe,
+        MultiDatePickerOngoingComponent, NgToasterComponent],
+      providers: [DatePipe, MatSnackBar, DataProviderService, AuthenticationService
+      ],
     })
-    .compileComponents();
+      .compileComponents();
     httpMock = TestBed.get(HttpTestingController);
-    
+
   }));
 
   beforeEach(() => {
-    router = TestBed.get(Router); 
+    router = TestBed.get(Router);
     location = TestBed.get(Location);
     fixture = TestBed.createComponent(RequestStatusComponent);
     router.initialNavigation();
@@ -754,30 +750,30 @@ fdescribe('RequestStatusComponent', () => {
     expect(res).toEqual(currentNotifications[0]);
     expect(service).toBeDefined();
     expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1); 
+    expect(mySpy).toHaveBeenCalledTimes(1);
   }));
 
   it('should execute getRoleDetails method', fakeAsync(() => {
     fixture.detectChanges();
     component.getRoleDetails();
     let service = TestBed.get(AuthenticationService);
-    service.myMethod(role,null,null);
+    service.myMethod(role, null, null);
     expect(component.user_role).toEqual(role.role);
     expect(service).toBeDefined();
   }));
 
   it('should execute dataProvider service currentlookUpTableData method',
-   fakeAsync(() =>{
-     fixture.detectChanges();
-    component.currentLookUpTableData();
-    let dataProviderService = TestBed.get(DataProviderService);
-    let djangoService = TestBed.get(DjangoService);
-    dataProviderService.changelookUpTableData(currentLook);
-    expect(component.lookup).toEqual(currentLook);
-    tick(1500);
-    fixture.detectChanges();
-    expect(dataProviderService).toBeDefined();
-  }));
+    fakeAsync(() => {
+      fixture.detectChanges();
+      component.currentLookUpTableData();
+      let dataProviderService = TestBed.get(DataProviderService);
+      let djangoService = TestBed.get(DjangoService);
+      dataProviderService.changelookUpTableData(currentLook);
+      expect(component.lookup).toEqual(currentLook);
+      tick(1500);
+      fixture.detectChanges();
+      expect(dataProviderService).toBeDefined();
+    }));
 
   it('should execute ngOnInit method', fakeAsync(() => {
     fixture.detectChanges();
@@ -789,7 +785,7 @@ fdescribe('RequestStatusComponent', () => {
     expect(component.discList).toBe(lookupValues.data.users_list);
     expect(djangoService).toBeDefined();
     expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1); 
+    expect(mySpy).toHaveBeenCalledTimes(1);
   }));
 
   it('should execute textChanged method', fakeAsync(() => {
@@ -802,7 +798,7 @@ fdescribe('RequestStatusComponent', () => {
     expect(component.textChange).toBeTruthy();
     expect(component.enableUpdateData).toBeFalsy();
 
-    event['text']= 'change';
+    event['text'] = 'change';
     component.textChange = false;
     component.textChanged(event);
     expect(component.textChange).toBeTruthy();
@@ -813,11 +809,11 @@ fdescribe('RequestStatusComponent', () => {
 
   }));
 
-  it('should execute edit_True method', fakeAsync(() => {
+  it('should execute resetHelpParams method', fakeAsync(() => {
     component.editModes = true;
     component.readOnlyContentHelper = false;
     component.original_contents = 'testing content';
-    component.edit_True();
+    component.resetHelpParams();
     expect(component.editModes).toBeFalsy();
     expect(component.readOnlyContentHelper).toBeTruthy();
     expect(component.namings).toEqual(component.original_contents);
@@ -847,7 +843,7 @@ fdescribe('RequestStatusComponent', () => {
       ddm_rmp_post_report_id: 16
     };
     let event = {
-      target : {
+      target: {
         checked: true
       }
     };
@@ -881,10 +877,9 @@ fdescribe('RequestStatusComponent', () => {
       ddm_rmp_post_report_id: 16,
       user_id: 3
     };
-    // component.open(null, element);
   }));
 
-  it('should execute CheckCancel method', fakeAsync(() =>{
+  it('should execute CheckCancel method', fakeAsync(() => {
     component.reports = list.report_list;
     fixture.detectChanges();
     component.CheckCancel();
@@ -892,14 +887,14 @@ fdescribe('RequestStatusComponent', () => {
 
   it('should execute cancel method', fakeAsync(() => {
     component.finalData = [{
-                            ddm_rmp_post_report_id: 16
-                          }];
+      ddm_rmp_post_report_id: 16
+    }];
     fixture.detectChanges();
-    
+
     let djangoService = TestBed.get(DjangoService);
     spyOn(component, 'Cancel').and.callThrough(); //callThrough()
-    let mySpy =  spyOn(djangoService, 'cancel_report').and.
-                  returnValues(of(component.cancel_report.cancel_reports));
+    let mySpy = spyOn(djangoService, 'cancel_report').and.
+      returnValues(of(component.cancel_report.cancel_reports));
     component.Cancel();
     expect(component.cancel_response).toEqual(component.cancel_report.cancel_reports);
     expect(component.Cancel).toHaveBeenCalled();
@@ -910,26 +905,26 @@ fdescribe('RequestStatusComponent', () => {
 
   it('should execute AssignTBD method', fakeAsync(() => {
     component.finalData = [{
-                            ddm_rmp_post_report_id: 16
-                          }];
-    const res = ['a','b','c','d'];                      
+      ddm_rmp_post_report_id: 16
+    }];
+    const res = ['a', 'b', 'c', 'd'];
     fixture.detectChanges();
     let djangoService = TestBed.get(DjangoService);
     spyOn(component, 'AssignTBD').and.callThrough(); //callThrough()
-    let mySpy =  spyOn(djangoService, 'ddm_rmp_tbd_req_put').and.
-                  returnValues(of(res));
-    component.AssignTBD();       
+    let mySpy = spyOn(djangoService, 'ddm_rmp_tbd_req_put').and.
+      returnValues(of(res));
+    component.AssignTBD();
     expect(component.assign_res).toEqual(res);
     expect(component.AssignTBD).toHaveBeenCalled();
     expect(djangoService).toBeDefined();
     expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1);       
+    expect(mySpy).toHaveBeenCalledTimes(1);
 
   }));
 
-  it('should execute TBD method', fakeAsync(()=>{
+  it('should execute TBD method', fakeAsync(() => {
     let element = {
-      ddm_rmp_post_report_id:16
+      ddm_rmp_post_report_id: 16
     };
     spyOn(component, 'TBD').and.callThrough(); //callThrough()
     component.TBD(element);
@@ -943,87 +938,87 @@ fdescribe('RequestStatusComponent', () => {
     component.assignReportId = 5;
     component.tbdselectedItems_report = [
       {
-        users_table_id : 8,
+        users_table_id: 8,
         full_name: 'ganesh'
       }
     ];
-    const res = ['a','b','c','d']; 
+    const res = ['a', 'b', 'c', 'd'];
     fixture.detectChanges();
     let djangoService = TestBed.get(DjangoService);
     spyOn(component, 'TBDsave').and.callThrough(); //callThrough()
     spyOn(componentToaster, 'success').and.callThrough(); // callThrough
     let mySpy = spyOn(djangoService, 'assign_owner_post').and.
-                returnValues(of(res));
-    component.TBDsave(); 
+      returnValues(of(res));
+    component.TBDsave();
     componentToaster.success('success');
     tick(1500);
     fixture.detectChanges();
-    expect(component.TBDsave).toHaveBeenCalled(); 
-    expect(componentToaster.success).toHaveBeenCalled();   
-    expect(component.Tbd_res).toEqual(res);  
+    expect(component.TBDsave).toHaveBeenCalled();
+    expect(componentToaster.success).toHaveBeenCalled();
+    expect(component.Tbd_res).toEqual(res);
     expect(djangoService).toBeDefined();
     expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1);  
+    expect(mySpy).toHaveBeenCalledTimes(1);
   }));
 
   it('should execute Assign_AssignTo method', fakeAsync(() => {
     component.finalData = [{
       ddm_rmp_post_report_id: 16
     }];
-    const res = ['a','b','c','d'];                      
+    const res = ['a', 'b', 'c', 'd'];
     fixture.detectChanges();
     let djangoService = TestBed.get(DjangoService);
     spyOn(component, 'Assign_AssignTo').and.callThrough(); //callThrough()
-    let mySpy =  spyOn(djangoService, 'ddm_rmp_assign_to').and.
-                  returnValues(of(res));
-    component.Assign_AssignTo(); 
+    let mySpy = spyOn(djangoService, 'ddm_rmp_assign_to').and.
+      returnValues(of(res));
+    component.Assign_AssignTo();
     tick(1500);
-    fixture.detectChanges();      
+    fixture.detectChanges();
     expect(component.assigned_res).toEqual(res);
     expect(component.Assign_AssignTo).toHaveBeenCalled();
     expect(djangoService).toBeDefined();
     expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1); 
+    expect(mySpy).toHaveBeenCalledTimes(1);
   }));
 
-  it('should execute TBD_Assigned method', fakeAsync(() => { 
+  it('should execute TBD_Assigned method', fakeAsync(() => {
     component.assignReportId = 13;
     component.tbdselectedItemsAssigned = [
-                                            {
-                                              full_name: 'ganesh'
-                                            }
-                                        ];
-    const res = ['a','b','c','d']; 
+      {
+        full_name: 'ganesh'
+      }
+    ];
+    const res = ['a', 'b', 'c', 'd'];
     fixture.detectChanges();
     let djangoService = TestBed.get(DjangoService);
     spyOn(component, 'TBD_Assigned').and.callThrough(); //callThrough()
     spyOn(componentToaster, 'success').and.callThrough(); // callThrough
     let mySpy = spyOn(djangoService, 'ddm_rmp_assign_to').and.
-                returnValues(of(res));
-    component.TBD_Assigned(); 
+      returnValues(of(res));
+    component.TBD_Assigned();
     componentToaster.success('success');
     tick(1500);
     fixture.detectChanges();
-    expect(component.TBD_Assigned).toHaveBeenCalled(); 
-    expect(componentToaster.success).toHaveBeenCalled();   
-    expect(component.tbd_assign_res).toEqual(res);  
+    expect(component.TBD_Assigned).toHaveBeenCalled();
+    expect(componentToaster.success).toHaveBeenCalled();
+    expect(component.tbd_assign_res).toEqual(res);
     expect(djangoService).toBeDefined();
     expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1); 
+    expect(mySpy).toHaveBeenCalledTimes(1);
   }));
 
-  it('should execute closeTBD_Assigned method', fakeAsync(() => { 
-    
+  it('should execute closeTBD_Assigned method', fakeAsync(() => {
+
     spyOn(component, 'closeTBD_Assigned').and.callThrough(); //callThrough()
     component.closeTBD_Assigned();
-    expect(component.closeTBD_Assigned).toHaveBeenCalled(); 
+    expect(component.closeTBD_Assigned).toHaveBeenCalled();
     expect(component.tbdselectedItemsAssigned.length).toBeFalsy();
   }));
 
-  it('should execute closeTBD method', fakeAsync(() => { 
+  it('should execute closeTBD method', fakeAsync(() => {
     spyOn(component, 'closeTBD').and.callThrough(); //callThrough()
     component.closeTBD();
-    expect(component.closeTBD).toHaveBeenCalled(); 
+    expect(component.closeTBD).toHaveBeenCalled();
     expect(component.tbdselectedItems_report.length).toBeFalsy();
   }));
 
@@ -1033,44 +1028,43 @@ fdescribe('RequestStatusComponent', () => {
     spyOn(component, 'sort_by').and.callThrough(); //callThrough()
     let djangoService = fixture.debugElement.injector.get(DjangoService);
     let mySpy = spyOn(djangoService, 'list_of_reports').and.
-                returnValues(of(list["report_list"]));
+      returnValues(of(list["report_list"]));
     component.sort_by();
     tick(1500);
     fixture.detectChanges();
-    expect(component.sort_by).toHaveBeenCalled(); 
-    // expect(component.reports).toEqual(list["report_list"]);
+    expect(component.sort_by).toHaveBeenCalled();
     expect(djangoService).toBeDefined();
     expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1); 
+    expect(mySpy).toHaveBeenCalledTimes(1);
   }));
 
   it('should execute accept method', fakeAsync(() => {
     component.finalData = [{
       ddm_rmp_post_report_id: 16,
-      status : "Cancelled"
+      status: "Cancelled"
     }];
-    const res = ['a','b','c','d'];
+    const res = ['a', 'b', 'c', 'd'];
     fixture.detectChanges();
     spyOn(component, 'Accept').and.callThrough(); //callThrough()
     component.Accept();
     expect(component.finalData.length).toBeFalsy();
     expect(component.errorModalMessageRequest).toEqual('status for the report 16 is already Cancelled and can not be accepted');
-    expect(component.Accept).toHaveBeenCalled(); 
+    expect(component.Accept).toHaveBeenCalled();
 
     component.finalData = [{
       ddm_rmp_post_report_id: 16,
-      status : "Incomplete"
+      status: "Incomplete"
     }];
     fixture.detectChanges();
     component.Accept();
     expect(component.finalData.length).toBeFalsy();
     expect(component.errorModalMessageRequest).toEqual('status for the report 16 is Incomplete and can not be accepted. Please complete the report');
-    expect(component.Accept).toHaveBeenCalled(); 
- 
+    expect(component.Accept).toHaveBeenCalled();
+
     component.finalData = [{
-                            ddm_rmp_post_report_id: 16,
-                            status : ""
-                          }];
+      ddm_rmp_post_report_id: 16,
+      status: ""
+    }];
     fixture.detectChanges();
     component.Accept();
   }));
@@ -1078,7 +1072,7 @@ fdescribe('RequestStatusComponent', () => {
   it('should execute post_link method', fakeAsync(() => {
     component.checkbox_length = 0;
     component.finalData = [{
-      status : "Incomplete"
+      status: "Incomplete"
     }];
     fixture.detectChanges();
     spyOn(component, 'post_link').and.callThrough(); //callThrough()
@@ -1089,25 +1083,25 @@ fdescribe('RequestStatusComponent', () => {
     fixture.detectChanges();
     component.post_link();
     expect(component.errorModalMessageRequest).toEqual("Request not Active yet. Can't post link to results.");
-    expect(component.post_link).toHaveBeenCalled(); 
-    
+    expect(component.post_link).toHaveBeenCalled();
+
     component.checkbox_length = 6;
     fixture.detectChanges();
     component.post_link();
     expect(component.errorModalMessageRequest).toEqual("You cannot post link on multiple reports at once");
-    expect(component.post_link).toHaveBeenCalled(); 
+    expect(component.post_link).toHaveBeenCalled();
   }));
 
   it('should execute closePostLink method', fakeAsync(() => {
     spyOn(component, 'closePostLink').and.callThrough(); //callThrough()
     component.closePostLink();
     expect(component.hidVar).toBeTruthy();
-    expect(component.closePostLink).toHaveBeenCalled(); 
+    expect(component.closePostLink).toHaveBeenCalled();
   }));
 
-  it('should execute addDocument method',fakeAsync(() => {
+  it('should execute addDocument method', fakeAsync(() => {
     const result = {
-      'report_id':16,
+      'report_id': 16,
       "link_title": 'xyz',
       "link_to_results": 'https://xyz.com'
     };
@@ -1121,7 +1115,7 @@ fdescribe('RequestStatusComponent', () => {
     spyOn(component, 'addDocument').and.callThrough(); //callThrough()
     component.addDocument();
     expect(component.hidVar).toBeFalsy();
-    expect(component.addDocument).toHaveBeenCalled(); 
+    expect(component.addDocument).toHaveBeenCalled();
 
     component.documentName = 'xyz';
     component.documentUrl = 'https://xyz.com';
@@ -1129,10 +1123,10 @@ fdescribe('RequestStatusComponent', () => {
     fixture.detectChanges();
     let djangoService = fixture.debugElement.injector.get(DjangoService);
     let mySpy = spyOn(djangoService, 'post_link').and.
-                returnValues(of(result));
+      returnValues(of(result));
     component.addDocument();
     expect(component.add_response).toEqual(result);
-    expect(component.addDocument).toHaveBeenCalled(); 
+    expect(component.addDocument).toHaveBeenCalled();
     expect(djangoService).toBeDefined();
     expect(mySpy).toBeDefined();
     expect(mySpy).toHaveBeenCalledTimes(1);
@@ -1141,39 +1135,39 @@ fdescribe('RequestStatusComponent', () => {
     fixture.detectChanges();
     component.addDocument();
     expect(component.errorModalMessageRequest).toEqual("Select a report to post a link");
-    expect(component.addDocument).toHaveBeenCalled(); 
+    expect(component.addDocument).toHaveBeenCalled();
   }));
 
-  it('should execute checkbox_validation method',fakeAsync(() => { 
+  it('should execute checkbox_validation method', fakeAsync(() => {
     component.checkbox_length = 0;
     fixture.detectChanges();
     spyOn(component, 'checkbox_validation').and.callThrough(); //callThrough()
     component.checkbox_validation();
     expect(component.errorModalMessageRequest).toEqual("Select a report to comment on it");
-    expect(component.checkbox_validation).toHaveBeenCalled(); 
+    expect(component.checkbox_validation).toHaveBeenCalled();
 
     component.checkbox_length = 2;
     fixture.detectChanges();
     component.checkbox_validation();
     expect(component.errorModalMessageRequest).toEqual("You cannot comment on multiple reports at once");
-    expect(component.checkbox_validation).toHaveBeenCalled(); 
+    expect(component.checkbox_validation).toHaveBeenCalled();
 
     component.checkbox_length = 1;
     fixture.detectChanges();
     component.checkbox_validation();
     expect(component.comment_text).toEqual('');
-    expect(component.checkbox_validation).toHaveBeenCalled(); 
+    expect(component.checkbox_validation).toHaveBeenCalled();
   }));
 
-  it('should execute extract_comment method',fakeAsync(() => { 
+  it('should execute extract_comment method', fakeAsync(() => {
     component.comment_text = '';
     fixture.detectChanges();
     spyOn(component, 'extract_comment').and.callThrough(); //callThrough()
     component.extract_comment();
     expect(component.errorModalMessageRequest).toEqual("Enter some comment");
     const result = {
-                    'data':[{message:'message success'}]
-                   };
+      'data': [{ message: 'message success' }]
+    };
     component.user_name = 'xyz';
     component.reports = list['reports'];
     component.comment_text = 'hsfdd';
@@ -1181,266 +1175,133 @@ fdescribe('RequestStatusComponent', () => {
     fixture.detectChanges();
     let djangoService = fixture.debugElement.injector.get(DjangoService);
     let mySpy = spyOn(djangoService, 'post_report_comments').and.
-                returnValues(of(result));
-    component.extract_comment(); 
-    expect(component.comment_list).toEqual(result['data']); 
-    expect(component.comment_text).toEqual(''); 
-    expect(djangoService).toBeDefined(); 
+      returnValues(of(result));
+    component.extract_comment();
+    expect(component.comment_list).toEqual(result['data']);
+    expect(component.comment_text).toEqual('');
+    expect(djangoService).toBeDefined();
     expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1); 
+    expect(mySpy).toHaveBeenCalledTimes(1);
   }));
 
-   it('should execute NewReportOnSelectedCriteria method',fakeAsync(() => { 
+  it('should execute NewReportOnSelectedCriteria method', fakeAsync(() => {
     component.checkbox_length = 0;
     fixture.detectChanges();
     spyOn(component, 'NewReportOnSelectedCriteria').and.callThrough(); //callThrough()
     component.NewReportOnSelectedCriteria();
     expect(component.errorModalMessageRequest).toEqual("Select at least one report");
-    expect(component.NewReportOnSelectedCriteria).toHaveBeenCalled(); 
+    expect(component.NewReportOnSelectedCriteria).toHaveBeenCalled();
 
     component.checkbox_length = 2;
     fixture.detectChanges();
     component.NewReportOnSelectedCriteria();
     expect(component.errorModalMessageRequest).toEqual("Can select only one report for generating new report with same criteria");
-    expect(component.NewReportOnSelectedCriteria).toHaveBeenCalled(); 
+    expect(component.NewReportOnSelectedCriteria).toHaveBeenCalled();
   }));
 
-  it('should execute getRequestId method',fakeAsync(() => {
+  it('should execute getRequestId method', fakeAsync(() => {
     let element = {
       ddm_rmp_post_report_id: 16,
       requestor: ''
     };
-    const result = { frequency_data:
-                    [
-                      {
-                        select_frequency_values: 'cheking'
-                      }
-                    ]
-                   };
+    const result = {
+      frequency_data:
+        [
+          {
+            select_frequency_values: 'cheking'
+          }
+        ]
+    };
     let djangoService = fixture.debugElement.injector.get(DjangoService);
     let mySpy = spyOn(djangoService, 'get_report_description').and.
-                returnValues(of(result));
+      returnValues(of(result));
     spyOn(component, 'getRequestId').and.callThrough(); //callThrough()            
     component.getRequestId(element);
-    expect(component.getRequestId).toHaveBeenCalled(); 
-    expect(component.summary).toEqual(result);  
-    expect(djangoService).toBeDefined(); 
+    expect(component.getRequestId).toHaveBeenCalled();
+    expect(component.summary).toEqual(result);
+    expect(djangoService).toBeDefined();
     expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1);  
-    
+    expect(mySpy).toHaveBeenCalledTimes(1);
+
     element.requestor = 'TBD';
     component.getRequestId(element);
     expect(component.errorModalMessageRequest).toEqual("Assign an owner first to create the report");
-    expect(component.getRequestId).toHaveBeenCalled();  
-   }));
+    expect(component.getRequestId).toHaveBeenCalled();
+  }));
 
-   it('should execute postLink method', fakeAsync(()=>{
-     const result = {
-                      report_id: [{
-                        report_list_id: 30
-                      }]
-                    };
+  it('should execute postLink method', fakeAsync(() => {
+    const result = {
+      report_id: [{
+        report_list_id: 30
+      }]
+    };
     // spyOn(component, 'postLink').and.callThrough(); //callThrough() 
     let djangoService = fixture.debugElement.injector.get(DjangoService);
     let mySpy = spyOn(djangoService, 'get_report_description').and.
-                returnValues(of(result));  
+      returnValues(of(result));
     component.postLink(3);
-    // tick(1500);
-    // fixture.detectChanges();
-    // expect(component.postLink_result).toEqual(result);
-    // expect(component.postLink).toHaveBeenCalled(); 
-    // if(component['report_id'][0]['report_list_id']) {
-    //   const result = {
-    //                     all_file_path: {
-    //                       zip_url: 'xyz'
-    //                     }
-    //                   };
-    //   let mySpy = spyOn(djangoService, 'get_report_file').and.
-    //             returnValues(of(result));
-    //   expect(component.file_path).toEqual(result);
-    // }
+  }));
 
-   }));
-
-   it('should execute mimicODC method', fakeAsync(()=> {
-      let OdcRequestId = [1, 2, 3, 4, 5];
-      const result = {
-        frequency_data:[{
-            select_frequency_values:["On Demand Configurable","On Demand"]
-          }]
-      };
-      spyOn(component, 'mimicODC').and.callThrough(); //callThrough()
-      let djangoService = fixture.debugElement.injector.get(DjangoService);
-      let mySpy = spyOn(djangoService, 'get_report_description').and.
-                returnValues(of(result)); 
-      component.mimicODC(OdcRequestId);
-      tick(1500);
-      fixture.detectChanges();
-      expect(component.summary).toEqual(result);
-      expect(component.mimicODC).toHaveBeenCalled(); 
-      
-   }));
-
-   it('should execute getLink method', fakeAsync(() => {
-      const result = {
-        data: {
-          url: 'https://xyz'
-        }
-      };
-      let djangoService = fixture.debugElement.injector.get(DjangoService);
-      spyOn(component, 'getLink').and.callThrough(); //callThrough()
-      let mySpy = spyOn(djangoService, 'get_report_link').and.
-                returnValues(of(result)); 
-      component.getLink(3);
-      tick();
-      fixture.detectChanges();
-      expect(component.link_response).toEqual(result);
-      expect(component.getLink).toHaveBeenCalled();
-      expect(djangoService).toBeDefined(); 
-      expect(mySpy).toBeDefined();
-      expect(mySpy).toHaveBeenCalledTimes(1); 
-   }));
-
-   it('should execute addContact method', fakeAsync(() => { 
-      component.model = 'xyz';
-      component.contacts = [];
-      component.dl_flag = true;
-      fixture.detectChanges();
-      spyOn(component, 'addContact').and.callThrough(); //callThrough()
-      component.addContact();
-      expect(component.addContact).toHaveBeenCalled();
-      expect(component.contacts).toEqual(['xyz']);
-      expect(component.dl_flag).toEqual(false);
-      expect(component.model).toEqual('');
-   }));
-
-   it('should execute updateDL method', fakeAsync(() => {
-      const result = 'check';
-      spyOn(component, 'updateDL').and.callThrough(); //callThrough()
-      let djangoService = fixture.debugElement.injector.get(DjangoService);
-      let mySpy = spyOn(djangoService, 'report_distribution_list').and.
-                  returnValues(of(result)); 
-      component.updateDL();
-      tick(1500); 
-      expect(component.updateDL).toHaveBeenCalled();
-      expect(djangoService).toBeDefined(); 
-      expect(mySpy).toBeDefined();
-      expect(mySpy).toHaveBeenCalledTimes(1);  
-    }));
-
-    it('should execute filterData method', fakeAsync(() => { 
-        component.searchObj = '';
-        component.statusFilter = [
-          {
-            status :'Active'
-          }
-        ];
-        fixture.detectChanges();
-        spyOn(component, 'filterData').and.callThrough(); //callThrough()
-        component.filterData();
-        expect(component.filterData).toHaveBeenCalled();
-        expect(component.filters.status).toEqual('Active');
-        expect(component.searchObj).toEqual({ global: '', status: 'Active' });
-    }));
-
-    it('should execute openScheduler method', fakeAsync(() => {
-      const result = {
-                        data: {
-                          report_schedule_id: 1
-                        }
-                      }; 
-      let scheduleService = fixture.debugElement.injector.get(ScheduleService);
-      spyOn(component, 'openScheduler').and.callThrough(); //callThrough()
-      let mySpy = spyOn(scheduleService, 'getScheduleReportData').and.
-                  returnValues(of(result)); 
-      fixture.detectChanges();
-      component.openScheduler(1); 
-      tick(500);
-      expect(component.openScheduler).toHaveBeenCalled();    
-      expect(scheduleService.scheduleReportIdFlag).toEqual(result['data']['report_schedule_id']);
-      expect(component.scheduleDataToBeSent).toEqual(result['data']); 
-    }));
-
-    it('should execute openScheduler method', fakeAsync(() => { 
-        let event = {
-                      requestId: 1
-                    };
-        const result = { 
-          'report_id': 1, 
-          'status': "Completed", 
-          'status_date': ''
-        };
-        spyOn(component, 'changeOngoingStatus').and.callThrough(); //callThrough()
-        let djangoService = fixture.debugElement.injector.get(DjangoService);
-        let mySpy = spyOn(djangoService, 'cancel_report').and.
-                                returnValues(of(result));
-        component.changeOngoingStatus(event);     
-        expect(component.changeOngoingStatus).toHaveBeenCalled();                    
-        expect(component.ongoingStatusResult).toEqual(result);                        
-
-    }));
-
-    // Test cases for newly implemented features by Bharath
-
-    fit('should set report id and set modal title',()=>{
-      let data = {
-        ddm_rmp_post_report_id:1,link_to_results:"abc"
+  it('should execute getLink method', fakeAsync(() => {
+    const result = {
+      data: {
+        url: 'https://xyz'
       }
-      component.addLinkUrl(data,"create");
-      expect(component.linkUrlId).toEqual(data.ddm_rmp_post_report_id);
-      expect(component.addUrlTitle).toEqual("ADD URL")
-    })
+    };
+    let djangoService = fixture.debugElement.injector.get(DjangoService);
+    spyOn(component, 'getLink').and.callThrough(); //callThrough()
+    let mySpy = spyOn(djangoService, 'get_report_link').and.
+      returnValues(of(result));
+    component.getLink(3);
+    tick();
+    fixture.detectChanges();
+    expect(component.link_response).toEqual(result);
+    expect(component.getLink).toHaveBeenCalled();
+    expect(djangoService).toBeDefined();
+    expect(mySpy).toBeDefined();
+    expect(mySpy).toHaveBeenCalledTimes(1);
+  }));
 
-    fit('should call django service and save url',()=>{
-      component.linkUrlId = 2;
-      document.querySelector("#add-url-input")["value"] = "value"
-      let data = {
-        request_id:2,link_to_results:"value"
+  it('should execute addContact method', fakeAsync(() => {
+    component.model = 'xyz';
+    component.contacts = [];
+    component.dl_flag = true;
+    fixture.detectChanges();
+    spyOn(component, 'addContact').and.callThrough(); //callThrough()
+    component.addContact();
+    expect(component.addContact).toHaveBeenCalled();
+    expect(component.contacts).toEqual(['xyz']);
+    expect(component.dl_flag).toEqual(false);
+    expect(component.model).toEqual('');
+  }));
+
+  it('should execute updateDL method', fakeAsync(() => {
+    const result = 'check';
+    spyOn(component, 'updateDL').and.callThrough(); //callThrough()
+    let djangoService = fixture.debugElement.injector.get(DjangoService);
+    let mySpy = spyOn(djangoService, 'report_distribution_list').and.
+      returnValues(of(result));
+    component.updateDL();
+    tick(1500);
+    expect(component.updateDL).toHaveBeenCalled();
+    expect(djangoService).toBeDefined();
+    expect(mySpy).toBeDefined();
+    expect(mySpy).toHaveBeenCalledTimes(1);
+  }));
+
+  it('should execute filterData method', fakeAsync(() => {
+    component.searchObj = '';
+    component.statusFilter = [
+      {
+        status: 'Active'
       }
-      let djangoService = TestBed.inject(DjangoService)
-      let spy = spyOn(djangoService,"add_link_to_url").and.returnValue(of({}))
-      component.saveLinkURL();
-      expect(spy).toHaveBeenCalledWith(data)
-    
-    })
-
-    fit('should open a new window with the gieven url',()=>{
-      let spy = spyOn(window,"open");
-      component.openNewWindow("abc");
-      expect(spy).toHaveBeenCalledWith('abc')
-    })
-
-    fit('should set linkUrlId',()=>{
-      let data = {
-        ddm_rmp_post_report_id:1,link_to_results:"abc"
-      }
-      let template = fixture.debugElement.nativeElement;
-      component.openEditStatusModal(data);
-      expect(component.linkUrlId).toEqual(data.ddm_rmp_post_report_id);
-      expect(template.querySelector("#selectReportStatus")["value"]).toEqual("Active")
-    })
-
-    fit("read report status from ui",()=>{
-      document.querySelector("#selectReportStatus")["value"] = "Active";
-      component.setselectReportStatus();
-      expect(component.selectReportStatus).toEqual("Active")
-    })
-
-    fit('should call django service and set status',()=>{
-      component.linkUrlId = 2;
-      document.querySelector("#add-url-input")["value"] = "value"
-      let data = {
-        request_id:2,status:"Completed"
-      }
-      let djangoService = TestBed.inject(DjangoService)
-      let spy = spyOn(djangoService,"update_report_status").and.returnValue(of({}))
-      component.saveReportStatus();
-      expect(spy).toHaveBeenCalledWith(data)
-    
-    })
-
-
-
-
+    ];
+    fixture.detectChanges();
+    spyOn(component, 'filterData').and.callThrough(); //callThrough()
+    component.filterData();
+    expect(component.filterData).toHaveBeenCalled();
+    expect(component.filters.status).toEqual('Active');
+    expect(component.searchObj).toEqual({ global: '', status: 'Active' });
+  }));
 
 });

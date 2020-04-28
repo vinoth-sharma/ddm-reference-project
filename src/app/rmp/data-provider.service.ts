@@ -124,7 +124,18 @@ export class DataProviderService {
   loadNotifications(){
     return new Promise((resolve,reject)=>{
       this.django.get_notifications().subscribe(response =>{
-        this.notifications.next(response['data'])
+        // this.notifications.next(response['data'])
+        let data = [];
+        if(response){
+          data.push(...response['pending_requests'])
+          data.push(...response['incomplete_requests'])
+          data.push(...response['complete_requests'])
+          data.push(...response['cancelled_requests'])
+          data.push(...response['ongoing_requests'])
+          data.push(...response['active_requests'])
+          data.push(...response['recurring_obj'])
+        }
+        this.notifications.next(data)
         resolve(true);
       })
     })

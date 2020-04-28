@@ -49,12 +49,25 @@ export class HeaderComponent implements OnInit {
                 this.notification_list = element.filter(element => {
                 return element.commentor != this.user_name
                 })
+                let unread = [];
+                let red = [];
+      
+                this.notification_list.map(item =>{
+                  if(item.comment_read_flag == true){
+                    red.push(item)
+                  }else{
+                    unread.push(item)
+                  }
+                })
+                this.notification_list = unread.concat(red)
+                this.notification_number = unread.length
+
                 var setBuilder = []
                 this.notification_list.map(element => { 
-                  setBuilder.push(element.ddm_rmp_post_report)
+                  setBuilder.push({reportNo : element.ddm_rmp_post_report,comment_read_flag:element.comment_read_flag})
                 })
                 this.notification_set = new Set(setBuilder) 
-                this.notification_number = this.notification_set.size
+
           }
         })
       }

@@ -24,6 +24,7 @@ export class OndemandReportsComponent{
   ngOnChanges(changes: SimpleChanges) {
     console.log("CHANGES SEEN IN OD:", changes);
     if ('requestNumber' in changes || 'reportId' in changes){
+      if (changes.reportId.currentValue != undefined && changes.reportId.currentValue != null && changes.requestNumber.currentValue != undefined && changes.requestNumber.currentValue != null) {
       this.onDemandService.getOnDemandConfigDetails(changes.reportId.currentValue, changes.requestNumber.currentValue).subscribe(res => {
         console.log("getOnDemandConfigDetails RESULTS", res);
         if (res["data"][1]['schedule_id'][0] || res["data"][1]['schedule_id'].length) {
@@ -36,6 +37,7 @@ export class OndemandReportsComponent{
           return;
         }
       })
+    }
     }
   }
 

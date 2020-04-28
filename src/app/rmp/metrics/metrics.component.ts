@@ -180,7 +180,6 @@ export class MetricsComponent implements OnInit {
       if (list) {
         this.reports = list['data'];
         this.dataLoad = true;
-        console.log("reports met",this.reports)
 
         // this.reports.forEach(element=>{
         //   if(element['status'] == 'Cancelled'){
@@ -298,12 +297,14 @@ export class MetricsComponent implements OnInit {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
-      const headings = Object.keys(this.reports[0]);
+      // const headings = Object.keys(this.reports[0]);
+      const headings = ["Request No","Number Of Reports","Requestor","Recipients","Orginization","Start Date","End Date","Administrator","Status","Frequency","Frequency Details","Other"]
+      const reportBody = this.createNewBodyForExcel()
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
-      const transformedData = this.reports.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
+      const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
 
       workbook.outputAsync().then(function (blob) {
@@ -326,6 +327,29 @@ export class MetricsComponent implements OnInit {
     }).catch(error => {
     });
   }
+
+  createNewBodyForExcel(){
+    let reportBody = []
+    this.reports.forEach(item =>{
+      let obj = {
+        "Request No" : item["ddm_rmp_post_report_id"],
+        "Number Of Reports": item["report_count"],
+        "Requestor":item["requestor"],
+        "Recipients":item['recipients_count'],
+        "Orginization":item["organization"],
+        "Start Date":item["created_on"],
+        "End Date":item["ddm_rmp_status_date"],
+        "Administrator" : item["assigned_to"],
+        "Status": item["status"],
+        "Frequency":item["freq"],
+        "Frequency Details":item['frequency_data'] ? item['frequency_data'].join():"",
+        "Other":item["description"]?item["description"]:"",
+      }
+      reportBody.push(obj)
+    })
+    return reportBody
+  }
+
 
   public getMetricsData() {
     if (this.selectedItems.length > 0) {

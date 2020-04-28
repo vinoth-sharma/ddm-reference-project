@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+// Migrated by bharath
+import { Component, OnInit } from '@angular/core';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -159,7 +160,9 @@ export class ReportsComponent implements OnInit {
   paginatorOptions: number[] = [5, 10, 25, 100]
   paginatorLowerValue = 0;
   paginatorHigherValue = 10;
-  // 
+  public linkUrlId : number
+  public addUrlTitle : String = "";
+// 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service: AuthenticationService,
     private django: DjangoService,
@@ -332,13 +335,15 @@ export class ReportsComponent implements OnInit {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
-      const headings = Object.keys(this.reports[0]);
+      const headings = ["Request No","Date","Title","DDM Name","Frequency","Frequency Details","Other"]
+      const reportBody = this.createNewBodyForExcel()
+      
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
 
-      const transformedData = this.reports.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
+      const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
 
       workbook.outputAsync().then(function (blob) {
@@ -360,6 +365,24 @@ export class ReportsComponent implements OnInit {
       })
     }).catch(error => {
     });
+  }
+
+  createNewBodyForExcel(){
+    let reportBody = []
+    this.reports.forEach(item =>{
+      let obj = {
+        "Request No" : item["ddm_rmp_post_report_id"],
+        "Date": item["ddm_rmp_status_date"],
+        "Title":item["title"],
+        "DDM Name":item['report_name'],
+        "Frequency":item["frequency"],
+        "Frequency Details":item["frequency_data"] ? item["frequency_data"].join(','):"",
+        "Other":item["description"]? item["description"].join(','):""
+      
+      }
+      reportBody.push(obj)
+    })
+    return reportBody
   }
 
   setOrder(value: any) {
@@ -397,6 +420,7 @@ export class ReportsComponent implements OnInit {
         this.original_contents = this.namings;
         this.toasterService.success("Updated Successfully");
         this.spinner.hide()
+        $('#helpModal').modal('hide');
       }, err => {
         this.spinner.hide()
         this.toasterService.error("Data not Updated")
@@ -1044,4 +1068,45 @@ export class ReportsComponent implements OnInit {
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   }
 
+  addLinkUrl(element,type){
+    this.linkUrlId = element.ddm_rmp_post_report_id;
+    if(type == "create"){
+      this.addUrlTitle = "ADD URL"
+      document.querySelector("#add-url-input")["value"] = "";
+    }else{
+      this.addUrlTitle = "EDIT URL"
+      document.querySelector("#add-url-input")["value"] = element.link_to_results;
+    }
+  }
+
+  saveLinkURL(){
+    let link = document.querySelector("#add-url-input")["value"]
+    let data = {request_id:this.linkUrlId,link_to_results:link}
+    Utils.showSpinner();
+    this.django.add_link_to_url(data).subscribe(response =>{
+     if(response['message'] == "updated successfully"){
+      document.querySelector("#add-url-input")["value"] = "";
+      $('#addUrl').modal('hide');
+      this.toasterService.success("URL Updated Successfully !")
+      Utils.hideSpinner()
+      this.reports.map(item =>{
+        if(item.ddm_rmp_post_report_id == this.linkUrlId){
+          item.link_to_results = link
+        }
+      })
+     }
+    },error =>{
+      this.toasterService.error("Failed To Add URL, Please Try Again")
+      Utils.hideSpinner()
+    })
+   
+  }
+
+  openNewWindow(url){
+    window.open(url)
+  }
+
+  closeTBD_Assigned(){
+    $('#addUrl').modal('hide');
+  }
 }

@@ -407,3 +407,10 @@ ngb-datepicker-navigation{
 }
 
 /* spinner Three */
+
+
+/* styles for alert notification no */
+.alert-notification{
+  background-color: #f921217d;
+  margin-bottom: 2px;
+}

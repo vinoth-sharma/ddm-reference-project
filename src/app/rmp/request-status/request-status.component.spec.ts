@@ -39,6 +39,7 @@ import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from '../../../utils';
+import { MaterialModule } from 'src/app/material.module';
 
 describe('RequestStatusComponent', () => {
   let location: Location;

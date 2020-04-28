@@ -1,5 +1,5 @@
+// Author : Bharath S
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-
 import { UserProfileComponent } from './user-profile.component';
 import { MaterialModule } from 'src/app/material.module';
 import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/dist/multiselect.component';
@@ -13,7 +13,6 @@ import { AuthenticationService } from 'src/app/authentication.service';
 import { GeneratedReportService } from '../../generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service'
 import { of } from 'rxjs';
-import { element } from 'protractor';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 

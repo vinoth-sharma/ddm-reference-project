@@ -12,9 +12,7 @@
         <div class="col">
           <div class="icons">
             <div class="press">
-              <!-- <a href="#"><i id="ic" class="material-icons">help_outline</i></a> -->
-              <button data-toggle="modal" data-target="#helpModal"
-                style="background-color:white; border:none;padding-right:0px;">
+              <button data-toggle="modal" data-target="#helpModal" style="background-color:white; border:none;padding-right:0px;">
                 <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
               </button>
               <a (click)="xlsxJson()" style="cursor:pointer"><i id="ic" class="material-icons">get_app</i></a>
@@ -31,7 +29,6 @@
                 <div style="width: 70px!important;">
                   <div class="alignLeft">
                     <div>Favourites</div>
-                    <!-- <input placeholder="Insert Keywords/Request Number here " class="form-control">                  -->
                     <div *ngIf="!reports['favorites']">&#8593;</div>
                     <div *ngIf="reports['favorites']">&#8595;</div>
                   </div>
@@ -160,29 +157,16 @@
               <td class="change-freq" *ngIf="element.changeFreqReq"
                 (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
                 <div>{{element.frequency}}</div>
-                <!-- <div *ngIf="element.changeFreqReq" class="change-freq"
-                (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
-                  <div>{{element.frequency}}</div>
-                </div> -->
-
-                <!-- <div *ngIf="!element.changeFreqReq">
-                    <div>{{element.frequency}}</div>
-                </div>  -->
               </td>
               <td *ngIf="!element.changeFreqReq">
                 <div>{{element.frequency}} </div>
               </td>
-              <!-- <td *ngIf !="element.changeFreq" class="change-freq">
-                  <div>{{element.frequency}}</div>
-              </td> -->
               <td *ngFor="let weekDay of weekDays">
                 <div style="width: 20px">
                   {{element[weekDay + 'Frequency']}}
                 </div>
               </td>
-              <!-- <td *ngIf="!element.changeFreq" *ngFor="let weekDay of weekDays">
-              </td> -->
-
+              
               <td>
                 <div>
                   {{element?.description?.join()}}
@@ -190,12 +174,21 @@
               </td>
               <td>
                 <div style="width: 60px !important;">
-                  <button class="btn btn-primary" *ngIf="element.status == 'Completed'"
-                    [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)">
-                    <a data-toggle="tooltip" title="Download" style="width:100%;color: white;">
-                      <i id="ic" class="material-icons" style="width:100%;padding-right: 7px;color: white;">get_app</i>
-                    </a>
+                  <button class="btn btn-outline-primary" [title]="element.link_to_results"
+                  (click)="openNewWindow(element.link_to_results)" *ngIf="element.link_to_results != ''"
+                  style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
+                  Url&nbsp;&nbsp;&#10145;
+                </button>
+                  <button class="btn btn-outline-primary" 
+                    data-toggle="modal" data-target="#addUrl" (click)="addLinkUrl(element,'create')" *ngIf="element.link_to_results == ''&& user_role =='Admin'"
+                    style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
+                    Add Url
                   </button>
+                  <button *ngIf="element.link_to_results != '' && user_role =='Admin'" class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
+                  (click)="addLinkUrl(element,'edit')">
+                    Edit
+                  </button>
+  
                 </div>
               </td>
               <td>
@@ -212,9 +205,10 @@
         </table>
       </div>
       <div style="padding-top: 0.7%;">
-        <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
-        <mat-paginator [length]="paginatorlength" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
-          (page)="onPaginationChange($event)">
+       <mat-paginator [length]="paginatorlength"
+               [pageSize]="paginatorpageSize"
+               [pageSizeOptions]="paginatorOptions"
+               (page)="onPaginationChange($event)">
         </mat-paginator>
 
       </div>
@@ -594,3 +588,33 @@
       </div>
     </div>
   </div>
+</div>
+
+
+
+
+<!-- add url modal -->
+<div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <div class="col-sm-2" style="padding-right:0;">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+          </div>
+          <div class="col-sm-10" style="margin:0;">
+            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b> {{addUrlTitle}}</b></h2>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body" >
+        <input id="add-url-input" type="text" placeholder="add Url" class="form-control"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success"  (click)="saveLinkURL()">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTBD_Assigned()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

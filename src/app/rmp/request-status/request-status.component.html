@@ -132,11 +132,11 @@
                      [(ngModel)]="filters.assigned_to" name="filters.assigned_to">
                 </div>
               </th>
-              <th style="min-width: 115px;">
-                <div id="status_dropdown" style="width: 115px !important;">
+              <th style="min-width: 135px;">
+                <div id="status_dropdown" style="width: 135px !important;">
                   <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
                     [settings]="StatusDropdownSettings" (onSelect)="filterData()" (onDeSelect)="filterData()"
-                    style="font-size: 12px;width:115px; ">
+                    style="font-size: 12px;width:135px; ">
                   </angular4-multiselect>
                 </div>
               </th>
@@ -236,13 +236,13 @@
                 </div>
               </td>
               <td>
-                <div *ngIf="element.status != 'Recurring'" style="width: 115px !important;">
+                <div *ngIf="element.status != 'Recurring'" style="width: 135px !important;">
                   {{element.status}}
                 </div>
-                <div *ngIf="element.status == 'Recurring'" style="width: 115px !important;">
+                <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn btn-primary" style="margin-left: 15px;" (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
+                    <button class="btn btn-primary"  (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
                       Mark as Complete
                     </button>
                   </div>

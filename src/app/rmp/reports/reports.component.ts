@@ -320,7 +320,6 @@ export class ReportsComponent implements OnInit {
       //   })
       //   this.metricsOtherList.push(metricsOtherData)
       // })
-      //   console.log("metrics list",this.metricsOtherList)
         this.reportsOriginal = this.reportContainer.slice();
       }
     }, err => {
@@ -352,13 +351,16 @@ export class ReportsComponent implements OnInit {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
-      const headings = Object.keys(this.reports[0]);
+      // const headings = Object.keys(this.reports[0]);
+      const headings = ["Request No","Date","Title","DDM Name","Frequency","Frequency Details","Other"]
+      const reportBody = this.createNewBodyForExcel()
+      
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
 
-      const transformedData = this.reports.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
+      const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
 
       workbook.outputAsync().then(function (blob) {
@@ -380,6 +382,24 @@ export class ReportsComponent implements OnInit {
       })
     }).catch(error => {
     });
+  }
+
+  createNewBodyForExcel(){
+    let reportBody = []
+    this.reports.forEach(item =>{
+      let obj = {
+        "Request No" : item["ddm_rmp_post_report_id"],
+        "Date": item["ddm_rmp_status_date"],
+        "Title":item["title"],
+        "DDM Name":item['report_name'],
+        "Frequency":item["frequency"],
+        "Frequency Details":item["frequency_data"] ? item["frequency_data"].join(','):"",
+        "Other":item["description"]? item["description"].join(','):""
+      
+      }
+      reportBody.push(obj)
+    })
+    return reportBody
   }
 
   setOrder(value: any) {

@@ -193,11 +193,11 @@
                   Url&nbsp;&nbsp;&#10145;
                 </button>
                   <button class="btn btn-outline-primary" 
-                    data-toggle="modal" data-target="#addUrl" (click)="addLinkUrl(element,'create')" *ngIf="element.link_to_results == ''"
+                    data-toggle="modal" data-target="#addUrl" (click)="addLinkUrl(element,'create')" *ngIf="element.link_to_results == ''&& user_role =='Admin'"
                     style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                     Add Url
                   </button>
-                  <button *ngIf="element.link_to_results != ''" class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
+                  <button *ngIf="element.link_to_results != '' && user_role =='Admin'" class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
                   (click)="addLinkUrl(element,'edit')">
                     Edit
                   </button>

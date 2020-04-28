@@ -41,7 +41,7 @@ import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from '../../../utils';
 import { MaterialModule } from 'src/app/material.module';
 
-fdescribe('RequestStatusComponent', () => {
+describe('RequestStatusComponent', () => {
   let location: Location;
   let router: Router;
   let component: RequestStatusComponent;

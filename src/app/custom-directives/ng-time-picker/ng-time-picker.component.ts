@@ -37,7 +37,7 @@ export class NgTimePickerComponent implements OnInit {
   }
 
   emitValue(event){
-    console.log(this.userEntry);
+    // console.log(this.userEntry);
     this.userEntryEmittor.emit(this.userEntry);
   }
 }

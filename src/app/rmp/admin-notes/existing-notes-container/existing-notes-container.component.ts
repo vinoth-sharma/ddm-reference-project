@@ -36,9 +36,10 @@ export class ExistingNotesContainerComponent implements OnInit {
       //                           .toLocaleString("en-US",{timeZone:"America/New_York"}));
       // });
       this.existingData = response['admin_notes'];
-      console.log(this.existingData);
+      // console.log(this.existingData);
       this.dataSource = new MatTableDataSource<any>(this.existingData);
       this.dataSource.paginator = this.paginator;
+      // console.log(this.dataSource.data);
       Utils.hideSpinner();
     })
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { Router } from '@angular/router';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
@@ -72,7 +72,7 @@ export class DdmAdminComponent implements OnInit {
 
   readOnlyContentHelper = true;
 
-  constructor(private django: DjangoService, public auth_service: AuthenticationService, private toastr: NgToasterComponent, private router: Router, private spinner: NgLoaderService, public dataProvider: DataProviderService) {
+  constructor(private django: DjangoService, public auth_service: AuthenticationService, private toastr: NgToasterComponent, private spinner: NgLoaderService, public dataProvider: DataProviderService) {
     this.editMode = false;
     this.getCurrentFiles();
     this.getCurrentTableLookupData();
@@ -104,7 +104,6 @@ export class DdmAdminComponent implements OnInit {
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 9;
     })
-    // //console.log(temp);
     if (temps) {
       this.original_content = temps.description;
     }

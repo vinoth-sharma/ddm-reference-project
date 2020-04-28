@@ -152,17 +152,10 @@
               <td>
                 <div>{{element.title}}</div>
               </td>
-<<<<<<< HEAD
               <td class="ddm-report-name" [ngStyle]="{ 'background-color': (element.frequency === 'On Demand' || element.frequency === 'On Demand Configurable') ? '#ccc' : 'none'  }"
                 >
                 <div (click)="toggleShowInput(element)" *ngIf="!element.clicked && element.report_name" >{{element.report_name}}</div>
                 <div *ngIf="element.clicked || !element.report_name" ><input style="max-width:140px" [value]="element.report_name?element.report_name:''" (change)="changeReportName($event , element)"></div>
-=======
-              <td class="ddm-report-name"
-                [ngStyle]="{ 'background-color': (element.frequency === 'On Demand' || element.frequency === 'On Demand Configurable') ? '#ccc' : 'none'  }"
-                (click)="goToReports(element.report_name,element.title)">
-                <div>{{element.report_name}}</div>
->>>>>>> 3f461c5897d86097697c29be5f78d54e9160e61d
               </td>
               <td class="change-freq" *ngIf="element.changeFreqReq"
                 (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">

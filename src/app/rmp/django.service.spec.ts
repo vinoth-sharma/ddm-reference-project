@@ -1,10 +1,8 @@
+// Author : Bharath
 import { TestBed, async, getTestBed } from '@angular/core/testing';
-
 import { DjangoService } from './django.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from 'src/environments/environment';
-// import { environment } from ".../../../environments/environment";
-
 describe('DjangoService', () => {
   let injector: TestBed;
   let service : DjangoService;
@@ -320,18 +318,6 @@ describe('DjangoService', () => {
     expect(req.request.method).toBe('POST');
     req.flush(data)
   }))
-
-  // it('ddm_rmp_frequency_update',async(()=>{
-  //   let postData = {};
-  //   let serviceUrl = `${environment.baseUrl}RMP/frequency_action/`
-  //   service.ddm_rmp_frequency_update(postData).subscribe(res =>{
-  //     expect(res).toEqual(data)
-  //   })
-
-  //   const req = httpMock.expectOne(serviceUrl);
-  //   expect(req.request.method).toBe('POST');
-  //   req.flush(data)
-  // }))
 
   it('ddm_rmp_frequency_update',async(()=>{
     let postData = {};

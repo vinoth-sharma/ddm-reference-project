@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+// Migrated by bharath
+import { Component, OnInit } from '@angular/core';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -35,15 +36,10 @@ export class ReportsComponent implements OnInit {
   textChange = false;
   public searchText;
   public p;
-  // public dropdownSettings;
-  // public dropdownList;
-  // public selectedItems;
   public ddm_rmp_post_report_id;
   public ddm_rmp_status_date;
   public title;
   public report_name;
-  // public onItemSelect;
-  // public onSelectAll;
   public metricsOtherList = [];
   public weekDayDict = {
     Monday: 'M',
@@ -304,22 +300,6 @@ export class ReportsComponent implements OnInit {
         })
         this.reports = this.reportContainer;
         this.paginatorlength = this.reports.length
-      //   this.metricsOtherList = [];
-      //   this.reports.forEach(arr =>{     
-      //   let j = 0
-      //   let metricsOtherData = ''
-      //   arr.frequency_data.forEach((item,i) =>{
-            
-      //     if(item == "Other"){
-      //       if(!arr.description)return
-      //      metricsOtherData += arr.description[i] ? "Other : "+arr.description[i]+"," : ""
-      //       j++
-      //     }else{
-      //      metricsOtherData += item+","
-      //     }
-      //   })
-      //   this.metricsOtherList.push(metricsOtherData)
-      // })
         this.reportsOriginal = this.reportContainer.slice();
       }
     }, err => {
@@ -351,7 +331,6 @@ export class ReportsComponent implements OnInit {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
-      // const headings = Object.keys(this.reports[0]);
       const headings = ["Request No","Date","Title","DDM Name","Frequency","Frequency Details","Other"]
       const reportBody = this.createNewBodyForExcel()
       
@@ -541,16 +520,6 @@ export class ReportsComponent implements OnInit {
 
     // SCHEDULE REPORT ID WAY from DDM report
     let scheduleReportId;
-
-    // OLD method
-    // if (data.scheduleId[0].length === 1) {
-    //   scheduleReportId = data.scheduleId[0];
-    // }
-    // else if (data.scheduleId[0].length > 1) {
-    //   scheduleReportId = data.scheduleId[0][0];
-    // }
-
-    // SIMILAR method
     if (data.scheduleId) {
       scheduleReportId = data.scheduleId;
     }

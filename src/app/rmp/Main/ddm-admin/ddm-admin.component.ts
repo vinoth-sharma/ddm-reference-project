@@ -1,6 +1,6 @@
+// migration  was done by : Bharath S
 import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
-import { Router } from '@angular/router';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service"; 

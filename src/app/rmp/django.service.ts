@@ -1,4 +1,4 @@
-
+// migrated by Bharath.s
 import {map, catchError} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -22,7 +22,6 @@ export class DjangoService {
 
   getDistributionList(user): Observable<any>{
     return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_search=` + user).pipe(
-    // return this.httpClient.get('https://ddm1.apps.pcfepg2wi.gm.com/reports/getldap_emailids?user_to_search=' + user)
     map(res=>{
       console.log(res['data']);
       
@@ -159,8 +158,6 @@ export class DjangoService {
   //File upload functionality
   ddm_rmp_file_data(filedata) {
     return this.httpClient.post(`${environment.baseUrl}RMP/upload_documents/`, filedata)
-    // return this.httpClient.post('https://ddm1.apps.pcfepg2wi.gm.com/RMP/upload_documents/',filedata)
-    // return this.httpClient.post("https://frameworktest.apps.pcfepg2wi.gm.com/upload_document/?file_upload", filedata)
   }
 
 

@@ -124,7 +124,6 @@ label input[type="checkbox"] {
 
 .ddm-report-name:hover {
   cursor: pointer;
-  /* background-color: #ccc !important; */
   font-weight: bold;
 }
 

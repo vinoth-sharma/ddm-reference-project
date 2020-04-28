@@ -1,3 +1,4 @@
+// Author : Bharath
 import { TestBed, getTestBed, async } from '@angular/core/testing';
 
 import { OndemandService } from './ondemand.service';
@@ -69,9 +70,6 @@ describe('OndemandService', () => {
   it('should  update SaveSettings in  the server',async(()=>{
     let saveSettingsData = {sheet_id:1,request_id:2}
     let serviceUrl = `${environment.baseUrl}RMP/save_settings/?sheet_id=${saveSettingsData.sheet_id}&request_id=${saveSettingsData.request_id}`;
-    // service.putSaveSettings(saveSettingsData).subscribe(res =>{
-    //   expect(res).toEqual(data)
-    // })
 
     const req = httpMock.expectOne(serviceUrl);
     expect(req.request.method).toBe('POST');

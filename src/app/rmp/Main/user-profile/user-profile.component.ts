@@ -1,6 +1,6 @@
+// migration  was done by : Bharath S
 import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service'
-import { MarketselectionService } from 'src/app/rmp/marketselection.service';
 import { DatePipe } from '@angular/common';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
@@ -193,7 +193,7 @@ export class UserProfileComponent implements OnInit {
   carriers = [];
   user_disc_ack: any;
 
-  constructor(private django: DjangoService, private marketService: MarketselectionService,
+  constructor(private django: DjangoService,
     public DatePipe: DatePipe, private auth_service: AuthenticationService, private spinner: NgLoaderService, private dataProvider: DataProviderService,
     private toastr: NgToasterComponent, private report_id_service: GeneratedReportService) {
 
@@ -557,13 +557,7 @@ export class UserProfileComponent implements OnInit {
     } else {
       ele_phone.style['webkitTextSecurity'] = 'disc';
     }
-    // if ((<HTMLInputElement>document.getElementById("phone")).type == "text" && (<HTMLInputElement>document.getElementById("countryCode")).type == "text") {
-    //   (<HTMLInputElement>document.getElementById("phone")).type = "password";
-    //   (<HTMLInputElement>document.getElementById("countryCode")).type = "password";
-    // } else {
-    //   (<HTMLInputElement>document.getElementById("phone")).type = "text";
-    //   (<HTMLInputElement>document.getElementById("countryCode")).type = "test";
-    // }
+    
   }
   getSelectedMarkets() {
     this.report_id_service.changeSaved(true);

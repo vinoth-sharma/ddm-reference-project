@@ -1251,29 +1251,12 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     return vs;
   }
 
-  public openScheduler(requestId : number){
-    this.scheduleService.getScheduleReportData(requestId,1).subscribe(res=>{
-      Utils.showSpinner();
-      if(res){
-      this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null; // to separate the post() and put()
-      this.scheduleDataToBeSent = res['data'];
-      this.reportListIdToSchedule = this.scheduleDataToBeSent.request_id
-      Utils.hideSpinner(); 
-      $('#ongoingScheduleModal').modal('show');
-      }
-      }, 
-      error => {
-      Utils.hideSpinner();
-      this.toastr.error('Scheduled report loading failed');
-    });
-  }
-
-  public changeOngoingStatus(event){
+    public updateMarkAsComplete(requestId: number){
     Utils.showSpinner();
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
     this.onGoingStatus.cancel_reports.push(
         { 
-          'report_id': event.requestId, 
+          'report_id': requestId, 
           'status': "Completed", 
           'status_date': this.date 
         });

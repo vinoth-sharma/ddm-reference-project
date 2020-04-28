@@ -28,15 +28,12 @@ import { DatePipe } from '@angular/common';
 import { DataProviderService } from "./data-provider.service";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
-// import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { TagInputModule } from 'ngx-chips';
 import { CustomModalsModule } from './custom-modals/custom-modals.module';
-import { OngoingScheduleComponent } from './ongoing-schedule/ongoing-schedule.component'
 import { MultiDatePickerOngoingComponent } from './multi-date-picker-ongoing/multi-date-picker-ongoing.component'
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { QuillModule } from "ngx-quill";
-// import { MaterialModule } from "../material.module";
 import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
 import { CommonModuleDdmRmp } from "../custom-directives/common.module";
 
@@ -60,7 +57,6 @@ import { CommonModuleDdmRmp } from "../custom-directives/common.module";
     FilterTablePipe,
     RequestOnBehalfComponent,
     MainMenuLandingPageComponent,
-    OngoingScheduleComponent,
     MultiDatePickerOngoingComponent
   ],
   imports: [
@@ -79,11 +75,9 @@ import { CommonModuleDdmRmp } from "../custom-directives/common.module";
     CustomPipeModules,
     AngularMultiSelectModule,
     Angular2FontawesomeModule,
-    // MaterialModule.forRoot(),
     CustomPipeModules.forRoot(),
     CommonModuleDdmRmp.forRoot(),
     NgxPaginationModule
-    // SharedComponentsModule
   ],
   providers: [
     DatePipe,

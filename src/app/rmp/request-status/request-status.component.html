@@ -242,8 +242,8 @@
                 <div *ngIf="element.status == 'Recurring'" style="width: 115px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn btn-primary" style="margin-left: 15px;" (click)="openScheduler(element.ddm_rmp_post_report_id,1)">
-                      Edit
+                    <button class="btn btn-primary" style="margin-left: 15px;" (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
+                      Mark as Complete
                     </button>
                   </div>
                 </div>
@@ -929,5 +929,3 @@
     </div>
   </div>
 </div>
-
-<app-ongoing-schedule [scheduleReportData]="scheduleDataToBeSent" [reportId]="reportListIdToSchedule" (confirmOnGoing)="changeOngoingStatus($event)"></app-ongoing-schedule>

@@ -20,6 +20,9 @@ const MY_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
+
+// Angular Component developed by Vinoth Sharma Veeramani
+
 @Component({
   selector: 'app-manage-notes',
   templateUrl: './manage-notes.component.html',

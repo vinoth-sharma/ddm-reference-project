@@ -4,10 +4,13 @@
   <div class="fluid-container holder">
     <div class="flex-container row tool-header">
       <div class="default">
-        <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#AdminNotesModal"
-          data-backdrop="static" data-keyboard="false">
+        <!-- <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#AdminNotesModal"
+          data-backdrop="static" data-keyboard="false" (click)="openNotesModal()">
           Add Important Notes
-        </button>
+        </button> -->
+        <button *ngIf="user_role=='Admin'" class="btn btn-primary" (click)="openNotesModal()">
+        Add Important Notes
+      </button>
       </div>
       <div class="tab-style">
         <div class="tab" style="float:left;">
@@ -35,162 +38,6 @@
     <router-outlet class="routing-dimensions" style="background:white"></router-outlet>
   </div>
 
-  <!-------Important Notes Modal----- -->
-
-  <div class="modal fade" id="AdminNotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" style='overflow-y:hidden !important;'>
-    <div class="modal-dialog" role="document" style="min-width:40%">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title" id="NotesModalLabel">Add Notes</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          </button>
-        </div>
-        <div class="modal-body display-notes-scroll" style="height: 400px;">
-          <form>
-            <div> 
-              <input type="checkbox" id="display-notes-status">
-              <label for="display-notes-status">Stop displaying notes</label>
-            </div>
-            <div class="form-group">
-              <label for="notes_content" class="col-form-label">Type Notes Here
-                <span class="mandatory-fields">*</span>:
-              </label>
-              <button class="btn btn-primary" style="float:right;margin-bottom: 1%" (click)="clearMessage()">Clear
-                message</button>
-              <button class="btn btn-primary PADDR5PX" style="float:right; margin-bottom: 1%;margin-right: 2%"
-                data-toggle="modal" data-target="#AllNotes" (click)="prevMessage()">Previous
-                message</button>
-
-              <textarea rows="3" cols="50" id="notes_content" type="text" class="form-control"
-                required [(ngModel)]='admin_notes' [ngModelOptions]="{standalone: true}"></textarea>
-              <span *ngIf="disp_missing_notes" style="color:red;font-weight: bold;">Please type the required
-                notes</span>
-            </div>
-            <div>
-              <p><b>Select Duration For Displaying Notes<span class="mandatory-fields">*</span>:</b></p>
-              <span *ngIf="disp_missing_start_date" style="color:red;font-weight: bold;">Please select start date</span>
-              <span *ngIf="disp_missing_end_date" style="color:red;font-weight: bold;">Please select end date</span>
-            </div>
-            <div class="row form-group calendar-styling" id="calendars">
-                <form [formGroup]="myForm" class="target-date">
-                  <mat-form-field>
-                    <mat-label>Choose a start date</mat-label>
-                    <input #startDatepicker1 matInput [matDatepicker]="startDatepicker"  
-                           (dateInput)="startDateEvent('input', $event)" 
-                           formControlName="startDate">
-                    <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
-                    <mat-datepicker [dateClass]="dateClass" #startDatepicker></mat-datepicker>
-                  </mat-form-field>
-                  <mat-form-field>
-                    <mat-label>Choose a end date</mat-label>
-                    <input #endDatepicker1 matInput [matDatepicker]="endDatepicker" 
-                          (dateInput)="endDateEvent('input', $event)" 
-                          formControlName="endDate" [errorStateMatcher]="matcher">
-                    <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
-                    <mat-datepicker [dateClass]="dateClass" #endDatepicker></mat-datepicker>
-                    <mat-error *ngIf="myForm.hasError('endDateLessThanStartDate')">
-                          End date cannot be earlier than start date
-                     </mat-error>
-                  </mat-form-field>
-                </form>
-            </div>
-          </form>
-          <div class="row">
-            <div class="form-group col-sm-5">
-              <label for="notes_start_date" class="col-form-label">Start Date<span
-                  class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;
-              <input id="notes_start_date" type="text" disabled="disabled" [(ngModel)]='customizedFromDate' value="{{ customizedFromDate }} ">
-            </div>&nbsp;&nbsp;
-            <div class="col-sm-1"></div>
-            <div class="form-group col-sm-5">
-              <label for="notes_end_date" class="col-form-label"> End Date<span
-                  class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;&nbsp;
-              <input id="notes_end_date" type="text" disabled="disabled" [(ngModel)]='customizedToDate' value="{{ customizedToDate }}">
-            </div>
-            <div class="col-sm-1"></div>
-          </div>
-          <!-- <div class="row">
-            <div class="col-sm-6">
-              <div><b>Select Start Time<span class="mandatory-fields">*</span>:</b></div>
-              <ngb-timepicker [(ngModel)]="startTime" [meridian]="startMeridian"></ngb-timepicker>
-            </div>
-            <div class="col-sm-6">
-              <div><b>Select End Time<span class="mandatory-fields">*</span>:</b></div>
-              <ngb-timepicker [(ngModel)]="endTime" [meridian]="endMeridian"></ngb-timepicker>
-            </div>
-          </div> -->
-          <!-- <div class="container">
-            <form class="demo-form">
-              <material-timepicker color="primary" label="Hour" [userTime]="exportTime" 
-                (change)="onChangeHour($event)" revertLabel="Remove" submitLabel="Ok">
-              </material-timepicker>
-            </form>
-          </div> -->
-          <br>
-        </div>
-        <div class="modal-footer">
-          <p class="mandatory-fields" style="float:left">*Required Fields</p>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" id="modal_load_button" class="btn btn-success" (click)="addDocument()"
-            data-toggle="modal" data-backdrop="static" data-keyboard="false">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ------------------------------Display Notes------------------------------- -->
-
-  <div class="modal fade" id="DisplayNotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document" style="min-width:60%; max-height:200px">
-      <div class="modal-content displayNotesStyling">
-        <div class="modal-header displayHeaderStyling">
-          <h3 class="modal-title"><b>Important Notes:</b></h3>
-          <button type="button" class="close" data-dismiss="modal" style="color:black" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body display-notes-scroll">{{admin_notes}}
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
-<div class="modal fade" id="AllNotes" tabindex="-1" role="dialog" aria-hidden="true" style='overflow-y:hidden !important;'>
-  <div class="modal-dialog modal-lg" role="document" style="min-width:40%">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Previous Notes:</h3>
-        <button type="button" class="close" data-dismiss="modal">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body display-notes-scroll">
-        <table class="table table-bordered">
-          <tr>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Notes</th>
-          </tr>
-          <tr *ngFor="let element of notes">
-            <td>{{element.notes_start_date | date : "dd-MMM-yyyy"}}</td>
-            <td>{{element.notes_end_date | date : "dd-MMM-yyyy"}}</td>
-            <td>
-              {{element.notes_content}}
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- <app-footer class="footer-height" style="height:10%"></app-footer> -->

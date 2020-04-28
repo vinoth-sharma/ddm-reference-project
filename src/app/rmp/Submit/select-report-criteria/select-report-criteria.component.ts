@@ -202,8 +202,9 @@ export class SelectReportCriteriaComponent implements OnInit {
       }
     })
     dataProvider.currentlookUpTableData.subscribe(element => {
-      if (element) {
+      if (element){
         this.lookup = element
+        this.getMarketSelectionData();
       }
     })
 
@@ -215,7 +216,19 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.behalf_email = ""
       }
     })
-    dataProvider.currentlookupData.subscribe(element => {
+
+    this.report_id_service.saveUpdate.subscribe(element => {
+      this.update = element
+    })
+
+    this.contacts = []
+    if (this.behalf_email) {
+      this.contacts.push(this.behalf_email);
+    }
+  }
+
+  getMarketSelectionData(){
+    this.dataProvider.currentlookupData.subscribe(element => {
       if (element) {
         this.lookup_data = element
         this.getUserMarketInfo();
@@ -227,7 +240,7 @@ export class SelectReportCriteriaComponent implements OnInit {
           this.userMarketSelections = element;
           this.userSelectionInitialisation();
         }, err => {
-          Utils.showSpinner()
+          // Utils.showSpinner()
         })
 
         if (this.lookup) {
@@ -244,16 +257,6 @@ export class SelectReportCriteriaComponent implements OnInit {
 
       }
     })
-
-
-    this.report_id_service.saveUpdate.subscribe(element => {
-      this.update = element
-    })
-
-    this.contacts = []
-    if (this.behalf_email) {
-      this.contacts.push(this.behalf_email);
-    }
   }
 
   notify() {
@@ -1145,7 +1148,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     }
     Utils.showSpinner()
     this.django.get_report_description(report_id).subscribe(element => {
-      console.log(element);
+      // console.log(element);
       if(element['status'] == "Incomplete" || element['status'] == "Active" || 
           element['status'] == "Pending" || element['status'] == "Cancelled"){
         this.report_id_service.changeUpdate(true)
@@ -1332,8 +1335,8 @@ export class SelectReportCriteriaComponent implements OnInit {
          this.toggle_freq("frequency0", "");
         $("#frequency0").prop("checked", true);
         var subData = element["frequency_data"];
-        console.log("Check prepopulation")
-        console.log(subData);
+        // console.log("Check prepopulation")
+        // console.log(subData);
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
             $('.sub').each(function (i, obj) {

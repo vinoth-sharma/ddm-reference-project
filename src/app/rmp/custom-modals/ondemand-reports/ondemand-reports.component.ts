@@ -9,7 +9,7 @@ declare var $: any;
   styleUrls: ['./ondemand-reports.component.css']
 })
 
-export class OndemandReportsComponent{
+export class OndemandReportsComponent {
 
   public onDemandScheduleId: any = '';
   public odInfoObject: any;
@@ -23,21 +23,21 @@ export class OndemandReportsComponent{
 
   ngOnChanges(changes: SimpleChanges) {
     console.log("CHANGES SEEN IN OD:", changes);
-    if ('requestNumber' in changes || 'reportId' in changes){
+    if ('requestNumber' in changes || 'reportId' in changes) {
       if (changes.reportId.currentValue != undefined && changes.reportId.currentValue != null && changes.requestNumber.currentValue != undefined && changes.requestNumber.currentValue != null) {
-      this.onDemandService.getOnDemandConfigDetails(changes.reportId.currentValue, changes.requestNumber.currentValue).subscribe(res => {
-        console.log("getOnDemandConfigDetails RESULTS", res);
-        if (res["data"][1]['schedule_id'][0] || res["data"][1]['schedule_id'].length) {
-          this.onDemandScheduleId = res["data"][1]['schedule_id'][0]
-        }
-        this.isLoading = false;
-        if (!this.onDemandScheduleId) {
-          this.toasterService.error('Please ask the admin to configure scheduling parameters!');
-          $('#onDemandModal').modal('hide');
-          return;
-        }
-      })
-    }
+        this.onDemandService.getOnDemandConfigDetails(changes.reportId.currentValue, changes.requestNumber.currentValue).subscribe(res => {
+          console.log("getOnDemandConfigDetails RESULTS", res);
+          if (res["data"][1]['schedule_id'][0] || res["data"][1]['schedule_id'].length) {
+            this.onDemandScheduleId = res["data"][1]['schedule_id'][0]
+          }
+          this.isLoading = false;
+          if (!this.onDemandScheduleId) {
+            this.toasterService.error('Please ask the admin to configure scheduling parameters!');
+            $('#onDemandModal').modal('hide');
+            return;
+          }
+        })
+      }
     }
   }
 

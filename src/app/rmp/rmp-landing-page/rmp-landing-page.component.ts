@@ -3,14 +3,12 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
-// import { DatePipe } from '@angular/common';
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from '../../../utils';
 declare var $: any;
-// import 'jquery';
 import { MatCalendarCellCssClasses } from '@angular/material/datepicker';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import {FormControl, FormGroupDirective, NgForm, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroupDirective, NgForm, FormGroup, FormBuilder } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
@@ -61,7 +59,6 @@ export class RmpLandingPageComponent implements OnInit {
 
   constructor(
     public django: DjangoService,
-    // private DatePipe: DatePipe,
     private report_id_service: GeneratedReportService,
     public dataProvider: DataProviderService,
     public auth_service: AuthenticationService,

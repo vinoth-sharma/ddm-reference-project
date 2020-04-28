@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-declare var $ : any;
+declare var $: any;
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { AuthenticationService } from "src/app/authentication.service";

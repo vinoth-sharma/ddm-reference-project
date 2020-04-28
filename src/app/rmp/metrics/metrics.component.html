@@ -299,7 +299,7 @@
             </thead>
             <tbody>
               <tr
-                *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }">
+                *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue">
                 <td scope="col">
                   {{element.ddm_rmp_post_report_id}}
                 </td>
@@ -369,7 +369,11 @@
         <div class="row" style="width: 100%;">
           <div class="col-sm-4"></div>
           <div class="col-sm-3" style="margin-top: 10px;">
-            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+              <mat-paginator [length]="paginatorlength"
+                     [pageSize]="paginatorpageSize"
+                     [pageSizeOptions]="paginatorOptions"
+                     (page)="onPaginationChange($event)">
+              </mat-paginator>
           </div>
         </div>
       </div>
@@ -390,7 +394,7 @@
               <div class="col-9">
                 <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
                   style="margin-right:3%">Save</button>
-                <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+                <button class="btn btn-danger save-text-ddm" (click)="resetHelp()" *ngIf="editModes">Cancel</button>
               </div>
               <div class="col-3" style="padding-left:12%;">
                 <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)='editEnable()'
@@ -406,7 +410,7 @@
             </div>
           </div>
           <div class="modal-footer modal-footer-pad">
-            <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_True()" data-dismiss="modal">Close</button>
+            <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="resetHelp()" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>

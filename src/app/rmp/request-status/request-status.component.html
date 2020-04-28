@@ -163,7 +163,7 @@
 
           <tbody>
             <ng-container
-              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ;">
               <tr class="clickable">
                 <td style="padding:6px;width: 100%;">
               <tr class="row">
@@ -329,8 +329,12 @@
           </tbody>
         </table>
       </div>
-      <div>
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      <div style="padding-top: 0.7%;">
+        <mat-paginator [length]="paginatorlength"
+               [pageSize]="paginatorpageSize"
+               [pageSizeOptions]="paginatorOptions"
+               (page)="onPaginationChange($event)">
+        </mat-paginator>
       </div>
     </div>
 
@@ -670,7 +674,7 @@
           <div class="col-9">
             <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
               style="margin-right:3%">Save</button>
-            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            <button class="btn btn-danger save-text-ddm" (click)="resetHelpParams()" *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
@@ -685,8 +689,8 @@
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_True()"
-          data-dismiss="modal">Close</button>
+        <button type="button" id="modal_close_button" class="btn btn-secondary"(click)="resetHelpParams()" 
+                data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -702,8 +706,9 @@
       <div class="modal-header">
         <h3>Alert!</h3>
       </div>
-      <div class="modal-body">
-        <h5 [(ngModel)]='errorModalMessageRequest' [ngModelOptions]="{standalone: true}" ngDefaultControl>
+      <div class="modal-body error-modal-message">
+        <h5 [(ngModel)]='errorModalMessageRequest' 
+            [ngModelOptions]="{standalone: true}" ngDefaultControl>
         </h5>
       </div>
       <div class="modal-footer">

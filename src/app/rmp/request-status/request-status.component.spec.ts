@@ -12,7 +12,6 @@ import { RequestStatusComponent } from './request-status.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
-import { NgxPaginationModule } from 'ngx-pagination';
 import { OrderByPipe } from '../../custom-directives/filters/order-by.pipe';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { QuillModule } from "ngx-quill";
@@ -711,8 +710,7 @@ describe('RequestStatusComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, AngularMultiSelectModule,
         RouterTestingModule.withRoutes([]),
-        QuillModule.forRoot(),
-        NgxPaginationModule, MatProgressSpinnerModule,
+        QuillModule.forRoot(),MatProgressSpinnerModule,
         NgbTypeaheadModule, MatChipsModule, MatAutocompleteModule,
         MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatIconModule,
         NgbDatepickerModule, NgbTimepickerModule, HttpClientTestingModule,
@@ -810,11 +808,11 @@ describe('RequestStatusComponent', () => {
 
   }));
 
-  it('should execute edit_True method', fakeAsync(() => {
+  it('should execute resetHelpParams method', fakeAsync(() => {
     component.editModes = true;
     component.readOnlyContentHelper = false;
     component.original_contents = 'testing content';
-    component.edit_True();
+    component.resetHelpParams();
     expect(component.editModes).toBeFalsy();
     expect(component.readOnlyContentHelper).toBeTruthy();
     expect(component.namings).toEqual(component.original_contents);

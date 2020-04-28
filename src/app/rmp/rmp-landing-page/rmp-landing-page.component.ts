@@ -3,11 +3,9 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
-// import { DatePipe } from '@angular/common';
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from '../../../utils';
 declare var $: any;
-// import 'jquery';
 import { FormControl, FormGroupDirective, 
          NgForm, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -38,8 +36,7 @@ export class RmpLandingPageComponent implements OnInit{
   public user_name: string;
 
   constructor(
-    public django: DjangoService, 
-    // private DatePipe: DatePipe,
+    public django: DjangoService,
     private report_id_service: GeneratedReportService,
     public dataProvider: DataProviderService, 
     public  auth_service: AuthenticationService, 
@@ -47,6 +44,7 @@ export class RmpLandingPageComponent implements OnInit{
     private dialog: MatDialog) {
   }
 
+  // checking date
   public checkDates(group: FormGroup) {
     if (group.controls.endDate.value < group.controls.startDate.value) {
       return { endDateLessThanStartDate: true }
@@ -123,6 +121,16 @@ export class RmpLandingPageComponent implements OnInit{
       }
     })
   }
+
+  // reset important parameters
+  public closeNotes() {
+    if (this.info.data.admin_note[0]) {
+        this.db_start_date = this.info.data.admin_note[0].notes_start_date;
+        this.db_end_date = this.info.data.admin_note[0].notes_end_date;
+        this.admin_notes = this.info.data.admin_note[0].notes_content;
+        this.note_status = this.info.data.admin_note[0].admin_note_status;
+    }
+  }  
 
 }
 

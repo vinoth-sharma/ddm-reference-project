@@ -1,5 +1,4 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
-declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
@@ -17,7 +16,7 @@ import { SemanticReportsService } from '../../semantic-reports/semantic-reports.
 import { environment } from "./../../../environments/environment"
 import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from 'src/utils';
-
+declare var $: any;
 
 @Component({
   selector: 'app-request-status',
@@ -26,21 +25,20 @@ import Utils from 'src/utils';
 })
 export class RequestStatusComponent implements OnInit, OnChanges {
 
-  public searchText;
-  public p;
-  public frequency_flag;
-  public changeDoc;
-  public comment_text;
-  public divDataSelected;
-  public printDiv;
-  public captureScreen;
+  public searchText: any;
+  public p: any;
+  public frequency_flag: any;
+  public changeDoc: any;
+  public comment_text: any;
+  public divDataSelected: any;
+  public printDiv: any;
+  public captureScreen: any;
   public param = "open_count";
   public orderType = 'desc';
   public fieldType = 'string';
-  public isButton;
-  public scheduleDataToBeSent: any = {};
-  public reportListIdToSchedule: number = null;
-
+  public isButton: any;
+  public scheduleDataToBeSent:any = {};
+  public reportListIdToSchedule : number = null;
   public enableUpdateData = false;
   public textChange = false;
   public StatusSelectedItem = [];
@@ -94,12 +92,12 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     "request_id": null,
     "dl_list": []
   };
-  public contents;
+  public contents: any;
   public enable_edits = false
   public editModes = false;
   public original_contents;
   public namings: string = "Loading";
-  public lookup;
+  public lookup: any;
   public user_role: string;
   public market_description: any;
   public zone_description: any;
@@ -168,7 +166,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   public onGoingStatus = {
     "cancel_reports": []
   };
-  public searchObj;
+  public searchObj: any;
   public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
@@ -194,33 +192,41 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   public file_path: any;
   public ongoingStatusResult: any;
   public checkbox_length: number;
+  public assign_res;
 
-  constructor(private generated_id_service: GeneratedReportService,
-    private router: Router,
-    private reportDataService: ReportCriteriaDataService,
-    private django: DjangoService, private DatePipe: DatePipe,
-    private sharedDataService: SharedDataService,
-    private semanticReportsService: SemanticReportsService,
-    private dataProvider: DataProviderService,
-    private auth_service: AuthenticationService,
-    private toastr: NgToasterComponent,
-    private scheduleService: ScheduleService) {
-    this.getCurrentNotifications();
-    this.model = "";
-    this.getRoleDetails();
-    this.Status_List = [
-      { 'status_id': 1, 'status': 'Incomplete' },
-      { 'status_id': 2, 'status': 'Pending' },
-      { 'status_id': 3, 'status': 'Active' },
-      { 'status_id': 4, 'status': 'Completed' },
-      { 'status_id': 5, 'status': 'Recurring' },
-      { 'status_id': 6, 'status': 'Cancelled' }
-    ];
-    this.contacts = [];
-    this.currentLookUpTableData();
+  // paginator params
+  public paginatorlength = 100;
+  public paginatorpageSize = 10;
+  public paginatorOptions :number[] = [5,10,25,100] 
+  public paginatorLowerValue = 0;
+  public paginatorHigherValue = 10;
 
+  constructor(private generated_id_service: GeneratedReportService, 
+              private router: Router, 
+              private reportDataService: ReportCriteriaDataService,
+              private django: DjangoService, private DatePipe: DatePipe,
+              private sharedDataService: SharedDataService, 
+              private semanticReportsService: SemanticReportsService,
+              private dataProvider: DataProviderService, 
+              private auth_service: AuthenticationService, 
+              private toastr: NgToasterComponent, 
+              private scheduleService:ScheduleService) {
+          this.getCurrentNotifications(); 
+          this.model = "";
+          this.getRoleDetails();
+          this.Status_List = [      
+            { 'status_id': 1, 'status': 'Incomplete' },
+            { 'status_id': 2, 'status': 'Pending' },
+            { 'status_id': 3, 'status': 'Active' },
+            { 'status_id': 4, 'status': 'Completed' },
+            { 'status_id': 5, 'status': 'Recurring'},
+            { 'status_id': 6, 'status': 'Cancelled' }
+          ];
+          this.contacts = [];
+          this.currentLookUpTableData();
   }
 
+  //get current notification details
   public getCurrentNotifications() {
     this.dataProvider.currentNotifications.subscribe((element: Array<any>) => {
       if (element) {
@@ -236,6 +242,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     });
   }
 
+  // get user details
   public getRoleDetails() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -246,6 +253,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     });
   }
 
+  // get report list of user
   public currentLookUpTableData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
@@ -305,6 +313,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   }
 
   public ngOnInit() {
+    // get lookup values
     this.django.getLookupValues().subscribe(check_user_data => {
       check_user_data['data']['users_list'].forEach(ele => {
         this.fullName = ele.first_name + ' ' + ele.last_name;
@@ -341,16 +350,19 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     };
   }
 
+  // detect paramater changes in component
   public ngOnChanges() {
     let s = $(".report_id_checkboxes:checkbox:checked").length;
   }
 
+  // detect changes in quill editor
   public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
+  // saving edited content in help pop-up
   public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
@@ -378,18 +390,21 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
-  public edit_True() {
+  // reset the help model params 
+  public resetHelpParams() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
 
+  // enable edit params of help model
   public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_contents;
   }
 
+  // supdated the order type
   public sort(typeVal) {
     this.param = typeVal.toLowerCase().replace(/\s/g, "_");
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
@@ -401,6 +416,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // get the details of checked report
   public Report_request(element, event) {
     this.cancel = element.ddm_rmp_post_report_id;
     this.showODCBtn = element['status'] === 'Active' ? true : false;
@@ -414,20 +430,14 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     });
   }
 
-  public open(event, element) {
-    this.id_get = element.ddm_rmp_post_report_id;
-    this.user_id = element.user_id;
-    this.reportDataService.setReportID(this.id_get);
-    this.reportDataService.setUserId(this.user_id);
-    this.generated_id_service.changeUpdate(true)
-  }
-
   public DealerAllocation(event) {
   }
 
   public OrderToSale(event) {
 
   }
+
+  // check status of selected report and take action on based on status
   public CheckCancel() {
     this.finalData = [];
     this.reports.find(e => {
@@ -462,15 +472,15 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     });
   }
 
-
+  // changing status of report to cancelled
   public Cancel() {
     Utils.showSpinner();
-    this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-    this.cancel_report.cancel_reports.push({
-      'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
-      'status': "Cancelled",
-      'status_date': this.date
-    });
+    this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
+      this.cancel_report.cancel_reports.push({ 
+              'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
+              'status': "Cancelled", 
+              'status_date': this.date 
+            });
 
     this.django.cancel_report(this.cancel_report).subscribe(response => {
       this.cancel_response = response;
@@ -499,7 +509,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     $('#CancelRequest').modal('hide');
   }
 
-  public assign_res;
+ 
   public AssignTBD() {
     Utils.showSpinner();
     this.assignTBD['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];
@@ -1274,4 +1284,9 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       Utils.hideSpinner();
     })
   }
+
+  public onPaginationChange(event){
+    this.paginatorLowerValue = event.pageIndex * event.pageSize;
+    this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
+    }
 }

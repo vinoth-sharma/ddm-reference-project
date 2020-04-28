@@ -459,3 +459,13 @@ angular4-multiselect > div.c-btn{
   height:400px;
   overflow: auto;
 }
+
+.error-modal-message {
+  height: auto !important;
+  max-height: 400px;
+}
+
+.material-icons {
+  margin-right: none;
+  cursor: pointer;
+}

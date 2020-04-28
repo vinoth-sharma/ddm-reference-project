@@ -349,7 +349,10 @@ export class ReferenceDocComponent implements OnInit{
       Utils.hideSpinner();
       $("#document-url").removeAttr('disabled');
       $("#attach-file1").val('');
-      this.toastr.error("Server Error");
+      if(err && err['status'] === 400) 
+        this.toastr.error("Submitted file is empty");
+      else    
+        this.toastr.error("Server Error"); 
       $('#uploadCheckbox').prop('checked', false);
     });
   }

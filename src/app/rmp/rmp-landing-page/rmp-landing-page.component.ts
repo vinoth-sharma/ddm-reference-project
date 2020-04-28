@@ -3,12 +3,13 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
+// import { DatePipe } from '@angular/common';
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from '../../../utils';
 declare var $: any;
-import { MatCalendarCellCssClasses } from '@angular/material/datepicker';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { FormControl, FormGroupDirective, NgForm, FormGroup, FormBuilder } from '@angular/forms';
+// import 'jquery';
+import { FormControl, FormGroupDirective, 
+         NgForm, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { DisplayNotesComponent } from '../admin-notes/display-notes/display-notes.component';
@@ -21,9 +22,8 @@ import { NotesWrapperComponent } from '../admin-notes/notes-wrapper/notes-wrappe
   styleUrls: ['./rmp-landing-page.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class RmpLandingPageComponent implements OnInit {
-
-  public content;
+export class RmpLandingPageComponent implements OnInit{
+  
   public info;
   public notes = [];
   public dateCheck: Date;
@@ -38,10 +38,11 @@ export class RmpLandingPageComponent implements OnInit {
   public user_name: string;
 
   constructor(
-    public django: DjangoService,
+    public django: DjangoService, 
+    // private DatePipe: DatePipe,
     private report_id_service: GeneratedReportService,
-    public dataProvider: DataProviderService,
-    public auth_service: AuthenticationService,
+    public dataProvider: DataProviderService, 
+    public  auth_service: AuthenticationService, 
     private toastr: NgToasterComponent,
     private dialog: MatDialog) {
   }
@@ -52,8 +53,8 @@ export class RmpLandingPageComponent implements OnInit {
     }
     return null;
   }
-
-  public ngOnInit() {
+  
+  public ngOnInit() { 
     this.getHeaderDetails();
     this.getCurrentLookUpTable();
     this.report_id_service.buttonStatus.subscribe(showButton => this.showButton = showButton);
@@ -109,7 +110,7 @@ export class RmpLandingPageComponent implements OnInit {
   }
   
   // to get role and name user details
-  public getHeaderDetails() {
+ public getHeaderDetails() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]

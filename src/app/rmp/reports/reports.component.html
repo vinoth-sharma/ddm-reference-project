@@ -6,13 +6,15 @@
           <h3>Reports</h3>
         </div>
         <div class="col">
-          <input (input)="filterData()" placeholder="Insert Keywords/Request Number here " class="form-control" [(ngModel)]="filters.global" name="global">
+          <input (input)="filterData()" placeholder="Insert Keywords/Request Number here " class="form-control"
+            [(ngModel)]="filters.global" name="global">
         </div>
         <div class="col">
           <div class="icons">
             <div class="press">
               <!-- <a href="#"><i id="ic" class="material-icons">help_outline</i></a> -->
-              <button data-toggle="modal" data-target="#helpModal" style="background-color:white; border:none;padding-right:0px;">
+              <button data-toggle="modal" data-target="#helpModal"
+                style="background-color:white; border:none;padding-right:0px;">
                 <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
               </button>
               <a (click)="xlsxJson()" style="cursor:pointer"><i id="ic" class="material-icons">get_app</i></a>
@@ -43,7 +45,8 @@
                     <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Enter Request no" class="form-control" [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id">
+                    <input (input)="filterData()" placeholder="Enter Request no" class="form-control"
+                      [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id">
                   </div>
                 </div>
               </th>
@@ -54,7 +57,8 @@
                     <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
                     <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                   </div>
-                  <input (input)="filterData()" placeholder="Enter Date" class="form-control" [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">      
+                  <input (input)="filterData()" placeholder="Enter Date" class="form-control"
+                    [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
                 </div>
               </th>
               <th>
@@ -65,7 +69,8 @@
                     <div *ngIf="reports['title']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Enter Title" class="form-control" [(ngModel)]="filters.title" name="filters.title">
+                    <input (input)="filterData()" placeholder="Enter Title" class="form-control"
+                      [(ngModel)]="filters.title" name="filters.title">
                   </div>
                 </div>
               </th>
@@ -77,28 +82,30 @@
                     <div *ngIf="reports['report_name']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Enter DDM Name" class="form-control" [(ngModel)]="filters.report_name" name="filters.report_name">
+                    <input (input)="filterData()" placeholder="Enter DDM Name" class="form-control"
+                      [(ngModel)]="filters.report_name" name="filters.report_name">
                   </div>
                 </div>
               </th>
               <th>
+                <div>
+                  <div class="alignLeft" (click)="sort('frequency')">
+                    <div>Frequency</div>
+                    <div *ngIf="!reports['frequency']">&#8593;</div>
+                    <div *ngIf="reports['frequency']">&#8595;</div>
+                  </div>
                   <div>
-                      <div class="alignLeft" (click)="sort('frequency')">
-                        <div>Frequency</div>
-                        <div *ngIf="!reports['frequency']">&#8593;</div>
-                        <div *ngIf="reports['frequency']">&#8595;</div>
-                      </div>
-                      <div>
-                        <input (input)="filterData()" placeholder="Enter Frequency" class="form-control" [(ngModel)]="filters.frequency" name="filters.frequency">
-                      </div>
-                    </div>
+                    <input (input)="filterData()" placeholder="Enter Frequency" class="form-control"
+                      [(ngModel)]="filters.frequency" name="filters.frequency">
+                  </div>
+                </div>
               </th>
               <th *ngFor="let weekDay of weekDays" (click)="sort(weekDay + 'Frequency')">
                 <div style="width: 20px">
                   <div class="alignLeft">
-                      {{weekDay}}
-                      <span *ngIf="!reports[weekDay + 'Frequency']">&#8593;</span>
-                      <span *ngIf="reports[weekDay + 'Frequency']">&#8595;</span>
+                    {{weekDay}}
+                    <span *ngIf="!reports[weekDay + 'Frequency']">&#8593;</span>
+                    <span *ngIf="reports[weekDay + 'Frequency']">&#8595;</span>
                   </div>
                 </div>
               </th>
@@ -110,21 +117,22 @@
                     <div *ngIf="reports['frequency_data_filtered']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Search"
-                      class="form-control" [(ngModel)]="filters.frequency_data_filtered" name="filters.frequency_data_filtered">
+                    <input (input)="filterData()" placeholder="Search" class="form-control"
+                      [(ngModel)]="filters.frequency_data_filtered" name="filters.frequency_data_filtered">
                   </div>
                 </div>
-              </th>     
+              </th>
               <th style="text-align:center">
                 <div style="width: 60px !important;">Links To Result</div>
               </th>
               <th>
                 <div>Query Criteria</div>
-              </th>         
+              </th>
             </tr>
           </thead>
           <tbody *ngIf="reports">
-            <tr *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ; let i = index">
+            <tr
+              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ; let i = index">
               <td class="fav" scope="col">
                 <div style="width: 70px!important;">
                   <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
@@ -144,7 +152,8 @@
               <td>
                 <div>{{element.title}}</div>
               </td>
-              <td class="ddm-report-name" [ngStyle]="{ 'background-color': (element.frequency === 'On Demand' || element.frequency === 'On Demand Configurable') ? '#ccc' : 'none'  }"
+              <td class="ddm-report-name"
+                [ngStyle]="{ 'background-color': (element.frequency === 'On Demand' || element.frequency === 'On Demand Configurable') ? '#ccc' : 'none'  }"
                 (click)="goToReports(element.report_name,element.title)">
                 <div>{{element.report_name}}</div>
               </td>
@@ -155,7 +164,7 @@
                 (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
                   <div>{{element.frequency}}</div>
                 </div> -->
-                
+
                 <!-- <div *ngIf="!element.changeFreqReq">
                     <div>{{element.frequency}}</div>
                 </div>  -->
@@ -173,12 +182,12 @@
               </td>
               <!-- <td *ngIf="!element.changeFreq" *ngFor="let weekDay of weekDays">
               </td> -->
-              
+
               <td>
                 <div>
                   {{element?.description?.join()}}
                 </div>
-              </td> 
+              </td>
               <td>
                 <div style="width: 60px !important;">
                   <button class="btn btn-primary" *ngIf="element.status == 'Completed'"
@@ -188,11 +197,12 @@
                     </a>
                   </button>
                 </div>
-              </td> 
-              <td>            
+              </td>
+              <td>
                 <div>
-                  <button class="btn btn-outline-primary" (click)="query_criteria_report(element.ddm_rmp_post_report_id)"
-                    data-toggle="modal" data-target="#queryCriteriaReport">
+                  <button class="btn btn-outline-primary"
+                    (click)="query_criteria_report(element.ddm_rmp_post_report_id)" data-toggle="modal"
+                    data-target="#queryCriteriaReport">
                     QueryCriteria
                   </button>
                 </div>
@@ -203,10 +213,8 @@
       </div>
       <div style="padding-top: 0.7%;">
         <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
-        <mat-paginator [length]="paginatorlength"
-               [pageSize]="paginatorpageSize"
-               [pageSizeOptions]="paginatorOptions"
-               (page)="onPaginationChange($event)">
+        <mat-paginator [length]="paginatorlength" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
+          (page)="onPaginationChange($event)">
         </mat-paginator>
 
       </div>
@@ -214,89 +222,15 @@
     </div>
   </div>
   <div class="main-tool-body" *ngIf="!reports">
-    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
   </div>
 
   <div id="configReport" class="modal fade" role="dialog">
     <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <!-- <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Configurable DDM Report</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body modal-comment-body">
-          <div class="row config">
-            <div class="col-sm-5">
-              Request No.
-            </div>
-            <div class="col-sm-7">
-              2018-2016
-            </div>
-          </div>
-
-          <div class="row config">
-            <div class="col-sm-5">
-              Title:
-            </div>
-            <div class="col-sm-7">
-              Order-to-Sale
-            </div>
-          </div>
-
-          <div class="row config">
-            <div class="col-sm-5">
-              DDM Name:
-            </div>
-            <div class="col-sm-7">
-              NC Allocation Group-Units in Stock
-            </div>
-          </div>
-
-          <div class="row config">
-            <div class="col-sm-5">
-              Division(s):
-            </div>
-            <div class="col-sm-7">
-
-              <ng-multiselect-dropdown class="drop-" [placeholder]="'Search for model'" [data]="dropdownList"
-                [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
-                (onSelectAll)="onSelectAll($event)">
-              </ng-multiselect-dropdown>
-
-            </div>
-          </div>
-
-          <div class="row config-drop">
-            <div class="col-sm-5">
-              Allocation Groups(s):
-            </div>
-            <div class="col-sm-7">
-
-              <ng-multiselect-dropdown class="drop-" [placeholder]="'Search for model'" [data]="dropdownList"
-                [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
-                (onSelectAll)="onSelectAll($event)">
-              </ng-multiselect-dropdown>
-
-            </div>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <div class="col-sm-6">
-            <button type="button" class="btn btn-primary  footer-buttons">Create Report</button>
-          </div>
-          <div class="col-sm-6">
-            <button type="button" class="btn btn-success">Save Settings</button>
-          </div>
-        </div>
-      </div> -->
-
     </div>
   </div>
 
-  <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header" style="justify-content: flex-start;">
@@ -306,23 +240,25 @@
         <div class="modal-body display-notes-scroll-modal">
           <div class="row">
             <div class="col-9">
-              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
+              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+                style="margin-right:3%">Save</button>
               <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
             </div>
             <div class="col-3" style="padding-left:12%;">
-              <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)='editEnable()' style="background-color:white;border: none;">
+              <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)='editEnable()'
+                style="background-color:white;border: none;">
                 <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
               </button>
             </div>
           </div>
           <div class="quillEditor">
-            <quill-editor class="quill" [(ngModel)]='namings' [modules]='config'
-                       [readOnly]='readOnlyContentHelper'
-                       (onContentChanged)='textChanged($event)'></quill-editor>
+            <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'
+              (onContentChanged)='textChanged($event)'></quill-editor>
           </div>
         </div>
         <div class="modal-footer modal-footer-pad">
-          <button type="button" id="modal_close_button" (click)="edit_True()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" id="modal_close_button" (click)="edit_True()" class="btn btn-secondary"
+            data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -463,7 +399,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" (click)="updateFreq(changeFreqId)" [disabled]=changeInFreq>Save changes</button>
+          <button type="button" class="btn btn-success" (click)="updateFreq(changeFreqId)" [disabled]=changeInFreq>Save
+            changes</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal" (click)=clearFreq()>Cancel</button>
         </div>
       </div>
@@ -474,186 +411,186 @@
   <!---------------------Query Criteria------------------->
 
   <!--                                    <Summary Modal Start>                                          -->
-<div id="queryCriteriaReport" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header" style="justify-content: flex-start;">
-        <div class="row modal-title">
-          <div class="col-sm-2">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
-          <div class="col-sm-10 modal-heading"><b>Distribution DataMart (DDM) Report Request Confirmation</b>
-            <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Vehicle
-              Event Status</div>
-            <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer
-              Allocation</div>
-          </div><br>
-          <div class="col-sm-9"></div>
-          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal">x</button></div>
-        </div>
-      </div>
-      <div class="modal-body display-summary-scroll">
-        <div class="container-fluid">
-          <div class="Request-details">
-            <span> <b>Request Date:</b>
-              &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
-            <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
-            <div *ngFor="let element of summary?.requestor">
-              <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
-            <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
-          </div>
-          <div class="Request-summary">
-            <div class="div-wrap">
-              <b style="font-size:150%">Market Selections</b><br><br>
-              <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
-              <br>
+  <div id="queryCriteriaReport" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content: flex-start;">
+          <div class="row modal-title">
+            <div class="col-sm-2">
+              <img class="logo" src="/assets/OFT_Logo.jpg">
             </div>
-            <div class="div-wrap">
-              <b>Division(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>Region(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ region_description }}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>Zone(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ zone_description }}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>Area(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ area_description }}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>LMA(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ lma_description }}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ gmma_description }}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>BAC(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ bac_description }}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>FAN(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ fan_desc }}&nbsp;&nbsp;</span>
-              <br><br>
-            </div>
-            <b style="font-size:120%">Frequency of Reports</b>
-            <!-- <div *ngIf="!frequency_flag">
-              Report NOT required on a routine basis
-            </div> -->
-            <div class="div-wrap">
-              <span>{{ report_frequency }}&nbsp;&nbsp;</span>
+            <div class="col-sm-10 modal-heading"><b>Distribution DataMart (DDM) Report Request Confirmation</b>
+              <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">
+                Vehicle
+                Event Status</div>
+              <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer
+                Allocation</div>
             </div><br>
-            <b style="font-size:120%">Special Identifiers</b>
-            <div class="div-wrap">
-              <p>{{ special_identifier }}</p>
+            <div class="col-sm-9"></div>
+            <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal">x</button></div>
+          </div>
+        </div>
+        <div class="modal-body display-summary-scroll">
+          <div class="container-fluid">
+            <div class="Request-details">
+              <span> <b>Request Date:</b>
+                &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
+              <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+              <div *ngFor="let element of summary?.requestor">
+                <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
+              <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
             </div>
-            <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
-            <div class="div-wrap">
-              <p *ngIf='text_notification == ""'>No</p>
-              <p *ngIf='text_notification != ""'>Yes</p>
-            </div>
-
-            <!--                                Order To Sale Start                                    -->
-            <div *ngIf="summary?.report_type == 'ots'">
-              <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
+            <div class="Request-summary">
               <div class="div-wrap">
-                <b style="font-size:120%">Order Criteria</b><br>
-                <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+                <b style="font-size:150%">Market Selections</b><br><br>
+                <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
-                <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ model_year }}&nbsp;&nbsp;</span>
+                <b>Division(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
-                <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
+                <b>Region(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ region_description }}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
-                <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
+                <b>Zone(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ zone_description }}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
-                <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ order_event }}&nbsp;&nbsp;</span>
+                <b>Area(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ area_description }}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
-                <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ order_type }}&nbsp;&nbsp;</span>
-                <br><br><br>
+                <b>LMA(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ lma_description }}&nbsp;&nbsp;</span>
+                <br>
               </div>
               <div class="div-wrap">
-                <b style="font-size:120%">Order Metrics</b><br><br>
-                <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
-                <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
+                <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ gmma_description }}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>BAC(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ bac_description }}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>FAN(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ fan_desc }}&nbsp;&nbsp;</span>
                 <br><br>
               </div>
+              <b style="font-size:120%">Frequency of Reports</b>
+              <!-- <div *ngIf="!frequency_flag">
+              Report NOT required on a routine basis
+            </div> -->
               <div class="div-wrap">
-                <b>Consensus Time and Date:</b> &nbsp;&nbsp;
-                <span *ngFor="let element of summary?.ost_data.data_date_range">
-                  <b>Start:</b>&nbsp;{{element?.start_date| date: 'dd-MMM-yyyy'}}
-                  <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
-                </span>
+                <span>{{ report_frequency }}&nbsp;&nbsp;</span>
+              </div><br>
+              <b style="font-size:120%">Special Identifiers</b>
+              <div class="div-wrap">
+                <p>{{ special_identifier }}</p>
               </div>
-              <div style="width:100%;float:left;padding-top: 20px">
-                <b>Additional Requirements:</b> <br>
-                <span>{{summary?.additional_req}}</span>
+              <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
+              <div class="div-wrap">
+                <p *ngIf='text_notification == ""'>No</p>
+                <p *ngIf='text_notification != ""'>Yes</p>
               </div>
-            </div>
-            <!--                                Order To Sale Start                                    -->
 
-            <!--                      Dealer allocation Part Start                          -->
-            <div *ngIf="summary?.report_type == 'da'">
-              <h5><b>Dealer Allocation Selections</b></h5><br>
-              <div class="div-wrap">
-                <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
-                <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+              <!--                                Order To Sale Start                                    -->
+              <div *ngIf="summary?.report_type == 'ots'">
+                <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
+                <div class="div-wrap">
+                  <b style="font-size:120%">Order Criteria</b><br>
+                  <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ model_year }}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ order_event }}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ order_type }}&nbsp;&nbsp;</span>
+                  <br><br><br>
+                </div>
+                <div class="div-wrap">
+                  <b style="font-size:120%">Order Metrics</b><br><br>
+                  <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
+                  <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
+                  <br><br>
+                </div>
+                <div class="div-wrap">
+                  <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+                  <span *ngFor="let element of summary?.ost_data.data_date_range">
+                    <b>Start:</b>&nbsp;{{element?.start_date| date: 'dd-MMM-yyyy'}}
+                    <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
+                  </span>
+                </div>
+                <div style="width:100%;float:left;padding-top: 20px">
+                  <b>Additional Requirements:</b> <br>
+                  <span>{{summary?.additional_req}}</span>
+                </div>
               </div>
-              <div class="div-wrap">
-                <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ model_year }}&nbsp;&nbsp;</span>
-                <br>
+              <!--                                Order To Sale Start                                    -->
+
+              <!--                      Dealer allocation Part Start                          -->
+              <div *ngIf="summary?.report_type == 'da'">
+                <h5><b>Dealer Allocation Selections</b></h5><br>
+                <div class="div-wrap">
+                  <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
+                  <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+                </div>
+                <div class="div-wrap">
+                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ model_year }}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+                  <span *ngFor="let element of summary?.da_data.concensus_time_date">
+                    <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
+                    <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
+                  </span>
+                </div>
+                <div class="div-wrap">
+                  <b>Consensus Data:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of summary?.da_data.concensus_data">{{element?.cd_values}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Additional Requirements:</b> <br>
+                  <span>{{summary?.additional_req}}</span>
+                </div>
               </div>
-              <div class="div-wrap">
-                <b>Consensus Time and Date:</b> &nbsp;&nbsp;
-                <span *ngFor="let element of summary?.da_data.concensus_time_date">
-                  <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
-                  <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
-                </span>
-              </div>
-              <div class="div-wrap">
-                <b>Consensus Data:</b> &nbsp;&nbsp;<span
-                  *ngFor="let element of summary?.da_data.concensus_data">{{element?.cd_values}}&nbsp;&nbsp;</span>
-                <br>
-              </div>
-              <div class="div-wrap">
-                <b>Additional Requirements:</b> <br>
-                <span>{{summary?.additional_req}}</span>
-              </div>
+              <!--                                    Dealer allocation Part End                      -->
             </div>
-            <!--                                    Dealer allocation Part End                      -->
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-

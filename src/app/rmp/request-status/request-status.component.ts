@@ -1483,4 +1483,12 @@ export class RequestStatusComponent implements OnInit, OnChanges{
         Utils.hideSpinner()
       })
   }
+
+  closeLinkUrl(){
+    $('#addUrl').modal('hide');
+  }
+
+  closeStatusUrl(){
+    $('#changeStatusModal').modal('hide');
+  }
 }

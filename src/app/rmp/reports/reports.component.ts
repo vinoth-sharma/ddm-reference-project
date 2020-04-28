@@ -1101,4 +1101,8 @@ export class ReportsComponent implements OnInit {
   openNewWindow(url){
     window.open(url)
   }
+
+  closeTBD_Assigned(){
+    $('#addUrl').modal('hide');
+  }
 }

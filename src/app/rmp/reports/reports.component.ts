@@ -68,7 +68,7 @@ export class ReportsComponent implements OnInit {
   param: any;
   frequency_selections: any;
   lookup;
-
+  showInput:boolean = false;
   /*----------Query Criteria params---------------*/
   market_description: any;
   zone_description: any;
@@ -106,7 +106,7 @@ export class ReportsComponent implements OnInit {
   freq_val: {}[];
   freq_val_da: {}[];
   freq_val_on_demand: {}[];
-
+  selectedReportName = "";
   orderType: any;
   content: object;
   original_contents: any;
@@ -180,6 +180,41 @@ export class ReportsComponent implements OnInit {
     this.editModes = false;
    
   }
+  changeReportName(event:any , reportObject){
+  
+    // console.log(event , reportObject);
+    let changedReport={};
+    changedReport["request_id"]= reportObject.ddm_rmp_post_report_id;
+    changedReport["report_name"] = event.target['value']
+    console.log(changedReport)
+    this.django.update_rmpReports_DDMName(changedReport)
+    .subscribe(
+      resp=>{
+        console.log(resp);
+
+        reportObject.clicked=false;
+        reportObject.report_name = changedReport['report_name']
+        console.log(reportObject);
+      }
+      ,
+      ()=>{
+      },
+      
+    )
+  }
+  toggleShowInput(element ){
+    
+    this.reports.forEach(ele=>{
+      if (ele.report_name !=element.report_name)
+      {
+        ele.clicked = false;
+      }
+      else{
+        ele.clicked =true;
+      }
+    })
+    
+  }
 
   readUserRole(){
     this.auth_service.myMethod$.subscribe(role => {
@@ -242,6 +277,7 @@ export class ReportsComponent implements OnInit {
 
   getReportList(){
     this.django.get_report_list().subscribe(list => {
+      console.log(list)
       if (list) {
         this.reportContainer = list['data'];
         this.reportContainer.map(reportRow => {
@@ -292,7 +328,10 @@ export class ReportsComponent implements OnInit {
         this.reportContainer.forEach(ele => {
           if (ele['frequency_data_filtered']) {
             ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");
+            
           }
+          ele['clicked']=false;
+          console.log(ele);
         })
         this.reportContainer.sort((a, b) => {
           if (b['favorites'] == a['favorites']) {

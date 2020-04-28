@@ -282,6 +282,8 @@ export class DjangoService {
   //     }
   //   })
   // }
-  
+  update_rmpReports_DDMName(changedNameObject){
+    return this.httpClient.put(`${environment.baseUrl}RMP/update_ddm_name/`,changedNameObject)
+  }
 }
 

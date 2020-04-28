@@ -259,7 +259,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public currentLookUpTableData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
-        console.log("lookupdata",element)
         this.lookup = element;
         for (let i = 1; i <= 100; i++) {
           this.collection.push(`item ${i}`);
@@ -310,7 +309,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
             return b['unread'] > a['unread'] ? 1 : -1;
           });
           this.reports = list["report_list"];
-          console.log("reports",this.reports)
         });
       }
     });
@@ -669,14 +667,15 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
-      const headings = Object.keys(this.reports[0]);
+      // const headings = Object.keys(this.reports[0]);
+      const headings = ["Request Number","Created On","Requestor","On Behalf Of","Title","Frequency","Assigned To","Status","Status Date"]
+      const reportBody = this.createNewBodyForExcel()
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
-      const transformedData = this.reports.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
+      const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
-
       workbook.outputAsync().then(function (blob) {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           window.navigator.msSaveOrOpenBlob(blob,
@@ -697,6 +696,25 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       });
     }).catch(error => {
     });
+  }
+
+  createNewBodyForExcel(){
+    let reportBody = []
+    this.reports.forEach(item =>{
+      let obj = {
+        "Request Number" : item["ddm_rmp_post_report_id"],
+        "Created On": item["created_on"],
+        "Requestor": item["requestor"],
+        "On Behalf Of":item["on_behalf_of"],
+        "Title":item["title"],
+        "Frequency":item["frequency"],
+        "Assigned To":item["assigned_to"],
+        "Status":item[status],
+        "Status Date":new Date(item["ddm_rmp_status_date"]).toDateString()
+      }
+      reportBody.push(obj)
+    })
+    return reportBody
   }
 
   public post_link() {

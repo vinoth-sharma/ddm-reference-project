@@ -6,8 +6,7 @@
           Criteria / Modify Request</button></a>
       <a><button class="btn btn-primary" onmouseover="" style="cursor: pointer;" (click)="populateDl()"
           data-backdrop="static" data-keyboard="false">Edit Distribution List</button></a>
-      <a><button class="btn btn-danger" data-toggle="modal"
-          (click)="CheckCancel()">Cancel/Reassign</button></a>
+      <a><button class="btn btn-danger" data-toggle="modal" (click)="CheckCancel()">Cancel/Reassign</button></a>
       <a>
         <button class="btn btn-primary" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;">Enter
           Comment</button>
@@ -23,25 +22,14 @@
     <div class="row" style="margin: 0%;height:100%;">
       <div class="col-4">
         <h3>Request Status</h3>
-        <h5 *ngIf="showODCBtn" style="color:red">*Choose CREATE ODC REPORT if frequency is OD/C only!</h5>
       </div>
       <div class="col-4">
-        <input placeholder="Search by Request Number/Requestor/Title/Status"
-          class="form-control" [(ngModel)]="filters.global" name="global" (input)="filterData()" [ngModelOptions]="{standalone: true}">
+        <input placeholder="Search by Request Number/Requestor/Title/Status" class="form-control"
+          [(ngModel)]="filters.global" name="global" (input)="filterData()" [ngModelOptions]="{standalone: true}">
       </div>
       <div class="col-4" style="padding-right:0%;">
         <div class="icons">
           <div class="press">
-              <button *ngIf="user_role=='Admin' && showODCBtn" class="btn btn-primary" data-toggle="modal" data-target="#onDemandScheduleConfigurableModal"
-                data-backdrop="static" data-keyboard="false" (click)="mimicODC(finalData)"
-                  class="btn btn-primary pointer" style="margin-right : 1vw"> 
-              Create OD/C Report
-              </button>
-              <!-- routerLink="../../semantic/sem-reports/home"
-              routerLinkActive="active-route" 
-              [routerLinkActiveOptions]="{ exact: true } -->
-              
-              <!-- (click)="getRequestIds([314,379,382])" (click)="getRequestIds(element.ddm_rmp_post_report_id)"  -->
             <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
               data-backdrop="static" data-keyboard="false">
               User Details
@@ -63,37 +51,38 @@
               <th>
                 <div style="margin-bottom: 40px;">Select</div>
               </th>
-              <th>                
+              <th>
                 <div class="alignLeft" (click)="sort('ddm_rmp_post_report_id')" style="width: 70px !important;">
                   <div>Request Number</div>
                   <div *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
                   <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                 </div>
                 <div style="width: 70px !important;">
-                  <input (input)="filterData()" placeholder="Search" class="form-control" 
-                   [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id" [ngModelOptions]="{standalone: true}">
-                </div>                
+                  <input (input)="filterData()" placeholder="Search" class="form-control"
+                    [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id"
+                    [ngModelOptions]="{standalone: true}">
+                </div>
               </th>
-              <th >
+              <th>
                 <div class="alignLeft" (click)="sort('created_on')" style="width: 70px !important;">
                   <div>Created On</div>
                   <div *ngIf="!reports['created_on']">&#8593;</div>
                   <div *ngIf="reports['created_on']">&#8595;</div>
                 </div>
                 <div style="width: 70px !important;">
-                  <input (input)="filterData()" placeholder="Search" class="form-control" 
-                  [(ngModel)]="filters.created_on" name="filters.created_on" [ngModelOptions]="{standalone: true}">
+                  <input (input)="filterData()" placeholder="Search" class="form-control"
+                    [(ngModel)]="filters.created_on" name="filters.created_on" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
-              <th >
+              <th>
                 <div class="alignLeft" (click)="sort('requestor')">
                   <div>Requestor</div>
                   <div *ngIf="!reports['requestor']">&#8593;</div>
                   <div *ngIf="reports['requestor']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" 
-                  class="form-control" [(ngModel)]="filters.requestor" name="filters.requestor" [ngModelOptions]="{standalone: true}">
+                  <input (input)="filterData()" placeholder="Search" class="form-control"
+                    [(ngModel)]="filters.requestor" name="filters.requestor" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -103,8 +92,9 @@
                   <div *ngIf="reports['on_behalf_of']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" 
-                  class="form-control" [(ngModel)]="filters.on_behalf_of" name="filters.on_behalf_of" [ngModelOptions]="{standalone: true}">
+                  <input (input)="filterData()" placeholder="Search" class="form-control"
+                    [(ngModel)]="filters.on_behalf_of" name="filters.on_behalf_of"
+                    [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -114,8 +104,7 @@
                   <div *ngIf="reports['title']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" 
-                    placeholder="Search" class="form-control" [(ngModel)]="filters.title" 
+                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.title"
                     name="filters.title" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
@@ -126,9 +115,8 @@
                   <div *ngIf="reports['frequency']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}"
-                   placeholder="Search" class="form-control" 
-                   [(ngModel)]="filters.frequency" name="filters.frequency">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
+                    class="form-control" [(ngModel)]="filters.frequency" name="filters.frequency">
                 </div>
               </th>
               <th>
@@ -138,16 +126,15 @@
                   <div *ngIf="reports['assigned_to']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}"
-                     placeholder="Search" class="form-control" 
-                     [(ngModel)]="filters.assigned_to" name="filters.assigned_to">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
+                    class="form-control" [(ngModel)]="filters.assigned_to" name="filters.assigned_to">
                 </div>
               </th>
-              <th style="min-width: 115px;">
-                <div id="status_dropdown" style="width: 115px !important;">
+              <th style="min-width: 135px;">
+                <div id="status_dropdown" style="width: 135px !important;">
                   <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
                     [settings]="StatusDropdownSettings" (onSelect)="filterData()" (onDeSelect)="filterData()"
-                    style="font-size: 12px;width:115px; ">
+                    style="font-size: 12px;width:135px; ">
                   </angular4-multiselect>
                 </div>
               </th>
@@ -158,9 +145,8 @@
                   <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                 </div>
                 <div style="width: 70px !important;">
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}"
-                  placeholder="Search" class="form-control" 
-                  [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
+                    class="form-control" [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
                 </div>
               </th>
               <th style="text-align:center">
@@ -177,7 +163,7 @@
 
           <tbody>
             <ng-container
-              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ;">
               <tr class="clickable">
                 <td style="padding:6px;width: 100%;">
               <tr class="row">
@@ -207,10 +193,9 @@
                 <div *ngIf="element.requestor == 'TBD'">
                   {{ element.requestor }}
                   <div *ngIf="user_role=='Admin'">
-                      <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModal"
-                        (click)="TBD(element)">
-                        Assign Owner
-                      </button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModal" (click)="TBD(element)">
+                      Assign Owner
+                    </button>
                   </div>
                 </div>
                 <div *ngIf="element.requestor != 'TBD'">
@@ -247,14 +232,14 @@
                 </div>
               </td>
               <td>
-                <div *ngIf="element.status != 'Recurring'" style="width: 115px !important;">
+                <div *ngIf="element.status != 'Recurring'" style="width: 135px !important;">
                   {{element.status}}
                 </div>
-                <div *ngIf="element.status == 'Recurring'" style="width: 115px !important;">
+                <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn btn-primary" style="margin-left: 15px;" (click)="openScheduler(element.ddm_rmp_post_report_id,1)">
-                      Edit
+                    <button class="btn btn-primary" (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
+                      Mark as Complete
                     </button>
                   </div>
                 </div>
@@ -266,11 +251,8 @@
               </td>
               <td>
                 <div style="width: 50px !important;">
-                  <button 
-                    class="btn btn-primary" 
-                    *ngIf="element.status == 'Completed'"
-                    [id]='"link"+element.ddm_rmp_post_report_id' 
-                    (click)="getLink(element.ddm_rmp_post_report_id)" 
+                  <button class="btn btn-primary" *ngIf="element.status == 'Completed'"
+                    [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)"
                     style="width: 50px;">
                     <a data-toggle="tooltip" title="Download" style="width:100%;color: white;">
                       <i id="ic" class="material-icons" style="width:100%;padding-right: 7px;color: white;">get_app</i>
@@ -296,8 +278,6 @@
                     [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)"
                     style="font-size: 12px;font-weight: 600;padding: 8px 6px;width: 103%;">
                     Create Report
-                    <!-- <span *ngIf="element.frequency == 'On Demand'">Create On Demand Report</span><span *ngIf="showODCBtn">Create On Demand Configurable Report</span>
-                    <span *ngIf="element.frequency != 'On Demand' && !showODCBtn">Create Report</span> -->
                   </button>
                 </div>
               </td>
@@ -349,8 +329,12 @@
           </tbody>
         </table>
       </div>
-      <div>
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      <div style="padding-top: 0.7%;">
+        <mat-paginator [length]="paginatorlength"
+               [pageSize]="paginatorpageSize"
+               [pageSizeOptions]="paginatorOptions"
+               (page)="onPaginationChange($event)">
+        </mat-paginator>
       </div>
     </div>
 
@@ -367,7 +351,7 @@
         <h4 class="modal-title">Comment: </h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
-      <div class="modal-body modal-comment-body">
+      <div class="modal-body">
         <div><i>
             <h6>*Max character limit is 255</h6>
           </i></div>
@@ -460,15 +444,15 @@
           <div class="form-group">
             <label for="document-name" class="col-form-label">Link Title:<span style="color: red">*</span></label>
             <div><i>*Maximum 25 characters allowed</i></div>
-            <input type="text" class="form-control title-box" [ngModelOptions]="{standalone: true}"
-            id="document-name"  maxlength="25" name="documentName" [(ngModel)]='documentName' ngDefaultControl required>
+            <input type="text" class="form-control title-box" [ngModelOptions]="{standalone: true}" id="document-name"
+              maxlength="25" name="documentName" [(ngModel)]='documentName' ngDefaultControl required>
 
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">URL:<span style="color: red">*</span></label>
-            <input type="url" placeholder="https://example.com" 
-            pattern="https://.*" size="30" class="form-control" [ngModelOptions]="{standalone: true}"
-              id="document-url" name="documentUrl" [(ngModel)]='documentUrl' ngDefaultControl required>
+            <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
+              [ngModelOptions]="{standalone: true}" id="document-url" name="documentUrl" [(ngModel)]='documentUrl'
+              ngDefaultControl required>
           </div>
         </form>
       </div>
@@ -677,8 +661,8 @@
 
 <!------------------------------------Help Modal------------------------------ -->
 
-<div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
@@ -690,7 +674,7 @@
           <div class="col-9">
             <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
               style="margin-right:3%">Save</button>
-            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            <button class="btn btn-danger save-text-ddm" (click)="resetHelpParams()" *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
@@ -700,13 +684,12 @@
           </div>
         </div>
         <div class="quillEditor">
-          <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' 
-                      [readOnly]='readOnlyContentHelper' 
-                      (onContentChanged)='textChanged($event)'></quill-editor>
+          <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'
+            (onContentChanged)='textChanged($event)'></quill-editor>
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" class="btn btn-secondary"(click)="edit_True()" 
+        <button type="button" id="modal_close_button" class="btn btn-secondary"(click)="resetHelpParams()" 
                 data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -723,7 +706,7 @@
       <div class="modal-header">
         <h3>Alert!</h3>
       </div>
-      <div class="modal-body">
+      <div class="modal-body error-modal-message">
         <h5 [(ngModel)]='errorModalMessageRequest' 
             [ngModelOptions]="{standalone: true}" ngDefaultControl>
         </h5>
@@ -752,13 +735,16 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-4" style="padding-left: 10px">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#CancelPermanently">Cancel Permanently</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#CancelPermanently">Cancel
+              Permanently</button>
           </div>
           <div class="col-4" style="padding-left: 30px;">
-            <button class="btn btn-primary" (click)="AssignTBD()" style="padding-right: 17px;padding-left: 17px;">Assign Requestor</button>
+            <button class="btn btn-primary" (click)="AssignTBD()" style="padding-right: 17px;padding-left: 17px;">Assign
+              Requestor</button>
           </div>
           <div class="col-4" style="padding-left: 40px;">
-            <button class="btn btn-primary" (click)="Assign_AssignTo()" style="padding-right: 20;padding-left: 18px;">Assign Acceptor</button>
+            <button class="btn btn-primary" (click)="Assign_AssignTo()"
+              style="padding-right: 20;padding-left: 18px;">Assign Acceptor</button>
           </div>
         </div>
       </div>
@@ -771,28 +757,29 @@
 
 <!-- ---------------------Cancel Permanently---------------- -->
 <div class="modal fade" id="CancelPermanently" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="row">
-            <div class="col-sm-2" style="padding-right:0;">
-              <img class="logo" src="/assets/OFT_Logo.jpg">
-            </div>
-            <div class="col-sm-10" style="margin:0;">
-              <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Cancel Request</b></h2>
-            </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <div class="col-sm-2" style="padding-right:0;">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+          </div>
+          <div class="col-sm-10" style="margin:0;">
+            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Cancel Request</b></h2>
           </div>
         </div>
-        <div class="modal-body">
+      </div>
+      <div class="modal-body">
         Are you sure you want to cancel the request permanently?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="Cancel()">Cancel</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancel_modal()">Close</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="closeCancel_modal()">Close</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="Cancel()">Yes</button>
       </div>
     </div>
   </div>
+</div>
 
 <!--TBD-->
 <div class="modal fade" id="tbdModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -829,35 +816,37 @@
 <!--Acceptor TBD---------------------------->
 
 <div class="modal fade" id="tbdModalAssigned" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="row">
-            <div class="col-sm-2" style="padding-right:0;">
-              <img class="logo" src="/assets/OFT_Logo.jpg">
-            </div>
-            <div class="col-sm-10" style="margin:0;">
-              <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Assign TBD Owner</b></h2>
-            </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <div class="col-sm-2" style="padding-right:0;">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+          </div>
+          <div class="col-sm-10" style="margin:0;">
+            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Assign TBD Owner</b></h2>
           </div>
         </div>
-        <div class="modal-body" style="min-height:300px;">
-          <div class="row" style="padding-left:10px;">
-            <h5>Select a user to assign the report to:</h5>
-          </div>
-          <div class="row" style="padding-left:10px;">
-            <angular4-multiselect [data]="tbddropdownListfinalAssigned" [(ngModel)]="tbdselectedItemsAssigned"
-              [settings]="tbddropdownSettingsAssigned" style="width:80%;">
-            </angular4-multiselect>
-          </div>
+      </div>
+      <div class="modal-body" style="min-height:300px;">
+        <div class="row" style="padding-left:10px;">
+          <h5>Select a user to assign the report to:</h5>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success" data-dismiss="modal" (click)="TBD_Assigned()">Save Changes</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTBD_Assigned()">Close</button>
+        <div class="row" style="padding-left:10px;">
+          <angular4-multiselect [data]="tbddropdownListfinalAssigned" [(ngModel)]="tbdselectedItemsAssigned"
+            [settings]="tbddropdownSettingsAssigned" style="width:80%;">
+          </angular4-multiselect>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="TBD_Assigned()">Save
+          Changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="closeTBD_Assigned()">Close</button>
       </div>
     </div>
   </div>
+</div>
 <!-- User Details -->
 
 <div class="modal fade" id="UserDetails" tabindex="-1" role="dialog" aria-hidden="true">
@@ -912,7 +901,7 @@
           </div>
           <div class="col-sm-7 dltext-div">
             <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control"
-              [(ngModel)]="model" [ngbTypeahead]="searchUserList" [ngModelOptions]="{standalone: true}"/>
+              [(ngModel)]="model" [ngbTypeahead]="searchUserList" [ngModelOptions]="{standalone: true}" />
             <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
           </div>
           <div class="col-sm-2"><button (click)="addContact()" class="button-add">Add</button></div>
@@ -942,7 +931,3 @@
     </div>
   </div>
 </div>
-
-<app-ongoing-schedule [scheduleReportData]="scheduleDataToBeSent" [reportId]="reportListIdToSchedule" (confirmOnGoing)="changeOngoingStatus($event)"></app-ongoing-schedule>
-<!-- <app-schedule ></app-schedule> -->
-<!-- [scheduleReportData]="scheduleDataToBeSent" (update)="tableSorting()" --> 

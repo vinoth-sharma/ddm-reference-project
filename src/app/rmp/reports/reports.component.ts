@@ -35,15 +35,10 @@ export class ReportsComponent implements OnInit {
   textChange = false;
   public searchText;
   public p;
-  // public dropdownSettings;
-  // public dropdownList;
-  // public selectedItems;
   public ddm_rmp_post_report_id;
   public ddm_rmp_status_date;
   public title;
   public report_name;
-  // public onItemSelect;
-  // public onSelectAll;
   public metricsOtherList = [];
   public weekDayDict = {
     Monday: 'M',
@@ -145,26 +140,26 @@ export class ReportsComponent implements OnInit {
   readOnlyContentHelper = true;
   config = {
     toolbar: [
-      ['bold','italic','underline','strike'],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
-      [{'list' : 'ordered'}, {'list' : 'bullet'}],
-      [{'script' : 'sub'},{'script' : 'super'}],
-      [{'size':['small',false, 'large','huge']}],
-      [{'header':[1,2,3,4,5,6,false]}],
-      [{'color': []},{'background':[]}],
-      [{'font': []}],
-      [{'align': []}],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
       ['clean'],
       ['image']
     ]
   };
-// paginator params
+  // paginator params
   paginatorlength = 100;
   paginatorpageSize = 10;
-  paginatorOptions :number[] = [5,10,25,100] 
+  paginatorOptions: number[] = [5, 10, 25, 100]
   paginatorLowerValue = 0;
   paginatorHigherValue = 10;
-// 
+  // 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service: AuthenticationService,
     private django: DjangoService,
@@ -174,11 +169,11 @@ export class ReportsComponent implements OnInit {
     public scheduleService: ScheduleService,
     public router: Router,
     private toasterService: NgToasterComponent
-    ) {
-      this.readUserRole()
-      this.getLookUptableData()
+  ) {
+    this.readUserRole()
+    this.getLookUptableData()
     this.editModes = false;
-   
+
   }
   changeReportName(event:any , reportObject){
   
@@ -216,7 +211,7 @@ export class ReportsComponent implements OnInit {
     
   }
 
-  readUserRole(){
+  readUserRole() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
@@ -224,7 +219,7 @@ export class ReportsComponent implements OnInit {
     })
   }
 
-  getLookUptableData(){
+  getLookUptableData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
         this.content = element
@@ -256,7 +251,7 @@ export class ReportsComponent implements OnInit {
     this.getReportList();
   }
 
-  getSemanticLayerID(){
+  getSemanticLayerID() {
     this.changeInFreq = true;
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
@@ -265,17 +260,19 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  getScheduledReports(){
-    this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res => {
-      this.reportDataSource = res['data'];
-      Utils.hideSpinner();
-    }, error => {
-      Utils.hideSpinner();
+  public getScheduledReports() {
+    if (this.semanticLayerId != undefined && this.semanticLayerId != null) {
+      this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res => {
+        this.reportDataSource = res['data'];
+        Utils.hideSpinner();
+      }, error => {
+        Utils.hideSpinner();
+      }
+      );
     }
-    );
   }
 
-  getReportList(){
+  getReportList() {
     this.django.get_report_list().subscribe(list => {
       console.log(list)
       if (list) {
@@ -290,7 +287,8 @@ export class ReportsComponent implements OnInit {
         });
         for (var i = 0; i < this.reportContainer.length; i++) {
           if (this.reportContainer[i]['frequency_data'] != null) {
-            this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday'))//&& element != 'Other'
+            this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday'))
+            //&& element != 'Other'
             if (this.reportContainer[i]['description'] != null) {
               this.reportContainer[i]['description'].forEach(ele => {
                 this.reportContainer[i]['frequency_data_filtered'].push(ele)
@@ -341,24 +339,8 @@ export class ReportsComponent implements OnInit {
         })
         this.reports = this.reportContainer;
         this.paginatorlength = this.reports.length
-      //   this.metricsOtherList = [];
-      //   this.reports.forEach(arr =>{     
-      //   let j = 0
-      //   let metricsOtherData = ''
-      //   arr.frequency_data.forEach((item,i) =>{
-            
-      //     if(item == "Other"){
-      //       if(!arr.description)return
-      //      metricsOtherData += arr.description[i] ? "Other : "+arr.description[i]+"," : ""
-      //       j++
-      //     }else{
-      //      metricsOtherData += item+","
-      //     }
-      //   })
-      //   this.metricsOtherList.push(metricsOtherData)
-      // })
-      //   console.log("metrics list",this.metricsOtherList)
         this.reportsOriginal = this.reportContainer.slice();
+        Utils.hideSpinner();
       }
     }, err => {
     })
@@ -428,7 +410,7 @@ export class ReportsComponent implements OnInit {
 
   textChanged(event) {
     this.textChange = true;
-    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
@@ -522,7 +504,7 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-  hideDemandScheduleConfigurableModal(){
+  hideDemandScheduleConfigurableModal() {
     $('#onDemandScheduleConfigurableModal').modal('show');
   }
 
@@ -557,16 +539,6 @@ export class ReportsComponent implements OnInit {
 
     // SCHEDULE REPORT ID WAY from DDM report
     let scheduleReportId;
-
-    // OLD method
-    // if (data.scheduleId[0].length === 1) {
-    //   scheduleReportId = data.scheduleId[0];
-    // }
-    // else if (data.scheduleId[0].length > 1) {
-    //   scheduleReportId = data.scheduleId[0][0];
-    // }
-
-    // SIMILAR method
     if (data.scheduleId) {
       scheduleReportId = data.scheduleId;
     }
@@ -595,12 +567,12 @@ export class ReportsComponent implements OnInit {
         if (data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable')) {
           Utils.showSpinner();
           this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
-            if(res){
-            this.toasterService.success("Your " + data['type'] + " schedule process triggered successfully");
-            this.toasterService.success('Your report will be delivered shortly');
-            Utils.hideSpinner();
-            Utils.closeModals();
-          }
+            if (res) {
+              this.toasterService.success("Your " + data['type'] + " schedule process triggered successfully");
+              this.toasterService.success('Your report will be delivered shortly');
+              Utils.hideSpinner();
+              Utils.closeModals();
+            }
           }, error => {
             Utils.hideSpinner();
             this.toasterService.error('Report schedule failed');
@@ -762,7 +734,7 @@ export class ReportsComponent implements OnInit {
 
   }
 
-  showChangeFrequencyModal(){
+  showChangeFrequencyModal() {
     $('#change-Frequency').modal('show');
 
   }
@@ -1099,16 +1071,16 @@ export class ReportsComponent implements OnInit {
         this.fan_desc = []
       }
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      
+
     }, err => {
       this.spinner.hide()
     })
   }
-  
- 
-  onPaginationChange(event){
-  this.paginatorLowerValue = event.pageIndex * event.pageSize;
-  this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
+
+
+  onPaginationChange(event) {
+    this.paginatorLowerValue = event.pageIndex * event.pageSize;
+    this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   }
 
 }

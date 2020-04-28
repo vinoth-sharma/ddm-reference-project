@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LogEntryComponent } from './log-entry.component';
+import { NotesWrapperComponent } from './notes-wrapper.component';
 
-describe('LogEntryComponent', () => {
-  let component: LogEntryComponent;
-  let fixture: ComponentFixture<LogEntryComponent>;
+describe('NotesWrapperComponent', () => {
+  let component: NotesWrapperComponent;
+  let fixture: ComponentFixture<NotesWrapperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LogEntryComponent ]
+      declarations: [ NotesWrapperComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LogEntryComponent);
+    fixture = TestBed.createComponent(NotesWrapperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

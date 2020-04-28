@@ -828,7 +828,6 @@ export class DealerAllocationComponent implements OnInit {
       $('#print').html(), 15, 15,
       { 'width': 170, 'elementHandlers': specialElementHandlers },
       function () { doc.save('sample-file.pdf'); }
-
     )
   }
 

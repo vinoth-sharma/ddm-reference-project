@@ -14,7 +14,6 @@ import { DatePipe } from '@angular/common';
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
 import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { MetricsComponent } from './metrics.component';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { OrderByPipe } from '../../custom-directives/filters/order-by.pipe';
 import { FilterTablePipe } from '../filter-table.pipe';
 import { QuillModule } from "ngx-quill";
@@ -401,7 +400,7 @@ describe('MetricsComponent', () => {
     TestBed.configureTestingModule({
       imports:[FormsModule, MatFormFieldModule,
                MatInputModule, NgbDatepickerModule, NgbTimepickerModule,
-               AngularMultiSelectModule, NgxPaginationModule, QuillModule.forRoot(),
+               AngularMultiSelectModule, QuillModule.forRoot(),
                MatProgressSpinnerModule, HttpClientTestingModule, OverlayModule],
       declarations: [ MetricsComponent, OrderByPipe, FilterTablePipe, NgToasterComponent],
       providers:[DatePipe, MatSnackBar]
@@ -429,17 +428,6 @@ describe('MetricsComponent', () => {
       expect(res).toEqual(currentlook);
       expect(component.content).toEqual(res);
     });
-  }));
-
-  it('should execute notify method', fakeAsync(()=> {
-    component.enable_edits = false;
-    component.editModes = false;
-    fixture.detectChanges();
-    component.notify();
-    tick();
-    fixture.detectChanges();
-    expect(component.enable_edits).toBe(true);
-    expect(component.editModes).toBe(true);
   }));
 
   it('should execute ngOnInit method', fakeAsync(async() => {
@@ -516,13 +504,13 @@ describe('MetricsComponent', () => {
       expect(component.textChanged).toHaveBeenCalled();
   }));
 
-  it('should execute edit_True method', fakeAsync(() => {
-    spyOn(component, 'edit_True').and.callThrough(); //callThrough()
+  it('should execute resetHelp method', fakeAsync(() => {
+    spyOn(component, 'resetHelp').and.callThrough(); //callThrough()
     component.editModes = true;
     component.readOnlyContentHelper = false;
     component.original_contents = "<p>TESTING</p><p>Hari Gautam 2- PT Lead</p>";
-    component.edit_True();
-    expect(component.edit_True).toHaveBeenCalled();
+    component.resetHelp();
+    expect(component.resetHelp).toHaveBeenCalled();
     tick(500);
     fixture.detectChanges();
     expect(component.editModes).toBe(false);

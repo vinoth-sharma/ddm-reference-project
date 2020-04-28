@@ -304,24 +304,8 @@ export class ReportsComponent implements OnInit {
         })
         this.reports = this.reportContainer;
         this.paginatorlength = this.reports.length
-      //   this.metricsOtherList = [];
-      //   this.reports.forEach(arr =>{     
-      //   let j = 0
-      //   let metricsOtherData = ''
-      //   arr.frequency_data.forEach((item,i) =>{
-            
-      //     if(item == "Other"){
-      //       if(!arr.description)return
-      //      metricsOtherData += arr.description[i] ? "Other : "+arr.description[i]+"," : ""
-      //       j++
-      //     }else{
-      //      metricsOtherData += item+","
-      //     }
-      //   })
-      //   this.metricsOtherList.push(metricsOtherData)
-      // })
-      //   console.log("metrics list",this.metricsOtherList)
         this.reportsOriginal = this.reportContainer.slice();
+        Utils.hideSpinner();
       }
     }, err => {
     })

@@ -27,7 +27,7 @@ import Utils from '../../../utils';
 import { MaterialModule } from "../../material.module";
 import { MatNativeDateModule } from '@angular/material/core';
 
-fdescribe('RmpLandingPageComponent', () => {
+describe('RmpLandingPageComponent', () => {
   let component: RmpLandingPageComponent;
   let fixture: ComponentFixture<RmpLandingPageComponent>;
   let injector: TestBed;

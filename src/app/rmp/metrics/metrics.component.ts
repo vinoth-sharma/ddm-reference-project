@@ -331,42 +331,7 @@ export class MetricsComponent implements OnInit {
   }
 
 
-  // get list of metrics data based on selected parameters
-  public getMetricsData() {
-    if (this.selectedItems.length > 0) {
-    let arrayOfIds = [];
-      this.selectedItems.forEach(item => arrayOfIds.push(item.users_table_id));
-      this.obj = { 
-                    'start_date': this.metrics_start_date, 
-                    'end_date': this.metrics_end_date, 
-                    'users_table_id': arrayOfIds.join(), 
-                    'role_id':this.selectedItems[0].role_id 
-                 };   
-    } else {
-      this.obj = { 
-                    'start_date': this.metrics_start_date, 
-                    'end_date': this.metrics_end_date, 
-                    'users_table_id': '', 'role_id':'' 
-                 }; 
-    }
-
-  //   Utils.showSpinner();
-  //   this.django.metrics_aggregate(this.obj).subscribe(list => {
-  //     this.metrics = list;
-  //     this.totalReports = this.metrics['data']['report_count'];
-  //     //this.averageByDay = this.metrics['avg_by_days']
-  //     this.reportByDay = this.metrics['data']['report_by_weekday'];
-  //     this.reportByMonth = this.metrics['data']['report_by_month'];
-  //     this.reportByOrg = this.metrics['data']['report_by_organization'];
-  //     this.reportByQuarter = this.metrics['data']['report_by_quarter'];
-  //     this.cancelledReports = this.metrics['data']['cancelled_reports'];
-  //     Utils.hideSpinner();
-  //   }, err => {
-  //     Utils.hideSpinner();
-  //     this.toastr.error("Server Error");
-  //   })
-  // }
-
+  
   public columnSearch(event, obj) {
     this.searchObj = {
       [obj]: event.target.value

@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+// migration  was done by : Bharath S
+import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
-import { Router } from '@angular/router';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service"; 
@@ -72,7 +72,7 @@ export class DdmAdminComponent implements OnInit {
 
   readOnlyContentHelper = true;
 
-  constructor(private django: DjangoService, public auth_service: AuthenticationService, private toastr: NgToasterComponent, private router: Router, private spinner: NgLoaderService, public dataProvider: DataProviderService) {
+  constructor(private django: DjangoService, public auth_service: AuthenticationService, private toastr: NgToasterComponent, private spinner: NgLoaderService, public dataProvider: DataProviderService) {
     this.editMode = false;
     this.getCurrentFiles();
     this.getCurrentTableLookupData();
@@ -104,7 +104,6 @@ export class DdmAdminComponent implements OnInit {
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 9;
     })
-    // //console.log(temp);
     if (temps) {
       this.original_content = temps.description;
     }
@@ -230,6 +229,11 @@ export class DdmAdminComponent implements OnInit {
   }
 
   addDocument() {
+    this.document_details = {
+      "title": "",
+      "url": "",
+      "admin_flag": false
+    }
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];

@@ -1,11 +1,11 @@
+// Author : Bharath
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-
 import { ReportsComponent } from './reports.component';
 import { FormsModule } from '@angular/forms';
 import { OrderByPipe } from 'angular-pipes';
 import { FilterTablePipe } from '../filter-table.pipe';
 import { MaterialModule } from 'src/app/material.module';
-import { QuillModule, QuillEditorComponent } from 'ngx-quill';
+import { QuillModule } from 'ngx-quill';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatePipe } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -323,8 +323,6 @@ it("should change frequency and call get_report_description()",()=>{
  let frequency = "daily";
  let serverData = {frequency_data:[1,2,3]}
  let djangoService = TestBed.inject(DjangoService);
- let modal = jasmine.createSpyObj($.modal,["show","hide"])
-  let changeFreqSpy = spyOn(component,"FrequencySelection")
   spyOn(djangoService,"get_report_description").and.returnValue(of(serverData));
   spyOn(component,"showChangeFrequencyModal")
   component.changeFreq(requestId,title,date,frequency);

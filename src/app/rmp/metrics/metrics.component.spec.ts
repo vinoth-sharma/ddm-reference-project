@@ -14,7 +14,6 @@ import { DatePipe } from '@angular/common';
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
 import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { MetricsComponent } from './metrics.component';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { OrderByPipe } from '../../custom-directives/filters/order-by.pipe';
 import { FilterTablePipe } from '../filter-table.pipe';
 import { QuillModule } from "ngx-quill";
@@ -401,7 +400,7 @@ describe('MetricsComponent', () => {
     TestBed.configureTestingModule({
       imports:[FormsModule, MatFormFieldModule,
                MatInputModule, NgbDatepickerModule, NgbTimepickerModule,
-               AngularMultiSelectModule, NgxPaginationModule, QuillModule.forRoot(),
+               AngularMultiSelectModule, QuillModule.forRoot(),
                MatProgressSpinnerModule, HttpClientTestingModule, OverlayModule],
       declarations: [ MetricsComponent, OrderByPipe, FilterTablePipe, NgToasterComponent],
       providers:[DatePipe, MatSnackBar]

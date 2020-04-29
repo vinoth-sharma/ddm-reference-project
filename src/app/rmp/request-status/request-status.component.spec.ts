@@ -11,7 +11,6 @@ import { RequestStatusComponent } from './request-status.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
-import { NgxPaginationModule } from 'ngx-pagination';
 import { OrderByPipe } from '../../custom-directives/filters/order-by.pipe';
 import { FilterTablePipe } from '../filter-table.pipe';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -712,8 +711,7 @@ describe('RequestStatusComponent', () => {
     TestBed.configureTestingModule({
       imports:[ FormsModule, AngularMultiSelectModule, 
                 RouterTestingModule.withRoutes([]), 
-                QuillModule.forRoot(),
-                NgxPaginationModule, MatProgressSpinnerModule, 
+                QuillModule.forRoot(), MatProgressSpinnerModule, 
                 NgbTypeaheadModule, MatChipsModule, MatAutocompleteModule,
                 MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatIconModule,
                 NgbDatepickerModule, NgbTimepickerModule, HttpClientTestingModule,

@@ -114,7 +114,6 @@ export class MetricsComponent implements OnInit {
    public paginatorOptions :number[] = [5,10,25,100] 
    public paginatorLowerValue = 0;
    public paginatorHigherValue = 10;
- // 
   
   constructor(public django: DjangoService, 
               public auth_service: AuthenticationService, 
@@ -144,13 +143,7 @@ export class MetricsComponent implements OnInit {
     ]
   }
 
-  public notify() {
-    this.enable_edits = !this.enable_edits;
-    this.parentsSubject.next(this.enable_edits);
-    this.editModes = true;
-    $('#edit_button').hide();
-  }
-
+  // initialization of application
   public ngOnInit() {
     this.generated_report_service.changeButtonStatus(false);
 
@@ -181,7 +174,6 @@ export class MetricsComponent implements OnInit {
       maxHeight: '200'
     };
 
-    // Utils.showSpinner();
     this.django.get_report_matrix().subscribe(list => {
       if (list) {
         this.reports = list['data'];
@@ -205,7 +197,6 @@ export class MetricsComponent implements OnInit {
           }
         }
       }
-      // Utils.hideSpinner();
     })
   }
 
@@ -224,6 +215,7 @@ export class MetricsComponent implements OnInit {
     else this.enableUpdateData = true;
   }
 
+  // saving edited content of help
   public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
@@ -255,18 +247,21 @@ export class MetricsComponent implements OnInit {
     }
   }
 
-  public edit_True() {
+  // reset help parameters
+  public resetHelp() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
 
+  // enable help edit parametrs
   public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_contents;
   }
 
+  // set the order type and parametrs
   public sort(typeVal) {
     this.param = typeVal.toLowerCase().replace(/\s/g, "_");
     this.param = typeVal;
@@ -274,6 +269,7 @@ export class MetricsComponent implements OnInit {
     this.orderType = this.reports[typeVal];
   }
 
+  // convert json to excel sheet
   public xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
@@ -307,6 +303,7 @@ export class MetricsComponent implements OnInit {
     });
   }
 
+  // get list of metrics data based on selected parameters
   public getMetricsData() {
     if (this.selectedItems.length > 0) {
     let arrayOfIds = [];
@@ -341,21 +338,7 @@ export class MetricsComponent implements OnInit {
     })
   }
 
-  /*--------------------Global Search---------------------*/
-
-  // public searchGlobalObj = {
-  //   'ddm_rmp_post_report_id': this.searchText, 'created_on': this.searchText,
-  //   'ddm_rmp_status_date': this.searchText, 'status': this.searchText, 'assigned_to': this.searchText,
-  //   'requestor': this.searchText, 'organization': this.searchText, 'recipients_count': this.searchText,
-  //   'freq': this.searchText, 'report_count': this.searchText, 'description': this.searchText
-  // }
-  
-  public columnSearch(event, obj) {
-    this.searchObj = {
-      [obj]: event.target.value
-    }
-  }
-
+ // updating pagination page number
   public onPaginationChange(event){
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;

@@ -192,6 +192,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public file_path: any;
   public ongoingStatusResult: any;
   public checkbox_length: number;
+  public assign_res;
 
   // paginator params
   public paginatorlength = 100;
@@ -199,14 +200,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public paginatorOptions :number[] = [5,10,25,100] 
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
-// 
-
-  // notify() {
-  //   this.enable_edits = !this.enable_edits
-  //   this.parentsSubject.next(this.enable_edits)
-  //   this.editModes = true
-  //   $('#edit_button').hide()
-  // }
 
   constructor(private generated_id_service: GeneratedReportService, 
               private router: Router, 
@@ -357,16 +350,19 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     };
   }
 
+  // detect paramater changes in component
   public ngOnChanges() {
     let s = $(".report_id_checkboxes:checkbox:checked").length;
   }
 
+  // detect changes in quill editor
   public textChanged(event) {
     this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
+  // saving edited content in help pop-up
   public content_edits() {
     if(!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
@@ -394,18 +390,21 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       }
   }
 
-  public edit_True() {
+  // reset the help model params 
+  public resetHelpParams() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
 
+  // enable edit params of help model
   public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_contents;
   }
 
+  // supdated the order type
   public sort(typeVal) {
     this.param = typeVal.toLowerCase().replace(/\s/g, "_");
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
@@ -417,6 +416,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     }
   }
 
+  // get the details of checked report
   public Report_request(element, event) {
     this.cancel = element.ddm_rmp_post_report_id;
     this.showODCBtn = element['status'] === 'Active'? true : false;
@@ -428,16 +428,15 @@ export class RequestStatusComponent implements OnInit, OnChanges{
           localStorage.setItem('report_id', element.ddm_rmp_post_report_id);
       } else ele.isChecked = false;
     });
-    // mimicODC
   }
   
-  public open(event, element) {
-    this.id_get = element.ddm_rmp_post_report_id;
-    this.user_id = element.user_id;
-    this.reportDataService.setReportID(this.id_get);
-    this.reportDataService.setUserId(this.user_id);
-    this.generated_id_service.changeUpdate(true)
-  }
+  // public open(event, element) {
+  //   this.id_get = element.ddm_rmp_post_report_id;
+  //   this.user_id = element.user_id;
+  //   this.reportDataService.setReportID(this.id_get);
+  //   this.reportDataService.setUserId(this.user_id);
+  //   this.generated_id_service.changeUpdate(true)
+  // }
 
   public DealerAllocation(event) {
   }
@@ -445,6 +444,8 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public OrderToSale(event) {
 
   }
+
+  // check status of selected report and take action on based on status
   public CheckCancel() {
     this.finalData = [];
     this.reports.find(e => {
@@ -479,10 +480,10 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       });
   }
 
-  
+  // changing status of report to cancelled
   public Cancel() {
     Utils.showSpinner();
-    this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
+    this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
       this.cancel_report.cancel_reports.push({ 
               'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
               'status': "Cancelled", 
@@ -500,6 +501,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       })
     })
   }
+
   public closeCancel() {
     this.finalData = [];
   }
@@ -508,7 +510,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     $('#CancelRequest').modal('hide');
   }
 
-  public assign_res;
+ 
   public AssignTBD() {
     Utils.showSpinner();
       this.assignTBD['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];

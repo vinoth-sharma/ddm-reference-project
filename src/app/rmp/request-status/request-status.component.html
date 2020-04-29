@@ -694,7 +694,7 @@
           <div class="col-9">
             <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
               style="margin-right:3%">Save</button>
-            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            <button class="btn btn-danger save-text-ddm" (click)="resetHelpParams()" *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
@@ -710,7 +710,7 @@
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" class="btn btn-secondary"(click)="edit_True()" 
+        <button type="button" id="modal_close_button" class="btn btn-secondary"(click)="resetHelpParams()" 
                 data-dismiss="modal">Close</button>
       </div>
     </div>

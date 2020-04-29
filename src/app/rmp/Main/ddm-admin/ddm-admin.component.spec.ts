@@ -25,7 +25,7 @@ describe('DdmAdminComponent', () => {
       providers: [{ provide: DataProviderService, useClass: DataProviderMockMockService },
       { provide: AuthenticationService, useClass: AuthenticationMockMockService }
       ],
-      imports: [FormsModule, QuillModule.forRoot({}), MaterialModule, HttpClientTestingModule,  RouterTestingModule,BrowserAnimationsModule],
+      imports: [FormsModule, QuillModule.forRoot({}), MaterialModule, HttpClientTestingModule, RouterTestingModule, BrowserAnimationsModule],
     })
       .compileComponents();
   }));
@@ -34,8 +34,6 @@ describe('DdmAdminComponent', () => {
     fixture = TestBed.createComponent(DdmAdminComponent);
     component = fixture.componentInstance;
     dataService = TestBed.inject(DataProviderService)
-
-    // fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -73,15 +71,6 @@ describe('DdmAdminComponent', () => {
     component.getLink(1);
     expect(spy).toHaveBeenCalledWith(data.data.url, "_blank")
   }))
-
-  // it("should change text and update component properties",()=>{
-  //   let dat = {text:"abc g"}
-  //   component.textChange(dat)
-  // })
-
-
-
-
 
   it("should set properties of the comp 1", () => {
     component.original_content = "original_content";
@@ -199,12 +188,12 @@ describe('DdmAdminComponent', () => {
   }))
 
   it("should delete data when called with id", fakeAsync(() => {
-    let namingData = [{ddm_rmp_desc_text_admin_documents_id:1,url:"url"}]
+    let namingData = [{ ddm_rmp_desc_text_admin_documents_id: 1, url: "url" }]
     component.content = true
     component.naming = namingData;
     let djangoService = TestBed.get(DjangoService);
     let toastr = TestBed.get(NgToasterComponent)
-    spyOn(component,'ngOnInit');
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
     let tosterSpy = spyOn(toastr, "success")
     let djangoSpy = spyOn(djangoService, "ddm_rmp_admin_documents_delete").and.returnValue(of({}))
@@ -216,12 +205,12 @@ describe('DdmAdminComponent', () => {
   }))
 
   it("should delete file when called with id", fakeAsync(() => {
-    let namingData = {docs:[{uploaded_file_name:1,file_id:1}]}
+    let namingData = { docs: [{ uploaded_file_name: 1, file_id: 1 }] }
     component.content = true
     component.isAdmin = namingData;
     let djangoService = TestBed.get(DjangoService);
     let toastr = TestBed.get(NgToasterComponent);
-    spyOn(component,'ngOnInit');
+    spyOn(component, 'ngOnInit');
     let tosterSpy = spyOn(toastr, "success")
     let djangoSpy = spyOn(djangoService, "delete_upload_doc").and.returnValue(of({}));
     fixture.detectChanges();
@@ -231,21 +220,21 @@ describe('DdmAdminComponent', () => {
     expect(djangoSpy).toHaveBeenCalled();
   }))
 
-  it("should upload editted document to the server",fakeAsync(()=>{
+  it("should upload editted document to the server", fakeAsync(() => {
     component.content = true;
-    spyOn(component,'ngOnInit');
+    spyOn(component, 'ngOnInit');
     let spinner = TestBed.inject(NgLoaderService)
     let element = fixture.debugElement.nativeElement;
     let djangoService = TestBed.inject(DjangoService);
     let toastrService = TestBed.inject(NgToasterComponent)
     let lookUpValuesData = { data: { desc_text_admin_documents: [{ key: "lookUpData" }] } }
-    spyOn(djangoService,"ddm_rmp_admin_documents_put").and.returnValue(of({}))
-    spyOn(djangoService,"getLookupValues").and.returnValue(of(lookUpValuesData));
-    let toastrSpy = spyOn(toastrService,"success")
-    let spinnerShowSpy = spyOn(spinner,"show");
-    let spinnerHideSpy = spyOn(spinner,"hide");
+    spyOn(djangoService, "ddm_rmp_admin_documents_put").and.returnValue(of({}))
+    spyOn(djangoService, "getLookupValues").and.returnValue(of(lookUpValuesData));
+    let toastrSpy = spyOn(toastrService, "success")
+    let spinnerShowSpy = spyOn(spinner, "show");
+    let spinnerHideSpy = spyOn(spinner, "hide");
 
-    component.document_details = {title:"",url:"",admin_flag:true}
+    component.document_details = { title: "", url: "", admin_flag: true }
     fixture.detectChanges();
     element.querySelector("#document-name").value = "doc-name";
     element.querySelector("#document-url").value = "doc-url";
@@ -259,27 +248,25 @@ describe('DdmAdminComponent', () => {
     expect(component.naming).toEqual(lookUpValuesData.data.desc_text_admin_documents);
     expect(toastrSpy).toHaveBeenCalled();
     expect(component.changeDoc).toBeFalsy();
-    expect( element.querySelector("#document-name").value).toEqual("");
+    expect(element.querySelector("#document-name").value).toEqual("");
     expect(element.querySelector("#document-url").value).toEqual("");
 
   }))
 
 
-    it("should set the input fields and set a few properties",()=>{
-      let element = fixture.debugElement.nativeElement;
-      component.content = true;
-      spyOn(component,"ngOnInit");
-      
-      fixture.detectChanges();
-      component.editDoc(1,"val","url");
-     
-      expect(component.editid).toEqual(1);
-      expect(component.changeDoc).toBeTruthy();
-      expect(element.querySelector("#document-name").value).toEqual("val");
-      expect(element.querySelector("#document-url").value).toEqual("url")
+  it("should set the input fields and set a few properties", () => {
+    let element = fixture.debugElement.nativeElement;
+    component.content = true;
+    spyOn(component, "ngOnInit");
 
-      
-    })
+    fixture.detectChanges();
+    component.editDoc(1, "val", "url");
+
+    expect(component.editid).toEqual(1);
+    expect(component.changeDoc).toBeTruthy();
+    expect(element.querySelector("#document-name").value).toEqual("val");
+    expect(element.querySelector("#document-url").value).toEqual("url")
+  })
 
 });
 

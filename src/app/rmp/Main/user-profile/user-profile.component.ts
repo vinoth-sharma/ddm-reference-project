@@ -11,8 +11,6 @@ import { FormControl } from '@angular/forms';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 
-
-
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -21,154 +19,153 @@ import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.s
 
 export class UserProfileComponent implements OnInit {
 
-  full_contact: any;
-  text_notification: any;
-  countryCode_notification: any;
-  notiNumber: boolean;
-  text_number: any;
-  code: any;
-  te_number: any;
-  textChange = false;
+  public full_contact: any;
+  public text_notification: any;
+  public countryCode_notification: any;
+  public notiNumber: boolean;
+  public text_number: any;
+  public code: any;
+  public te_number: any;
+  public textChange = false;
 
-  editorData(arg0: string, editorData: any): any {
+  public editorData(arg0: string, editorData: any): any {
     throw new Error("Method not implemented.");
   }
 
-  selectedValue = {
+  public selectedValue = {
     'US': {},
     'Canada': {},
     'Export': {}
   };
 
-  market_selection: object;
-  user_settings: object;
+  public market_selection: object;
+  public user_settings: object;
   public validators = [this.startsWithAt]
   public errorMessages = {
     'startsWithAt': "Your items should be strictly Alphanumericals and between 3-10 characters"
   }
-  market: Array<object>
-  division: Array<object>
-  region: Array<object>
-  zone: Array<object>
-  area: Array<object>
-  gmma: Array<object>
-  lma: Array<object>
-  changed_settings: boolean;
+  public market: Array<object>
+  public division: Array<object>
+  public region: Array<object>
+  public zone: Array<object>
+  public area: Array<object>
+  public gmma: Array<object>
+  public lma: Array<object>
+  public changed_settings: boolean;
 
-  dropdownList = [];
-  selectedItems = [];
-  dropdownSettings = {};
+  public dropdownList = [];
+  public selectedItems = [];
+  public dropdownSettings = {};
 
-  regiondropdownList = [];
-  regionselectedItems = [];
-  regiondropdownSettings = {};
-  marketindex = []
-  regiondropdownListfinal = []
+  public regiondropdownList = [];
+  public regionselectedItems = [];
+  public regiondropdownSettings = {};
+  public marketindex = []
+  public regiondropdownListfinal = []
 
-  zonedropdownList = [];
-  zoneselectedItems = [];
-  zonedropdownSettings = {};
-  regionindex = []
-  zonedropdownListfinal = []
+  public zonedropdownList = [];
+  public zoneselectedItems = [];
+  public zonedropdownSettings = {};
+  public regionindex = []
+  public zonedropdownListfinal = []
 
-  areadropdownList = [];
-  areaselectedItems = [];
-  areadropdownSettings = {};
-  zoneindex = []
-  areadropdownListfinal = []
+  public areadropdownList = [];
+  public areaselectedItems = [];
+  public areadropdownSettings = {};
+  public zoneindex = []
+  public areadropdownListfinal = []
 
-  gmmadropdownList = [];
-  gmmaselectedItems = [];
-  gmmadropdownSettings = {};
-  gmmadropdownListfinal = []
+  public gmmadropdownList = [];
+  public gmmaselectedItems = [];
+  public gmmadropdownSettings = {};
+  public gmmadropdownListfinal = []
 
-  lmadropdownList = [];
-  lmaselectedItems = [];
-  lmadropdownSettings = {};
-  lmadropdownListfinal = []
+  public lmadropdownList = [];
+  public lmaselectedItems = [];
+  public lmadropdownSettings = {};
+  public lmadropdownListfinal = []
 
-  bacselectedItems = [];
+  public bacselectedItems = [];
 
-  fanselectedItems = [];
-  divisiondropdownList = [];
-  divisionselectedItems = [];
-  divisiondropdownSettings = {};
-  divisiondropdownListfinal = []
+  public fanselectedItems = [];
+  public divisiondropdownList = [];
+  public divisionselectedItems = [];
+  public divisiondropdownSettings = {};
+  public divisiondropdownListfinal = []
 
-  dealernamedropdownList = [];
-  dealernameselectedItems = [];
-  dealernamedropdownSettings = {};
-  dealernamedropdownListfinal = []
+  public dealernamedropdownList = [];
+  public dealernameselectedItems = [];
+  public dealernamedropdownSettings = {};
+  public dealernamedropdownListfinal = []
 
-  citydropdownList = [];
-  cityselectedItems = [];
-  citydropdownSettings = {};
-  citydropdownListfinal = []
+  public citydropdownList = [];
+  public cityselectedItems = [];
+  public citydropdownSettings = {};
+  public citydropdownListfinal = []
 
-  statedropdownList = [];
-  stateselectedItems = [];
-  statedropdownSettings = {};
-  statedropdownListfinal = []
+  public statedropdownList = [];
+  public stateselectedItems = [];
+  public statedropdownSettings = {};
+  public statedropdownListfinal = []
 
-  zipdropdownList = [];
-  zipselectedItems = [];
-  zipdropdownSettings = {};
-  zipdropdownListfinal = []
+  public zipdropdownList = [];
+  public zipselectedItems = [];
+  public zipdropdownSettings = {};
+  public zipdropdownListfinal = []
 
-  countrydropdownList = [];
-  countryselectedItems = [];
-  countrydropdownSettings = {};
-  countrydropdownListfinal = [];
+  public countrydropdownList = [];
+  public countryselectedItems = [];
+  public countrydropdownSettings = {};
+  public countrydropdownListfinal = [];
 
-  jsonNotification = {
+  public jsonNotification = {
     "alternate_number": "",
     "carrier": ""
   }
 
+  public message: string;
+  public check: boolean;
+  public check_saved_status: boolean;
 
-  message: string;
-  check: boolean;
-  check_saved_status: boolean;
-
-  market_data: any;
-  cellPhone: any;
-  date: any;
-  lookup;
-  marketselections;
-  contact_flag = true;
-  content;
-  enable_edits = false
-  editModes = false;
-  original_content;
-  naming: string = "Loading";
-  user_info: any;
-  user_name: string;
-  user_designation: any;
-  user_department: any;
-  user_email: any;
-  user_contact: any;
-  carrier_selected = "";
-  user_office_address: any;
-  user_role: string;
-  readOnlyContentHelper = true;
-  enableUpdateData = false;
-  config = {
+  public market_data: any;
+  public cellPhone: any;
+  public date: any;
+  public lookup;
+  public marketselections;
+  public contact_flag = true;
+  public content;
+  public enable_edits = false
+  public editModes = false;
+  public original_content;
+  public naming: string = "Loading";
+  public user_info: any;
+  public user_name: string;
+  public user_designation: any;
+  public user_department: any;
+  public user_email: any;
+  public user_contact: any;
+  public carrier_selected = "";
+  public user_office_address: any;
+  public user_role: string;
+  public readOnlyContentHelper = true;
+  public enableUpdateData = false;
+  public config = {
     toolbar: [
-      ['bold','italic','underline','strike'],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
-      [{'list' : 'ordered'}, {'list' : 'bullet'}],
-      [{'script' : 'sub'},{'script' : 'super'}],
-      [{'size':['small',false, 'large','huge']}],
-      [{'header':[1,2,3,4,5,6,false]}],
-      [{'color': []},{'background':[]}],
-      [{'font': []}],
-      [{'align': []}],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
       ['clean'],
       ['image']
     ]
   };
 
-  carriers_pair = [
+  public carriers_pair = [
     { "carrierName": "Alltel", "carrierValue": "alltel" },
     { "carrierName": "AT&T", "carrierValue": "at&t" },
     { "carrierName": "Boost Mobile", "carrierValue": "boost_mobile" },
@@ -189,9 +186,8 @@ export class UserProfileComponent implements OnInit {
   ]
   keys: () => IterableIterator<number>;
 
-
-  carriers = [];
-  user_disc_ack: any;
+  public carriers = [];
+  public user_disc_ack: any;
 
   constructor(private django: DjangoService,
     public DatePipe: DatePipe, private auth_service: AuthenticationService, private spinner: NgLoaderService, private dataProvider: DataProviderService,
@@ -216,13 +212,13 @@ export class UserProfileComponent implements OnInit {
   }
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  description_text = {
+  public description_text = {
     "ddm_rmp_desc_text_id": 6,
     "module_name": "Help_UserProfile",
     "description": ""
   }
 
-  notify() {
+  public notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
@@ -248,9 +244,9 @@ export class UserProfileComponent implements OnInit {
       this.check_saved_status = saved_status
     })
 
-   this.getUserInfo();
+    this.getUserInfo();
 
-    if(this.content? this.content['data'] : ''){
+    if (this.content ? this.content['data'] : '') {
       let ref = this.content['data']['desc_text']
       let temp = ref.find(function (element) {
         return element["ddm_rmp_desc_text_id"] == 6;
@@ -266,7 +262,7 @@ export class UserProfileComponent implements OnInit {
     $('#dropdownHolder').find('angular4-multiselect').find('.dropdown-list').css('position', 'relative');
   }
 
-  getUserInfo(){
+  public getUserInfo() {
     this.django.division_selected().subscribe(response => {
       this.changed_settings = false
       this.user_info = response['user_text_notification_data']
@@ -278,7 +274,7 @@ export class UserProfileComponent implements OnInit {
       this.user_contact = this.user_info['contact_no']
       this.text_notification = this.user_info['alternate_number']
       if (this.text_notification != "" && this.text_notification != null) {
-      
+
         this.te_number = this.text_notification.split(/[-]/);
         this.text_number = this.te_number[1];
       }
@@ -297,22 +293,20 @@ export class UserProfileComponent implements OnInit {
     })
   }
 
- 
-
-  textChanged(event) {
+  public textChanged(event) {
     this.textChange = true;
-    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
-  numberOnly(event) {
+  public numberOnly(event) {
     const charCode = (event.which) ? event.which : event.keyCode;
-    if(charCode > 31 && (charCode < 48 || charCode > 57)) return false;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
     return true;
   }
 
-  content_edits() {
-    if(!this.textChange || this.enableUpdateData) {
+  public content_edits() {
+    if (!this.textChange || this.enableUpdateData) {
       this.spinner.show()
       this.editModes = false;
       this.readOnlyContentHelper = true;
@@ -337,28 +331,28 @@ export class UserProfileComponent implements OnInit {
         this.spinner.hide();
         this.toastr.error("Data not Updated")
       })
-    } else  {
+    } else {
       this.toastr.error("please enter the data");
-      }
+    }
   }
 
-  edit_True() {
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.naming = this.original_content;
   }
 
-  editEnable() {
+  public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.naming = this.original_content;
   }
 
-  carrier(value) {
+  public carrier(value) {
     this.carrier_selected = value
   }
 
-  enableNotificationBox() {
+  public enableNotificationBox() {
     this.changed_settings = true;
     $("#notification_yes").prop("checked", "true")
     $("#phone").removeAttr("disabled");
@@ -368,7 +362,7 @@ export class UserProfileComponent implements OnInit {
       this.te_number = cellPhoneHolder.split(/[-]/);
       this.text_number = this.te_number[1];
 
-      if((<HTMLInputElement>document.getElementById("phone"))){
+      if ((<HTMLInputElement>document.getElementById("phone"))) {
         ((<HTMLInputElement>document.getElementById("phone")).value) = this.text_number;
       }
       let selectedCellular = this.marketselections["user_text_notification_data"]["carrier"]
@@ -390,11 +384,9 @@ export class UserProfileComponent implements OnInit {
       }
       $("#carrier option[value = '']").prop("selected", "true")
     }
-
-
   }
 
-  disableNotificationBox() {
+  public disableNotificationBox() {
     (<HTMLTextAreaElement>(document.getElementById("phone"))).value = "";
     $("#carrier option[value = '']").prop("selected", "true")
     this.carrier_selected = ""
@@ -403,11 +395,8 @@ export class UserProfileComponent implements OnInit {
     $("#carrier").prop("disabled", "disabled");
   }
 
-  getUserMarketInfo() {
+  public getUserMarketInfo() {
     this.spinner.show()
-
-
-    // this.dropdownList = this.lookup['market_data']
     this.dropdownList = this.lookup['market_data'].sort((a, b) => a.market > b.market ? 1 : -1);
     this.dealernamedropdownList = this.lookup['dealer_name_data']
     this.citydropdownList = this.lookup['city_data']
@@ -420,7 +409,6 @@ export class UserProfileComponent implements OnInit {
     this.areadropdownList = this.lookup['area_data'].sort((a, b) => a.area_desc > b.area_desc ? 1 : -1);
     this.gmmadropdownList = this.lookup['gmma_data'].sort((a, b) => a.gmma_desc > b.gmma_desc ? 1 : -1);
     this.lmadropdownList = this.lookup['lma_data'].sort((a, b) => a.lmg_desc > b.lmg_desc ? 1 : -1);
-
 
     this.dropdownSettings = {
       text: "Market",
@@ -502,7 +490,7 @@ export class UserProfileComponent implements OnInit {
     this.spinner.hide()
   }
 
-  UserMarketSelections() {
+  public UserMarketSelections() {
     this.changed_settings = false
     if (this.marketselections['has_previous_selections']) {
       this.market_selection = this.marketselections
@@ -545,21 +533,20 @@ export class UserProfileComponent implements OnInit {
         }
       })
       this.zoneSelection(this.zoneindex)
-
     }
   }
 
 
-  showPassword() {
+  public showPassword() {
     let ele_phone = <HTMLInputElement>document.getElementById("phone");
-    if( ele_phone.style['webkitTextSecurity'] === 'disc') {
+    if (ele_phone.style['webkitTextSecurity'] === 'disc') {
       ele_phone.style['webkitTextSecurity'] = 'none';
     } else {
       ele_phone.style['webkitTextSecurity'] = 'disc';
     }
-    
   }
-  getSelectedMarkets() {
+
+  public getSelectedMarkets() {
     this.report_id_service.changeSaved(true);
 
     if (this.selectedItems.length < 1 || this.divisionselectedItems.length < 1) {
@@ -601,12 +588,10 @@ export class UserProfileComponent implements OnInit {
         this.spinner.hide()
         this.toastr.error("Server problem encountered")
       })
-
     }
-
   }
 
-  onItemSelect(item: any) {
+  public onItemSelect(item: any) {
     this.changed_settings = true
     this.selectedItems.map(element => {
       if (!(this.marketindex.includes(element.ddm_rmp_lookup_market_id))) {
@@ -616,7 +601,7 @@ export class UserProfileComponent implements OnInit {
     this.MarketDependencies(this.marketindex)
   }
 
-  onItemDeSelect(item: any) {
+  public onItemDeSelect(item: any) {
     this.changed_settings = true
     this.marketindex.splice(this.marketindex.indexOf(item.ddm_rmp_lookup_market_id), 1)
     this.MarketDependencies(this.marketindex)
@@ -626,7 +611,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  MarketDependenciesDeselect(marketindex: any) {
+  public MarketDependenciesDeselect(marketindex: any) {
     this.regionselectedItems = this.regionselectedItems.filter(element => {
       return this.marketindex.includes(element.ddm_rmp_lookup_market)
     })
@@ -661,11 +646,9 @@ export class UserProfileComponent implements OnInit {
     this.lmaselectedItems = this.lmaselectedItems.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
-
-
   }
 
-  MarketDependencies(marketindex: any) {
+  public MarketDependencies(marketindex: any) {
     this.regiondropdownListfinal = this.regiondropdownList.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
@@ -681,7 +664,7 @@ export class UserProfileComponent implements OnInit {
 
   }
 
-  onSelectAll(items: any) {
+  public onSelectAll(items: any) {
     this.changed_settings = true
     for (let index = 1; index <= items.length; index++) {
       if (!(this.marketindex.includes(index))) {
@@ -691,7 +674,7 @@ export class UserProfileComponent implements OnInit {
     this.MarketDependencies(this.marketindex)
   }
 
-  onDeSelectAll(items: any) {
+  public onDeSelectAll(items: any) {
     this.changed_settings = true
     this.marketindex = []
     this.MarketDependencies(this.marketindex)
@@ -701,7 +684,7 @@ export class UserProfileComponent implements OnInit {
     this.bacselectedItems = []
   }
 
-  regiononItemSelect(item: any) {
+  public regiononItemSelect(item: any) {
     this.changed_settings = true
     this.regionselectedItems.map(element => {
       if (!(this.regionindex.includes(element.ddm_rmp_lookup_country_region_id))) {
@@ -711,7 +694,7 @@ export class UserProfileComponent implements OnInit {
     this.regionSelection(this.regionindex)
   }
 
-  regiononItemDeSelect(item: any) {
+  public regiononItemDeSelect(item: any) {
     this.changed_settings = true
     this.regionindex.splice(this.regionindex.indexOf(item.ddm_rmp_lookup_country_region_id), 1)
     this.regionSelection(this.regionindex)
@@ -728,7 +711,7 @@ export class UserProfileComponent implements OnInit {
     this.zoneDeSelection(this.zoneindex)
   }
 
-  regiononSelectAll(items: any) {
+  public regiononSelectAll(items: any) {
     this.changed_settings = true
     for (let index = 1; index <= items.length; index++) {
       if (!(this.regionindex.includes(index))) {
@@ -738,7 +721,7 @@ export class UserProfileComponent implements OnInit {
     this.regionSelection(this.regionindex)
   }
 
-  regiononItemDeSelectAll(items: any) {
+  public regiononItemDeSelectAll(items: any) {
     this.changed_settings = true
     this.regionindex = []
     this.regionSelection(this.regionindex)
@@ -746,19 +729,19 @@ export class UserProfileComponent implements OnInit {
     this.zoneonDeSelectAll(this.zoneselectedItems)
   }
 
-  regionSelection(regionindex: any) {
+  public regionSelection(regionindex: any) {
     this.zonedropdownListfinal = this.zonedropdownList.filter(element => {
       return this.regionindex.includes(element.ddm_rmp_lookup_country_region)
     })
   }
 
-  regionDeselection(regionindex: any) {
+  public regionDeselection(regionindex: any) {
     this.zoneselectedItems = this.zoneselectedItems.filter(element => {
       return this.regionindex.includes(element.ddm_rmp_lookup_country_region)
     })
   }
 
-  zoneonItemSelect(item: any) {
+  public zoneonItemSelect(item: any) {
     this.changed_settings = true
     this.zoneselectedItems.map(element => {
       if (!(this.zoneindex.includes(element.ddm_rmp_lookup_region_zone_id))) {
@@ -768,13 +751,14 @@ export class UserProfileComponent implements OnInit {
     this.zoneSelection(this.zoneindex)
   }
 
-  zoneonItemDeSelect(item: any) {
+  public zoneonItemDeSelect(item: any) {
     this.changed_settings = true
     this.zoneindex.splice(this.zoneindex.indexOf(item.ddm_rmp_lookup_region_zone_id), 1)
     this.zoneSelection(this.zoneindex)
     this.zoneDeSelection(this.zoneindex)
   }
-  zoneonSelectAll(items: any) {
+
+  public zoneonSelectAll(items: any) {
     this.changed_settings = true
     for (let index = 1; index <= items.length; index++) {
       if (!(this.zoneindex.includes(index))) {
@@ -783,36 +767,43 @@ export class UserProfileComponent implements OnInit {
     }
     this.zoneSelection(this.zoneindex)
   }
-  zoneonDeSelectAll(items: any) {
+
+  public zoneonDeSelectAll(items: any) {
     this.changed_settings = true
     this.zoneindex = []
     this.zoneSelection(this.zoneindex)
     this.zoneDeSelection(this.zoneDeSelection)
   }
-  zoneSelection(zoneindex: any) {
+
+  public zoneSelection(zoneindex: any) {
     this.areadropdownListfinal = this.areadropdownList.filter(element => {
       return this.zoneindex.includes(element.ddm_rmp_lookup_region_zone)
     })
   }
-  zoneDeSelection(zoneindex: any) {
+
+  public zoneDeSelection(zoneindex: any) {
     this.areaselectedItems = this.areaselectedItems.filter(element => {
       return this.zoneindex.includes(element.ddm_rmp_lookup_region_zone)
     })
   }
-  saveTriggeronItemSelect(items: any) {
-    this.changed_settings = true
-  }
-  saveTriggeronItemDeSelect(items: any) {
-    this.changed_settings = true
-  }
-  saveTriggeronSelectAll(items: any) {
-    this.changed_settings = true
-  }
-  saveTriggeronDeSelectAll(items: any) {
+
+  public saveTriggeronItemSelect(items: any) {
     this.changed_settings = true
   }
 
-  getNotificationInformation() {
+  public saveTriggeronItemDeSelect(items: any) {
+    this.changed_settings = true
+  }
+
+  public saveTriggeronSelectAll(items: any) {
+    this.changed_settings = true
+  }
+
+  public saveTriggeronDeSelectAll(items: any) {
+    this.changed_settings = true
+  }
+
+  public getNotificationInformation() {
     var phoneno = /^(\d+-?)+\d+$/;
     this.cellPhone = (<HTMLInputElement>document.getElementById("phone")).value;
     this.text_number = (<HTMLInputElement>document.getElementById("phone")).value;

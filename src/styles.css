@@ -1,15 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
-/* @import "~@angular/cdk/overlay-prebuilt.css";  */
-/* You can add global styles to this file, and also import other style files */
+
 @import '~material-design-icons/iconfont/material-icons.css';
-/* @import "~@angular/cdk/overlay-prebuilt.css";  */
- @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
-/* @import "~bootstrap/dist/css/bootstrap.css"; */
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 @import "~font-awesome/css/font-awesome.css";
-
 @import "../node_modules/c3/c3.min.css";
-
-/* @import "~@angular/material/prebuilt-themes/pink-bluegrey.css"; */
 
 body{
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -46,7 +40,6 @@ body:not(.modal-open){
   padding: 0;
 }
 
-
 .ck-balloon-panel_with-arrow {
   z-index: 1000000;
 }
@@ -54,14 +47,6 @@ body:not(.modal-open){
 .mat-progress-spinner circle, .mat-spinner circle{
   stroke: rgb(10, 91, 173) !important;
 }
-
-ngb-datepicker-month-view{
-  margin-left: 4.5vh !important;
-}
-
-/* ngb-datepicker{
-  width: 100% !important;
-} */
 
 .custom-select{
   font-size:small !important;
@@ -110,6 +95,7 @@ ngb-datepicker-month-view{
   margin-left: 2%;
   margin-right: 2%
 }
+
 .ck.ck-button .ck.ck-tooltip{
   display: none;
 }
@@ -124,12 +110,15 @@ tag{
   color: white !important;
   padding: 0 4.5px;
 }
+
 .ck.ck-balloon-panel.ck-balloon-panel_arrow_n.ck-balloon-panel_visible.ck-balloon-panel_with-arrow{
   z-index: 100000 !important;
 }
+
 .ck.ck-dropdown.ck-dropdown__panel.ck-dropdown__panel_se {
   z-index: 100000 !important;
 }
+
 /* this css prop is for clone report button,implementation changed,remove after verifying */
 #clone-report .mat-form-field-wrapper{
     background: #428bca;
@@ -138,14 +127,15 @@ tag{
     display: flex;
     align-content: center;
 }
- #clone-report .mat-form-field-underline{
+
+#clone-report .mat-form-field-underline{
   display: none;
 }
+
 #clone-report .mat-form-field-label{
     left: 11px;
     color: white;
 }
-
 
 #clone-report .mat-select-arrow{
   color: white;
@@ -154,7 +144,6 @@ tag{
 #clone-report .mat-form-field-infix{
   top: -8px;
 }
-
  
 #clone-report .mat-select-value{
   color: white;
@@ -164,6 +153,7 @@ tag{
 #clone-report .cdk-overlay-pane{
   top: 150.609px;
 }
+
 :root{
   --ck-z-default : 100;
   --ck-z-modal : 10000000000 !important;
@@ -172,12 +162,9 @@ tag{
 button.btn.btn-link.ngb-dp-arrow-btn:active{
   border: none !important;
 }
+
 button.btn.btn-link.ngb-dp-arrow-btn{
   border: none !important;
-}
-
-ngb-datepicker-navigation{
-  height: 100% !important
 }
 
 .ngb-dp-header.bg-light{
@@ -255,16 +242,19 @@ ngb-datepicker-navigation{
   align-items: center;
   justify-content: flex-start;
 }
+
 .alignRight{
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
+
 .alignCenter{
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .alignMiddleLeft{
   display: flex;
   align-items: center;
@@ -274,6 +264,7 @@ ngb-datepicker-navigation{
 .width50{
   width: 50%;
 }
+
 .pull-left{
   float: left;
 }
@@ -318,8 +309,8 @@ ngb-datepicker-navigation{
   top:0px;
   left:0px;
 }
-/* spinner one */
 
+/* spinner one */
 .loader {
   border: 16px solid #f3f3f3; /* Light grey */
   border-top: 16px solid #18557e; /* Blue */
@@ -328,7 +319,6 @@ ngb-datepicker-navigation{
   height: 120px;
   animation: spin 2s linear infinite;
   z-index: 100000000000000000000;
-
 }
 
 @keyframes spin {
@@ -338,7 +328,6 @@ ngb-datepicker-navigation{
 /* spinner one */
 
 /* spinnerTwo  Css */
-
 .lds-ripple {
   display: inline-block;
   position: relative;
@@ -346,6 +335,7 @@ ngb-datepicker-navigation{
   height: 240px;
   z-index: 100000000000000000000;
 }
+
 .lds-ripple div {
   position: absolute;
   border: 3px solid #2843a5;
@@ -353,11 +343,12 @@ ngb-datepicker-navigation{
   border-radius: 50%;
   animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
     z-index: 100000000000000000000;
-
 }
+
 .lds-ripple div:nth-child(2) {
   animation-delay: -0.5s;
 }
+
 @keyframes lds-ripple {
   0% {
     top: 100px;
@@ -374,18 +365,15 @@ ngb-datepicker-navigation{
     opacity: 0;
   }
 }
-
 /* spinnerTwo Css End */
 
-
 /* spinner Three */
-
-
 .lds-dual-ring {
   display: inline-block;
   width: 150px;
   height: 150px;
 }
+
 .lds-dual-ring:after {
   content: " ";
   display: block;
@@ -397,6 +385,7 @@ ngb-datepicker-navigation{
   border-color: #2843a5 transparent #2843a5 transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
+
 @keyframes lds-dual-ring {
   0% {
     transform: rotate(0deg);
@@ -405,9 +394,7 @@ ngb-datepicker-navigation{
     transform: rotate(360deg);
   }
 }
-
 /* spinner Three */
-
 
 /* styles for alert notification no */
 .alert-notification{

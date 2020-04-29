@@ -42,6 +42,5 @@ export class AppComponent {
 
   recieveUserdetails($event) {
     this.roleId = $event;
-    //console.log(this.roleId);
   }
 }

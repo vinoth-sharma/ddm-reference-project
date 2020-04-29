@@ -13,10 +13,11 @@
     <mat-menu #notifcations="matMenu" class="notification-list">
       <ng-container *ngIf="notification_list">
         <ng-container *ngIf="notification_set.size != 0">
-          <button mat-menu-item *ngFor="let element of notification_set" [ngClass]="{'alert-notification':element.comment_read_flag == false}" title="You have unread messages in Request #{{element.reportNo}}">
-            <span style="display: inline-block;width:100%;height: 100%;" >
+          <button mat-menu-item *ngFor="let element of notification_set"
+            [ngClass]="{'alert-notification':element.comment_read_flag == false}"
+            title="You have unread messages in Request #{{element.reportNo}}">
+            <span style="display: inline-block;width:100%;height: 100%;">
               You have unread messages in Request #{{element.reportNo}}
-
             </span>
           </button>
         </ng-container>

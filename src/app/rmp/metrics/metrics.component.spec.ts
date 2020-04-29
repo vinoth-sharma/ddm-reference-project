@@ -1,12 +1,13 @@
-import { async, 
-        ComponentFixture,
-        TestBed, 
-        inject, 
-        fakeAsync, 
-        tick, 
-        getTestBed,
-        discardPeriodicTasks 
-      } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  inject,
+  fakeAsync,
+  tick,
+  getTestBed,
+  discardPeriodicTasks
+} from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -17,9 +18,9 @@ import { MetricsComponent } from './metrics.component';
 import { OrderByPipe } from '../../custom-directives/filters/order-by.pipe';
 import { FilterTablePipe } from '../filter-table.pipe';
 import { QuillModule } from "ngx-quill";
-import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClientModule,HttpErrorResponse,HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { OverlayModule } from "@angular/cdk/overlay";
@@ -30,17 +31,17 @@ describe('MetricsComponent', () => {
   let component: MetricsComponent;
   let fixture: ComponentFixture<MetricsComponent>;
   const role = {
-                'email': "Sibasish.Mohanty@mu-sigma.com",
-                'role': "Admin",
-                'user_id': "LYC59J",
-                'role_id': 1,
-                'first_name': "Sibasish",
-                'last_name': "Mohanty"
-              };
+    'email': "Sibasish.Mohanty@mu-sigma.com",
+    'role': "Admin",
+    'user_id': "LYC59J",
+    'role_id': 1,
+    'first_name': "Sibasish",
+    'last_name': "Mohanty"
+  };
   const currentlook = {
     'message': "success",
     'data': {
-      'merchandising_data':[
+      'merchandising_data': [
         {
           'ddm_rmp_lookup_dropdown_merchandising_model_id': 1,
           'merchandising_model': "CC15706",
@@ -117,7 +118,7 @@ describe('MetricsComponent', () => {
           'ddm_rmp_desc_text_admin_documents_id': 3
         }
       ],
-      'allocation_grp_da':[
+      'allocation_grp_da': [
         {
           'ddm_rmp_lookup_dropdown_allocation_group_da_id': 1,
           'allocation_group': "TAHOE",
@@ -175,7 +176,7 @@ describe('MetricsComponent', () => {
           'role': 1
         }
       ],
-      'vehicle_data':[
+      'vehicle_data': [
         {
           'ddm_rmp_lookup_dropdown_vehicle_line_brand_id': 1,
           'vehicle_line_brand': "Cascada",
@@ -187,7 +188,7 @@ describe('MetricsComponent', () => {
           'ddm_rmp_lookup_division': 1
         }
       ],
-      'model_year':[
+      'model_year': [
         {
           'ddm_rmp_lookup_dropdown_model_year_id': 1,
           'model_year': "2017"
@@ -197,7 +198,7 @@ describe('MetricsComponent', () => {
           'model_year': "2018"
         }
       ],
-      'order_type':[
+      'order_type': [
         {
           'ddm_rmp_lookup_dropdown_order_type_id': 1,
           'order_type': "T RE"
@@ -207,7 +208,7 @@ describe('MetricsComponent', () => {
           'order_type': "F DR"
         }
       ],
-      'concensus_data_da':[
+      'concensus_data_da': [
         {
           'ddm_rmp_lookup_da_consensus_data_id': 4,
           'cd_values': "Monthly Demand",
@@ -219,178 +220,178 @@ describe('MetricsComponent', () => {
           'tooltip': "Final volume earned by a dealer after Variance Resolution is ↵complete(resolves +/- differences between Estimated Shipments and Production Consensus across the dealer network)"
         }
       ],
-      'checkbox_data':[
-                        {
-                          'checkbox_desc': "Commonly Requested Fields Available for Display",
-                          'description': false,
-                          'ddm_rmp_ots_checkbox_group_id': 1,
-                          'field_values': "Order Number",
-                          'tooltip': null,
-                          'ddm_rmp_lookup_ots_checkbox_values_id': 1
-                        },
-                        {
-                          'checkbox_desc': "Commonly Requested Fields Available for Display",
-                          'description': false,
-                          'ddm_rmp_ots_checkbox_group_id': 1,
-                          'field_values': "Vehicle Information Number (VIN)",
-                          'tooltip': null,
-                          'ddm_rmp_lookup_ots_checkbox_values_id': 2
-                        }
-        ],
-        'report_frequency':[
-          {
-            'report_frequency_values': "Daily/Weekly (Monday to Friday) only",
-            'ddm_rmp_lookup_select_frequency_id': 18,
-            'select_frequency_values': "Monday",
-            'select_frequency_description': false,
-            'ddm_rmp_lookup_report_frequency_id': 1
-          },
-          {
-            'report_frequency_values': "Daily/Weekly (Monday to Friday) only",
-            'ddm_rmp_lookup_select_frequency_id': 19,
-            'select_frequency_values': "Tuesday",
-            'select_frequency_description': false,
-            'ddm_rmp_lookup_report_frequency_id': 1
-          }
-        ],
-        'yesNo_frequency':[
-          {
-            'ddm_rmp_lookup_yes_no_frequency_id': 1,
-            'frequency_desc': "Yes"
-          },
-          {
-            'ddm_rmp_lookup_yes_no_frequency_id': 2,
-            'frequency_desc': "No"
-          }
-        ],
-        'special_identifiers':[
-          {
-            'ddm_rmp_lookup_special_identifiers': 1,
-            'spl_desc': "Business Elite (US and Canada)"
-          },
-          {
-            'ddm_rmp_lookup_special_identifiers': 2,
-            'spl_desc': "Primary Fleet Account Number (FAN)"
-          }
-        ],
-        'type_data':[
-          {
-            'ddm_rmp_lookup_ots_type_data_id': 1,
+      'checkbox_data': [
+        {
+          'checkbox_desc': "Commonly Requested Fields Available for Display",
+          'description': false,
+          'ddm_rmp_ots_checkbox_group_id': 1,
+          'field_values': "Order Number",
+          'tooltip': null,
+          'ddm_rmp_lookup_ots_checkbox_values_id': 1
+        },
+        {
+          'checkbox_desc': "Commonly Requested Fields Available for Display",
+          'description': false,
+          'ddm_rmp_ots_checkbox_group_id': 1,
+          'field_values': "Vehicle Information Number (VIN)",
+          'tooltip': null,
+          'ddm_rmp_lookup_ots_checkbox_values_id': 2
+        }
+      ],
+      'report_frequency': [
+        {
+          'report_frequency_values': "Daily/Weekly (Monday to Friday) only",
+          'ddm_rmp_lookup_select_frequency_id': 18,
+          'select_frequency_values': "Monday",
+          'select_frequency_description': false,
+          'ddm_rmp_lookup_report_frequency_id': 1
+        },
+        {
+          'report_frequency_values': "Daily/Weekly (Monday to Friday) only",
+          'ddm_rmp_lookup_select_frequency_id': 19,
+          'select_frequency_values': "Tuesday",
+          'select_frequency_description': false,
+          'ddm_rmp_lookup_report_frequency_id': 1
+        }
+      ],
+      'yesNo_frequency': [
+        {
+          'ddm_rmp_lookup_yes_no_frequency_id': 1,
+          'frequency_desc': "Yes"
+        },
+        {
+          'ddm_rmp_lookup_yes_no_frequency_id': 2,
+          'frequency_desc': "No"
+        }
+      ],
+      'special_identifiers': [
+        {
+          'ddm_rmp_lookup_special_identifiers': 1,
+          'spl_desc': "Business Elite (US and Canada)"
+        },
+        {
+          'ddm_rmp_lookup_special_identifiers': 2,
+          'spl_desc': "Primary Fleet Account Number (FAN)"
+        }
+      ],
+      'type_data': [
+        {
+          'ddm_rmp_lookup_ots_type_data_id': 1,
           'type_data_desc': "Retail Only"
-          },
-          {
-            'ddm_rmp_lookup_ots_type_data_id': 2,
-            'type_data_desc': "Non-Retail (Includes Fleet)"
-          }
-          
-        ],
-        'admin_note':[
-          {
-            'ddm_rmp_admin_notes_id': 399,
-            'notes_content': "second important. ahsjkhauyw zjhkfhjkz bxv v cvmnv",
-            'notes_start_date': null,
-            'notes_end_date': "2020-04-03T03:59:00-04:00",
-            'admin_flag': false,
-            'admin_note_status': true
-          }
-        ],
-        'display_summary':[
-          {
-            'ddm_rmp_lookup_display_summary_id': 1,
-            'ds_desc': "Display"
-          },
-          {
-            'ddm_rmp_lookup_display_summary_id': 2,
-            'ds_desc': "Summary"
-          }
-        ],
-        'order_event':[
-          {
-            'ddm_rmp_lookup_dropdown_order_event_id': 1,
-            'order_event': "1000  Order Request Accepted by GM(Non-Retail)"
-          },
-          {
-            'ddm_rmp_lookup_dropdown_order_event_id': 2,
-            'order_event': "1100  Preliminary Order Added(Retail)"
-          }
-        ],
-        'desc_text_reference_documents':[
-          {
-            'title': "Test URL 18Sep19",
-            'url': "https://ddm-dev-temp.apps.pcfepg2wi.gm.com/#/user/main/reference",
-            'ddm_rmp_desc_text_reference_documents_id': 22,
-            'admin_flag': false
-          },
-          {
-            'title': "ckjckjcxnc,xnkddljhfhjkcccc",
-            'url': "Yahoo.com",
-            'ddm_rmp_desc_text_reference_documents_id': 25,
-            'admin_flag': false
-          }
-        ]  
+        },
+        {
+          'ddm_rmp_lookup_ots_type_data_id': 2,
+          'type_data_desc': "Non-Retail (Includes Fleet)"
+        }
+
+      ],
+      'admin_note': [
+        {
+          'ddm_rmp_admin_notes_id': 399,
+          'notes_content': "second important. ahsjkhauyw zjhkfhjkz bxv v cvmnv",
+          'notes_start_date': null,
+          'notes_end_date': "2020-04-03T03:59:00-04:00",
+          'admin_flag': false,
+          'admin_note_status': true
+        }
+      ],
+      'display_summary': [
+        {
+          'ddm_rmp_lookup_display_summary_id': 1,
+          'ds_desc': "Display"
+        },
+        {
+          'ddm_rmp_lookup_display_summary_id': 2,
+          'ds_desc': "Summary"
+        }
+      ],
+      'order_event': [
+        {
+          'ddm_rmp_lookup_dropdown_order_event_id': 1,
+          'order_event': "1000  Order Request Accepted by GM(Non-Retail)"
+        },
+        {
+          'ddm_rmp_lookup_dropdown_order_event_id': 2,
+          'order_event': "1100  Preliminary Order Added(Retail)"
+        }
+      ],
+      'desc_text_reference_documents': [
+        {
+          'title': "Test URL 18Sep19",
+          'url': "https://ddm-dev-temp.apps.pcfepg2wi.gm.com/#/user/main/reference",
+          'ddm_rmp_desc_text_reference_documents_id': 22,
+          'admin_flag': false
+        },
+        {
+          'title': "ckjckjcxnc,xnkddljhfhjkcccc",
+          'url': "Yahoo.com",
+          'ddm_rmp_desc_text_reference_documents_id': 25,
+          'admin_flag': false
+        }
+      ]
     }
   };
   const adminList = {
-                    'admin_list':[
-                                    {
-                                      'first_name': "Kenneth",
-                                      'role_name': "Admin",
-                                      'users_table_id': 46,
-                                      'user_id': "QZZ2PZ",
-                                      'last_name': "Griessel"
-                                    },
-                                    {
-                                      'first_name': "Hari N",
-                                      'role_name': "Admin",
-                                      'users_table_id': 9,
-                                      'user_id': "QZ9YH2",
-                                      'last_name': "Gautam"
-                                    }
-                                  ]
-                };
+    'admin_list': [
+      {
+        'first_name': "Kenneth",
+        'role_name': "Admin",
+        'users_table_id': 46,
+        'user_id': "QZZ2PZ",
+        'last_name': "Griessel"
+      },
+      {
+        'first_name': "Hari N",
+        'role_name': "Admin",
+        'users_table_id': 9,
+        'user_id': "QZ9YH2",
+        'last_name': "Gautam"
+      }
+    ]
+  };
 
   const get_report_matrix = {
     'message': "success",
-    'data':[
-            {
-              created_on: "04-Jan-2020",
-              ddm_rmp_status_date: "04-Jan-2020",
-              status_date: "2020-01-04T06:13:01.377000Z",
-              freq: "One Time",
-              id: 3063,
-              organization: "Global Business Solutions",
-              requestor: "Sibasish Mohanty",
-              status: "Completed",
-              ddm_rmp_post_report_id: 3063,
-              description: [""],
-              recipients_count: null,
-              assigned_to: "Sibasish Mohanty",
-              frequency_data: ["One Time"],
-              report_count: 0,
-              undefinedFrequency: "Y",
-              frequency_data_filtered: ["One Time"]
-            },
-            {
-              created_on: "27-Sep-2019",
-              ddm_rmp_status_date: "22-Oct-2019",
-              status_date: "2019-10-22T14:26:14.975000Z",
-              freq: "Recurring",
-              id: 1069,
-              organization: "Information Technology",
-              requestor: "Dejan Ahmetovic",
-              status: "Completed",
-              ddm_rmp_post_report_id: 1069,
-              description: ["", "", "", "", "", ""],
-              recipients_count: null,
-              assigned_to: "Nicholas-0 W Theodoracatos-0",
-              frequency_data: ["Month End Variance", "Monday", "Wednesday", "15th of the month", "Friday", "15th of the month"],
-              report_count: 0,
-              undefinedFrequency: "Y",
-              MFrequency: "Y",
-              WFrequency: "Y",
-              FFrequency: "Y",
-              frequency_data_filtered: ["Month End Variance", "15th of the month", "15th of the month"]
-            }
+    'data': [
+      {
+        created_on: "04-Jan-2020",
+        ddm_rmp_status_date: "04-Jan-2020",
+        status_date: "2020-01-04T06:13:01.377000Z",
+        freq: "One Time",
+        id: 3063,
+        organization: "Global Business Solutions",
+        requestor: "Sibasish Mohanty",
+        status: "Completed",
+        ddm_rmp_post_report_id: 3063,
+        description: [""],
+        recipients_count: null,
+        assigned_to: "Sibasish Mohanty",
+        frequency_data: ["One Time"],
+        report_count: 0,
+        undefinedFrequency: "Y",
+        frequency_data_filtered: ["One Time"]
+      },
+      {
+        created_on: "27-Sep-2019",
+        ddm_rmp_status_date: "22-Oct-2019",
+        status_date: "2019-10-22T14:26:14.975000Z",
+        freq: "Recurring",
+        id: 1069,
+        organization: "Information Technology",
+        requestor: "Dejan Ahmetovic",
+        status: "Completed",
+        ddm_rmp_post_report_id: 1069,
+        description: ["", "", "", "", "", ""],
+        recipients_count: null,
+        assigned_to: "Nicholas-0 W Theodoracatos-0",
+        frequency_data: ["Month End Variance", "Monday", "Wednesday", "15th of the month", "Friday", "15th of the month"],
+        report_count: 0,
+        undefinedFrequency: "Y",
+        MFrequency: "Y",
+        WFrequency: "Y",
+        FFrequency: "Y",
+        frequency_data_filtered: ["Month End Variance", "15th of the month", "15th of the month"]
+      }
     ]
 
   };
@@ -398,14 +399,14 @@ describe('MetricsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports:[FormsModule, MatFormFieldModule,
-               MatInputModule, NgbDatepickerModule, NgbTimepickerModule,
-               AngularMultiSelectModule, QuillModule.forRoot(),
-               MatProgressSpinnerModule, HttpClientTestingModule, OverlayModule],
-      declarations: [ MetricsComponent, OrderByPipe, FilterTablePipe, NgToasterComponent],
-      providers:[DatePipe, MatSnackBar]
+      imports: [FormsModule, MatFormFieldModule,
+        MatInputModule, NgbDatepickerModule, NgbTimepickerModule,
+        AngularMultiSelectModule, QuillModule.forRoot(),
+        MatProgressSpinnerModule, HttpClientTestingModule, OverlayModule],
+      declarations: [MetricsComponent, OrderByPipe, FilterTablePipe, NgToasterComponent],
+      providers: [DatePipe, MatSnackBar]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -418,36 +419,36 @@ describe('MetricsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get role details from authservice', fakeAsync(() =>{
+  it('should get role details from authservice', fakeAsync(() => {
     component.auth_service.myMethod(role, '', '');
     component.dataProvider.changelookUpTableData(currentlook);
     tick();
     fixture.detectChanges();
     component.auth_service.myMethod$.subscribe(res => expect(res).toEqual(role));
-    component.dataProvider.currentlookUpTableData.subscribe(res =>{
+    component.dataProvider.currentlookUpTableData.subscribe(res => {
       expect(res).toEqual(currentlook);
       expect(component.content).toEqual(res);
     });
   }));
 
-  it('should execute ngOnInit method', fakeAsync(async() => {
+  it('should execute ngOnInit method', fakeAsync(async () => {
     const tmpData = [
-                    {
-                      'full_name': "Kenneth Griessel",
-                      'users_table_id': 46,
-                      'role_id': 1
-                    },
-                    {
-                      'full_name': "Hari N Gautam",
-                      'users_table_id': 9,
-                      'role_id': 1
-                    },
-                    {
-                      'full_name': "Non-Admin",
-                      'users_table_id': "",
-                      'role_id': 2
-                    }
-                  ];
+      {
+        'full_name': "Kenneth Griessel",
+        'users_table_id': 46,
+        'role_id': 1
+      },
+      {
+        'full_name': "Hari N Gautam",
+        'users_table_id': 9,
+        'role_id': 1
+      },
+      {
+        'full_name': "Non-Admin",
+        'users_table_id': "",
+        'role_id': 2
+      }
+    ];
     let service = fixture.debugElement.injector.get(DjangoService);
     let mySpy = spyOn(service, 'getAllAdmins').and.returnValues(of(adminList));
     let mySpy1 = spyOn(service, 'get_report_matrix').and.returnValues(of(get_report_matrix));
@@ -465,43 +466,43 @@ describe('MetricsComponent', () => {
     expect(mySpy1).toHaveBeenCalledTimes(1);
   }));
 
-  it('should execute filterData method', fakeAsync(()=> {
+  it('should execute filterData method', fakeAsync(() => {
     component.statusFilter = [];
     let res = {
-                ddm_rmp_post_report_id: "",
-                ddm_rmp_status_date: "",
-                created_on: "",
-                status: "",
-                assigned_to: "",
-                requestor: "",
-                organization: "",
-                recipients_count: "",
-                report_count: "",
-                freq: "",
-                description: ""
-              };
+      ddm_rmp_post_report_id: "",
+      ddm_rmp_status_date: "",
+      created_on: "",
+      status: "",
+      assigned_to: "",
+      requestor: "",
+      organization: "",
+      recipients_count: "",
+      report_count: "",
+      freq: "",
+      description: ""
+    };
     spyOn(component, 'filterData').and.callThrough(); //callThrough()          
-    fixture.detectChanges();          
+    fixture.detectChanges();
     component.filterData();
     tick(1500);
     fixture.detectChanges();
     expect(component.filterData).toHaveBeenCalled();
-    expect(component.searchObj).toEqual(res);          
+    expect(component.searchObj).toEqual(res);
   }));
 
   it('should execute textChanged method', fakeAsync(() => {
-      const event = {
-        'text': ''
-      };
-      component.textChange = false;
-      spyOn(component, 'textChanged').and.callThrough(); //callThrough() 
-      fixture.detectChanges();
-      component.textChanged(event);
-      tick(1500);
-      fixture.detectChanges();
-      expect(component.textChange).toBe(true);
-      expect(component.enableUpdateData).toBe(false);
-      expect(component.textChanged).toHaveBeenCalled();
+    const event = {
+      'text': ''
+    };
+    component.textChange = false;
+    spyOn(component, 'textChanged').and.callThrough(); //callThrough() 
+    fixture.detectChanges();
+    component.textChanged(event);
+    tick(1500);
+    fixture.detectChanges();
+    expect(component.textChange).toBe(true);
+    expect(component.enableUpdateData).toBe(false);
+    expect(component.textChanged).toHaveBeenCalled();
   }));
 
   it('should execute resetHelp method', fakeAsync(() => {
@@ -518,7 +519,7 @@ describe('MetricsComponent', () => {
     expect(component.namings).toBe(original_contents);
   }));
 
-  it('should execute editEnable method', fakeAsync(()=>{
+  it('should execute editEnable method', fakeAsync(() => {
     spyOn(component, 'editEnable').and.callThrough(); //callThrough()
     component.editModes = false;
     component.readOnlyContentHelper = true;
@@ -534,7 +535,7 @@ describe('MetricsComponent', () => {
   }));
 
   it('should execute sort method', fakeAsync(() => {
-    component.reports =  [
+    component.reports = [
       {
         ddm_rmp_post_report_id: 16,
         ddm_rmp_status_date: "2019-08-22T08:13:10.028000-04:00",
@@ -583,45 +584,6 @@ describe('MetricsComponent', () => {
   it('should execute xlsxJson method', fakeAsync(() => {
     spyOn(component, 'xlsxJson').and.callThrough(); //callThrough()
     component.xlsxJson();
-
-  }));
-
-  it('should execute getMetricsData method', fakeAsync(() => {
-    let service = fixture.debugElement.injector.get(DjangoService);
-    component.selectedItems = [
-      {
-        'full_name': "Kenneth Griessel",
-        'users_table_id': 46,
-        'role_id': 1
-      }
-    ];
-    component.metrics_start_date = {
-                                      'year': 2020,
-                                      'month': 3,
-                                      'day': 7
-                                    };
-    component.metrics_end_date = {
-                                    'year': 2020,
-                                    'month': 3,
-                                    'day': 27
-                                  };
-    component.obj = { 
-                      'start_date': {
-                                      'full_name': "Kenneth Griessel",
-                                      'users_table_id': 46,
-                                      'role_id': 1
-                                    }, 
-                      'end_date': {
-                                    'year': 2020,
-                                    'month': 3,
-                                    'day': 7
-                                  }, 
-                      'users_table_id': [46], 
-                      'role_id':1 
-                  };
-     fixture.detectChanges();             
-    let mySpy = spyOn(service, 'metrics_aggregate').and.returnValues(of(component.obj));              
-    spyOn(component, 'ngOnInit').and.callThrough(); //callThrough()              
 
   }));
 

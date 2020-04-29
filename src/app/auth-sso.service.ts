@@ -17,12 +17,11 @@ export class AuthSsoService {
   public token_id: any;
 
   constructor(private http: HttpClient,
-              private authenticationService:AuthenticationService,
-              private constantService:ConstantService,
-              private injector: Injector) 
-              {}
+    private authenticationService: AuthenticationService,
+    private constantService: ConstantService,
+    private injector: Injector) { }
 
-   public get router() {
+  public get router() {
     return this.injector.get(Router);
   }
 
@@ -30,20 +29,17 @@ export class AuthSsoService {
     return this.injector.get(CustomCookieService);
   }
 
-  authLoad() {
-
-      this.checkToken().subscribe(
-        res =>{
-          this._userData = res;
-          this.authenticationService.SetUserDetails();
-          this.authenticationService.myMethod(res['usersdetails'],res['usersdetails']['user_id'],res['schema']);
-          this.authenticationService.errorMethod(res['usersdetails']['user_id']);
-          // this.router.navigate(['user']);
-          this.getAllFunctions();
-
-        },err =>{
-          // //console.log(err,'err in login');
-        });
+  public authLoad() {
+    this.checkToken().subscribe(
+      res => {
+        this._userData = res;
+        this.authenticationService.SetUserDetails();
+        this.authenticationService.myMethod(res['usersdetails'], res['usersdetails']['user_id'], res['schema']);
+        this.authenticationService.errorMethod(res['usersdetails']['user_id']);
+        this.getAllFunctions();
+      }, err => {
+        // console.log(err,'err in login');
+      });
   }
 
 
@@ -51,8 +47,8 @@ export class AuthSsoService {
     let errObj: any = {
       status: error.status,
       data: {
-        'detail' :error.error.detail,
-        'redirect_url' : error.error.redirect_url,
+        'detail': error.error.detail,
+        'redirect_url': error.error.redirect_url,
         'error': error.error.error
       }
     }
@@ -60,7 +56,6 @@ export class AuthSsoService {
   }
 
   checkToken() {
-
     const serviceurl = `${environment.baseUrl}login/check_status`;
 
     return this.http.get(serviceurl)
@@ -70,19 +65,18 @@ export class AuthSsoService {
   public getTokenId() {
     return this.cookies.get('session_key');
   }
-  
+
   public deleteToken() {
     this.cookies.delete('session_key');
   }
 
-  getAllFunctions(){
-
+  public getAllFunctions() {
     this.constantService.getAggregationFunctions().subscribe(
       res => {
-        this.constantService.setFunctions(res['data'],'aggregation');        
+        this.constantService.setFunctions(res['data'], 'aggregation');
       },
       err => {
-        this.constantService.setFunctions([],'aggregation');
+        this.constantService.setFunctions([], 'aggregation');
       }
     )
   }

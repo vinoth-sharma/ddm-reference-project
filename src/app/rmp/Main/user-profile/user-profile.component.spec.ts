@@ -37,7 +37,7 @@ describe('UserProfileComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserProfileComponent],
-      imports: [MaterialModule, AngularMultiSelectModule,BrowserAnimationsModule,
+      imports: [MaterialModule, AngularMultiSelectModule, BrowserAnimationsModule,
         FormsModule, TagInputModule, QuillModule.forRoot({}), HttpClientTestingModule],
       providers: [DatePipe, QuillEditorComponent]
     })
@@ -203,20 +203,20 @@ describe('UserProfileComponent', () => {
   })
 
   it("getUserMarketInfo() , should set properties of component", () => {
-    
+
     let data = {
-      market_data: [{market:"a"},{market:"c"},{market:"b"}],
+      market_data: [{ market: "a" }, { market: "c" }, { market: "b" }],
       dealer_name_data: ["a", "b", "c"],
       city_data: ["a", "b", "c"],
       state_data: ["a", "b", "c"],
       zip_data: ["a", "b", "c"],
       country_data: ["a", "b", "c"],
-      division_data: [{division_desc:"a"},{division_desc:"b"},{division_desc:"c"}],
-      region_data: [{region_desc:"a"},{region_desc:"b"},{region_desc:"c"}],
-      zones_data: [{zone_desc:"a"},{zone_desc:"b"},{zone_desc:"c"}],
-      area_data: [{area_desc:"a"},{area_desc:"b"},{area_desc:"c"}],
-      gmma_data: [{gmma_desc:"a"},{gmma_desc:"b"},{gmma_desc:"c"}],
-      lma_data: [{lma_data:"a"},{lma_data:"b"},{lma_data:"c"}],
+      division_data: [{ division_desc: "a" }, { division_desc: "b" }, { division_desc: "c" }],
+      region_data: [{ region_desc: "a" }, { region_desc: "b" }, { region_desc: "c" }],
+      zones_data: [{ zone_desc: "a" }, { zone_desc: "b" }, { zone_desc: "c" }],
+      area_data: [{ area_desc: "a" }, { area_desc: "b" }, { area_desc: "c" }],
+      gmma_data: [{ gmma_desc: "a" }, { gmma_desc: "b" }, { gmma_desc: "c" }],
+      lma_data: [{ lma_data: "a" }, { lma_data: "b" }, { lma_data: "c" }],
     }
     let dropdownSettings = {
       text: "Market",
@@ -299,7 +299,7 @@ describe('UserProfileComponent', () => {
       enableSearchFilter: true,
       classes: "user_profile_multiselect"
     };
-   
+
     component.lookup = data;
     component.getUserMarketInfo();
     expect(component.dropdownList).toEqual(data.market_data);
@@ -323,26 +323,26 @@ describe('UserProfileComponent', () => {
     expect(component.lmadropdownSettings).toEqual(lmadropdownSettings)
   })
 
-  it("UserMarketSelections(), should set properties of component",()=>{
+  it("UserMarketSelections(), should set properties of component", () => {
     component.marketselections = {
-      market_data: [{market:"a"},{market:"c"},{market:"b"}],
+      market_data: [{ market: "a" }, { market: "c" }, { market: "b" }],
       dealer_name_data: ["a", "b", "c"],
       country_region_data: ["a", "b", "c"],
       state_data: ["a", "b", "c"],
-      bac_data: [{bac_desc:"bac_data"}, "b", "c"],
-      country_data: [{fan_data:"fan_data"}, "b", "c"],
-      division_data: [{division_desc:"a"},{division_desc:"b"},{division_desc:"c"}],
-      region_zone_data: [{region_desc:"a"},{region_desc:"b"},{region_desc:"c"}],
-      zones_zone_area_datadata: [{zone_desc:"a"},{zone_desc:"b"},{zone_desc:"c"}],
-      area_data: [{area_desc:"a"},{area_desc:"b"},{area_desc:"c"}],
-      gmma_data: [{gmma_desc:"a"},{gmma_desc:"b"},{gmma_desc:"c"}],
-      lma_data: [{lma_data:"a"},{lma_data:"b"},{lma_data:"c"}],
-      has_previous_selections:true,
-      fan_data:[{fan_data:"fan_data"}, "b", "c"]
+      bac_data: [{ bac_desc: "bac_data" }, "b", "c"],
+      country_data: [{ fan_data: "fan_data" }, "b", "c"],
+      division_data: [{ division_desc: "a" }, { division_desc: "b" }, { division_desc: "c" }],
+      region_zone_data: [{ region_desc: "a" }, { region_desc: "b" }, { region_desc: "c" }],
+      zones_zone_area_datadata: [{ zone_desc: "a" }, { zone_desc: "b" }, { zone_desc: "c" }],
+      area_data: [{ area_desc: "a" }, { area_desc: "b" }, { area_desc: "c" }],
+      gmma_data: [{ gmma_desc: "a" }, { gmma_desc: "b" }, { gmma_desc: "c" }],
+      lma_data: [{ lma_data: "a" }, { lma_data: "b" }, { lma_data: "c" }],
+      has_previous_selections: true,
+      fan_data: [{ fan_data: "fan_data" }, "b", "c"]
     }
-    let marketDependenciesSpy = spyOn(component,"MarketDependencies")
-    let regionSelectionSpy = spyOn(component,"regionSelection")
-    let zoneSelectionSpy = spyOn(component,"zoneSelection")
+    let marketDependenciesSpy = spyOn(component, "MarketDependencies")
+    let regionSelectionSpy = spyOn(component, "regionSelection")
+    let zoneSelectionSpy = spyOn(component, "zoneSelection")
     component.UserMarketSelections();
     expect(component.changed_settings).toBeFalsy();
     expect(component.market_selection).toEqual(component.marketselections);
@@ -358,59 +358,59 @@ describe('UserProfileComponent', () => {
     expect(zoneSelectionSpy).toHaveBeenCalled();
   })
 
-  it('sholud toggle type for input field',()=>{
+  it('sholud toggle type for input field', () => {
     let element = fixture.debugElement.nativeElement;
-   console.log("styles",element.querySelector("#phone").style.webkitTextSecurity)
-   component.showPassword();
-   expect(element.querySelector("#phone").style.webkitTextSecurity).toEqual("none")
-})
+    console.log("styles", element.querySelector("#phone").style.webkitTextSecurity)
+    component.showPassword();
+    expect(element.querySelector("#phone").style.webkitTextSecurity).toEqual("none")
+  })
 
- 
 
-  it("sohuld slice the id from marketindex and call market dependencies",()=>{
-    component.marketindex = [1,2,3];
-    let marketDepSpy = spyOn(component,"MarketDependencies")
-    let marketDepDeSelectSpy = spyOn(component,"MarketDependenciesDeselect")
-    let selectedItem = {ddm_rmp_lookup_market_id:2}
+
+  it("sohuld slice the id from marketindex and call market dependencies", () => {
+    component.marketindex = [1, 2, 3];
+    let marketDepSpy = spyOn(component, "MarketDependencies")
+    let marketDepDeSelectSpy = spyOn(component, "MarketDependenciesDeselect")
+    let selectedItem = { ddm_rmp_lookup_market_id: 2 }
     component.onItemDeSelect(selectedItem);
     expect(component.changed_settings).toBeTruthy()
-    expect(marketDepSpy).toHaveBeenCalledWith([1,3])
-    expect(marketDepDeSelectSpy).toHaveBeenCalledWith([1,3])
+    expect(marketDepSpy).toHaveBeenCalledWith([1, 3])
+    expect(marketDepDeSelectSpy).toHaveBeenCalledWith([1, 3])
 
   })
 
 
-  it("Should set marketindex and call market dependencies",()=>{
-    component.selectedItems = [{ddm_rmp_lookup_market_id:1},{ddm_rmp_lookup_market_id:2},{ddm_rmp_lookup_market_id:3}]
-    let marketDepSpy = spyOn(component,"MarketDependencies")
+  it("Should set marketindex and call market dependencies", () => {
+    component.selectedItems = [{ ddm_rmp_lookup_market_id: 1 }, { ddm_rmp_lookup_market_id: 2 }, { ddm_rmp_lookup_market_id: 3 }]
+    let marketDepSpy = spyOn(component, "MarketDependencies")
     component.onItemSelect({});
     expect(component.changed_settings).toBeTruthy()
-    expect(marketDepSpy).toHaveBeenCalledWith([1,2,3])
+    expect(marketDepSpy).toHaveBeenCalledWith([1, 2, 3])
   })
 
 
   it("market dependencies deselect(), it should set a few properties and call regionDeselection() and regionSelection()",
-    ()=>{
-      let dataSet = [{ddm_rmp_lookup_market:1},{id:1}]
-      let filterddata = [{ddm_rmp_lookup_market:1}]
-      
-      let data = [{ddm_rmp_lookup_market:1,ddm_rmp_lookup_country_region_id:1,ddm_rmp_lookup_region_zone_id:1},{ddm_rmp_lookup_market:2,ddm_rmp_lookup_country_region_id:2,ddm_rmp_lookup_region_zone_id:2},{ddm_rmp_lookup_market:3,ddm_rmp_lookup_country_region_id:3,ddm_rmp_lookup_region_zone_id:3}];
+    () => {
+      let dataSet = [{ ddm_rmp_lookup_market: 1 }, { id: 1 }]
+      let filterddata = [{ ddm_rmp_lookup_market: 1 }]
+
+      let data = [{ ddm_rmp_lookup_market: 1, ddm_rmp_lookup_country_region_id: 1, ddm_rmp_lookup_region_zone_id: 1 }, { ddm_rmp_lookup_market: 2, ddm_rmp_lookup_country_region_id: 2, ddm_rmp_lookup_region_zone_id: 2 }, { ddm_rmp_lookup_market: 3, ddm_rmp_lookup_country_region_id: 3, ddm_rmp_lookup_region_zone_id: 3 }];
       component.regionselectedItems = data;
-      component.marketindex=[1,2,3]
+      component.marketindex = [1, 2, 3]
 
       component.zoneselectedItems = data;
       component.gmmaselectedItems = dataSet
       component.divisionselectedItems = dataSet
       component.lmaselectedItems = dataSet
-      let marketDepSpy = spyOn(component,"regionDeselection")
-      let marketDepDeSelectSpy = spyOn(component,"regionSelection")
-      let zonedetectSpy = spyOn(component,"zoneDeSelection")
-      let zoneSelectionSpy = spyOn(component,"zoneSelection")
+      let marketDepSpy = spyOn(component, "regionDeselection")
+      let marketDepDeSelectSpy = spyOn(component, "regionSelection")
+      let zonedetectSpy = spyOn(component, "zoneDeSelection")
+      let zoneSelectionSpy = spyOn(component, "zoneSelection")
       component.MarketDependenciesDeselect({});
-      expect(marketDepSpy).toHaveBeenCalledWith([1,2,3]);
-      expect(marketDepDeSelectSpy).toHaveBeenCalledWith([1,2,3])
-      expect(zonedetectSpy).toHaveBeenCalledWith([1,2,3]);
-      expect(zoneSelectionSpy).toHaveBeenCalledWith([1,2,3]);
+      expect(marketDepSpy).toHaveBeenCalledWith([1, 2, 3]);
+      expect(marketDepDeSelectSpy).toHaveBeenCalledWith([1, 2, 3])
+      expect(zonedetectSpy).toHaveBeenCalledWith([1, 2, 3]);
+      expect(zoneSelectionSpy).toHaveBeenCalledWith([1, 2, 3]);
       expect(component.gmmaselectedItems).toEqual(filterddata)
       expect(component.divisionselectedItems).toEqual(filterddata)
       expect(component.lmaselectedItems).toEqual(filterddata)
@@ -418,10 +418,10 @@ describe('UserProfileComponent', () => {
     }
   )
 
-  it("MarketDependencies(), should set properties of comp",()=>{
-    component.marketindex=[1,2,3];
-    let filterddata = [{ddm_rmp_lookup_market:1}]
-    let dataSet = [{ddm_rmp_lookup_market:1},{id:1}]
+  it("MarketDependencies(), should set properties of comp", () => {
+    component.marketindex = [1, 2, 3];
+    let filterddata = [{ ddm_rmp_lookup_market: 1 }]
+    let dataSet = [{ ddm_rmp_lookup_market: 1 }, { id: 1 }]
     component.regiondropdownList = dataSet;
     component.gmmadropdownList = dataSet;
     component.divisiondropdownList = dataSet;
@@ -433,123 +433,123 @@ describe('UserProfileComponent', () => {
     expect(component.lmadropdownListfinal).toEqual(filterddata)
   })
 
-  it("should set maket index and call market dependencies",()=>{
-    let spy = spyOn(component,"MarketDependencies")
-    component.marketindex=[];
-    component.onSelectAll([1,2,3]);
+  it("should set maket index and call market dependencies", () => {
+    let spy = spyOn(component, "MarketDependencies")
+    component.marketindex = [];
+    component.onSelectAll([1, 2, 3]);
     expect(component.changed_settings).toBeTruthy();
-    expect(spy).toHaveBeenCalledWith([1,2,3])
+    expect(spy).toHaveBeenCalledWith([1, 2, 3])
   })
 
-  it("should set maket index and call market dependencies",()=>{
-    component.zoneselectedItems = [1,2];
-    component.regionselectedItems = [3,4]
-    let spy = spyOn(component,"MarketDependencies");
-    let MarketDependenciesDeselectSpy = spyOn(component,"MarketDependenciesDeselect")
-    let regiononItemDeSelectAllSpy = spyOn(component,"regiononItemDeSelectAll")
-    let zoneonDeSelectAllSpy = spyOn(component,"zoneonDeSelectAll");
+  it("should set maket index and call market dependencies", () => {
+    component.zoneselectedItems = [1, 2];
+    component.regionselectedItems = [3, 4]
+    let spy = spyOn(component, "MarketDependencies");
+    let MarketDependenciesDeselectSpy = spyOn(component, "MarketDependenciesDeselect")
+    let regiononItemDeSelectAllSpy = spyOn(component, "regiononItemDeSelectAll")
+    let zoneonDeSelectAllSpy = spyOn(component, "zoneonDeSelectAll");
     component.onDeSelectAll({})
     expect(component.changed_settings).toBeTruthy();
     expect(component.bacselectedItems).toEqual([]);
     expect(spy).toHaveBeenCalledWith([])
-    expect(regiononItemDeSelectAllSpy).toHaveBeenCalledWith([3,4])
-    expect(zoneonDeSelectAllSpy).toHaveBeenCalledWith([1,2])
+    expect(regiononItemDeSelectAllSpy).toHaveBeenCalledWith([3, 4])
+    expect(zoneonDeSelectAllSpy).toHaveBeenCalledWith([1, 2])
   })
 
-  it("it should set segion index and call region selection()",()=>{
-    let dataSet = [{ddm_rmp_lookup_country_region_id:1}]
+  it("it should set segion index and call region selection()", () => {
+    let dataSet = [{ ddm_rmp_lookup_country_region_id: 1 }]
     component.regionselectedItems = dataSet;
-    let spy = spyOn(component,"regionSelection")
+    let spy = spyOn(component, "regionSelection")
     component.regiononItemSelect({});
     expect(component.changed_settings).toBeTruthy();
     expect(spy).toHaveBeenCalledWith([1])
 
   })
 
-  it("it should set segion index and call region selection()",()=>{
-    let dataSet = [{ddm_rmp_lookup_region_zone_id:1}]
-    component.regionindex = [1,2,3];
+  it("it should set segion index and call region selection()", () => {
+    let dataSet = [{ ddm_rmp_lookup_region_zone_id: 1 }]
+    component.regionindex = [1, 2, 3];
     component.zoneselectedItems = dataSet
-    let spy = spyOn(component,"regionSelection");
-    let dSpy = spyOn(component,"regionDeselection");
-    let zoneSelectionSpy = spyOn(component,"zoneSelection");
-    let zoneDeSelectionSpy = spyOn(component,"zoneDeSelection");
-    component.regiononItemDeSelect({ddm_rmp_lookup_country_region_id:2})
+    let spy = spyOn(component, "regionSelection");
+    let dSpy = spyOn(component, "regionDeselection");
+    let zoneSelectionSpy = spyOn(component, "zoneSelection");
+    let zoneDeSelectionSpy = spyOn(component, "zoneDeSelection");
+    component.regiononItemDeSelect({ ddm_rmp_lookup_country_region_id: 2 })
     expect(component.changed_settings).toBeTruthy();
-    expect(spy).toHaveBeenCalledWith([1,3])
-    expect(dSpy).toHaveBeenCalledWith([1,3])
+    expect(spy).toHaveBeenCalledWith([1, 3])
+    expect(dSpy).toHaveBeenCalledWith([1, 3])
     expect(zoneDeSelectionSpy).toHaveBeenCalledWith([1])
     expect(zoneSelectionSpy).toHaveBeenCalledWith([1])
   })
 
 
-  it("should set region index and call regionSelection",()=>{
-    let spy = spyOn(component,"regionSelection")
-    component.marketindex=[];
-    component.regiononSelectAll([1,2,3]);
+  it("should set region index and call regionSelection", () => {
+    let spy = spyOn(component, "regionSelection")
+    component.marketindex = [];
+    component.regiononSelectAll([1, 2, 3]);
     expect(component.changed_settings).toBeTruthy();
-    expect(spy).toHaveBeenCalledWith([1,2,3])
+    expect(spy).toHaveBeenCalledWith([1, 2, 3])
   })
 
-  it("should set maket index and call market dependencies",()=>{
-    component.zoneselectedItems = [1,2];
-    let spy = spyOn(component,"regionSelection");
-    let regionDeselectionSpy = spyOn(component,"regionDeselection")
-    let zoneonDeSelectAllSpy = spyOn(component,"zoneonDeSelectAll")
+  it("should set maket index and call market dependencies", () => {
+    component.zoneselectedItems = [1, 2];
+    let spy = spyOn(component, "regionSelection");
+    let regionDeselectionSpy = spyOn(component, "regionDeselection")
+    let zoneonDeSelectAllSpy = spyOn(component, "zoneonDeSelectAll")
     component.regiononItemDeSelectAll({})
     expect(component.changed_settings).toBeTruthy();
     expect(spy).toHaveBeenCalledWith([])
     expect(regionDeselectionSpy).toHaveBeenCalledWith([])
-    expect(zoneonDeSelectAllSpy).toHaveBeenCalledWith([1,2])
+    expect(zoneonDeSelectAllSpy).toHaveBeenCalledWith([1, 2])
   })
 
-  it("should filter zonedropdownlist",()=>{
-    component.zonedropdownList = [{ddm_rmp_lookup_country_region:1},{ddm_rmp_lookup_country_region:2},{ddm_rmp_lookup_country_region:3}]
-    component.regionindex =[1,2]
+  it("should filter zonedropdownlist", () => {
+    component.zonedropdownList = [{ ddm_rmp_lookup_country_region: 1 }, { ddm_rmp_lookup_country_region: 2 }, { ddm_rmp_lookup_country_region: 3 }]
+    component.regionindex = [1, 2]
     component.regionSelection({});
-    expect(component.zonedropdownListfinal).toEqual([{ddm_rmp_lookup_country_region:1},{ddm_rmp_lookup_country_region:2}])
+    expect(component.zonedropdownListfinal).toEqual([{ ddm_rmp_lookup_country_region: 1 }, { ddm_rmp_lookup_country_region: 2 }])
   })
 
-  it("should filter zoneselectedItems",()=>{
-    component.zoneselectedItems = [{ddm_rmp_lookup_country_region:1},{ddm_rmp_lookup_country_region:2},{ddm_rmp_lookup_country_region:3}]
-    component.regionindex =[1,2]
+  it("should filter zoneselectedItems", () => {
+    component.zoneselectedItems = [{ ddm_rmp_lookup_country_region: 1 }, { ddm_rmp_lookup_country_region: 2 }, { ddm_rmp_lookup_country_region: 3 }]
+    component.regionindex = [1, 2]
     component.regionDeselection({});
-    expect(component.zoneselectedItems).toEqual([{ddm_rmp_lookup_country_region:1},{ddm_rmp_lookup_country_region:2}])
+    expect(component.zoneselectedItems).toEqual([{ ddm_rmp_lookup_country_region: 1 }, { ddm_rmp_lookup_country_region: 2 }])
   })
 
-  it("should set zone index and call zone selection ",()=>{
-    component.zoneselectedItems = [{ddm_rmp_lookup_region_zone_id:1},{ddm_rmp_lookup_region_zone_id:2},{ddm_rmp_lookup_region_zone_id:3}]
+  it("should set zone index and call zone selection ", () => {
+    component.zoneselectedItems = [{ ddm_rmp_lookup_region_zone_id: 1 }, { ddm_rmp_lookup_region_zone_id: 2 }, { ddm_rmp_lookup_region_zone_id: 3 }]
     component.regionSelection({});
-    let spy = spyOn(component,"zoneSelection");
+    let spy = spyOn(component, "zoneSelection");
     component.zoneonItemSelect({})
     expect(component.changed_settings).toBeTruthy();
-    expect(spy).toHaveBeenCalledWith([1,2,3]);
+    expect(spy).toHaveBeenCalledWith([1, 2, 3]);
   })
 
 
-  it("should set zone index and call zone selection and zone deselection",()=>{
-    component.zoneindex = [1,2,3]
-    let spy = spyOn(component,"zoneSelection");
-    let dspy = spyOn(component,"zoneDeSelection");
-    component.zoneonItemDeSelect({ddm_rmp_lookup_region_zone_id:2});
+  it("should set zone index and call zone selection and zone deselection", () => {
+    component.zoneindex = [1, 2, 3]
+    let spy = spyOn(component, "zoneSelection");
+    let dspy = spyOn(component, "zoneDeSelection");
+    component.zoneonItemDeSelect({ ddm_rmp_lookup_region_zone_id: 2 });
     expect(component.changed_settings).toBeTruthy();
 
-    expect(spy).toHaveBeenCalledWith([1,3]);
-    expect(dspy).toHaveBeenCalledWith([1,3]);
+    expect(spy).toHaveBeenCalledWith([1, 3]);
+    expect(dspy).toHaveBeenCalledWith([1, 3]);
   })
 
 
-  it("should set zoneindex and call zoneselection",()=>{
-    let spy = spyOn(component,"zoneSelection")
-    component.zoneonSelectAll([1,2,3]);
+  it("should set zoneindex and call zoneselection", () => {
+    let spy = spyOn(component, "zoneSelection")
+    component.zoneonSelectAll([1, 2, 3]);
     expect(component.changed_settings).toBeTruthy();
-    expect(spy).toHaveBeenCalledWith([1,2,3])
+    expect(spy).toHaveBeenCalledWith([1, 2, 3])
   })
 
 
-  it("should reset zoneindex and call zoneSelection and zoneDeSelection",()=>{
-    let spy = spyOn(component,"zoneSelection")
-    let dspy = spyOn(component,"zoneDeSelection")
+  it("should reset zoneindex and call zoneSelection and zoneDeSelection", () => {
+    let spy = spyOn(component, "zoneSelection")
+    let dspy = spyOn(component, "zoneDeSelection")
 
     component.zoneonDeSelectAll({});
     expect(component.changed_settings).toBeTruthy();
@@ -559,74 +559,74 @@ describe('UserProfileComponent', () => {
 
   })
 
-  it("sholud filter areadropdownListfinal",()=>{
-    component.areadropdownList = [{ddm_rmp_lookup_region_zone:1},{ddm_rmp_lookup_region_zone:2},{ddm_rmp_lookup_region_zone:3}]
-    component.zoneindex= [1,2];
+  it("sholud filter areadropdownListfinal", () => {
+    component.areadropdownList = [{ ddm_rmp_lookup_region_zone: 1 }, { ddm_rmp_lookup_region_zone: 2 }, { ddm_rmp_lookup_region_zone: 3 }]
+    component.zoneindex = [1, 2];
     component.zoneSelection({});
-    expect(component.areadropdownListfinal).toEqual([{ddm_rmp_lookup_region_zone:1},{ddm_rmp_lookup_region_zone:2}])
+    expect(component.areadropdownListfinal).toEqual([{ ddm_rmp_lookup_region_zone: 1 }, { ddm_rmp_lookup_region_zone: 2 }])
   })
 
-  it("sholud filter areaselectedItems",()=>{
-    component.areaselectedItems = [{ddm_rmp_lookup_region_zone:1},{ddm_rmp_lookup_region_zone:2},{ddm_rmp_lookup_region_zone:3}]
-    component.zoneindex= [1,2];
+  it("sholud filter areaselectedItems", () => {
+    component.areaselectedItems = [{ ddm_rmp_lookup_region_zone: 1 }, { ddm_rmp_lookup_region_zone: 2 }, { ddm_rmp_lookup_region_zone: 3 }]
+    component.zoneindex = [1, 2];
     component.zoneDeSelection({});
-    expect(component.areaselectedItems).toEqual([{ddm_rmp_lookup_region_zone:1},{ddm_rmp_lookup_region_zone:2}])
+    expect(component.areaselectedItems).toEqual([{ ddm_rmp_lookup_region_zone: 1 }, { ddm_rmp_lookup_region_zone: 2 }])
   })
 
-  it("saveTriggeronItemSelect() should set changed_settings to true",()=>{
+  it("saveTriggeronItemSelect() should set changed_settings to true", () => {
     component.saveTriggeronItemSelect({});
     expect(component.changed_settings).toBeTruthy()
   })
 
-  it("saveTriggeronItemDeSelect() should set changed_settings to true",()=>{
+  it("saveTriggeronItemDeSelect() should set changed_settings to true", () => {
     component.saveTriggeronItemDeSelect({});
     expect(component.changed_settings).toBeTruthy()
   })
 
-  it("saveTriggeronSelectAll() should set changed_settings to true",()=>{
+  it("saveTriggeronSelectAll() should set changed_settings to true", () => {
     component.saveTriggeronSelectAll({});
     expect(component.changed_settings).toBeTruthy()
   })
 
-  it("saveTriggeronDeSelectAll() should set changed_settings to true",()=>{
+  it("saveTriggeronDeSelectAll() should set changed_settings to true", () => {
     component.saveTriggeronDeSelectAll({});
     expect(component.changed_settings).toBeTruthy()
   })
 
 
-  it("getNotificationInformation() should read data from input fields and and call text_notifications_put from django service file",async(()=>{
+  it("getNotificationInformation() should read data from input fields and and call text_notifications_put from django service file", async(() => {
     let element = fixture.debugElement.nativeElement;
     element.querySelector("#phone").value = "420420";
     element.querySelector("#carrier").value = "420420";
     element.querySelector("#notification_no").checked = true;
     let djangoService = TestBed.get(DjangoService);
-    let spy = spyOn(djangoService,"text_notifications_put").and.returnValue(of({}))
+    let spy = spyOn(djangoService, "text_notifications_put").and.returnValue(of({}))
     component.getNotificationInformation();
     expect(component.cellPhone).toEqual("420420");
     expect(component.text_number).toEqual("420420");
-    fixture.whenStable().then(()=>{
+    fixture.whenStable().then(() => {
       expect(spy).toHaveBeenCalled();
     })
   }))
 
- it("test for method getSelectedMarkets()",()=>{
+  it("test for method getSelectedMarkets()", () => {
     let reportIdService = TestBed.get(GeneratedReportService)
     let djangoService = TestBed.get(DjangoService)
-    let userMarketSpy = spyOn(djangoService,"ddm_rmp_user_market_selections_post_data").and.returnValue(of({}))
-    let reportIdSpy = spyOn(djangoService,"user_info_save_setting");
-    component.selectedItems = [1,2];
-    component.divisionselectedItems = [1,2]
+    let userMarketSpy = spyOn(djangoService, "ddm_rmp_user_market_selections_post_data").and.returnValue(of({}))
+    let reportIdSpy = spyOn(djangoService, "user_info_save_setting");
+    component.selectedItems = [1, 2];
+    component.divisionselectedItems = [1, 2]
     let dat = {
-      market_selection:["market_selection"],
-      division_selection:["division_selection"],
-      country_region_selection:["country_region_selection"],
-      region_zone_selection:["region_zone_selection"],
-      zone_area_selection:["zone_area_selection"],
-      bac_selection:["bac_selection"],
-      gmma_selection:["gmma_selection"],
-      lma_selection:["lma_selection"],
-      fan_selection:["fan_selection"],
-      saved_setting:component.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS'),
+      market_selection: ["market_selection"],
+      division_selection: ["division_selection"],
+      country_region_selection: ["country_region_selection"],
+      region_zone_selection: ["region_zone_selection"],
+      zone_area_selection: ["zone_area_selection"],
+      bac_selection: ["bac_selection"],
+      gmma_selection: ["gmma_selection"],
+      lma_selection: ["lma_selection"],
+      fan_selection: ["fan_selection"],
+      saved_setting: component.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS'),
     }
     component.selectedItems = dat.market_selection;
     component.divisionselectedItems = dat.division_selection;
@@ -641,7 +641,7 @@ describe('UserProfileComponent', () => {
     dat.saved_setting = component.date
     expect(component.market_selection).toEqual(dat);
     expect(userMarketSpy).toHaveBeenCalledWith(dat);
-    expect(reportIdSpy).toHaveBeenCalledWith({saved_setting:component.date})
+    expect(reportIdSpy).toHaveBeenCalledWith({ saved_setting: component.date })
     expect(component.changed_settings).toBeFalsy();
   })
 });

@@ -2,11 +2,8 @@ import {
   async,
   ComponentFixture,
   TestBed,
-  inject,
   fakeAsync,
-  tick,
-  getTestBed,
-  discardPeriodicTasks
+  tick
 } from '@angular/core/testing';
 import { RequestStatusComponent } from './request-status.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -23,22 +20,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpRequest } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { DjangoService } from 'src/app/rmp/django.service';
 import { AuthenticationService } from "src/app/authentication.service";
-import { of, BehaviorSubject } from 'rxjs';
-import { environment } from "../../../environments/environment";
+import { of } from 'rxjs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Location } from "@angular/common";
 import { Router } from "@angular/router";
-import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from '../../../utils';
-import { MaterialModule } from 'src/app/material.module';
 
 describe('RequestStatusComponent', () => {
   let location: Location;
@@ -710,7 +703,7 @@ describe('RequestStatusComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, AngularMultiSelectModule,
         RouterTestingModule.withRoutes([]),
-        QuillModule.forRoot(),MatProgressSpinnerModule,
+        QuillModule.forRoot(), MatProgressSpinnerModule,
         NgbTypeaheadModule, MatChipsModule, MatAutocompleteModule,
         MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatIconModule,
         NgbDatepickerModule, NgbTimepickerModule, HttpClientTestingModule,
@@ -1215,19 +1208,6 @@ describe('RequestStatusComponent', () => {
     component.getRequestId(element);
     expect(component.errorModalMessageRequest).toEqual("Assign an owner first to create the report");
     expect(component.getRequestId).toHaveBeenCalled();
-  }));
-
-  it('should execute postLink method', fakeAsync(() => {
-    const result = {
-      report_id: [{
-        report_list_id: 30
-      }]
-    };
-    // spyOn(component, 'postLink').and.callThrough(); //callThrough() 
-    let djangoService = fixture.debugElement.injector.get(DjangoService);
-    let mySpy = spyOn(djangoService, 'get_report_description').and.
-      returnValues(of(result));
-    component.postLink(3);
   }));
 
   it('should execute getLink method', fakeAsync(() => {

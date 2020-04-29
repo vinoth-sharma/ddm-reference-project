@@ -18,7 +18,7 @@
           <path id="back_icon" fill="#000000"
             d="M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M18,11H10L13.5,7.5L12.08,6.08L6.16,12L12.08,17.92L13.5,16.5L10,13H18V11Z" />
         </svg>
-        <button data-target="#helpModal" data-toggle="modal"  class="help-icon">
+        <button data-target="#helpModal" data-toggle="modal" class="help-icon">
           <a data-toggle="tooltip" title="HELP">
             <i id="ic" class="material-icons" style="font-size: 33px;">help_outline</i>
           </a>
@@ -26,8 +26,8 @@
       </div>
       <div class="row">
         <button (click)="validateInput()" data-toggle="modal" data-target="#order-review-selection" mat-button
-        class="review btn btn-primary">Review
-        And Submit</button>
+          class="review btn btn-primary">Review
+          And Submit</button>
       </div>
     </div>
   </div>
@@ -47,7 +47,7 @@
       </div>
       <div class="row" *ngFor="let radioButton of displaySummary; let i=index">
         <div *ngFor="let subelement of radioButton; let z=index">
-          <input type="radio" name="divRadio" [(ngModel)] = "otsObj.divisionRadio" value={{subelement.ds_desc}}
+          <input type="radio" name="divRadio" [(ngModel)]="otsObj.divisionRadio" value={{subelement.ds_desc}}
             [id]="'DR'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
         </div>
       </div>
@@ -58,15 +58,15 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <angular4-multiselect class="dropdown"  [data]="modelYearSelectedItems"
-            [(ngModel)]="selectedItemsModelYear" [settings]="dropdownSettingsModelYear"
-            (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+          <angular4-multiselect class="dropdown" [data]="modelYearSelectedItems" [(ngModel)]="selectedItemsModelYear"
+            [settings]="dropdownSettingsModelYear" (onSelect)="onItemSelect($event)"
+            (onSelectAll)="onSelectAll($event)">
           </angular4-multiselect>
         </div>
       </div>
       <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
         <div *ngFor="let subelement of radioButton; let z=index">
-          <input type="radio" name="modelRadio" [(ngModel)] = "otsObj.modelRadio" value={{subelement.ds_desc}}
+          <input type="radio" name="modelRadio" [(ngModel)]="otsObj.modelRadio" value={{subelement.ds_desc}}
             [id]="'MYdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
         </div>
       </div>
@@ -86,8 +86,8 @@
       </div>
       <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
         <div *ngFor="let subelement of radioButton; let z=index">
-          <input type="radio" name="vehicleRadio" [(ngModel)] = "otsObj.alloRadio"
-            value={{subelement.ds_desc}} [id]="'VRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
+          <input type="radio" name="vehicleRadio" [(ngModel)]="otsObj.alloRadio" value={{subelement.ds_desc}}
+            [id]="'VRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
         </div>
       </div>
     </div>
@@ -105,10 +105,9 @@
         </tHead>
         <tbody style="padding: 0%; margin: 0%;">
           <tr class="d-flex" *ngFor="let element of typeOfData; let i = index" style="padding:0.5%;">
-            <!-- <td class="col-sm-1" style=""> -->
-            <!-- </td> -->
             <td class="col-sm-6">
-              <input class="tod_checkbox_group" type="checkbox" value="{{element.ddm_rmp_lookup_ots_type_data_id}}" id="tod_check{{i}}" (change)="Check($event, i, element)">
+              <input class="tod_checkbox_group" type="checkbox" value="{{element.ddm_rmp_lookup_ots_type_data_id}}"
+                id="tod_check{{i}}" (change)="Check($event, i, element)">
 
               <b style="margin-left:10px">{{element.type_data_desc}}</b>
             </td>
@@ -120,7 +119,6 @@
               <input type="radio" class="'DEinput'+j" [name]="'name'+i" [id]="'disSum'+i+j" [value]="subelement.ds_desc"
                 (change)="distributionEntityRadio(i,element,$event)" [disabled]="disableCheck(i)">
               &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
-              <!-- [checked]="Check(i,element,subelement.ds_desc)" -->
             </td>
           </tr>
           </td>
@@ -130,23 +128,22 @@
               <b>Order Type</b>
             </td>
             <td class="col-sm-4">
-              <tr>
-                <angular4-multiselect class="dropdown" [data]="orderTypeSelecteditems"
-                  [(ngModel)]="selectedItemsOrderType" [settings]="dropdownSettingsOrderType"
-                  (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
-                </angular4-multiselect>  
-              </tr>
-              <tr>
-                <i style="font-size: 12px;">For Fleet you must specify Order Type, and for others it is optional</i>
-              </tr>
-            </td>
-            <td class="col-sm-1"></td>
-            <td class="col-sm-4" style="padding:0%;margin: 0%;">
+          <tr>
+            <angular4-multiselect class="dropdown" [data]="orderTypeSelecteditems" [(ngModel)]="selectedItemsOrderType"
+              [settings]="dropdownSettingsOrderType" (onSelect)="onItemSelect($event)"
+              (onSelectAll)="onSelectAll($event)">
+            </angular4-multiselect>
+          </tr>
+          <tr>
+            <i style="font-size: 12px;">For Fleet you must specify Order Type, and for others it is optional</i>
+          </tr>
+          </td>
+          <td class="col-sm-1"></td>
+          <td class="col-sm-4" style="padding:0%;margin: 0%;">
             <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let i=index">
               <td *ngFor="let subelement of radioButton; let j=index">
                 <input type="radio" name="orderRadio" value={{subelement.ds_desc}}
-                  (change)="OrderRadio($event.target.value)" [(ngModel)] = "otsObj.orderTypeRadio"
-                  [id]="'disSumOT'+j">
+                  (change)="OrderRadio($event.target.value)" [(ngModel)]="otsObj.orderTypeRadio" [id]="'disSumOT'+j">
                 &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
               </td>
             </tr>
@@ -164,17 +161,17 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <angular4-multiselect class="dropdown"  [data]="allocationFinalList"
-                [(ngModel)]="selectedItemsAllocation" [settings]="dropdownSettingsAllocation"
-                (onSelect)="allocationItemsSelect($event)" (onDeSelect)="allocationItemDeSelect($event)"
-                (onDeSelectAll)="allocationDeSelectAll($event)" (onSelectAll)="allocationSelectAll($event)">
+              <angular4-multiselect class="dropdown" [data]="allocationFinalList" [(ngModel)]="selectedItemsAllocation"
+                [settings]="dropdownSettingsAllocation" (onSelect)="allocationItemsSelect($event)"
+                (onDeSelect)="allocationItemDeSelect($event)" (onDeSelectAll)="allocationDeSelectAll($event)"
+                (onSelectAll)="allocationSelectAll($event)">
               </angular4-multiselect>
             </div>
           </div>
           <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
             <div *ngFor="let subelement of radioButton; let z=index">
-              <input type="radio" name="alloRadio" [(ngModel)]="otsObj.alloRadio"
-                value={{subelement.ds_desc}} [id]="'ARdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
+              <input type="radio" name="alloRadio" [(ngModel)]="otsObj.alloRadio" value={{subelement.ds_desc}}
+                [id]="'ARdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
             </div>
           </div>
         </div>
@@ -187,16 +184,15 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <angular4-multiselect class="dropdown" [data]="merchandizeFinalList"
-                [(ngModel)]="merchandizeItemsSelect" [settings]="dropdownSettingsMerchandize">
+              <angular4-multiselect class="dropdown" [data]="merchandizeFinalList" [(ngModel)]="merchandizeItemsSelect"
+                [settings]="dropdownSettingsMerchandize">
               </angular4-multiselect>
             </div>
           </div>
           <div class="row pad5" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
             <div *ngFor="let subelement of radioButton; let z=index">
-              <input type="radio" name="merchradio" [(ngModel)]="otsObj.merchRadio"
-                value={{subelement.ds_desc}} (change)="MerchandizeRadio($event.target.value)"
-                [id]="'MRdisSum'+i+z">&nbsp;{{subelement.ds_desc}}
+              <input type="radio" name="merchradio" [(ngModel)]="otsObj.merchRadio" value={{subelement.ds_desc}}
+                (change)="MerchandizeRadio($event.target.value)" [id]="'MRdisSum'+i+z">&nbsp;{{subelement.ds_desc}}
               &nbsp;&nbsp;
             </div>
           </div>
@@ -228,8 +224,9 @@
               (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp;
             <div>
-              <select name="Target" id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (change)="selectionChanged(element.ddm_rmp_lookup_ots_checkbox_values_id,targetValue)" 
-              [(ngModel)]="targetValue" style="border-radius:5px;" [disabled]="targetProd">
+              <select name="Target" id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                (change)="selectionChanged(element.ddm_rmp_lookup_ots_checkbox_values_id,targetValue)"
+                [(ngModel)]="targetValue" style="border-radius:5px;" [disabled]="targetProd">
                 <option disabled selected value> --select-- </option>
                 <option *ngFor="let ele of dropdownOptions" value={{ele}}>{{ele}}</option>
               </select>
@@ -238,22 +235,20 @@
               <form [formGroup]="myForm" class="target-date">
                 <mat-form-field>
                   <mat-label>Choose a start date</mat-label>
-                  <input matInput [matDatepicker]="startDatepicker"  
-                         (dateInput)="startDateEvent('input', $event)" 
-                         formControlName="startDate">
+                  <input matInput [matDatepicker]="startDatepicker" (dateInput)="startDateEvent('input', $event)"
+                    formControlName="startDate">
                   <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
                   <mat-datepicker [dateClass]="dateClass" #startDatepicker></mat-datepicker>
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>Choose a end date</mat-label>
-                  <input matInput [matDatepicker]="endDatepicker" 
-                        (dateInput)="endDateEvent('input', $event)" 
-                        formControlName="endDate" [errorStateMatcher]="matcher">
+                  <input matInput [matDatepicker]="endDatepicker" (dateInput)="endDateEvent('input', $event)"
+                    formControlName="endDate" [errorStateMatcher]="matcher">
                   <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
                   <mat-datepicker [dateClass]="dateClass" #endDatepicker></mat-datepicker>
                   <mat-error *ngIf="myForm.hasError('endDateLessThanStartDate')">
-                        End date cannot be earlier than start date
-                   </mat-error>
+                    End date cannot be earlier than start date
+                  </mat-error>
                 </mat-form-field>
               </form>
             </div>
@@ -342,14 +337,14 @@
         <tbody>
           <tr class="d-flex">
             <td class="col-sm-6">
-              <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
-                <td *ngIf="i%2==0">
-                  <input id="gross" (click)="CheckboxCheck(element,$event)"
-                    value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
-                  <span [title]="element.tooltip?element.tooltip:''">{{element.field_values}}</span>
-                </td>
-              </tr>
+          <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
+            <td *ngIf="i%2==0">
+              <input id="gross" (click)="CheckboxCheck(element,$event)"
+                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
+              <span [title]="element.tooltip?element.tooltip:''">{{element.field_values}}</span>
             </td>
+          </tr>
+          </td>
           <td class="col-sm-6">
             <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
               <td *ngIf="i%2!=0">
@@ -372,29 +367,27 @@
         <tbody>
           <tr class="d-flex" *ngFor="let element of dospDataAvailable">
             <td class="col-sm-12">
-              <input (click)="CheckboxCheck(element,$event)"
-                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
-                type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
+              <input (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                class="chk" type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
           </tr>
           <tr class="d-flex" *ngIf="!dosp_calendar_flag">
             <td class="col-sm-6">
-                <mat-form-field>
-                  <mat-label>Start Date:</mat-label>
-                  <input matInput [matDatepicker]="fromDpDOSP" [formControl]="fromDateDOSP"
-                         (dateChange)="onDOSPDateSelection()" textEditable="false">
-                  <mat-datepicker-toggle matSuffix [for]="fromDpDOSP"></mat-datepicker-toggle>
-                  <mat-datepicker #fromDpDOSP></mat-datepicker>
-                </mat-form-field>
+              <mat-form-field>
+                <mat-label>Start Date:</mat-label>
+                <input matInput [matDatepicker]="fromDpDOSP" [formControl]="fromDateDOSP"
+                  (dateChange)="onDOSPDateSelection()" textEditable="false">
+                <mat-datepicker-toggle matSuffix [for]="fromDpDOSP"></mat-datepicker-toggle>
+                <mat-datepicker #fromDpDOSP></mat-datepicker>
+              </mat-form-field>
             </td>
             <td class="col-sm-6">
-                <mat-form-field >
-                  <mat-label>End Date:</mat-label>
-                  <input matInput [matDatepicker]="toDpDOSP" [formControl]="toDateDOSP" 
-                          [disabled]="!fromDateDOSP.value" [min]="minDate" textEditable="false"
-                         (dateChange)="onDOSPDateSelection()">
-                  <mat-datepicker-toggle matSuffix [for]="toDpDOSP"></mat-datepicker-toggle>
-                  <mat-datepicker #toDpDOSP></mat-datepicker>
-                </mat-form-field>
+              <mat-form-field>
+                <mat-label>End Date:</mat-label>
+                <input matInput [matDatepicker]="toDpDOSP" [formControl]="toDateDOSP" [disabled]="!fromDateDOSP.value"
+                  [min]="minDate" textEditable="false" (dateChange)="onDOSPDateSelection()">
+                <mat-datepicker-toggle matSuffix [for]="toDpDOSP"></mat-datepicker-toggle>
+                <mat-datepicker #toDpDOSP></mat-datepicker>
+              </mat-form-field>
             </td>
           </tr>
         </tbody>
@@ -436,9 +429,9 @@
           <tr class="row order-event">
             <div class="col-sm-12">
               <td>Order Event:</td>
-              <angular4-multiselect class="dropdown keyData"  [data]="orderEvent"
-                [(ngModel)]="selectedItemsOrderEvent" [settings]="dropdownSettingsOrderEvent"
-                (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+              <angular4-multiselect class="dropdown keyData" [data]="orderEvent" [(ngModel)]="selectedItemsOrderEvent"
+                [settings]="dropdownSettingsOrderEvent" (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)">
               </angular4-multiselect>
             </div>
           </tr>
@@ -449,7 +442,8 @@
           </tr>
           <tr class="d-flex">
             <td class="col-sm-12" style="padding-left:4%;">
-              <input class="other" id="otherText" type="text" [(ngModel)]="otsObj.otherDesc" (blur)="other_desc($event)" value="">
+              <input class="other" id="otherText" type="text" [(ngModel)]="otsObj.otherDesc" (blur)="other_desc($event)"
+                value="">
             </td>
           </tr>
         </tbody>
@@ -468,27 +462,22 @@
           </tr>
           <tr class="d-flex" *ngIf="selectedItemsOrderEvent.length>0">
             <td class="col-sm-6">
-                <mat-form-field >
-                  <mat-label>Start Date:</mat-label>
-                  <input matInput [matDatepicker]="fromOrderEvent" [formControl]="fromDate" 
-                          textEditable="false"
-                         (dateChange)="onOrderEventdateSelection()">
-                  <mat-datepicker-toggle matSuffix [for]="fromOrderEvent"></mat-datepicker-toggle>
-                  <mat-datepicker #fromOrderEvent></mat-datepicker>
-                </mat-form-field>
-
-
-
+              <mat-form-field>
+                <mat-label>Start Date:</mat-label>
+                <input matInput [matDatepicker]="fromOrderEvent" [formControl]="fromDate" textEditable="false"
+                  (dateChange)="onOrderEventdateSelection()">
+                <mat-datepicker-toggle matSuffix [for]="fromOrderEvent"></mat-datepicker-toggle>
+                <mat-datepicker #fromOrderEvent></mat-datepicker>
+              </mat-form-field>
             </td>
             <td class="col-sm-6">
-                <mat-form-field >
-                  <mat-label>End Date:</mat-label>
-                  <input matInput [matDatepicker]="toOrderEvent" [formControl]="toDate" 
-                          [disabled]="!fromDate.value" [min]="minOrderEventDate" textEditable="false"
-                         (dateChange)="onOrderEventdateSelection()">
-                  <mat-datepicker-toggle matSuffix [for]="toOrderEvent"></mat-datepicker-toggle>
-                  <mat-datepicker #toOrderEvent></mat-datepicker>
-                </mat-form-field>
+              <mat-form-field>
+                <mat-label>End Date:</mat-label>
+                <input matInput [matDatepicker]="toOrderEvent" [formControl]="toDate" [disabled]="!fromDate.value"
+                  [min]="minOrderEventDate" textEditable="false" (dateChange)="onOrderEventdateSelection()">
+                <mat-datepicker-toggle matSuffix [for]="toOrderEvent"></mat-datepicker-toggle>
+                <mat-datepicker #toOrderEvent></mat-datepicker>
+              </mat-form-field>
             </td>
           </tr>
         </tbody>
@@ -568,8 +557,8 @@
           </div>
           <div class="col-sm-12 modal-sub-heading">Vehicle Event Status</div>
           <div class="col-sm-10"></div>
-          <div class="col-sm-1"><i id="ic" class="material-icons"
-              style="margin-top: 10px;" (click)='captureScreen()'>get_app</i></div>
+          <div class="col-sm-1"><i id="ic" class="material-icons" style="margin-top: 10px;"
+              (click)='captureScreen()'>get_app</i></div>
           <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal"
               (click)=changeReportMessage()>x</button></div>
         </div>
@@ -721,8 +710,8 @@
 
 <!------------------------------------Help Modal------------------------------ -->
 
-<div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
@@ -744,15 +733,15 @@
             </button>
           </div>
           <div class="quillEditor">
-              <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' 
-                            [readOnly]='readOnlyContentHelper'
-                            (onContentChanged)='textChanged($event)'></quill-editor>
+            <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'
+              (onContentChanged)='textChanged($event)'></quill-editor>
           </div>
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" style="width: 20%;padding: 4px;" (click)="edit_True()" class="btn btn-secondary" data-dismiss="modal">
-            Close
+        <button type="button" id="modal_close_button" style="width: 20%;padding: 4px;" (click)="edit_True()"
+          class="btn btn-secondary" data-dismiss="modal">
+          Close
         </button>
       </div>
     </div>
@@ -917,7 +906,6 @@
 </pre>
 
 <!-----------------------Error Modal----------------------->
-<!-- <a id="errorOtsTrigger" role="button" data-toggle="modal" data-target="#errorOtsRequest" style="display:none">Error</a> -->
 <div id="errorOtsRequest" class="modal fade" role="dialog" tabindex="-1">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

@@ -17,7 +17,6 @@ import { environment } from "./../../../environments/environment"
 import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from 'src/utils';
 declare var $: any;
-declare var jsPDF: any;
 
 @Component({
   selector: 'app-request-status',
@@ -33,7 +32,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public comment_text: any;
   public divDataSelected: any;
   public printDiv: any;
-  // public captureScreen: any;
+  public captureScreen: any;
   public param = "open_count";
   public orderType = 'desc';
   public fieldType = 'string';
@@ -1086,23 +1085,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     else {
       this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.router.navigate(["user/submit-request/select-report-criteria"]);
-      // var i = 0
-      // if (this.finalData[0].status == "Incomplete") {
-      //   this.generated_id_service.changeUpdate(true)
-      //   this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-      //   this.router.navigate(["user/submit-request/select-report-criteria"]);
-      // }
-      // else if(this.finalData[0].status == "Active" || this.finalData[0].status == "Pending"){
-      //   this.generated_id_service.changeUpdate(true)
-      //   this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-      //   this.router.navigate(["user/submit-request/select-report-criteria"]);
-      // }
-      // else {
-      //   this.generated_id_service.changeUpdate(false)
-      //   this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-      //   this.router.navigate(["user/submit-request/select-report-criteria"]);
-      // }
-
     }
   }
 
@@ -1169,22 +1151,15 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
   public mimicODC(OdcRequestId) {
     let onDemandConfigurableRequestId = OdcRequestId.map(t => t.ddm_rmp_post_report_id);
-
     Utils.showSpinner();
     // using onDemandConfigurableRequestId[0] because we've an array which causes error later
     this.django.get_report_description(onDemandConfigurableRequestId[0]).subscribe(response => {
-      // let isODC = this.summary["frequency_data"][0]["description"];
       let isODC = response["frequency_data"][0]['select_frequency_values'];
       this.summary = response;
-      //or
-      // let isODC = this.summary["frequency_value"][0]['frequency']
-
       if (isODC === "On Demand Configurable" || isODC === "On Demand" ) {
-        // this.sharedDataService.setRequestIds(onDemandConfigurableRequestId);
         this.sharedDataService.setRequestId(onDemandConfigurableRequestId[0]);
         this.sharedDataService.setObjectExplorerPathValue(false);
         Utils.hideSpinner();
-        // this.router.navigate(['../../semantic/sem-reports/home']);
       }
       else {
         Utils.hideSpinner();
@@ -1289,55 +1264,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     'assigned_to': this.searchText, 
     'status': this.searchText
   };
-  
-
-  // globalSearch(event) {
-  //   this.searchText = event.target.value;
-  //   this.searchGlobalObj["ddm_rmp_post_report_id"] = event.target.value;
-  //   this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
-  //   this.searchGlobalObj["created_on"] = event.target.value;
-  //   this.searchGlobalObj["title"] = event.target.value;
-  //   this.searchGlobalObj["requestor"] = event.target.value;
-  //   this.searchGlobalObj["on_behalf_of"] = event.target.value;
-  //   this.searchGlobalObj["assigned_to"] = event.target.value;
-  //   this.searchGlobalObj['status'] = event.target.value;
-  //   this.searchObj = this.searchGlobalObj;
-  //   setTimeout(() => {
-  //     this.reports = this.reports.slice();
-  //   }, 0);
-  // }
-
-  // onItemSelectStatus(event, status) {
-  //   this.searchGlobalObj['status'] = event.status
-  //   this.searchGlobalObj["ddm_rmp_post_report_id"] = event.status;
-  //   this.searchGlobalObj["ddm_rmp_status_date"] = event.status;
-  //   this.searchGlobalObj["created_on"] = event.status;
-  //   this.searchGlobalObj["title"] = event.status;
-  //   this.searchGlobalObj["requestor"] = event.status;
-  //   this.searchGlobalObj["on_behalf_of"] = event.status;
-  //   this.searchGlobalObj["assigned_to"] = event.status;
-
-  //   this.searchObj = this.searchGlobalObj;
-  //   setTimeout(() => {
-  //     this.reports = this.reports.slice();
-  //   }, 0);
-  // }
-
-  // onItemDeSelectStatus(event, status) {
-  //   this.searchGlobalObj['status'] = "";
-  //   this.searchGlobalObj["ddm_rmp_post_report_id"] = "";
-  //   this.searchGlobalObj["ddm_rmp_status_date"] = "";
-  //   this.searchGlobalObj["created_on"] = "";
-  //   this.searchGlobalObj["title"] = "";
-  //   this.searchGlobalObj["requestor"] = "";
-  //   this.searchGlobalObj["on_behalf_of"] = "";
-  //   this.searchGlobalObj["assigned_to"] = "";
-
-  //   this.searchObj = this.searchGlobalObj;
-  //   setTimeout(() => {
-  //     this.reports = this.reports.slice();
-  //   }, 0);
-  // }
 
   public filterData() {
     if (this.statusFilter.length) 
@@ -1400,28 +1326,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     //extract values andthen update ongoing status and then call refresh api
     // this.cancel_report
   }
-
-  public captureScreen() {
-    var specialElementHandlers = {
-      '#editor': function (element, renderer) {
-        return true;
-      }
-    };
-    var doc = new jsPDF();
-    doc.setFont("arial");
-    let margins = {
-                    top: 15,
-                    bottom: 0,
-                    left: 18,
-                    width: 170
-                  };
-    doc.fromHTML(
-      $('#print').html(), margins.left,margins.top,
-      { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
-      function () { doc.save('sample-file1.pdf'); },margins
-    );
-  }
-
 
   public onPaginationChange(event){
     this.paginatorLowerValue = event.pageIndex * event.pageSize;

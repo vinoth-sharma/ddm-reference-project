@@ -35,7 +35,6 @@ export class MainMenuLandingPageComponent implements OnInit {
   user_role: string = '';
   readOnlyContentHelper: boolean = true;
   enableUpdateData: boolean = false;
-  // LinkTitleURL: any;
 
   config = {
     toolbar: [

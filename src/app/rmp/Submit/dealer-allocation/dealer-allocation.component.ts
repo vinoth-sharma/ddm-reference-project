@@ -821,7 +821,6 @@ export class DealerAllocationComponent implements OnInit {
         return true;
       }
     };
-    console.log(specialElementHandlers, 'specialElementHandlers----');
     var doc = new jsPDF();
     doc.setFont("arial");
     doc.lineHeightProportion = 2;
@@ -830,7 +829,6 @@ export class DealerAllocationComponent implements OnInit {
       { 'width': 170, 'elementHandlers': specialElementHandlers },
       function () { doc.save('sample-file.pdf'); }
     )
-    console.log(doc, 'document----');
   }
 
 

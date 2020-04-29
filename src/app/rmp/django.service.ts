@@ -2,7 +2,7 @@
 import {map, catchError} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from "../../environments/environment";
+import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -22,16 +22,15 @@ export class DjangoService {
 
   getDistributionList(user): Observable<any>{
     return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_search=` + user).pipe(
-    map(res=>{
-      console.log(res['data']);
-      
-      if(res['data']){
+    map(res => {
+      if (res['data']) {
         return res['data'].filter(v => v.toLowerCase().indexOf(user.toLowerCase()) > -1)
+      } else {
+        return [];
       }
-      else return [];
     }),catchError(error =>{
-      return []
-    }))
+      return [];
+    }));
   }
 
   getNewData() {
@@ -153,8 +152,6 @@ export class DjangoService {
     return this.httpClient.put(`${environment.baseUrl}RMP/frequency_action/`, freq)
   }
 
- 
-
   //File upload functionality
   ddm_rmp_file_data(filedata) {
     return this.httpClient.post(`${environment.baseUrl}RMP/upload_documents/`, filedata)
@@ -210,7 +207,6 @@ export class DjangoService {
   }
 
   report_distribution_list(dist_list) {
-    console.log(dist_list)
     return this.httpClient.put(`${environment.baseUrl}RMP/dl_list_action/`, dist_list)
   }
 
@@ -278,19 +274,13 @@ export class DjangoService {
   ddm_rmp_admin_documents_delete(id) {
     return this.httpClient.delete(`${environment.baseUrl}RMP/admin_document/?ddm_rmp_desc_text_admin_documents_id=` + id)
   }
+
   ddm_rmp_main_menu_description_text_delete(id) {
     return this.httpClient.delete(`${environment.baseUrl}RMP/main_menu_description_text/?ddm_rmp_main_menu_description_text_id=` + id)
   }
-  metrics_aggregate(obj) {
-    return this.httpClient.get(`${environment.baseUrl}RMP/matrix_of_report/`, {
-      params: {
-        'start_date': obj.start_date,
-        'end_date' : obj.end_date,
-        'users_table_id' : obj.users_table_id,
-        'role_id' : obj.role_id
-      }
-    })
+
+  update_rmpReports_DDMName(changedNameObject){
+    return this.httpClient.put(`${environment.baseUrl}RMP/update_ddm_name/`,changedNameObject)
   }
-  
 }
 

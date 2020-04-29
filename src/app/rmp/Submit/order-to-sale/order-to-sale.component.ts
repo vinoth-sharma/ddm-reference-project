@@ -15,8 +15,13 @@ import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import { FormControl } from '@angular/forms';
 import * as _moment from 'moment';
+
+import { MatCalendarCellCssClasses } from '@angular/material/datepicker';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { FormControl, FormGroupDirective, 
+         NgForm, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 const moment = _moment;
 const MY_FORMATS = {
@@ -264,6 +269,16 @@ export class OrderToSaleComponent implements OnInit {
   readOnlyContentHelper = true;
   enableUpdateData = false;
 
+  public myForm: FormGroup;
+  public matcher = new MyErrorStateMatcher();
+  public targetStart = "";
+  public targetend = "";
+  public dateClass: any;
+  public targetStartDate: any;
+  public targetEndDate: any; 
+  public targetStartMonth: any;
+  public targetEndMonth: any;
+
   config = {
     toolbar: [
       ['bold','italic','underline','strike'],
@@ -283,7 +298,24 @@ export class OrderToSaleComponent implements OnInit {
   constructor(public router: Router,
     public django: DjangoService, public report_id_service: GeneratedReportService, public auth_service: AuthenticationService,
     public DatePipe: DatePipe, public dataProvider: DataProviderService, public toastr: NgToasterComponent,
-    public reportDataService: ReportCriteriaDataService) {
+    public reportDataService: ReportCriteriaDataService,
+    private formBuilder: FormBuilder) {
+      this.myForm = this.formBuilder.group({
+        'startDate': [''],
+        'endDate': ['']
+      }, { validator: this.checkDates });
+  
+      this.myForm.setValue({
+        startDate: this.targetStart,
+        endDate: this.targetend
+      });
+  }
+
+  checkDates(group: FormGroup) {
+    if (group.controls.endDate.value < group.controls.startDate.value) {
+      return { endDateLessThanStartDate: true }
+    }
+    return null;
   }
 
   notify() {
@@ -381,6 +413,56 @@ export class OrderToSaleComponent implements OnInit {
 
     this.getOrderToSaleContent();
   }
+
+    // select from date
+    public startDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+      this.targetStart = new Date(this.dateFormat(event.value)).toISOString();
+      this.finalData['tpd_start_date'] = this.dateFormat(event.value);
+      this.targetStartDate = new Date(event.value).getDate();
+      this.targetStartMonth = new Date(event.value).getMonth()+1;
+      this.markDates();
+    }
+  
+    // select to date
+    public endDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+      this.targetEndDate = new Date(event.value).getDate();
+      this.targetend = new Date(this.dateFormat(event.value)).toISOString();
+      this.finalData['tpd_end_date']  = this.dateFormat(event.value);
+      this.targetEndMonth = new Date(event.value).getMonth()+1;
+      this.markDates();
+    }
+  
+    // heighligth background color dates from fromDate to endDate
+    public markDates(){
+      if(this.targetStartMonth && this.targetEndMonth) { 
+        this.dateClass = (d: Date): MatCalendarCellCssClasses => {
+          const date = d.getDate();
+          const m = d.getMonth()+1;
+          if(m === this.targetStartMonth && m === this.targetEndMonth) {
+               if(date > this.targetStartDate && date < this.targetEndDate) 
+                  return 'custom-date-class';
+          } else if(m >= this.targetStartMonth && m <= this.targetEndMonth) {
+              if(m > this.targetStartMonth && m < this.targetEndMonth) 
+                  return 'custom-date-class';
+              else if(m === this.targetStartMonth) {
+                  if(date > this.targetStartDate) 
+                    return 'custom-date-class';
+              } else if(m === this.targetEndMonth) {
+                      if(date < this.targetEndDate) 
+                        return 'custom-date-class';
+              }
+          }
+        };
+      }
+    }
+  
+    // formating date 
+    public dateFormat(str:any) {
+      var date = new Date(str),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    }
 
   textChanged(event) {
     this.textChange = true;
@@ -1796,5 +1878,14 @@ export class OrderToSaleComponent implements OnInit {
       enableSearchFilter: true
     };
 
+  }
+}
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const invalidCtrl = !!(control && control.invalid);
+    const invalidParent = !!(control && control.parent && control.parent.invalid);
+
+    return (invalidCtrl || invalidParent);
   }
 }

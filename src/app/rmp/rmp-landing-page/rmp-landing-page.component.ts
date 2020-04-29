@@ -76,6 +76,7 @@ export class RmpLandingPageComponent implements OnInit{
         });
   }
 
+  // checking date
   public checkDates(group: FormGroup) {
     if (group.controls.endDate.value < group.controls.startDate.value) {
       return { endDateLessThanStartDate: true }
@@ -165,8 +166,7 @@ export class RmpLandingPageComponent implements OnInit{
     if (this.note_status) {
       if(today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
           $('#DisplayNotesModal').modal('show');
-    } else 
-    $('#display-notes-status').prop("checked", true);
+    } else $('#display-notes-status').prop("checked", true);
   }
 
   // select from date
@@ -254,14 +254,15 @@ export class RmpLandingPageComponent implements OnInit{
     })
   }
 
-public closeNotes() {
-  if (this.info.data.admin_note[0]) {
-      this.db_start_date = this.info.data.admin_note[0].notes_start_date;
-      this.db_end_date = this.info.data.admin_note[0].notes_end_date;
-      this.admin_notes = this.info.data.admin_note[0].notes_content;
-      this.note_status = this.info.data.admin_note[0].admin_note_status;
-  }
-}  
+  // reset important parameters
+  public closeNotes() {
+    if (this.info.data.admin_note[0]) {
+        this.db_start_date = this.info.data.admin_note[0].notes_start_date;
+        this.db_end_date = this.info.data.admin_note[0].notes_end_date;
+        this.admin_notes = this.info.data.admin_note[0].notes_content;
+        this.note_status = this.info.data.admin_note[0].admin_note_status;
+    }
+  }  
 
 }
 

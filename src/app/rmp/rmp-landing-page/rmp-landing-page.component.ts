@@ -88,7 +88,6 @@ export class RmpLandingPageComponent implements OnInit{
     this.getCurrentLookUpTable();
     this.report_id_service.buttonStatus.subscribe(showButton => this.showButton = showButton);
   }
-
   // adding new important notes 
   public addDocument() {
     let notes_details = {
@@ -124,7 +123,7 @@ export class RmpLandingPageComponent implements OnInit{
 
   // to clear the important notes content
   public clearMessage() {
-    $("#notes_content").val('');
+    this.admin_notes = '';
   }
 
 // to get the list of previous message of important notes
@@ -254,6 +253,15 @@ export class RmpLandingPageComponent implements OnInit{
       }
     })
   }
+
+public closeNotes() {
+  if (this.info.data.admin_note[0]) {
+      this.db_start_date = this.info.data.admin_note[0].notes_start_date;
+      this.db_end_date = this.info.data.admin_note[0].notes_end_date;
+      this.admin_notes = this.info.data.admin_note[0].notes_content;
+      this.note_status = this.info.data.admin_note[0].admin_note_status;
+  }
+}  
 
 }
 

@@ -39,6 +39,7 @@ import { QuillModule } from "ngx-quill";
 // import { MaterialModule } from "../material.module";
 import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
 import { CommonModuleDdmRmp } from "../custom-directives/common.module";
+// import { DatePickerComponent } from './date-picker/date-picker.component';
 
 @NgModule({
   declarations: [

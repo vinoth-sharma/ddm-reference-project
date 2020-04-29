@@ -107,6 +107,14 @@ export class MetricsComponent implements OnInit {
       ['image']
     ]
   };
+
+  // paginator params
+   public paginatorlength = 100;
+   public paginatorpageSize = 10;
+   public paginatorOptions :number[] = [5,10,25,100] 
+   public paginatorLowerValue = 0;
+   public paginatorHigherValue = 10;
+ // 
   
   constructor(public django: DjangoService, 
               public auth_service: AuthenticationService, 
@@ -178,32 +186,6 @@ export class MetricsComponent implements OnInit {
       if (list) {
         this.reports = list['data'];
         this.dataLoad = true;
-
-        // this.reports.forEach(element=>{
-        //   if(element['status'] == 'Cancelled'){
-        //     element['other'] = element.status;
-        //   }
-        //   else{
-        //     if(element['freq'] == 'One time'){
-        //       element['other'] = element.status;
-        //     }
-        //     else if(element['freq'] == 'Recurring'){
-        //       element['other'] = 'Active'
-        //     }
-        //     else if(element['freq'] == 'On Demand' && element['frequency_data'].length > 1){
-        //       element['other'] = 'Active'
-        //     }
-        //     else if(element['freq'] == 'On Demand Configurable' && element['frequency_data'].length > 1){
-        //       element['other'] = 'Active'
-        //     }
-        //     else if(element['freq'] == 'On Demand' && element['frequency_data'].length == 1){
-        //       element['other'] = 'Completed'
-        //     }
-        //     else if(element['freq'] == 'On Demand Configurable' && element['frequency_data'].length == 1){
-        //       element['other'] = 'Completed'
-        //     }
-        //   }
-        // })
 
         this.reports.map(reportRow => {
           reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy');
@@ -347,7 +329,6 @@ export class MetricsComponent implements OnInit {
     this.django.metrics_aggregate(this.obj).subscribe(list => {
       this.metrics = list;
       this.totalReports = this.metrics['data']['report_count'];
-      //this.averageByDay = this.metrics['avg_by_days']
       this.reportByDay = this.metrics['data']['report_by_weekday'];
       this.reportByMonth = this.metrics['data']['report_by_month'];
       this.reportByOrg = this.metrics['data']['report_by_organization'];
@@ -374,4 +355,9 @@ export class MetricsComponent implements OnInit {
       [obj]: event.target.value
     }
   }
+
+  public onPaginationChange(event){
+    this.paginatorLowerValue = event.pageIndex * event.pageSize;
+    this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
+    }
 }

@@ -76,7 +76,7 @@
                 <form [formGroup]="myForm" class="target-date">
                   <mat-form-field>
                     <mat-label>Choose a start date</mat-label>
-                    <input #startDatepicker1 matInput [matDatepicker]="startDatepicker"  
+                    <input matInput [matDatepicker]="startDatepicker"  
                            (dateInput)="startDateEvent('input', $event)" 
                            formControlName="startDate">
                     <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
@@ -84,7 +84,7 @@
                   </mat-form-field>
                   <mat-form-field>
                     <mat-label>Choose a end date</mat-label>
-                    <input #endDatepicker1 matInput [matDatepicker]="endDatepicker" 
+                    <input matInput [matDatepicker]="endDatepicker" 
                           (dateInput)="endDateEvent('input', $event)" 
                           formControlName="endDate" [errorStateMatcher]="matcher">
                     <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
@@ -131,7 +131,9 @@
         </div>
         <div class="modal-footer">
           <p class="mandatory-fields" style="float:left">*Required Fields</p>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)='closeNotes()'>
+            Close
+          </button>
           <button type="submit" id="modal_load_button" class="btn btn-success" (click)="addDocument()"
             data-toggle="modal" data-backdrop="static" data-keyboard="false">Save changes</button>
         </div>

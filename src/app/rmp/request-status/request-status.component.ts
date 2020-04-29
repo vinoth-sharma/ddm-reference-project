@@ -1,5 +1,4 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
-declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
@@ -17,6 +16,8 @@ import { SemanticReportsService } from '../../semantic-reports/semantic-reports.
 import { environment } from "./../../../environments/environment"
 import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from 'src/utils';
+declare var $: any;
+declare var jsPDF: any;
 
 @Component({
   selector: 'app-request-status',
@@ -32,14 +33,13 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public comment_text: any;
   public divDataSelected: any;
   public printDiv: any;
-  public captureScreen: any;
+  // public captureScreen: any;
   public param = "open_count";
   public orderType = 'desc';
   public fieldType = 'string';
   public isButton: any;
   public scheduleDataToBeSent:any = {};
   public reportListIdToSchedule : number = null;
-
   public enableUpdateData = false;
   public textChange = false;
   public StatusSelectedItem = [];
@@ -1399,6 +1399,27 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     })
     //extract values andthen update ongoing status and then call refresh api
     // this.cancel_report
+  }
+
+  public captureScreen() {
+    var specialElementHandlers = {
+      '#editor': function (element, renderer) {
+        return true;
+      }
+    };
+    var doc = new jsPDF();
+    doc.setFont("arial");
+    let margins = {
+                    top: 15,
+                    bottom: 0,
+                    left: 18,
+                    width: 170
+                  };
+    doc.fromHTML(
+      $('#print').html(), margins.left,margins.top,
+      { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
+      function () { doc.save('sample-file1.pdf'); },margins
+    );
   }
 
 

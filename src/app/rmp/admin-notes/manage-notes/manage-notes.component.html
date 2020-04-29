@@ -12,7 +12,7 @@
         <mat-label>Start Date:</mat-label>
         <input matInput [matDatepicker]="noteDisplayFrom" [formControl]="admin_note_obj.displayFromDate" 
                 textEditable="false" [min]="minFromDate"
-               (dateChange)="dateSelectionDone()" required>
+               (dateChange)="dateSelectionDone($event)" required>
         <mat-datepicker-toggle matSuffix [for]="noteDisplayFrom"></mat-datepicker-toggle>
         <mat-datepicker #noteDisplayFrom></mat-datepicker>
       </mat-form-field>
@@ -23,7 +23,7 @@
         <mat-label>End Date:</mat-label>
         <input matInput [matDatepicker]="noteDisplayTo" [formControl]="admin_note_obj.displayToDate" 
                 textEditable="false" [min]="admin_note_obj.displayFromDate.value"
-               (dateChange)="dateSelectionDone()" required>
+               (dateChange)="dateSelectionDone($event)" required>
         <mat-datepicker-toggle matSuffix [for]="noteDisplayTo"></mat-datepicker-toggle>
         <mat-datepicker #noteDisplayTo></mat-datepicker>
       </mat-form-field>

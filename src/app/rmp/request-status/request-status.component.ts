@@ -23,7 +23,7 @@ declare var $: any;
   templateUrl: './request-status.component.html',
   styleUrls: ['./request-status.component.css']
 })
-export class RequestStatusComponent implements OnInit, OnChanges{
+export class RequestStatusComponent implements OnInit, OnChanges {
 
   public searchText: any;
   public p: any;
@@ -146,7 +146,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     "description": ""
   };
   public user_name: string;
-  public notification_list: any[]; 
+  public notification_list: any[];
   public bac_description: any;
   public notification_list_sort: any[];
   public notification_number: any;
@@ -169,15 +169,15 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public searchObj: any;
   public config = {
     toolbar: [
-      ['bold','italic','underline','strike'],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
-      [{'list' : 'ordered'}, {'list' : 'bullet'}],
-      [{'script' : 'sub'},{'script' : 'super'}],
-      [{'size':['small',false, 'large','huge']}],
-      [{'header':[1,2,3,4,5,6,false]}],
-      [{'color': []},{'background':[]}],
-      [{'font': []}],
-      [{'align': []}],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
       ['clean'],
       ['image']
     ]
@@ -228,16 +228,16 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
   //get current notification details
   public getCurrentNotifications() {
-    this.dataProvider.currentNotifications.subscribe((element:Array<any>) => {
+    this.dataProvider.currentNotifications.subscribe((element: Array<any>) => {
       if (element) {
-            this.notification_list_sort = 
-            element.filter(element => element.commentor != this.user_name);
-            var setBuilder = [];
-            this.notification_list_sort.
-                map(element => setBuilder.push(element.ddm_rmp_post_report));  
-            this.notification_set = new Set(setBuilder);
-            this.setbuilder_sort = setBuilder;
-            this.notification_number = this.notification_set.size;
+        this.notification_list_sort =
+          element.filter(element => element.commentor != this.user_name);
+        var setBuilder = [];
+        this.notification_list_sort.
+          map(element => setBuilder.push(element.ddm_rmp_post_report));
+        this.notification_set = new Set(setBuilder);
+        this.setbuilder_sort = setBuilder;
+        this.notification_number = this.notification_set.size;
       }
     });
   }
@@ -265,9 +265,9 @@ export class RequestStatusComponent implements OnInit, OnChanges{
         $(document).ready(function () {
           $('.ok-btn').prop('disabled', true);
           $('.text-to-display-input').keyup(function () {
-            if ($(this).val() != '') 
+            if ($(this).val() != '')
               $('.ok-btn').prop("disabled", false);
-            else 
+            else
               $('.ok-btn').prop('disabled', true);
           });
         });
@@ -277,28 +277,28 @@ export class RequestStatusComponent implements OnInit, OnChanges{
           $('.address-text').keyup(function () {
             if ($(this).val() != '')
               $('.address-open-button').prop("disabled", false);
-            else 
+            else
               $('.address-open-button').prop('disabled', true);
           });
         });
         let refs = this.lookup['data']['desc_text'];
         this.user_id = this.lookup['data']['user'];
         let temps = refs.find(element => element["ddm_rmp_desc_text_id"] == 13);
-        if (temps)  this.original_contents = temps.description;
-        else this.original_contents = ""; 
+        if (temps) this.original_contents = temps.description;
+        else this.original_contents = "";
         this.namings = this.original_contents;
         this.generated_id_service.changeButtonStatus(false);
         const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 200 }
         this.django.list_of_reports(obj).subscribe(list => {
           list["report_list"].forEach(element => {
-            if(this.setbuilder_sort.includes(element.ddm_rmp_post_report_id))
-              element['unread'] = true; 
-            else  element['unread'] = false;
+            if (this.setbuilder_sort.includes(element.ddm_rmp_post_report_id))
+              element['unread'] = true;
+            else element['unread'] = false;
 
             element['created_on'] = this.DatePipe.transform(element['created_on'], 'dd-MMM-yyyy')
             element['ddm_rmp_post_report_id'] = isNaN(+element['ddm_rmp_post_report_id']) ? 99999 : +element['ddm_rmp_post_report_id'];
 
-            if(element && element.isChecked) element.isChecked = false;
+            if (element && element.isChecked) element.isChecked = false;
           });
           list["report_list"] = list["report_list"].sort((a, b) => {
             if (b['unread'] == a['unread']) {
@@ -319,7 +319,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
         this.fullName = ele.first_name + ' ' + ele.last_name;
         this.usersList.push({ 'full_name': this.fullName, 'users_table_id': ele.users_table_id });
 
-        if (ele['disclaimer_ack'] != null || ele['disclaimer_ack'] != undefined) 
+        if (ele['disclaimer_ack'] != null || ele['disclaimer_ack'] != undefined)
           this.ackList['data'].push(ele);
       });
       this.tbddropdownListfinal_report = this.tbddropdownListfinalAssigned = this.usersList;
@@ -344,7 +344,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
     this.StatusDropdownSettings = {
       text: "Status",
-      singleSelection: true,     
+      singleSelection: true,
       primaryKey: 'status_id',
       labelKey: 'status',
     };
@@ -358,36 +358,36 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   // detect changes in quill editor
   public textChanged(event) {
     this.textChange = true;
-    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   // saving edited content in help pop-up
   public content_edits() {
-    if(!this.textChange || this.enableUpdateData) {
+    if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
       this.editModes = false;
       this.readOnlyContentHelper = true;
       this.description_texts['description'] = this.namings;
       $('#edit_button').show();
       this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).
-      subscribe(response => {
-        this.lookup['data']['desc_text'].map((element, index) => {
-          if (element['ddm_rmp_desc_text_id'] == 13)
-            this.lookup['data']['desc_text'][index] = this.description_texts;
-        });
-        this.dataProvider.changelookUpTableData(this.lookup);
-        this.ngOnInit();
-        this.original_contents = this.namings;
-        this.toastr.success("Updated Successfully");
-        Utils.hideSpinner();
-      }, err => {
-        Utils.hideSpinner();
-        this.toastr.error("Data not Updated")
-      })
-    } else  {
+        subscribe(response => {
+          this.lookup['data']['desc_text'].map((element, index) => {
+            if (element['ddm_rmp_desc_text_id'] == 13)
+              this.lookup['data']['desc_text'][index] = this.description_texts;
+          });
+          this.dataProvider.changelookUpTableData(this.lookup);
+          this.ngOnInit();
+          this.original_contents = this.namings;
+          this.toastr.success("Updated Successfully");
+          Utils.hideSpinner();
+        }, err => {
+          Utils.hideSpinner();
+          this.toastr.error("Data not Updated")
+        })
+    } else {
       this.toastr.error("please enter the data");
-      }
+    }
   }
 
   // reset the help model params 
@@ -419,24 +419,16 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   // get the details of checked report
   public Report_request(element, event) {
     this.cancel = element.ddm_rmp_post_report_id;
-    this.showODCBtn = element['status'] === 'Active'? true : false;
+    this.showODCBtn = element['status'] === 'Active' ? true : false;
     this.reports.forEach(ele => {
       if (ele.ddm_rmp_post_report_id === element.ddm_rmp_post_report_id) {
         this.finalData = [ele];
         ele.isChecked = event.target.checked;
-        if(event.target.checked) 
+        if (event.target.checked)
           localStorage.setItem('report_id', element.ddm_rmp_post_report_id);
       } else ele.isChecked = false;
     });
   }
-  
-  // public open(event, element) {
-  //   this.id_get = element.ddm_rmp_post_report_id;
-  //   this.user_id = element.user_id;
-  //   this.reportDataService.setReportID(this.id_get);
-  //   this.reportDataService.setUserId(this.user_id);
-  //   this.generated_id_service.changeUpdate(true)
-  // }
 
   public DealerAllocation(event) {
   }
@@ -449,35 +441,35 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public CheckCancel() {
     this.finalData = [];
     this.reports.find(e => {
-       if(e.isChecked) {
-          if(e.status == "Cancelled") {
-            this.errorModalMessageRequest = "Request #" + e.ddm_rmp_post_report_id + " is already cancelled" ;
-            $('#errorModalRequest').modal('show');
-            this.finalData = [];
-          } else {
-            this.finalData = [e];
-            if ($(".report_id_checkboxes:checkbox:checked").length) {
-              if (e.status == "Incomplete" || e.status == "Pending") {
-                $('#CancelRequest').modal('hide');
-                $('#CancelPermanently').modal('show');
-              }
-              else if (e.status == "Completed" || e.status == "Active" ||
-                       e.status == "Recurring") {
-                $('#CancelPermanently').modal('hide');
-                $('#CancelRequest').modal('show');
-              }
+      if (e.isChecked) {
+        if (e.status == "Cancelled") {
+          this.errorModalMessageRequest = "Request #" + e.ddm_rmp_post_report_id + " is already cancelled";
+          $('#errorModalRequest').modal('show');
+          this.finalData = [];
+        } else {
+          this.finalData = [e];
+          if ($(".report_id_checkboxes:checkbox:checked").length) {
+            if (e.status == "Incomplete" || e.status == "Pending") {
+              $('#CancelRequest').modal('hide');
+              $('#CancelPermanently').modal('show');
             }
-            else if (!$(".report_id_checkboxes:checkbox:checked").length) {
-              this.errorModalMessageRequest = "Select a report to Cancel";
-              $('#errorModalRequest').modal('show');
-            }
-            else {
-              this.errorModalMessageRequest = "Cannot cancel multiple reports";
-              $('#errorModalRequest').modal('show');
+            else if (e.status == "Completed" || e.status == "Active" ||
+              e.status == "Recurring") {
+              $('#CancelPermanently').modal('hide');
+              $('#CancelRequest').modal('show');
             }
           }
-       } 
-      });
+          else if (!$(".report_id_checkboxes:checkbox:checked").length) {
+            this.errorModalMessageRequest = "Select a report to Cancel";
+            $('#errorModalRequest').modal('show');
+          }
+          else {
+            this.errorModalMessageRequest = "Cannot cancel multiple reports";
+            $('#errorModalRequest').modal('show');
+          }
+        }
+      }
+    });
   }
 
   // changing status of report to cancelled
@@ -492,20 +484,27 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
     this.django.cancel_report(this.cancel_report).subscribe(response => {
       this.cancel_response = response;
-      const obj  = { 'sort_by': '', 'page_no': 1, 'per_page': 6 };
+      const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 };
       this.django.list_of_reports(obj).subscribe(list => {
         this.reports = list["report_list"];
-        Utils.hideSpinner();
         this.finalData = [];
         $('#CancelRequest').modal('hide');
-      })
+        this.toastr.success("The request-id : " + this.finalData[0]['ddm_rmp_post_report_id'] + " has been cancelled successfully")
+        Utils.hideSpinner();
+      },
+        err => {
+          this.toastr.error("There has been an error in cancelling the request-id : " + this.finalData[0]['ddm_rmp_post_report_id'])
+          this.toastr.error(err);
+          Utils.hideSpinner();
+        })
     })
   }
 
   public closeCancel() {
     this.finalData = [];
   }
-  public closeCancel_modal(){
+
+  public closeCancel_modal() {
     this.finalData = [];
     $('#CancelRequest').modal('hide');
   }
@@ -513,8 +512,8 @@ export class RequestStatusComponent implements OnInit, OnChanges{
  
   public AssignTBD() {
     Utils.showSpinner();
-      this.assignTBD['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];
-      this.assignTBD['requestor'] = 'TBD';
+    this.assignTBD['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];
+    this.assignTBD['requestor'] = 'TBD';
     this.django.ddm_rmp_tbd_req_put(this.assignTBD).subscribe(response => {
       this.assign_res = response;
       const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 };
@@ -559,10 +558,10 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   }
 
   public assigned_res;
-  public Assign_AssignTo(){
+  public Assign_AssignTo() {
     Utils.showSpinner();
-      this.assignOwner_Assigned['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];
-      this.assignOwner_Assigned['assigned_to'] = 'TBD';
+    this.assignOwner_Assigned['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];
+    this.assignOwner_Assigned['assigned_to'] = 'TBD';
     this.django.ddm_rmp_assign_to(this.assignOwner_Assigned).subscribe(ele => {
       this.assigned_res = ele;
       const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
@@ -610,9 +609,9 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
   public sort_by() {
     Utils.showSpinner();
-    if (this.sorted_by == "asc") 
-      this.sorted_by = "desc"; 
-    else if (this.sorted_by == "desc") 
+    if (this.sorted_by == "asc")
+      this.sorted_by = "desc";
+    else if (this.sorted_by == "desc")
       this.sorted_by = "asc";
 
     const obj = { 'sort_by': this.sorted_by, 'page_no': 1, 'per_page': 6 };
@@ -631,7 +630,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       this.finalData = [];
     }
     else if (this.finalData[0].status == "Incomplete") {
-      this.errorModalMessageRequest = 'status for the report ' + this.finalData[0].ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report' ;
+      this.errorModalMessageRequest = 'status for the report ' + this.finalData[0].ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report';
       $('#errorModalRequest').modal('show');
       this.finalData = [];
     } else {
@@ -639,24 +638,24 @@ export class RequestStatusComponent implements OnInit, OnChanges{
         Utils.showSpinner();
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
         this.accept_report.accept_reports.push(
-            { 
-              'report_id': this.finalData[0]['ddm_rmp_post_report_id'], 
-              'assign_to': this.user_name, 'status_date': this.date,
-              'status': 'Active' 
-            });
-       
+          {
+            'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
+            'assign_to': this.user_name, 'status_date': this.date,
+            'status': 'Active'
+          });
+
         this.django.accept_report(this.accept_report).subscribe(response => {
-            const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
-            this.django.list_of_reports(obj).subscribe(list => {
-              this.reports = list["report_list"];
-              this.reports.forEach(ele => {
-                if (ele.ddm_rmp_post_report_id === 
-                  this.finalData[0].ddm_rmp_post_report_id) 
-                  this.showODCBtn = ele['status'] === 'Active'? true : false;
-              });
-              this.toastr.success("Status Changed to Active");
-              Utils.hideSpinner();
-              this.finalData = [];
+          const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+          this.django.list_of_reports(obj).subscribe(list => {
+            this.reports = list["report_list"];
+            this.reports.forEach(ele => {
+              if (ele.ddm_rmp_post_report_id ===
+                this.finalData[0].ddm_rmp_post_report_id)
+                this.showODCBtn = ele['status'] === 'Active' ? true : false;
+            });
+            this.toastr.success("Status Changed to Active");
+            Utils.hideSpinner();
+            this.finalData = [];
           });
         }, err => {
           this.toastr.error("Server Error")
@@ -714,14 +713,14 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       this.errorModalMessageRequest = "You cannot post link on multiple reports at once";
       $('#errorModalRequest').modal('show');
       this.finalData = [];
-    } else if(this.checkbox_length == 1) {
-       if(this.finalData[0].status != "Active") {
+    } else if (this.checkbox_length == 1) {
+      if (this.finalData[0].status != "Active") {
         this.errorModalMessageRequest = "Request not Active yet. Can't post link to results.";
         $('#errorModalRequest').modal('show');
         this.finalData = [];
-       } else if(this.finalData[0].status == "Active" ||                             
-                 this.finalData[0].status == "Completed") {}
-        $("#post_link_button:button").trigger('click');
+      } else if (this.finalData[0].status == "Active" ||
+        this.finalData[0].status == "Completed") { }
+      $("#post_link_button:button").trigger('click');
     }
   }
   public closePostLink() {
@@ -731,26 +730,26 @@ export class RequestStatusComponent implements OnInit, OnChanges{
   public add_response;
   public addDocument() {
     if (this.documentName == "" || this.documentUrl == "") {
-          this.hidVar = false;
+      this.hidVar = false;
     } else {
       this.hidVar = true;
       this.checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
       if (this.checkbox_length >= 1) {
         Utils.showSpinner();
-        this.edit_link = { 
-            'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
-            "link_title": this.documentName, 
-            "link_to_results": this.documentUrl 
-          };
+        this.edit_link = {
+          'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
+          "link_title": this.documentName,
+          "link_to_results": this.documentUrl
+        };
         this.django.post_link(this.edit_link).subscribe(response => {
           this.add_response = response;
-            const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 };
-            this.django.list_of_reports(obj).subscribe(list => {
-              this.reports = list["report_list"];
-              Utils.hideSpinner();
-              this.finalData = [];
-            })
-            $("#postLink").modal('hide');
+          const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 };
+          this.django.list_of_reports(obj).subscribe(list => {
+            this.reports = list["report_list"];
+            Utils.hideSpinner();
+            this.finalData = [];
+          })
+          $("#postLink").modal('hide');
         });
       }
       else if (this.checkbox_length == 0) {
@@ -777,7 +776,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       $('#errorModalRequest').modal('show');
     }
     else if (this.checkbox_length == 1) {
-     this.comment_text = "";
+      this.comment_text = "";
       $("#enter_comment_button:button").trigger('click');
       $(".report_id_checkboxes:checkbox:checked").each(function () {
         var $this = $(this);
@@ -871,8 +870,8 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       }
       if (this.summary["country_region_data"].length) {
         let tempArray = [];
-          this.summary["country_region_data"].
-              map(element => tempArray.push(element.region_desc));
+        this.summary["country_region_data"].
+          map(element => tempArray.push(element.region_desc));
         this.region_description = tempArray.join(", ");
       } else {
         this.region_description = [];
@@ -889,7 +888,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
       if (this.summary["zone_area_data"].length) {
         let tempArray = [];
-        this.summary["zone_area_data"].map(element => 
+        this.summary["zone_area_data"].map(element =>
           tempArray.push(element.area_desc))
         this.area_description = tempArray.join(", ");
       } else {
@@ -898,8 +897,8 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
       if (this.summary["lma_data"].length) {
         let tempArray = [];
-          this.summary["lma_data"].map(element => 
-            tempArray.push(element.lmg_desc) );
+        this.summary["lma_data"].map(element =>
+          tempArray.push(element.lmg_desc));
         this.lma_description = tempArray.join(", ");
       } else {
         this.lma_description = [];
@@ -907,8 +906,8 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
       if (this.summary["gmma_data"].length) {
         let tempArray = [];
-          this.summary["gmma_data"].map(element => 
-            tempArray.push(element.gmma_desc));
+        this.summary["gmma_data"].map(element =>
+          tempArray.push(element.gmma_desc));
         this.gmma_description = tempArray.join(", ");
       } else {
         this.gmma_description = [];
@@ -917,30 +916,30 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       if (this.summary["frequency_data"].length) {
         let tempArray = [];
         this.frequency_flag = true;
-          this.summary["frequency_data"].map(element => {
-            if (element.description != '') 
-              tempArray.push(element.select_frequency_values + "-" + element.description);
-            else 
-              tempArray.push(element.select_frequency_values);
-          });
+        this.summary["frequency_data"].map(element => {
+          if (element.description != '')
+            tempArray.push(element.select_frequency_values + "-" + element.description);
+          else
+            tempArray.push(element.select_frequency_values);
+        });
         this.report_frequency = tempArray.join(", ");
       } else {
         this.report_frequency = [];
         this.frequency_flag = false;
       }
 
-      if (!this.summary["division_dropdown"].length) 
+      if (!this.summary["division_dropdown"].length)
         this.division_dropdown = []
       else {
         let tempArray = [];
-        this.summary["division_dropdown"].map(element => 
+        this.summary["division_dropdown"].map(element =>
           tempArray.push(element.division_desc));
         this.division_dropdown = tempArray.join(", ");
       }
-      
+
       if (this.summary["special_identifier_data"].length) {
         let tempArray = [];
-        this.summary["special_identifier_data"].map(element => 
+        this.summary["special_identifier_data"].map(element =>
           tempArray.push(element.spl_desc));
         this.special_identifier = tempArray.join(", ");
       } else {
@@ -950,16 +949,16 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       if (this.summary["ost_data"]) {
         if (this.summary["ost_data"]["allocation_group"].length) {
           let tempArray = [];
-            this.summary["ost_data"]["allocation_group"].map(element => {
-              tempArray.push(element.allocation_group)
-            })
+          this.summary["ost_data"]["allocation_group"].map(element => {
+            tempArray.push(element.allocation_group)
+          })
           this.allocation_group = tempArray.join(", ");
         } else {
           this.allocation_group = [];
         }
         if (this.summary["ost_data"]["model_year"].length) {
           let tempArray = [];
-          this.summary["ost_data"]["model_year"].map(element => 
+          this.summary["ost_data"]["model_year"].map(element =>
             tempArray.push(element.model_year));
           this.model_year = tempArray.join(", ");
         } else {
@@ -968,8 +967,8 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
         if (this.summary["ost_data"]["vehicle_line"].length) {
           let tempArray = [];
-            this.summary["ost_data"]["vehicle_line"].map(element => 
-              tempArray.push(element.vehicle_line_brand));
+          this.summary["ost_data"]["vehicle_line"].map(element =>
+            tempArray.push(element.vehicle_line_brand));
           this.vehicle_line_brand = tempArray.join(", ");
         } else {
           this.vehicle_line_brand = [];
@@ -977,7 +976,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
         if (this.summary["ost_data"]["merchandizing_model"].length) {
           let tempArray = [];
-          this.summary["ost_data"]["merchandizing_model"].map(element => 
+          this.summary["ost_data"]["merchandizing_model"].map(element =>
             tempArray.push(element.merchandising_model));
           this.merchandising_model = tempArray.join(", ");
         } else {
@@ -986,8 +985,8 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
         if (this.summary["ost_data"]["order_event"].length) {
           let tempArray = [];
-            this.summary["ost_data"]["order_event"].map(element =>
-              tempArray.push(element.order_event));
+          this.summary["ost_data"]["order_event"].map(element =>
+            tempArray.push(element.order_event));
           this.order_event = tempArray.join(", ");
         } else {
           this.order_event = [];
@@ -1007,7 +1006,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
           this.summary["ost_data"]["checkbox_data"].map(element => {
             if (element.description_text != '') {
               tempArray.push(element.checkbox_description + "-" + element.description_text)
-            }else {
+            } else {
               tempArray.push(element.checkbox_description)
             }
           });
@@ -1021,7 +1020,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       if (this.summary["da_data"]) {
         if (this.summary["da_data"]["allocation_grp"].length) {
           let tempArray = [];
-          this.summary["da_data"]["allocation_grp"].map(element => 
+          this.summary["da_data"]["allocation_grp"].map(element =>
             tempArray.push(element.allocation_group));
           this.allocation_group = tempArray.join(", ");
         } else {
@@ -1030,7 +1029,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
         if (this.summary["da_data"]["model_year"].length) {
           let tempArray = [];
-          this.summary["da_data"]["model_year"].map(element => 
+          this.summary["da_data"]["model_year"].map(element =>
             tempArray.push(element.model_year));
           this.model_year = tempArray.join(", ");
         } else {
@@ -1039,7 +1038,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
         if (this.summary["da_data"]["concensus_data"].length) {
           let tempArray = [];
-          this.summary["da_data"]["concensus_data"].map(element => 
+          this.summary["da_data"]["concensus_data"].map(element =>
             tempArray.push(element.cd_values));
           this.concensus_data = tempArray.join(", ");
         } else {
@@ -1049,9 +1048,9 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       }
 
       if (this.summary["bac_data"].length) {
-        if (this.summary["bac_data"][0]["bac_desc"] == null) 
+        if (this.summary["bac_data"][0]["bac_desc"] == null)
           this.bac_description = []
-        else 
+        else
           this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
       }
       else {
@@ -1059,9 +1058,9 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       }
 
       if (this.summary["fan_data"].length) {
-        if (this.summary["fan_data"][0]["fan_data"] == null) 
+        if (this.summary["fan_data"][0]["fan_data"] == null)
           this.fan_desc = []
-        else 
+        else
           this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
       } else {
         this.fan_desc = []
@@ -1075,7 +1074,7 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
   public NewReportOnSelectedCriteria() {
 
-    this.checkbox_length  = $(".report_id_checkboxes:checkbox:checked").length;
+    this.checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
     if (this.checkbox_length < 1) {
       this.errorModalMessageRequest = "Select at least one report";
       $('#errorModalRequest').modal('show');
@@ -1094,27 +1093,23 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     Utils.showSpinner();
     this.sharedDataService.setObjectExplorerPathValue(false);
     if (element.requestor != 'TBD') {
-      // mimicODC here and then reroute if frequency is not ODC/OD?
       this.django.get_report_description(element.ddm_rmp_post_report_id).subscribe(response => {
-        if(response){
-        this.summary = response;
-        let isODC = this.summary["frequency_data"][0]['select_frequency_values'];
-        if (isODC === "On Demand Configurable" || isODC === "On Demand") {
-          this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
-          this.toastr.error(" Please click on the CREATE ODC REPORT and continue !! ");
-          Utils.hideSpinner();
-          // this.router.navigate(['../../semantic/'])
-          // this.router.navigate(['../../semantic/sem-reports/home'])
+        if (response) {
+          this.summary = response;
+          let isODC = this.summary["frequency_data"][0]['select_frequency_values'];
+          if (isODC === "On Demand Configurable" || isODC === "On Demand") {
+            this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
+            this.toastr.error(" Please click on the CREATE ODC REPORT and continue !! ");
+            Utils.hideSpinner();
+          }
+          else {
+            Utils.hideSpinner();
+            this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
+            this.router.navigate(['../../semantic/sem-reports/home']);
+            return;
+          }
         }
-        else {
-          Utils.hideSpinner();
-          this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
-          this.router.navigate(['../../semantic/sem-reports/home']);
-          return;
-        }
-      }
       })
-      // this.router.navigate(['../../semantic/'])
     }
     else {
       Utils.hideSpinner();
@@ -1147,26 +1142,6 @@ export class RequestStatusComponent implements OnInit, OnChanges{
           window.open(`${environment.baseUrl}` + file_path_details, '_blank');
           Utils.hideSpinner();
         })
-      }
-    })
-  }
-
-  public mimicODC(OdcRequestId) {
-    let onDemandConfigurableRequestId = OdcRequestId.map(t => t.ddm_rmp_post_report_id);
-    Utils.showSpinner();
-    // using onDemandConfigurableRequestId[0] because we've an array which causes error later
-    this.django.get_report_description(onDemandConfigurableRequestId[0]).subscribe(response => {
-      let isODC = response["frequency_data"][0]['select_frequency_values'];
-      this.summary = response;
-      if (isODC === "On Demand Configurable" || isODC === "On Demand" ) {
-        this.sharedDataService.setRequestId(onDemandConfigurableRequestId[0]);
-        this.sharedDataService.setObjectExplorerPathValue(false);
-        Utils.hideSpinner();
-      }
-      else {
-        Utils.hideSpinner();
-        this.toastr.error("Your chosen request is not an ON DEMAND CONFIGURABLE request!");
-        return;
       }
     })
   }
@@ -1218,11 +1193,11 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       let reportID = this.finalData[0]['ddm_rmp_post_report_id']
       this.django.get_report_description(reportID).subscribe(element => {
         if (element["dl_list"].length) {
-            element["dl_list"].map(element => {
-              this.contacts.push(element.distribution_list);
-              this.dl_update.request_id = reportID;
-              this.dl_update.dl_list = this.contacts;
-            })
+          element["dl_list"].map(element => {
+            this.contacts.push(element.distribution_list);
+            this.dl_update.request_id = reportID;
+            this.dl_update.dl_list = this.contacts;
+          })
         }
         Utils.hideSpinner();
       }, err => {
@@ -1233,8 +1208,8 @@ export class RequestStatusComponent implements OnInit, OnChanges{
       this.errorModalMessageRequest = "Select a report to update DL";
       $('#errorModalRequest').modal('show');
     }
-    else if (this.finalData[0].status == "Cancelled" || 
-              this.finalData[0].status == "Completed") {
+    else if (this.finalData[0].status == "Cancelled" ||
+      this.finalData[0].status == "Completed") {
       this.errorModalMessageRequest = "Cannot update a cancelled/completed report";
       $('#errorModalRequest').modal('show');
     }
@@ -1258,19 +1233,19 @@ export class RequestStatusComponent implements OnInit, OnChanges{
 
   public searchGlobalObj = {
     'ddm_rmp_post_report_id': this.searchText,
-    'ddm_rmp_status_date': this.searchText, 
-    'created_on': this.searchText, 
-    'title': this.searchText, 
+    'ddm_rmp_status_date': this.searchText,
+    'created_on': this.searchText,
+    'title': this.searchText,
     'requestor': this.searchText,
-    'on_behalf_of': this.searchText, 
-    'assigned_to': this.searchText, 
+    'on_behalf_of': this.searchText,
+    'assigned_to': this.searchText,
     'status': this.searchText
   };
 
   public filterData() {
-    if (this.statusFilter.length) 
+    if (this.statusFilter.length)
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
-     else 
+    else
       this.filters.status = '';
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
@@ -1286,32 +1261,15 @@ export class RequestStatusComponent implements OnInit, OnChanges{
     return vs;
   }
 
-  public openScheduler(requestId : number){
-    this.scheduleService.getScheduleReportData(requestId,1).subscribe(res=>{
-      Utils.showSpinner();
-      if(res){
-      this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null; // to separate the post() and put()
-      this.scheduleDataToBeSent = res['data'];
-      this.reportListIdToSchedule = this.scheduleDataToBeSent.request_id
-      Utils.hideSpinner(); 
-      $('#ongoingScheduleModal').modal('show');
-      }
-      }, 
-      error => {
-      Utils.hideSpinner();
-      this.toastr.error('Scheduled report loading failed');
-    });
-  }
-
-  public changeOngoingStatus(event){
+  public updateMarkAsComplete(requestId: number) {
     Utils.showSpinner();
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
     this.onGoingStatus.cancel_reports.push(
-        { 
-          'report_id': event.requestId, 
-          'status': "Completed", 
-          'status_date': this.date 
-        });
+      {
+        'report_id': requestId,
+        'status': "Completed",
+        'status_date': this.date
+      });
     this.django.cancel_report(this.onGoingStatus).subscribe(response => {
       this.ongoingStatusResult = response;
       const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
@@ -1319,14 +1277,12 @@ export class RequestStatusComponent implements OnInit, OnChanges{
         this.reports = list["report_list"]
         Utils.hideSpinner();
         this.finalData = []
-      },err=>{
+      }, err => {
         Utils.hideSpinner();
       });
-    },err=>{
+    }, err => {
       Utils.hideSpinner();
     })
-    //extract values andthen update ongoing status and then call refresh api
-    // this.cancel_report
   }
 
   public onPaginationChange(event){

@@ -59,19 +59,21 @@ export class OndemandConfigReportsComponent implements OnInit {
     this.odcName = this.name;
     this.odcReportId = this.reportId;
 
-    this.onDemandService.getOnDemandConfigDetails(this.odcReportId, this.odcRequestNumber).subscribe(res => {
-      this.odcRecievedDetails = res;
-      this.sheetNames = this.odcRecievedDetails['data'].map(i => i.sheet_name);
-      this.onDemandConfigureScheduleId = this.odcRecievedDetails['data'].splice(-1).map(i => i.schedule_id)
-      this.onDemandConfigureScheduleId = this.onDemandConfigureScheduleId[0][0]
-      if (!this.onDemandConfigureScheduleId) {
-        this.toasterService.error('Please ask the admin to configure scheduling parameters!');
-        return;
-      }
-      this.sheetNames.unshift('');
-      this.sheetNames.splice(-1);
-      this.isLoading = false;
-    })
+    if (this.odcReportId != undefined && this.odcReportId != null && this.odcRequestNumber != undefined && this.odcRequestNumber != null) {
+      this.onDemandService.getOnDemandConfigDetails(this.odcReportId, this.odcRequestNumber).subscribe(res => {
+        this.odcRecievedDetails = res;
+        this.sheetNames = this.odcRecievedDetails['data'].map(i => i.sheet_name);
+        this.onDemandConfigureScheduleId = this.odcRecievedDetails['data'].splice(-1).map(i => i.schedule_id)
+        this.onDemandConfigureScheduleId = this.onDemandConfigureScheduleId[0][0]
+        if (!this.onDemandConfigureScheduleId) {
+          this.toasterService.error('Please ask the admin to configure scheduling parameters!');
+          return;
+        }
+        this.sheetNames.unshift('');
+        this.sheetNames.splice(-1);
+        this.isLoading = false;
+      })
+    }
   }
 
   public setSheetValues(event: any) {

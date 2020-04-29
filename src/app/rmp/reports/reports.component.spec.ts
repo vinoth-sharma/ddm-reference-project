@@ -6,8 +6,6 @@ import { OrderByPipe } from 'angular-pipes';
 import { FilterTablePipe } from '../filter-table.pipe';
 import { MaterialModule } from 'src/app/material.module';
 import { QuillModule, QuillEditorComponent } from 'ngx-quill';
-// import { OndemandReportsComponent } from '../custom-modals/ondemand-reports/ondemand-reports.component';
-// import { OndemandConfigReportsComponent } from '../custom-modals/ondemand-config-reports/ondemand-config-reports.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatePipe } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -217,7 +215,6 @@ it('should set a few properties of component',()=>{
   spyOn(Utils,'showSpinner');
   spyOn(Utils,'hideSpinner');
   spyOn(component,"hideDemandScheduleConfigurableModal")
-  // component.reports = [{report_name:"report_name",frequency:"On Demand Configurable",title:"title",report_list_id:1}];
   component.reports = reportData.data
   component.reportContainer = [{report_name:"report_name",title:"title"}]
   component.goToReports("report_name","title");
@@ -416,8 +413,6 @@ it("should get data from get_report_description and assegin values to a few prop
     bac_data:[{bac_desc:["a","b"]}],
     fan_data:[{fan_data:["a","b"]}],
     user_data:[{alternate_number:222}]
-    // ost_data:[{allocation_group:"a"},{allocation_group:"b"}],
-
   }
   spyOn(djangoService,"get_report_description").and.returnValue(of(serverData));
   component.query_criteria_report(1);

@@ -20,6 +20,9 @@ const MY_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
+
+// Angular Component developed by Vinoth Sharma Veeramani
+
 @Component({
   selector: 'app-manage-notes',
   templateUrl: './manage-notes.component.html',
@@ -74,8 +77,10 @@ export class ManageNotesComponent implements OnInit {
                                          + ":" + (data.notes_end_date.getMinutes()).toString().padStart(2,"0");
   }
 
-  // dateSelectionDone(){
-  // }
+  dateSelectionDone(event:any){
+    // CHANGED FOR PROD
+    // console.log("EVENT details",event);
+  }
 
   checkNoteFormValid(){
     if(this.admin_note_obj.noteData && this.admin_note_obj.displayFromDate.value 

@@ -160,29 +160,16 @@
               <td class="change-freq" *ngIf="element.changeFreqReq"
                 (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
                 <div>{{element.frequency}}</div>
-                <!-- <div *ngIf="element.changeFreqReq" class="change-freq"
-                (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
-                  <div>{{element.frequency}}</div>
-                </div> -->
 
-                <!-- <div *ngIf="!element.changeFreqReq">
-                    <div>{{element.frequency}}</div>
-                </div>  -->
               </td>
               <td *ngIf="!element.changeFreqReq">
                 <div>{{element.frequency}} </div>
               </td>
-              <!-- <td *ngIf !="element.changeFreq" class="change-freq">
-                  <div>{{element.frequency}}</div>
-              </td> -->
               <td *ngFor="let weekDay of weekDays">
                 <div style="width: 20px">
                   {{element[weekDay + 'Frequency']}}
                 </div>
               </td>
-              <!-- <td *ngIf="!element.changeFreq" *ngFor="let weekDay of weekDays">
-              </td> -->
-
               <td>
                 <div>
                   {{element?.description?.join()}}

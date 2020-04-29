@@ -175,21 +175,23 @@ export class ReportsComponent implements OnInit {
     this.editModes = false;
 
   }
-  changeReportName(event:any , reportObject){
   
-    // console.log(event , reportObject);
+  /**
+   * @function to change the DDM name report name in the reports table 
+   * @param event event catched on change of the input value
+   * @param reportObject the current report object being edited
+   */
+  changeReportName(event:any , reportObject){
+
+  
     let changedReport={};
     changedReport["request_id"]= reportObject.ddm_rmp_post_report_id;
     changedReport["report_name"] = event.target['value']
-    console.log(changedReport)
     this.django.update_rmpReports_DDMName(changedReport)
     .subscribe(
       resp=>{
-        console.log(resp);
-
         reportObject.clicked=false;
         reportObject.report_name = changedReport['report_name']
-        console.log(reportObject);
       }
       ,
       ()=>{
@@ -197,6 +199,11 @@ export class ReportsComponent implements OnInit {
       
     )
   }
+
+  /**
+   * @function to toggle the input field on DDM Name 
+   * @param element the report element which is being clicked
+   */
   toggleShowInput(element ){
     
     this.reports.forEach(ele=>{

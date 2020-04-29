@@ -19,43 +19,43 @@ import Utils from 'src/utils';
   styleUrls: ['./dealer-allocation.component.css']
 })
 export class DealerAllocationComponent implements OnInit {
-  generated_report_status: string;
-  division_index = [];
-  dealer_allocation_selection: object;
-  user_settings: object;
-  allocationGroup: any;
-  modelYear: any;
-  consensusData: any;
-  dropdownLookup: any;
-  month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-  year = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+  public generated_report_status: string;
+  public division_index = [];
+  public dealer_allocation_selection: object;
+  public user_settings: object;
+  public allocationGroup: any;
+  public modelYear: any;
+  public consensusData: any;
+  public dropdownLookup: any;
+  public month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  public year = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 
-  title = 'Stand-Alone';
-  flag: boolean = true;
-  summary_flag: boolean = true;
-  my_flag: boolean = false;
-  ag_flag: boolean = false;
-  date_flag: boolean = false;
-  consensus_flag: boolean = false;
-  modal_validation_flag: boolean = false;
-  date_validation_flag: boolean = true;
-  concencusDataCheckbox = {};
-  startMonth: "--Select Month--";
-  endMonth: "--Select Month--";
-  startValue: any;
-  endValue: any;
-  startYear: "--Select Year--";
-  endYear: "--Select Year--";
-  dealerobj = {
+  public title = 'Stand-Alone';
+  public flag: boolean = true;
+  public summary_flag: boolean = true;
+  public my_flag: boolean = false;
+  public ag_flag: boolean = false;
+  public date_flag: boolean = false;
+  public consensus_flag: boolean = false;
+  public modal_validation_flag: boolean = false;
+  public date_validation_flag: boolean = true;
+  public concencusDataCheckbox = {};
+  public startMonth: "--Select Month--";
+  public endMonth: "--Select Month--";
+  public startValue: any;
+  public endValue: any;
+  public startYear: "--Select Year--";
+  public endYear: "--Select Year--";
+  public dealerobj = {
     "startCycle": "Cycle1",
     "endCycle": "Cycle2",
     "dealerRadio": "Display",
     "modelRadio": "Display",
     "alloRadio": "Display"
   }
-  file = null;
+  public file = null;
 
-  finalData = {
+  public finalData = {
     "concensus_time_date": {},
     'concensus_data': [],
     'report_detail': {
@@ -74,101 +74,101 @@ export class DealerAllocationComponent implements OnInit {
     }
   };
 
-  newDropdownData = {
+  public newDropdownData = {
     "Model_Year": [],
     "Allocation_Group": []
   }
 
-  Report = {
+  public Report = {
     "Title": "",
     "Requirements": ""
   }
-  textChange = false;
+  public textChange = false;
 
-  selectedItemsDivision = {};
-  dropdownSettingsDivision = {};
-  selectedItemsModelYear = [];
-  dropdownSettingsModelYear = {};
-  selectedItems = {};
-  dropdownSettings = {};
-  Report_title: string;
-  Report_Req: string;
-  generated_report_id: number;
-  display = 'none'
-  displaySummary: any;
-  cycle: any;
-  dropdown: any;
-  drop = {};
-  dropD: any;
-  allocationGroupDrop: any;
-  modelYearDrop: any;
-  division: any;
-  selectedItemsAllocation: any[];
-  dropdownSettingsAllocation: { singleSelection: boolean; primaryKey: string; labelKey: string; selectAllText: string; unSelectAllText: string; badgeShowLimit: number; allowSearchFilter: boolean; };
-  modelYearSelectedItems: any;
-  allocationGroupselecteditems: any;
-  divisionRadioSelection: any;
-  modelRadio: any;
-  alloRadio: any;
-  divData: Array<object>;
+  public selectedItemsDivision = {};
+  public dropdownSettingsDivision = {};
+  public selectedItemsModelYear = [];
+  public dropdownSettingsModelYear = {};
+  public selectedItems = {};
+  public dropdownSettings = {};
+  public Report_title: string;
+  public Report_Req: string;
+  public generated_report_id: number;
+  public display = 'none'
+  public displaySummary: any;
+  public cycle: any;
+  public dropdown: any;
+  public drop = {};
+  public dropD: any;
+  public allocationGroupDrop: any;
+  public modelYearDrop: any;
+  public division: any;
+  public selectedItemsAllocation: any[];
+  public dropdownSettingsAllocation: { singleSelection: boolean; primaryKey: string; labelKey: string; selectAllText: string; unSelectAllText: string; badgeShowLimit: number; allowSearchFilter: boolean; };
+  public modelYearSelectedItems: any;
+  public allocationGroupselecteditems: any;
+  public divisionRadioSelection: any;
+  public modelRadio: any;
+  public alloRadio: any;
+  public divData: Array<object>;
 
-  date: string = '';
-  report_message: string = '';
-  summary: Object;
-  lookup;
-  divDataSelected = []
-    ;
-  allocation_g = []
-  restorepage: any;
-  printcontent: any;
-  userdivdata;
-  allo: any;
-  divSel: any;
-  reportId = 0;
-  pdfGenerationProgress: number;
-  frequency_flag: boolean;
-  contact_flag: boolean;
+  public date: string = '';
+  public report_message: string = '';
+  public summary: Object;
+  public lookup;
+  public divDataSelected = [];
+  public allocation_g = []
+  public restorepage: any;
+  public printcontent: any;
+  public userdivdata;
+  public allo: any;
+  public divSel: any;
+  public reportId = 0;
+  public pdfGenerationProgress: number;
+  public frequency_flag: boolean;
+  public contact_flag: boolean;
 
-  contents;
-  enable_edits: boolean = false
-  editModes: boolean = false;
-  original_content;
-  namings: any;
+  public contents;
+  public enable_edits: boolean = false
+  public editModes: boolean = false;
+  public original_content;
+  public namings: any;
 
-  market_description: any;
-  zone_description: any;
-  area_description: any;
-  region_description: any;
-  lma_description: any;
-  gmma_description: any;
-  report_frequency: any;
-  special_identifier: any;
-  allocation_group: any;
-  model_year: any;
-  concensus_data: any;
-  division_dropdown: any;
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  description_text = {
+  public market_description: any;
+  public zone_description: any;
+  public area_description: any;
+  public region_description: any;
+  public lma_description: any;
+  public gmma_description: any;
+  public report_frequency: any;
+  public special_identifier: any;
+  public allocation_group: any;
+  public model_year: any;
+  public concensus_data: any;
+  public division_dropdown: any;
+  public parentsSubject: Rx.Subject<any> = new Rx.Subject();
+  public description_text = {
     "ddm_rmp_desc_text_id": 11,
     "module_name": "Help_DealerAllocation",
     "description": ""
   }
 
-  user_role: string;
-  user_name: string;
-  bac_description: any;
-  fan_desc: any;
-  text_notification: any;
-  model_year_id = [];
-  selectedMonth: any;
-  report_status: string;
-  report_create: any;
-  report_on_behalf = "";
-  assigned_to: any;
-  readOnlyContentHelper = true;
-  enableUpdateData = false;
+  public user_role: string;
+  public user_name: string;
+  public bac_description: any;
+  public fan_desc: any;
+  public text_notification: any;
+  public model_year_id = [];
+  public selectedMonth: any;
+  public report_status: string;
+  public report_create: any;
+  public report_on_behalf = "";
+  public assigned_to: any;
+  public readOnlyContentHelper = true;
+  public enableUpdateData: boolean = false;
+  public check: any = {};
 
-  config = {
+  public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
@@ -183,7 +183,7 @@ export class DealerAllocationComponent implements OnInit {
       ['image']
     ]
   };
-  styling = {
+  public styling = {
     maxHeight: '300px',
     height: 'auto'
   };
@@ -305,7 +305,7 @@ export class DealerAllocationComponent implements OnInit {
   }
 
 
-  notify() {
+  public notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
@@ -314,14 +314,14 @@ export class DealerAllocationComponent implements OnInit {
 
 
 
-  textChanged(event) {
+  public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
 
-  content_edits() {
+  public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
       this.editModes = false;
@@ -350,29 +350,30 @@ export class DealerAllocationComponent implements OnInit {
     }
   }
 
-  edit_True() {
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_content;
   }
 
-  editEnable() {
+  public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_content;
   }
+
   ngOnInit() {
     $('#dropdownHolder').find('angular4-multiselect').find('col-sm-12');
   }
 
-  getDealerData() {
+  public getDealerData() {
     this.django.getNewData().subscribe((lookup: any) => {
       this.allo = lookup.allocation_grp_da
     })
   }
 
-  check;
-  getDealerAllocatonInfo() {
+
+  public getDealerAllocatonInfo() {
     this.check = { "value": 1, "id": 2 };
     this.modelYearSelectedItems = this.lookup.data.model_year;
     this.dropdownLookup = this.lookup.data.drop_downs_da;
@@ -385,22 +386,22 @@ export class DealerAllocationComponent implements OnInit {
     $("#AGDisplay").prop("checked", true);
   }
 
-  startM(val) {
+  public startM(val) {
     this.startMonth = val;
     this.startValue = this.month.indexOf(val) + 1;
   }
-  startY(val) {
+  public startY(val) {
     this.startYear = val;
   }
-  endM(val) {
+  public endM(val) {
     this.endMonth = val;
     this.endValue = this.month.indexOf(val) + 1;
   }
-  endY(val) {
+  public endY(val) {
     this.endYear = val;
   }
 
-  concensusData(val, event) {
+  public concensusData(val, event) {
     if (event.target.checked) {
       this.concencusDataCheckbox = { "value": val.cd_values, "id": val.ddm_rmp_lookup_da_consensus_data_id };
       this.finalData.concensus_data.push(this.concencusDataCheckbox);
@@ -415,15 +416,15 @@ export class DealerAllocationComponent implements OnInit {
     }
   }
 
-  back() {
+  public back() {
     this.router.navigate(["user/submit-request/select-report-criteria"]);
   }
 
-  onItemSelect(item: any) { }
+  public onItemSelect(item: any) { }
 
-  onSelectAll(items: any) { }
+  public onSelectAll(items: any) { }
 
-  files() {
+  public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     var formData = new FormData();
     formData.append('file_upload', this.file);
@@ -435,7 +436,7 @@ export class DealerAllocationComponent implements OnInit {
     });
   }
 
-  dateRangeData() {
+  public dateRangeData() {
     this.date_validation_flag = true
     if (this.startYear > this.endYear) {
       this.flag = false;
@@ -461,7 +462,7 @@ export class DealerAllocationComponent implements OnInit {
     }
   }
 
-  validateInput() {
+  public validateInput() {
     this.dateRangeData();
 
     if (this.startYear === undefined || this.startMonth === undefined || this.endYear === undefined || this.endMonth === undefined) {
@@ -498,7 +499,7 @@ export class DealerAllocationComponent implements OnInit {
     }
   }
 
-  dropdownSave() {
+  public dropdownSave() {
     if (this.Report_title == "" || this.Report_Req == "") {
       this.modal_validation_flag = true;
       this.summary_flag = false;
@@ -566,7 +567,7 @@ export class DealerAllocationComponent implements OnInit {
     }
   }
 
-  getReportSummery() {
+  public getReportSummery() {
     Utils.showSpinner();
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
@@ -749,14 +750,14 @@ export class DealerAllocationComponent implements OnInit {
     })
   }
 
-  changeReportMessage() {
+  public changeReportMessage() {
     this.report_message = "";
     this.report_id_service.changeMessage("");
     this.router.navigate(["user/request-status"]);
     this.report_id_service.changeButtonStatus(true)
   }
 
-  printDiv() {
+  public printDiv() {
     this.restorepage = document.body.innerHTML;
     this.printcontent = document.getElementById('editable').innerHTML;
     document.body.innerHTML = this.printcontent;
@@ -765,7 +766,7 @@ export class DealerAllocationComponent implements OnInit {
     location.reload(true);
   }
 
-  setDADefaults(ele) {
+  public setDADefaults(ele) {
     var spCheckData = ele.da_data.concensus_data;
     try {
       for (var x = 0; x <= spCheckData.length; x++) {
@@ -797,7 +798,7 @@ export class DealerAllocationComponent implements OnInit {
     }
   }
 
-  getDADefaultSelection() {
+  public getDADefaultSelection() {
     var temp = this.finalData;
     $.each($("input[class='events']:checked"), function () {
       this.concencusDataCheckbox = { "id": $(this).val(), "value": $(this).val() };
@@ -815,7 +816,7 @@ export class DealerAllocationComponent implements OnInit {
     this.finalData['concensus_time_date'] = { "startM": SMonth, "startY": SYear, "endM": EMonth, "endY": EYear, "startCycle": SCycle, "endCycle": ECycle };
   }
 
-  captureScreen() {
+  public captureScreen() {
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
@@ -832,7 +833,7 @@ export class DealerAllocationComponent implements OnInit {
   }
 
 
-  previousSelections(requestId) {
+  public previousSelections(requestId) {
     Utils.showSpinner();
     this.django.get_report_description(requestId).subscribe(element => {
       if (element['da_data']) {
@@ -910,10 +911,8 @@ export class DealerAllocationComponent implements OnInit {
         temp['allocation_group'] = { 'dropdown': this.selectedItemsAllocation, 'radio_button': this.dealerobj.alloRadio }
         temp['division_selected'] = { 'radio_button': this.dealerobj.dealerRadio }
 
-
-
         this.finalData = temp
-      } //if ends here
+      }
     })
     Utils.hideSpinner();
   }

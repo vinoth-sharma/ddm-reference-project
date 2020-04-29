@@ -1,7 +1,6 @@
 // migrated by Bharath.s
 import { Injectable } from '@angular/core';
 import { DjangoService } from './django.service'
-import { HttpClient } from '@angular/common/http'
 
 import { BehaviorSubject } from "rxjs";
 
@@ -15,64 +14,68 @@ export class DataProviderService {
   private notifications = new BehaviorSubject<object>(null);
   private intialLoad = new BehaviorSubject<boolean>(null);
   private FileData = new BehaviorSubject<object>(null);
-  currentIntialLoad = this.intialLoad.asObservable()
-  currentlookUpTableData = this.lookUpTableData.asObservable();
-  currentlookupData = this.lookUpData.asObservable();
-  currentbacData = this.bacData.asObservable();
-  currentNotifications = this.notifications.asObservable();
-  currentFiles = this.FileData.asObservable();
-  private user_id : number = 1
-  filesList: any;
-  constructor(private django: DjangoService, private httpClient : HttpClient) {
+  public currentIntialLoad = this.intialLoad.asObservable()
+  public currentlookUpTableData = this.lookUpTableData.asObservable();
+  public currentlookupData = this.lookUpData.asObservable();
+  public currentbacData = this.bacData.asObservable();
+  public currentNotifications = this.notifications.asObservable();
+  public currentFiles = this.FileData.asObservable();
+  private user_id: number = 1
+  public filesList: any;
+
+  constructor(private django: DjangoService) {
     this.loadNotifications();
     this.loadLookUpData();
     this.loadLookUpTableData();
     this.getFiles();
     localStorage.removeItem('report_id')
   }
-  getFiles(){
-    this.django.get_files().subscribe(ele =>{
+
+  public getFiles() {
+    this.django.get_files().subscribe(ele => {
       this.FileData.next(ele)
     })
   }
 
-  changeFiles(ele){
+  public changeFiles(ele) {
     this.FileData.next(ele)
   }
-  
-  getLookupTableData(){
+
+  public getLookupTableData() {
     return this.lookUpTableData
   }
 
-  getLookupData() {
+  public getLookupData() {
     return this.lookUpData
   }
 
-  changeNotificationData(notification: object){
+  public changeNotificationData(notification: object) {
     this.notifications.next(notification)
   }
 
-  changelookUpTableData(message: object) {
+  public changelookUpTableData(message: object) {
     this.lookUpTableData.next(message)
   }
 
-  changelookUpData(message: object) {
+  public changelookUpData(message: object) {
     this.lookUpTableData.next(message)
   }
 
-  changebacData(data:object){
+  public changebacData(data: object) {
     this.bacData.next(data);
   }
 
-  changeIntialLoad(status:boolean){
+  public changeIntialLoad(status: boolean) {
     this.intialLoad.next(status)
   }
-  load() {
+
+  public load() {
     let loadLookUpData_Flag = this.loadLookUpData();
     let loadLookUpTableData_Flag = this.loadLookUpTableData();
     return (loadLookUpTableData_Flag && loadLookUpData_Flag);
   }
-  loadLookUpTableData() {
+
+  public loadLookUpTableData() {
     return new Promise((resolve, reject) => {
       this.django.getLookupValues().subscribe(response => {
         this.lookUpTableData.next(response);
@@ -81,7 +84,7 @@ export class DataProviderService {
     })
   }
 
-  loadLookUpData() {
+  public loadLookUpData() {
     return new Promise((resolve, reject) => {
       this.django.getNewData().subscribe(response => {
         this.lookUpData.next(response);
@@ -90,11 +93,11 @@ export class DataProviderService {
     })
   }
 
-  loadNotifications(){
-    return new Promise((resolve,reject)=>{
-      this.django.get_notifications().subscribe(response =>{
+  public loadNotifications() {
+    return new Promise((resolve, reject) => {
+      this.django.get_notifications().subscribe(response => {
         let data = [];
-        if(response){
+        if (response) {
           data.push(...response['pending_requests'])
           data.push(...response['incomplete_requests'])
           data.push(...response['complete_requests'])

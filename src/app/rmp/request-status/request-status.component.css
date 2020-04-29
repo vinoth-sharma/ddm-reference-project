@@ -1,6 +1,7 @@
 .active > button.btn.btn-primary {
   background-color: rgb(250, 250, 250);
 }
+
 .tool-header {
   height: 12%;
   background-color: rgb(00, 78, 99);
@@ -11,6 +12,7 @@
   margin-left: 0;
   margin-right: 0;
 }
+
 h3 {
   font-size: 150%;
   font-weight: bold;
@@ -90,6 +92,7 @@ h3 {
   height: 460px;
   overflow-x: auto;
 }
+
 .tableFixHead thead th {
   position: sticky;
   top: 0;
@@ -99,10 +102,11 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
-th,
-td {
+
+th,td {
   padding: 8px 16px;
 }
+
 th {
   background: #ccc;
   z-index: 1000;
@@ -484,9 +488,6 @@ angular4-multiselect > div.c-btn{
   color: #007bff;
   cursor: pointer;
 }
-.report_table tbody tr {
-}
-
 
 #changeStatusModal .modal-body{
   height : 120px;

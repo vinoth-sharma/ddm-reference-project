@@ -16,7 +16,6 @@ describe('SharedDataService', () => {
   it("set selected tables",()=>{
     const service: SharedDataService = TestBed.get(SharedDataService);
     service.selectedTables.subscribe(res=>{
-      // console.log(res)
       expect(res[0]).toEqual(jasmine.objectContaining({name:"test"}))
     })
     service.setSelectedTables([{name:"test"}]);

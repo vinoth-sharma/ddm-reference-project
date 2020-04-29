@@ -135,7 +135,7 @@ export class ReportsComponent implements OnInit {
     frequency: '',
     frequency_data_filtered: '',
   };
-  // private reportsOriginal = [];
+  private reportsOriginal = [];
   public frequencyLength: any;
   public changeInFreq: boolean;
   public readOnlyContentHelper = true;
@@ -227,7 +227,7 @@ export class ReportsComponent implements OnInit {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
         this.content = element;
-        this.frequency_selections = this.contet['data']['report_frequency']
+        this.frequency_selections = this.content['data']['report_frequency']
         const refs = this.content['data']['desc_text'];
         const temps = refs.find(function (element) {
           return element['ddm_rmp_desc_text_id'] == 23;

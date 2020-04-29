@@ -4,13 +4,9 @@
   <div class="fluid-container holder">
     <div class="flex-container row tool-header">
       <div class="default">
-        <!-- <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#AdminNotesModal"
-          data-backdrop="static" data-keyboard="false" (click)="openNotesModal()">
-          Add Important Notes
-        </button> -->
         <button *ngIf="user_role=='Admin'" class="btn btn-primary" (click)="openNotesModal()">
-        Add Important Notes
-      </button>
+          Add Important Notes
+        </button>
       </div>
       <div class="tab-style">
         <div class="tab" style="float:left;">
@@ -30,12 +26,9 @@
             <img id="account" class="on-behalf-image" src="..\assets\account.png">Request On Behalf
           </button>
         </div>
-
         <app-request-on-behalf></app-request-on-behalf>
-
       </div>
     </div>
     <router-outlet class="routing-dimensions" style="background:white"></router-outlet>
   </div>
-
 </div>

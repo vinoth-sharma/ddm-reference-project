@@ -204,10 +204,11 @@ export class MetricsComponent implements OnInit {
 
   // filter for global search
   public filterData() {
-    if (this.statusFilter.length){
+    if (this.statusFilter.length) {
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
-    } else {this.filters.status = '';
-  }
+    } else {
+      this.filters.status = '';
+    }
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
@@ -297,7 +298,7 @@ export class MetricsComponent implements OnInit {
           );
         } else {
           const url = window.URL.createObjectURL(blob);
-          const  a = document.createElement('a');
+          const a = document.createElement('a');
           document.body.appendChild(a);
           a.href = url;
           a.download = 'Reports' + new Date().getTime() + EXCEL_EXTENSION;
@@ -332,14 +333,11 @@ export class MetricsComponent implements OnInit {
     return reportBody;
   }
 
-
-
   public columnSearch(event, obj) {
     this.searchObj = {
       [obj]: event.target.value
     };
   }
-
 
   // updating pagination page number
   public onPaginationChange(event) {

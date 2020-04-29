@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RMPRoutingModule } from './rmp-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RmpLandingPageComponent } from './rmp-landing-page/rmp-landing-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MainMenuComponent } from './Main/main-menu/main-menu.component';
@@ -19,7 +19,7 @@ import { DealerAllocationComponent } from './Submit/dealer-allocation/dealer-all
 import { OrderToSaleComponent } from './Submit/order-to-sale/order-to-sale.component';
 import { SelectReportCriteriaComponent } from './Submit/select-report-criteria/select-report-criteria.component';
 import { SubmitLandingPageComponent } from './Submit/submit-landing-page/submit-landing-page.component';
-import { FilterTablePipe } from './filter-table.pipe'; 
+import { FilterTablePipe } from './filter-table.pipe';
 import { OrderModule } from 'ngx-order-pipe';
 import { RequestOnBehalfComponent } from './request-on-behalf/request-on-behalf.component';
 import { MainMenuLandingPageComponent } from './Main/main-menu-landing-page/main-menu-landing-page.component';
@@ -31,7 +31,7 @@ import { Angular2FontawesomeModule } from "angular2-fontawesome";
 import { TagInputModule } from 'ngx-chips';
 import { CustomModalsModule } from './custom-modals/custom-modals.module';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { QuillModule } from "ngx-quill";
 import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
 import { CommonModuleDdmRmp } from "../custom-directives/common.module";
@@ -89,6 +89,6 @@ import { ManageNotesComponent } from './admin-notes/manage-notes/manage-notes.co
     DatePipe,
     DataProviderService
   ],
-  entryComponents : [DisplayNotesComponent,NotesWrapperComponent]
+  entryComponents: [DisplayNotesComponent, NotesWrapperComponent]
 })
 export class RMPModule { }

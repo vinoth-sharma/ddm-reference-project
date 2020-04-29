@@ -8,6 +8,8 @@ import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import Utils from '../../../utils';
+declare var $: any;
+
 @Component({
   selector: 'app-metrics',
   templateUrl: './metrics.component.html',
@@ -238,6 +240,7 @@ export class MetricsComponent implements OnInit {
         this.original_contents = this.namings;
         this.toastr.success("Updated Successfully");
         Utils.hideSpinner();
+        $('#helpModal').modal('hide');
       }, err => {
         Utils.hideSpinner();
         this.toastr.error("Data not Updated")
@@ -274,12 +277,14 @@ export class MetricsComponent implements OnInit {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
-      const headings = Object.keys(this.reports[0]);
+      // const headings = Object.keys(this.reports[0]);
+      const headings = ["Request No","Number Of Reports","Requestor","Recipients","Orginization","Start Date","End Date","Administrator","Status","Frequency","Frequency Details","Other"]
+      const reportBody = this.createNewBodyForExcel()
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
-      const transformedData = this.reports.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
+      const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
 
       workbook.outputAsync().then(function (blob) {
@@ -303,6 +308,7 @@ export class MetricsComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
   // public getMetricsData() {
   //   if (this.selectedItems.length > 0) {
   //   let arrayOfIds = [];
@@ -320,6 +326,49 @@ export class MetricsComponent implements OnInit {
   //                   'users_table_id': '', 'role_id':'' 
   //                }; 
   //   }
+=======
+  createNewBodyForExcel(){
+    let reportBody = []
+    this.reports.forEach(item =>{
+      let obj = {
+        "Request No" : item["ddm_rmp_post_report_id"],
+        "Number Of Reports": item["report_count"],
+        "Requestor":item["requestor"],
+        "Recipients":item['recipients_count'],
+        "Orginization":item["organization"],
+        "Start Date":item["created_on"],
+        "End Date":item["ddm_rmp_status_date"],
+        "Administrator" : item["assigned_to"],
+        "Status": item["status"],
+        "Frequency":item["freq"],
+        "Frequency Details":item['frequency_data'] ? item['frequency_data'].join():"",
+        "Other":item["description"]?item["description"]:"",
+      }
+      reportBody.push(obj)
+    })
+    return reportBody
+  }
+
+
+  // get list of metrics data based on selected parameters
+  public getMetricsData() {
+    if (this.selectedItems.length > 0) {
+    let arrayOfIds = [];
+      this.selectedItems.forEach(item => arrayOfIds.push(item.users_table_id));
+      this.obj = { 
+                    'start_date': this.metrics_start_date, 
+                    'end_date': this.metrics_end_date, 
+                    'users_table_id': arrayOfIds.join(), 
+                    'role_id':this.selectedItems[0].role_id 
+                 };   
+    } else {
+      this.obj = { 
+                    'start_date': this.metrics_start_date, 
+                    'end_date': this.metrics_end_date, 
+                    'users_table_id': '', 'role_id':'' 
+                 }; 
+    }
+>>>>>>> 4769d59d6e5180709c488aa99810725aa6ed1140
 
   //   Utils.showSpinner();
   //   this.django.metrics_aggregate(this.obj).subscribe(list => {

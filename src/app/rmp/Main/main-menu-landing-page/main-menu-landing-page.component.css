@@ -85,7 +85,7 @@ a:active {
 .main-tool-body-content {
     overflow-y: auto;
     width: 99.9%;
-    height: 410px;
+    height: 65vh;
     padding-left:42px;
     padding-bottom: 15px;
     overflow-x: hidden;

@@ -460,6 +460,44 @@ angular4-multiselect > div.c-btn{
   overflow: auto;
 }
 
+#CancelPermanently .modal-body,#errorModalRequest .modal-body {
+  height:100px;
+}
+
+#ModalComment .modal-body{
+  height: 180px;
+  overflow: hidden;
+}
+.custom-changes-icon{
+  padding-left: 16px;
+  position: relative;
+  top: 10px;
+  font-size: 2.5rem;
+}
+.custom-changes-edit{
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: -23px;
+  font-size: 1.75rem;
+  left: 80px;
+  color: #007bff;
+  cursor: pointer;
+}
+.report_table tbody tr {
+}
+
+
+#changeStatusModal .modal-body{
+  height : 120px;
+  min-height: 120px;
+}
+
+#addUrl .modal-body{
+  height :120px;
+  min-height: 120px;
+}
+
 .error-modal-message {
   height: auto !important;
   max-height: 400px;

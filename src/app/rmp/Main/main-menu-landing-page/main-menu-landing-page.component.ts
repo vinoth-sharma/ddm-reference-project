@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-declare var $: any;
+// import * as $ from 'jquery';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+declare var $: any;
 
 @Component({
   selector: 'app-main-menu-landing-page',
@@ -144,6 +145,7 @@ export class MainMenuLandingPageComponent implements OnInit {
         this.toastr.success("Updated Successfully");
         $('#helpModal').modal('hide');
         Utils.hideSpinner();
+        $('#helpModal').modal('hide');
       }, err => {
         Utils.hideSpinner();
         this.toastr.error("Data not Updated");
@@ -275,6 +277,7 @@ export class MainMenuLandingPageComponent implements OnInit {
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
         })
+        $('#mainMenuModal').modal('hide');
         Utils.hideSpinner();
         $('#mainMenuModal').modal('hide');
         this.toastr.success("FAQ has been edited successfully");
@@ -298,6 +301,7 @@ export class MainMenuLandingPageComponent implements OnInit {
         Utils.hideSpinner();
         $('#mainMenuModal').modal('hide');
         this.toastr.success("New FAQ has been successfully created");
+        $('#mainMenuModal').modal('hide');
       }, err => {
         $(function () {
           $("#mainMenuModal #modal_close_button").click();

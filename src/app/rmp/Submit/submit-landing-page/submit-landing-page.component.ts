@@ -272,6 +272,7 @@ export class SubmitLandingPageComponent implements OnInit {
         this.ngOnInit();
         this.original_contents = this.namings;
         this.toaster.success("Updated Successfully");
+        $('#helpModal').modal('hide');
         Utils.hideSpinner()
       }, err => {
         Utils.hideSpinner()

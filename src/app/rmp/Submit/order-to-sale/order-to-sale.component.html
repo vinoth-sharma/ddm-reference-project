@@ -105,11 +105,12 @@
         </tHead>
         <tbody style="padding: 0%; margin: 0%;">
           <tr class="d-flex" *ngFor="let element of typeOfData; let i = index" style="padding:0.5%;">
-            <td class="col-sm-1">
+            <!-- <td class="col-sm-1" style=""> -->
+            <!-- </td> -->
+            <td class="col-sm-6">
               <input class="tod_checkbox_group" type="checkbox" value="{{element.ddm_rmp_lookup_ots_type_data_id}}" id="tod_check{{i}}" (change)="Check($event, i, element)">
-            </td>
-            <td class="col-sm-5">
-              <b>{{element.type_data_desc}}</b>
+
+              <b style="margin-left:10px">{{element.type_data_desc}}</b>
             </td>
             <td class="col-sm-2">
             </td>

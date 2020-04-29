@@ -159,9 +159,14 @@ a:active {
 }
 
 ::ng-deep .quillEditorSubmit .quill .ql-container .ql-editor {
-  max-height: 150px;
+  /* max-height: 150px; */
 }
 
 ::ng-deep .disclaimer-quill .quill .ql-container .ql-editor {
   max-height: 270px;
 }
+
+.set-cont-height{
+  height:85%;
+}
+

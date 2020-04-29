@@ -308,25 +308,6 @@ export class MetricsComponent implements OnInit {
     });
   }
 
-<<<<<<< HEAD
-  // public getMetricsData() {
-  //   if (this.selectedItems.length > 0) {
-  //   let arrayOfIds = [];
-  //     this.selectedItems.forEach(item => arrayOfIds.push(item.users_table_id));
-  //     this.obj = { 
-  //                   'start_date': this.metrics_start_date, 
-  //                   'end_date': this.metrics_end_date, 
-  //                   'users_table_id': arrayOfIds.join(), 
-  //                   'role_id':this.selectedItems[0].role_id 
-  //                };   
-  //   } else {
-  //     this.obj = { 
-  //                   'start_date': this.metrics_start_date, 
-  //                   'end_date': this.metrics_end_date, 
-  //                   'users_table_id': '', 'role_id':'' 
-  //                }; 
-  //   }
-=======
   createNewBodyForExcel(){
     let reportBody = []
     this.reports.forEach(item =>{
@@ -368,7 +349,6 @@ export class MetricsComponent implements OnInit {
                     'users_table_id': '', 'role_id':'' 
                  }; 
     }
->>>>>>> 4769d59d6e5180709c488aa99810725aa6ed1140
 
   //   Utils.showSpinner();
   //   this.django.metrics_aggregate(this.obj).subscribe(list => {

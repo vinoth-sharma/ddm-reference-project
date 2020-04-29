@@ -808,11 +808,11 @@ describe('RequestStatusComponent', () => {
 
   }));
 
-  it('should execute edit_True method', fakeAsync(() => {
+  it('should execute resetHelpParams method', fakeAsync(() => {
     component.editModes = true;
     component.readOnlyContentHelper = false;
     component.original_contents = 'testing content';
-    component.edit_True();
+    component.resetHelpParams();
     expect(component.editModes).toBeFalsy();
     expect(component.readOnlyContentHelper).toBeTruthy();
     expect(component.namings).toEqual(component.original_contents);

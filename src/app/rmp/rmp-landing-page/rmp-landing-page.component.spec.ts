@@ -391,20 +391,6 @@ describe('RmpLandingPageComponent', () => {
     });
   }));
 
-  it('should ddm_rmp_admin_notes be service call', fakeAsync(async() => {
-    const notes_details: object = {
-            'notes_content': "second important . This message has to be displayed =.ds change of things",
-            'notes_start_date': "2020-03-03 00:00",
-            'notes_end_date': "2020-03-13 23:59",
-            'admin_flag': false,
-            'admin_note_status': true
-          };
-    spyOn(component, 'getDDmRmpAdminNotes').and.callThrough(); //callThrough()
-    component.getDDmRmpAdminNotes(notes_details);
-    djangoservice.ddm_rmp_admin_notes(notes_details).subscribe(res =>  expect(res).toBe(notes_details));
-    expect(component.getDDmRmpAdminNotes).toHaveBeenCalled();
-  }));
-
   it('should check main menu tab', fakeAsync(() => {
     fixture.detectChanges();
     const bannerDe: DebugElement = fixture.debugElement;

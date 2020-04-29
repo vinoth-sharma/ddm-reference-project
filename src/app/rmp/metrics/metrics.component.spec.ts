@@ -430,17 +430,6 @@ describe('MetricsComponent', () => {
     });
   }));
 
-  it('should execute notify method', fakeAsync(()=> {
-    component.enable_edits = false;
-    component.editModes = false;
-    fixture.detectChanges();
-    component.notify();
-    tick();
-    fixture.detectChanges();
-    expect(component.enable_edits).toBe(true);
-    expect(component.editModes).toBe(true);
-  }));
-
   it('should execute ngOnInit method', fakeAsync(async() => {
     const tmpData = [
                     {
@@ -515,13 +504,13 @@ describe('MetricsComponent', () => {
       expect(component.textChanged).toHaveBeenCalled();
   }));
 
-  it('should execute edit_True method', fakeAsync(() => {
-    spyOn(component, 'edit_True').and.callThrough(); //callThrough()
+  it('should execute resetHelp method', fakeAsync(() => {
+    spyOn(component, 'resetHelp').and.callThrough(); //callThrough()
     component.editModes = true;
     component.readOnlyContentHelper = false;
     component.original_contents = "<p>TESTING</p><p>Hari Gautam 2- PT Lead</p>";
-    component.edit_True();
-    expect(component.edit_True).toHaveBeenCalled();
+    component.resetHelp();
+    expect(component.resetHelp).toHaveBeenCalled();
     tick(500);
     fixture.detectChanges();
     expect(component.editModes).toBe(false);

@@ -16,6 +16,8 @@ import { SemanticReportsService } from '../../semantic-reports/semantic-reports.
 import { environment } from "./../../../environments/environment"
 import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from 'src/utils';
+import '../../../assets/debug2.js';
+declare var jsPDF: any;
 declare var $: any;
 
 @Component({
@@ -25,35 +27,19 @@ declare var $: any;
 })
 export class RequestStatusComponent implements OnInit, OnChanges {
 
-  public searchText: any;
+  public searchText: any = '';
   public p: any;
   public frequency_flag: any;
-  public changeDoc: any;
   public comment_text: any;
-  public divDataSelected: any;
-  public printDiv: any;
-  public captureScreen: any;
   public param = "open_count";
   public orderType = 'desc';
   public fieldType = 'string';
-  public isButton: any;
-  public scheduleDataToBeSent:any = {};
-  public reportListIdToSchedule : number = null;
   public enableUpdateData = false;
   public textChange = false;
-  public StatusSelectedItem = [];
   public StatusDropdownSettings = {};
-  public StatusDropdownList = [];
   public hidVar = true;
-  public dropdownList = [];
-  public selectedItems = [];
-  public dropdownSettings = {};
-  public report: any;
   public column: string[];
   public reports: any = null;
-  public report_ids: any;
-  public created_on: any;
-  public title: any;
   public assigned: any;
   public status_date: any;
   public status: any;
@@ -183,19 +169,18 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     ]
   };
   public errorModalMessageRequest = '';
-  public documentName: any;
-  public documentUrl: any;
+  public documentName: any = '';
+  public documentUrl: any = '';
   public readOnlyContentHelper = true;
   public cancel_response: any;
   public link_response: any;
-  public postLink_result: any;
-  public file_path: any;
   public ongoingStatusResult: any;
   public checkbox_length: number;
-  public assign_res;
-  public Tbd_res;
-  public assigned_res;
-  public add_response;
+  public assign_res: any;
+  public Tbd_res: any;
+  public assigned_res: any;
+  public add_response: any;
+  public tbd_assign_res: any;
 
   // paginator params
   public paginatorlength = 100;
@@ -294,7 +279,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
         const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 200 }
         this.django.list_of_reports(obj).subscribe(list => {
           list["report_list"].forEach(element => {
-            if (this.setbuilder_sort.includes(element.ddm_rmp_post_report_id))
+            if (this.setbuilder_sort && this.setbuilder_sort.includes(element.ddm_rmp_post_report_id))
               element['unread'] = true;
             else element['unread'] = false;
 
@@ -561,7 +546,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.tbdselectedItems_report = []
   }
 
-  
+  // updating Assign Acceptor of request
   public Assign_AssignTo() {
     Utils.showSpinner();
     this.assignOwner_Assigned['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];
@@ -582,7 +567,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.tbdselectedItemsAssigned = [];
   }
 
-  public tbd_assign_res;
+  // updating TBD_Assigned of request
   public TBD_Assigned() {
     Utils.showSpinner();
     this.assignOwner_Assigned['request_id'] = this.assignReportId;
@@ -611,6 +596,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.tbdselectedItems_report = [];
   }
 
+  // sort reports based on ascending or descending order
   public sort_by() {
     Utils.showSpinner();
     if (this.sorted_by == "asc")
@@ -626,6 +612,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     });
   }
 
+  // converting status into Active of reports
   public Accept() {
 
     if (this.finalData[0].status == "Cancelled") {
@@ -673,6 +660,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // download list of reports into excel sheet
   public xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
@@ -707,31 +695,10 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     });
   }
 
-  public post_link() {
-    this.checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
-    if (this.checkbox_length == 0) {
-      this.errorModalMessageRequest = "Select a report to post link for it";
-      $('#errorModalRequest').modal('show');
-    }
-    else if (this.checkbox_length > 1) {
-      this.errorModalMessageRequest = "You cannot post link on multiple reports at once";
-      $('#errorModalRequest').modal('show');
-      this.finalData = [];
-    } else if (this.checkbox_length == 1) {
-      if (this.finalData[0].status != "Active") {
-        this.errorModalMessageRequest = "Request not Active yet. Can't post link to results.";
-        $('#errorModalRequest').modal('show');
-        this.finalData = [];
-      } else if (this.finalData[0].status == "Active" ||
-        this.finalData[0].status == "Completed") { }
-      $("#post_link_button:button").trigger('click');
-    }
-  }
   public closePostLink() {
     this.hidVar = true;
   }
 
-  
   public addDocument() {
     if (this.documentName == "" || this.documentUrl == "") {
       this.hidVar = false;
@@ -768,6 +735,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   public onSelectAll(items: any) {
   }
 
+  // check validation of reports to avoid multiple select
   public checkbox_validation() {
     this.checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
 
@@ -791,6 +759,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // adding comment to reports
   public extract_comment() {
     if (this.comment_text == "") {
       this.errorModalMessageRequest = "Enter some comment";
@@ -861,6 +830,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // displaying details of pop-up of selected report
   public query_criteria_click(query_report_id) {
     Utils.showSpinner();
     this.django.get_report_description(query_report_id).subscribe(response => {
@@ -1076,6 +1046,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     })
   }
 
+  // create new request for selected reports
   public NewReportOnSelectedCriteria() {
 
     this.checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
@@ -1093,6 +1064,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // creating report based on role admin/non-admin
   public getRequestId(element) {
     Utils.showSpinner();
     this.sharedDataService.setObjectExplorerPathValue(false);
@@ -1122,6 +1094,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // displaying alert message
   public clearOnError() {
     $('.modal').modal('hide')
     $.each($("input[class='report_id_checkboxes']"), function () {
@@ -1130,26 +1103,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.finalData = []
   }
 
-  public postLink(request_id) {
-    Utils.showSpinner();
-    this.django.get_report_id(request_id).subscribe(element => {
-      this.postLink_result = element;
-      if (!element['report_id'].length) {
-        Utils.hideSpinner();
-        alert("There is no summary for this report")
-      }
-      else {
-        let report_list_id = element['report_id'][0]['report_list_id'];
-        this.django.get_report_file(request_id, report_list_id).subscribe(file_details => {
-          this.file_path = file_details;
-          var file_path_details = file_details["all_file_path"]["zip_url"];
-          window.open(`${environment.baseUrl}` + file_path_details, '_blank');
-          Utils.hideSpinner();
-        })
-      }
-    })
-  }
-
+  // get the response of link to result
   public getLink(index) {
     Utils.showSpinner();
     this.django.get_report_link(index).subscribe(ele => {
@@ -1163,6 +1117,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
 
   }
   /*---------------------------Distribution List---------------------*/
+  // add list of contacts
   public addContact() {
     if (this.model == "") {
       this.dl_flag = true
@@ -1174,6 +1129,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // remove the contact from the list
   public removeContact() {
     var sList = [];
     $('.form-check-input').each(function () {
@@ -1222,6 +1178,8 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       $('#errorModalRequest').modal('show');
     }
   }
+
+  // update the modified distributiion list
   public updateDL() {
     Utils.showSpinner();
     this.django.report_distribution_list(this.dl_update).
@@ -1246,6 +1204,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     'status': this.searchText
   };
 
+  // Search by Request Number/Requestor/Title/Status
   public filterData() {
     if (this.statusFilter.length)
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
@@ -1265,6 +1224,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     return vs;
   }
 
+  // update status of report to completed state 
   public updateMarkAsComplete(requestId: number) {
     Utils.showSpinner();
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
@@ -1289,6 +1249,29 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     })
   }
 
+  // download browser data in pdf file
+  captureScreen() {
+    var specialElementHandlers = {
+      '#editor': function (element, renderer) {
+        return true;
+      }
+    };
+    var doc = new jsPDF();
+    doc.setFont("arial");
+    let margins = {
+                    top: 15,
+                    bottom: 0,
+                    left: 18,
+                    width: 170
+                  };
+    doc.fromHTML(
+      $('#print').html(), margins.left,margins.top,
+      { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
+      function () { doc.save('sample-file.pdf'); },margins
+    );
+  }
+
+  // capture pagination page event
   public onPaginationChange(event){
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;

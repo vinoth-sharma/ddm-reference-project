@@ -193,6 +193,9 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   public ongoingStatusResult: any;
   public checkbox_length: number;
   public assign_res;
+  public Tbd_res;
+  public assigned_res;
+  public add_response;
 
   // paginator params
   public paginatorlength = 100;
@@ -530,11 +533,12 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     })
   }
 
+  // get selected element id
   public TBD(element) {
     this.assignReportId = element.ddm_rmp_post_report_id;
   }
 
-  public Tbd_res;
+  // update report successfullys
   public TBDsave() {
     Utils.showSpinner();
     this.assignOwner['request_id'] = this.assignReportId;
@@ -557,7 +561,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.tbdselectedItems_report = []
   }
 
-  public assigned_res;
+  
   public Assign_AssignTo() {
     Utils.showSpinner();
     this.assignOwner_Assigned['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];
@@ -598,7 +602,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     })
     this.tbdselectedItemsAssigned = [];
   }
-
+  
   public closeTBD_Assigned() {
     this.tbdselectedItemsAssigned = [];
   }
@@ -727,7 +731,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.hidVar = true;
   }
 
-  public add_response;
+  
   public addDocument() {
     if (this.documentName == "" || this.documentUrl == "") {
       this.hidVar = false;

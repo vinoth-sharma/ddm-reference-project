@@ -57,18 +57,9 @@
           </div>
           <div style="max-height:148px;margin-top: 10px;overflow-y:auto">
             <div class="metricsStyling">
-              <!-- <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_1'" style="cursor:pointer"> -->
                 <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
                   <div><b>{{metrics?.data?.recipients_count}} Reports Recipients</b></div>
-                </div>
-                <!-- <button class="down-arrow metricToggleButton" data-toggle="collapse"
-                  [attr.data-target]="'#'+'metrics_1'" aria-expanded="false" [attr.aria-controls]="metrics_1">
-                  <svg class="sv" style="width:24px;height:24px">
-                    <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
-                  </svg>
-                </button> -->
-              <!-- </div> -->
-            </div>
+                </div>            </div>
 
             <div class="metricsStyling">
                 <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
@@ -112,26 +103,6 @@
               </div>
 
             </div>
-
-
-            <!-- <div class="metricsStyling">
-              <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_3'" style="cursor:pointer">
-                <b>Average Reports by Day</b>
-                <button class="down-arrow metricToggleButton" data-toggle="collapse"
-                  [attr.data-target]="'#'+'metrics_3'" aria-expanded="false" [attr.aria-controls]="metrics_3">
-                  <svg class="sv" style="width:24px;height:24px">
-                    <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
-                  </svg>
-                </button>
-              </div>
-              <div class="collapse in" id="metrics_2">
-                <div *ngFor="let element of reportByDay">
-                  <div>
-                    {{ element.report_count }} {{ element.days }}
-                  </div>
-                </div>
-              </div>
-            </div> -->
             <div class="metricsStyling">
               <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_4'" style="cursor:pointer">
                 <b>Reports by Month</b>
@@ -326,30 +297,7 @@
                 </td>
 
                 <td scope="col">
-                  <!-- <div *ngIf="element.status == 'Cancelled'">
-                  </div> -->
                     {{element.status}}
-                  <!-- <div *ngIf="element.status != 'Cancelled'">
-                    <div *ngIf="element.freq == 'One Time'">
-                      {{element.status}}
-                    </div>
-                    <div *ngIf="element.freq == 'Recurring'">
-                      Active
-                    </div>
-                    <div *ngIf="element.freq=='On Demand' && element.frequency_data.length > 1">
-                      Active
-                    </div>
-                    <div *ngIf="element.freq=='On Demand Configurable' && element.frequency_data.length > 1">
-                      Active
-                    </div>
-                    <div *ngIf="element.freq=='On Demand' && element.frequency_data.length == 1">
-                      Completed
-                    </div>
-                    <div *ngIf="element.freq=='On Demand Configurable' && element.frequency_data.length == 1">
-                      Completed
-                    </div>
-                  </div> -->
-
                 </td>
 
                 <td scope="col">

@@ -398,44 +398,6 @@ describe('RmpLandingPageComponent', () => {
     expect(bannerEl.querySelector('.main-menu').textContent).toEqual('Main Menu');
   }));
 
-  // it('should add addDocuments', fakeAsync(() => {
-  //   fixture = TestBed.createComponent(RmpLandingPageComponent);
-  //   fixture.detectChanges();
-  //   const notes_details: object = {
-  //     'notes_content': "second important . This message has to be displayed =.ds change of things",
-  //     'notes_start_date': "2020-03-03 00:00",
-  //     'notes_end_date': "2020-03-13 23:59",
-  //     'admin_flag': false,
-  //     'admin_note_status': true
-  //   };  
-  //   spyOn(component, 'addDocument').and.callThrough(); //callThrough()        
-  //     component.addDocument();
-  //     fixture.detectChanges();
-  //     expect(component.addDocument).toHaveBeenCalled();
-  // }));
-
-  // it('should clear message', fakeAsync(() => {
-  //   component.clearMessage();
-  //   expect(component.admin_notes).toEqual('');
-  // }));
-
-  // it('should previous message', fakeAsync(() => {
-  //   const notes_details  = { admin_notes : [{
-  //     'notes_content': "second important . This message has to be displayed =.ds change of things",
-  //     'notes_start_date': "2020-03-03 00:00",
-  //     'notes_end_date': "2020-03-13 23:59",
-  //     'admin_flag': false,
-  //     'admin_note_status': true
-  //   }]};   
-  //   let service = fixture.debugElement.injector.get(DjangoService);
-  //   let  spy = spyOn(service,"get_admin_notes").and.returnValue(of(notes_details));
-  //   spyOn(component, 'prevMessage').and.callThrough(); //callThrough()
-  //   component.prevMessage();
-  //   expect(component.prevMessage).toHaveBeenCalled();
-  //   tick(500);
-  //   expect(component.notes).toBe(notes_details.admin_notes);
-  // }));
-
   it('should execute getAdminNotes', fakeAsync(() => {
     const adminNote = {
       'ddm_rmp_admin_notes_id': 384,

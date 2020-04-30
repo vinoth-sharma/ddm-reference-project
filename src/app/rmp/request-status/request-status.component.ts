@@ -1250,7 +1250,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   }
 
   // download browser data in pdf file
-  captureScreen() {
+  public captureScreen() {
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;

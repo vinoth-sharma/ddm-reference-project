@@ -3,12 +3,12 @@ import { TestBed } from '@angular/core/testing';
 
 import { GeneratedReportService } from './generated-report.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-let service : GeneratedReportService
+let service: GeneratedReportService
 describe('GeneratedReportService', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    imports:[HttpClientTestingModule]
+    imports: [HttpClientTestingModule]
   }));
-  beforeEach(()=>{
+  beforeEach(() => {
     service = TestBed.get(GeneratedReportService);
   })
 
@@ -16,90 +16,90 @@ describe('GeneratedReportService', () => {
     expect(service).toBeTruthy();
   });
 
-  it("should pass reportid to selectionSource subject",()=>{
+  it("should pass reportid to selectionSource subject", () => {
     let id = 1;
     service.changeSelection(id)
-    service.currentSelections.subscribe(item =>{
+    service.currentSelections.subscribe(item => {
       expect(item).toEqual(id)
     })
   })
 
-  it("should pass data to on_behalf subject",()=>{
+  it("should pass data to on_behalf subject", () => {
     let id = "1";
     service.behalf_of(id)
-    service.behalf_of_name.subscribe(item =>{
+    service.behalf_of_name.subscribe(item => {
       expect(item).toEqual(id)
     })
   })
 
-  it("should pass data to on_behalf_email subject",()=>{
+  it("should pass data to on_behalf_email subject", () => {
     let id = "1";
     service.behalf_email(id)
-    service.behalf_of_email.subscribe(item =>{
+    service.behalf_of_email.subscribe(item => {
       expect(item).toEqual(id)
     })
   })
 
-  it("should pass data to report_status subject",()=>{
+  it("should pass data to report_status subject", () => {
     let id = "1";
     service.changeStatus(id)
-    service.currentstatus.subscribe(item =>{
+    service.currentstatus.subscribe(item => {
       expect(item).toEqual(id)
     })
   })
 
-  it("should pass data to messageSource subject",()=>{
+  it("should pass data to messageSource subject", () => {
     let id = "1";
     service.changeMessage(id)
-    service.currentMessage.subscribe(item =>{
+    service.currentMessage.subscribe(item => {
       expect(item).toEqual(id)
     })
   })
 
-  it("should pass data to divisionSelected subject",()=>{
-    let id = [{key:"1"}];
+  it("should pass data to divisionSelected subject", () => {
+    let id = [{ key: "1" }];
     service.changeDivisionSelected(id)
-    service.currentDivisionSelected.subscribe(item =>{
+    service.currentDivisionSelected.subscribe(item => {
       expect(item).toEqual(id)
     })
   })
 
-  it("should pass data to showOnBehalfOf subject",()=>{
+  it("should pass data to showOnBehalfOf subject", () => {
     let id = false
     service.changeButtonStatus(id)
-    service.buttonStatus.subscribe(item =>{
+    service.buttonStatus.subscribe(item => {
       expect(item).toEqual(id)
     })
   })
 
-  it("should pass data to saveChanges subject",()=>{
+  it("should pass data to saveChanges subject", () => {
     let id = false
     service.changeSavedChanges(id)
-    service.savedSelection.subscribe(item =>{
+    service.savedSelection.subscribe(item => {
       expect(item).toEqual(id)
     })
   })
 
-  it("should pass data to saveUpdate subject",()=>{
+  it("should pass data to saveUpdate subject", () => {
     let id = false
     service.changeUpdate(id)
-    service.updatedChanges.subscribe(item =>{
+    service.updatedChanges.subscribe(item => {
       expect(item).toEqual(id)
     })
   })
 
-  it("should pass data to savedStatus subject",()=>{
+  it("should pass data to savedStatus subject", () => {
     let id = false
     service.changeSaved(id)
-    service.currentSaved.subscribe(item =>{
+    service.currentSaved.subscribe(item => {
       expect(item).toEqual(id)
     })
   })
 
-  it("should pass data to disclaimerStatus subject",()=>{
+  it("should pass data to disclaimerStatus subject", () => {
     let id = false
     service.changeDisclaimer(id)
-    service.currentDisclaimer.subscribe(item =>{
+    service.currentDisclaimer.subscribe(item => {
       expect(item).toEqual(id)
     })
   })

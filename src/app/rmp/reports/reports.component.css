@@ -7,11 +7,13 @@ h3 {
   height: 435px;
   overflow-x: auto;
 }
+
 .tableFixHead thead th {
   position: sticky;
   top: 0;
   z-index: 1;
 }
+
 .tableFixHead {
   padding-left: 1%;
 }
@@ -20,6 +22,7 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
+
 th {
   background: #ccc;
 }
@@ -151,6 +154,7 @@ label input[type="checkbox"] {
   align-items: left;
   cursor: pointer;
 }
+
 th > div {
   width: 140px;
   display: flex;
@@ -159,6 +163,7 @@ th > div {
   height: 70px;
   flex-direction: column;
 }
+
 td > div {
   width: 140px;
   align-items: center;
@@ -166,7 +171,7 @@ td > div {
   word-break: break-word;
 }
 
-.quillEditor{
+.quillEditor {
   position: relative;
   padding: 3px;
 }

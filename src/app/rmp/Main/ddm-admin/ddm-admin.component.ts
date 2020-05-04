@@ -1,76 +1,76 @@
-// migration  was done by : Bharath S
 import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import * as Rx from "rxjs";
-import { AuthenticationService } from "src/app/authentication.service"; 
+import { AuthenticationService } from "src/app/authentication.service";
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 
+// Angular component migration by Bharath S
 @Component({
   selector: 'app-ddm-admin',
   templateUrl: './ddm-admin.component.html',
   styleUrls: ['./ddm-admin.component.css']
 })
 export class DdmAdminComponent implements OnInit {
- 
-  content;
-  naming: Array<object>;
-  editMode: Boolean;
-  enableUpdateData = false;
-  textChange = false;
-  document_details = {
+
+  public content: any;
+  public naming: Array<object>;
+  public editMode: Boolean;
+  public enableUpdateData = false;
+  public textChange = false;
+  public document_details = {
     "title": "",
     "url": "",
     "admin_flag": false
   }
-  document_detailsEdit = {
+  public document_detailsEdit = {
     "ddm_rmp_desc_text_admin_documents_id": "",
     "title": "",
     "url": "",
     "admin_flag": false
   }
 
-  file = null;
-  editid;
-  changeDoc = false;
+  public file = null;
+  public editid;
+  public changeDoc = false;
   public delete_document_details;
-  user_role: string;
-  contents;
-  enable_edits = false
-  editModes = false;
-  original_content;
-  namings: string = "Loading";
-  filesList;
+  public user_role: string;
+  public contents;
+  public enable_edits = false
+  public editModes = false;
+  public original_content;
+  public namings: string = "Loading";
+  public filesList;
 
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  description_text = {
+  public parentsSubject: Rx.Subject<any> = new Rx.Subject();
+  public description_text = {
     "ddm_rmp_desc_text_id": 9,
     "module_name": "Help_DDMAdmin",
     "description": ""
   }
 
-  isAdmin = {
+  public isAdmin = {
     'docs': []
   };
 
-  config = {
+  public config = {
     toolbar: [
-      ['bold','italic','underline','strike'],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
-      [{'list' : 'ordered'}, {'list' : 'bullet'}],
-      [{'script' : 'sub'},{'script' : 'super'}],
-      [{'size':['small',false, 'large','huge']}],
-      [{'header':[1,2,3,4,5,6,false]}],
-      [{'color': []},{'background':[]}],
-      [{'font': []}],
-      [{'align': []}],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
       ['clean'],
       ['image']
     ]
   };
 
-  readOnlyContentHelper = true;
+  public readOnlyContentHelper: boolean = true;
 
   constructor(private django: DjangoService, public auth_service: AuthenticationService, private toastr: NgToasterComponent, private spinner: NgLoaderService, public dataProvider: DataProviderService) {
     this.editMode = false;
@@ -79,9 +79,7 @@ export class DdmAdminComponent implements OnInit {
     this.getUserInfo()
   }
 
-  
-
-  notify() {
+  public notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
@@ -89,11 +87,10 @@ export class DdmAdminComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.inetialiseData()
+    this.initialiseData()
   }
 
-  inetialiseData(){
+  public initialiseData() {
     this.spinner.show()
 
     let temp = this.content['data'].desc_text_admin_documents;
@@ -111,7 +108,7 @@ export class DdmAdminComponent implements OnInit {
     this.namings = this.original_content;
   }
 
-  getCurrentFiles(){
+  public getCurrentFiles() {
     this.dataProvider.currentFiles.subscribe(ele => {
       if (ele) {
         this.isAdmin['docs'] = []
@@ -124,22 +121,23 @@ export class DdmAdminComponent implements OnInit {
       }
     })
   }
-  getCurrentTableLookupData(){
+
+  public getCurrentTableLookupData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       this.content = element;
     })
   }
 
-  getUserInfo(){
+  public getUserInfo() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
-       
+
         this.user_role = role["role"]
       }
     })
   }
 
-  getLink(index) {
+  public getLink(index) {
     this.spinner.show();
     this.django.get_doc_link(index).subscribe(ele => {
       var url = ele['data']['url']
@@ -151,15 +149,13 @@ export class DdmAdminComponent implements OnInit {
     })
   }
 
-  
-
-  textChanged(event) {
+  public textChanged(event) {
     this.textChange = true;
-    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
-  content_edits() {
+  public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       this.spinner.show();
       this.editModes = false;
@@ -190,32 +186,33 @@ export class DdmAdminComponent implements OnInit {
     }
   }
 
-  edit_True() {
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_content;
   }
 
-  editEnable() {
+  public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_content;
   }
 
-  content_edit() {
+  public content_edit() {
     this.editMode = false;
   }
 
-  editTrue() {
+  public editTrue() {
     this.editMode = !this.editMode;
   }
-  NewDoc() {
+
+  public NewDoc() {
     this.editid = undefined;
     (<HTMLInputElement>document.getElementById('document-name')).value = "";
     (<HTMLInputElement>document.getElementById('document-url')).value = "";
   }
 
-  upload(isChecked) {
+  public upload(isChecked) {
     if ($('#uploadCheckbox').is(':checked')) {
       $('#document-url').attr('disabled', 'disabled');
       $('#attach-file1').removeAttr('disabled');
@@ -228,7 +225,7 @@ export class DdmAdminComponent implements OnInit {
     }
   }
 
-  addDocument() {
+  public addDocument() {
     this.document_details = {
       "title": "",
       "url": "",
@@ -237,11 +234,11 @@ export class DdmAdminComponent implements OnInit {
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    let duplicateName = this.naming.find(ele => (ele['title'] == link_title) );
-    if(!this.editid && duplicateName) {
+    let duplicateName = this.naming.find(ele => (ele['title'] == link_title));
+    if (!this.editid && duplicateName) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
       document.getElementById("errorTrigger").click()
-      } else  if (link_title == "") {
+    } else if (link_title == "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
     }
@@ -254,16 +251,16 @@ export class DdmAdminComponent implements OnInit {
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
-      if(this.editid)
-      this.document_details['ddm_rmp_desc_text_admin_documents_id']= this.editid;
+      if (this.editid)
+        this.document_details['ddm_rmp_desc_text_admin_documents_id'] = this.editid;
       this.document_details["title"] = document_title;
       this.document_details["url"] = document_url;
       this.django.ddm_rmp_admin_documents_post(this.document_details).subscribe(response => {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_admin_documents;
-          if(this.editid) this.toastr.success("Document updated");
-          else this.toastr.success("New document added", );
+          if (this.editid) this.toastr.success("Document updated");
+          else this.toastr.success("New document added");
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
           this.editid = undefined;
@@ -290,7 +287,7 @@ export class DdmAdminComponent implements OnInit {
 
   }
 
-  deleteDocument(id: number, index: number) {
+  public deleteDocument(id: number, index: number) {
     this.spinner.show()
     this.django.ddm_rmp_admin_documents_delete(id).subscribe(response => {
       document.getElementById("editable" + index).style.display = "none"
@@ -302,7 +299,7 @@ export class DdmAdminComponent implements OnInit {
     })
   }
 
-  delete_upload_file(id, index) {
+  public delete_upload_file(id, index) {
     this.spinner.show();
     this.django.delete_upload_doc(id).subscribe(res => {
       document.getElementById("upload_doc" + index).style.display = "none"
@@ -314,7 +311,7 @@ export class DdmAdminComponent implements OnInit {
     })
   }
 
-  url() {
+  public url() {
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
 
@@ -329,7 +326,7 @@ export class DdmAdminComponent implements OnInit {
   }
 
 
-  files() {
+  public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     var formData = new FormData();
@@ -355,22 +352,22 @@ export class DdmAdminComponent implements OnInit {
       this.spinner.hide();
       $("#document-url").removeAttr('disabled');
       $("#attach-file1").val('');
-      if(err && err['status'] === 400)  
+      if (err && err['status'] === 400)
         this.toastr.error("Submitted file is empty");
-      else    
-        this.toastr.error("Server Error"); 
+      else
+        this.toastr.error("Server Error");
       $('#uploadCheckbox').prop('checked', false);
     });
   }
 
-  editDoc(id, val, url) {
+  public editDoc(id, val, url) {
     this.editid = id;
     this.changeDoc = true;
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
   }
 
-  editDocument() {
+  public editDocument() {
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     if (link_title == "" || link_url == "") {
@@ -390,7 +387,7 @@ export class DdmAdminComponent implements OnInit {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_admin_documents;
-          this.toastr.success("Document updated", );
+          this.toastr.success("Document updated");
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
           this.changeDoc = false;
@@ -399,7 +396,6 @@ export class DdmAdminComponent implements OnInit {
           this.spinner.hide()
           this.toastr.error("Server problem encountered")
         })
-
       }, err => {
         this.spinner.hide()
         this.toastr.error("Server problem encountered")

@@ -3,7 +3,7 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ReportCriteriaDataService } from "../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
@@ -12,10 +12,10 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
 import { SharedDataService } from '../../create-report/shared-data.service';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
-import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
-import { environment } from "./../../../environments/environment"
 import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from 'src/utils';
+import '../../../assets/debug2.js';
+declare var jsPDF: any;
 declare var $: any;
 
 @Component({
@@ -25,35 +25,19 @@ declare var $: any;
 })
 export class RequestStatusComponent implements OnInit, OnChanges {
 
-  public searchText: any;
+  public searchText: any = '';
   public p: any;
   public frequency_flag: any;
-  public changeDoc: any;
   public comment_text: any;
-  public divDataSelected: any;
-  public printDiv: any;
-  public captureScreen: any;
   public param = "open_count";
   public orderType = 'desc';
   public fieldType = 'string';
-  public isButton: any;
-  public scheduleDataToBeSent:any = {};
-  public reportListIdToSchedule : number = null;
   public enableUpdateData = false;
   public textChange = false;
-  public StatusSelectedItem = [];
   public StatusDropdownSettings = {};
-  public StatusDropdownList = [];
   public hidVar = true;
-  public dropdownList = [];
-  public selectedItems = [];
-  public dropdownSettings = {};
-  public report: any;
   public column: string[];
   public reports: any = null;
-  public report_ids: any;
-  public created_on: any;
-  public title: any;
   public assigned: any;
   public status_date: any;
   public status: any;
@@ -183,49 +167,52 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     ]
   };
   public errorModalMessageRequest = '';
-  public documentName: any;
-  public documentUrl: any;
+  public documentName: any = '';
+  public documentUrl: any = '';
   public readOnlyContentHelper = true;
   public cancel_response: any;
   public link_response: any;
-  public postLink_result: any;
-  public file_path: any;
   public ongoingStatusResult: any;
   public checkbox_length: number;
-  public linkUrlId : number
-  public addUrlTitle : String = "";
-  public selectReportStatus = ""
-  public assign_res;
+  public assign_res: any;
+  public Tbd_res: any;
+  public assigned_res: any;
+  public add_response: any;
+  public tbd_assign_res: any;
+  public linkUrlId: number
+  public addUrlTitle: String = "";
+  public selectReportStatus = "";
+  public changeDoc:boolean = false;
 
   // paginator params
   public paginatorlength = 100;
   public paginatorpageSize = 10;
-  public paginatorOptions :number[] = [5,10,25,100] 
+  public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
 
-  constructor(private generated_id_service: GeneratedReportService, 
-              private router: Router, 
-              private reportDataService: ReportCriteriaDataService,
-              private django: DjangoService, private DatePipe: DatePipe,
-              private sharedDataService: SharedDataService, 
-              private dataProvider: DataProviderService, 
-              private auth_service: AuthenticationService, 
-              private toastr: NgToasterComponent, 
-              private scheduleService:ScheduleService) {
-          this.getCurrentNotifications(); 
-          this.model = "";
-          this.getRoleDetails();
-          this.Status_List = [      
-            { 'status_id': 1, 'status': 'Incomplete' },
-            { 'status_id': 2, 'status': 'Pending' },
-            { 'status_id': 3, 'status': 'Active' },
-            { 'status_id': 4, 'status': 'Completed' },
-            { 'status_id': 5, 'status': 'Recurring'},
-            { 'status_id': 6, 'status': 'Cancelled' }
-          ];
-          this.contacts = [];
-          this.currentLookUpTableData();
+  constructor(private generated_id_service: GeneratedReportService,
+    private router: Router,
+    private reportDataService: ReportCriteriaDataService,
+    private django: DjangoService, private DatePipe: DatePipe,
+    private sharedDataService: SharedDataService,
+    private dataProvider: DataProviderService,
+    private auth_service: AuthenticationService,
+    private toastr: NgToasterComponent,
+    private scheduleService: ScheduleService) {
+    this.getCurrentNotifications();
+    this.model = "";
+    this.getRoleDetails();
+    this.Status_List = [
+      { 'status_id': 1, 'status': 'Incomplete' },
+      { 'status_id': 2, 'status': 'Pending' },
+      { 'status_id': 3, 'status': 'Active' },
+      { 'status_id': 4, 'status': 'Completed' },
+      { 'status_id': 5, 'status': 'Recurring' },
+      { 'status_id': 6, 'status': 'Cancelled' }
+    ];
+    this.contacts = [];
+    this.currentLookUpTableData();
   }
 
   //get current notification details
@@ -293,7 +280,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
         const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 200 }
         this.django.list_of_reports(obj).subscribe(list => {
           list["report_list"].forEach(element => {
-            if (this.setbuilder_sort.includes(element.ddm_rmp_post_report_id))
+            if (this.setbuilder_sort && this.setbuilder_sort.includes(element.ddm_rmp_post_report_id))
               element['unread'] = true;
             else element['unread'] = false;
 
@@ -374,22 +361,22 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       this.description_texts['description'] = this.namings;
       $('#edit_button').show();
       this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).
-      subscribe(response => {
-        this.lookup['data']['desc_text'].map((element, index) => {
-          if (element['ddm_rmp_desc_text_id'] == 13)
-            this.lookup['data']['desc_text'][index] = this.description_texts;
-        });
-        this.dataProvider.changelookUpTableData(this.lookup);
-        this.ngOnInit();
-        this.original_contents = this.namings;
-        this.toastr.success("Updated Successfully");
-        $('#helpModal').modal('hide');
-        Utils.hideSpinner();
-      }, err => {
-        Utils.hideSpinner();
-        this.toastr.error("Data not Updated")
-      })
-    } else  {
+        subscribe(response => {
+          this.lookup['data']['desc_text'].map((element, index) => {
+            if (element['ddm_rmp_desc_text_id'] == 13)
+              this.lookup['data']['desc_text'][index] = this.description_texts;
+          });
+          this.dataProvider.changelookUpTableData(this.lookup);
+          this.ngOnInit();
+          this.original_contents = this.namings;
+          this.toastr.success("Updated Successfully");
+          $('#helpModal').modal('hide');
+          Utils.hideSpinner();
+        }, err => {
+          Utils.hideSpinner();
+          this.toastr.error("Data not Updated")
+        })
+    } else {
       this.toastr.error("please enter the data");
     }
   }
@@ -438,7 +425,6 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   }
 
   public OrderToSale(event) {
-
   }
 
   // check status of selected report and take action on based on status
@@ -480,11 +466,11 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   public Cancel() {
     Utils.showSpinner();
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
-      this.cancel_report.cancel_reports.push({ 
-              'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
-              'status': "Cancelled", 
-              'status_date': this.date 
-            });
+    this.cancel_report.cancel_reports.push({
+      'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
+      'status': "Cancelled",
+      'status_date': this.date
+    });
 
     this.django.cancel_report(this.cancel_report).subscribe(response => {
       this.cancel_response = response;
@@ -513,7 +499,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     $('#CancelRequest').modal('hide');
   }
 
- 
+
   public AssignTBD() {
     Utils.showSpinner();
     this.assignTBD['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];
@@ -534,11 +520,12 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     })
   }
 
+  // get selected element id
   public TBD(element) {
     this.assignReportId = element.ddm_rmp_post_report_id;
   }
 
-  public Tbd_res;
+  // update report successfullys
   public TBDsave() {
     Utils.showSpinner();
     this.assignOwner['request_id'] = this.assignReportId;
@@ -561,7 +548,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.tbdselectedItems_report = []
   }
 
-  public assigned_res;
+  // updating Assign Acceptor of request
   public Assign_AssignTo() {
     Utils.showSpinner();
     this.assignOwner_Assigned['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];
@@ -582,7 +569,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.tbdselectedItemsAssigned = [];
   }
 
-  public tbd_assign_res;
+  // updating TBD_Assigned of request
   public TBD_Assigned() {
     Utils.showSpinner();
     this.assignOwner_Assigned['request_id'] = this.assignReportId;
@@ -611,6 +598,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.tbdselectedItems_report = [];
   }
 
+  // sort reports based on ascending or descending order
   public sort_by() {
     Utils.showSpinner();
     if (this.sorted_by == "asc")
@@ -626,6 +614,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     });
   }
 
+  // converting status into Active of reports
   public Accept() {
 
     if (this.finalData[0].status == "Cancelled") {
@@ -673,12 +662,13 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // download list of reports into excel sheet
   public xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
       // const headings = Object.keys(this.reports[0]);
-      const headings = ["Request Number","Created On","Requestor","On Behalf Of","Title","Frequency","Assigned To","Status","Status Date"]
+      const headings = ["Request Number", "Created On", "Requestor", "On Behalf Of", "Title", "Frequency", "Assigned To", "Status", "Status Date"]
       const reportBody = this.createNewBodyForExcel()
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
@@ -708,19 +698,19 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     });
   }
 
-  createNewBodyForExcel(){
+  createNewBodyForExcel() {
     let reportBody = []
-    this.reports.forEach(item =>{
+    this.reports.forEach(item => {
       let obj = {
-        "Request Number" : item["ddm_rmp_post_report_id"],
+        "Request Number": item["ddm_rmp_post_report_id"],
         "Created On": item["created_on"],
         "Requestor": item["requestor"],
-        "On Behalf Of":item["on_behalf_of"],
-        "Title":item["title"],
-        "Frequency":item["frequency"],
-        "Assigned To":item["assigned_to"],
-        "Status":item[status],
-        "Status Date":new Date(item["ddm_rmp_status_date"]).toDateString()
+        "On Behalf Of": item["on_behalf_of"],
+        "Title": item["title"],
+        "Frequency": item["frequency"],
+        "Assigned To": item["assigned_to"],
+        "Status": item[status],
+        "Status Date": new Date(item["ddm_rmp_status_date"]).toDateString()
       }
       reportBody.push(obj)
     })
@@ -751,7 +741,6 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.hidVar = true;
   }
 
-  public add_response;
   public addDocument() {
     if (this.documentName == "" || this.documentUrl == "") {
       this.hidVar = false;
@@ -783,11 +772,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
-  public onItemSelect(item: any) {
-  }
-  public onSelectAll(items: any) {
-  }
-
+  // check validation of reports to avoid multiple select
   public checkbox_validation() {
     this.checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
 
@@ -811,6 +796,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // adding comment to reports
   public extract_comment() {
     if (this.comment_text == "") {
       this.errorModalMessageRequest = "Enter some comment";
@@ -881,6 +867,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // displaying details of pop-up of selected report
   public query_criteria_click(query_report_id) {
     Utils.showSpinner();
     this.django.get_report_description(query_report_id).subscribe(response => {
@@ -1068,7 +1055,6 @@ export class RequestStatusComponent implements OnInit, OnChanges {
         } else {
           this.concensus_data = [];
         }
-
       }
 
       if (this.summary["bac_data"].length) {
@@ -1096,6 +1082,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     })
   }
 
+  // create new request for selected reports
   public NewReportOnSelectedCriteria() {
 
     this.checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
@@ -1113,6 +1100,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // creating report based on role admin/non-admin
   public getRequestId(element) {
     Utils.showSpinner();
     this.sharedDataService.setObjectExplorerPathValue(false);
@@ -1142,6 +1130,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // displaying alert message
   public clearOnError() {
     $('.modal').modal('hide')
     $.each($("input[class='report_id_checkboxes']"), function () {
@@ -1150,26 +1139,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.finalData = []
   }
 
-  public postLink(request_id) {
-    Utils.showSpinner();
-    this.django.get_report_id(request_id).subscribe(element => {
-      this.postLink_result = element;
-      if (!element['report_id'].length) {
-        Utils.hideSpinner();
-        alert("There is no summary for this report")
-      }
-      else {
-        let report_list_id = element['report_id'][0]['report_list_id'];
-        this.django.get_report_file(request_id, report_list_id).subscribe(file_details => {
-          this.file_path = file_details;
-          var file_path_details = file_details["all_file_path"]["zip_url"];
-          window.open(`${environment.baseUrl}` + file_path_details, '_blank');
-          Utils.hideSpinner();
-        })
-      }
-    })
-  }
-
+  // get the response of link to result
   public getLink(index) {
     Utils.showSpinner();
     this.django.get_report_link(index).subscribe(ele => {
@@ -1183,6 +1153,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
 
   }
   /*---------------------------Distribution List---------------------*/
+  // add list of contacts
   public addContact() {
     if (this.model == "") {
       this.dl_flag = true
@@ -1194,6 +1165,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }
   }
 
+  // remove the contact from the list
   public removeContact() {
     var sList = [];
     $('.form-check-input').each(function () {
@@ -1242,6 +1214,8 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       $('#errorModalRequest').modal('show');
     }
   }
+
+  // update the modified distributiion list
   public updateDL() {
     Utils.showSpinner();
     this.django.report_distribution_list(this.dl_update).
@@ -1266,6 +1240,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     'status': this.searchText
   };
 
+  // Search by Request Number/Requestor/Title/Status
   public filterData() {
     if (this.statusFilter.length)
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
@@ -1285,6 +1260,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     return vs;
   }
 
+  // update status of report to completed state 
   public updateMarkAsComplete(requestId: number) {
     Utils.showSpinner();
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
@@ -1309,84 +1285,107 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     })
   }
 
-  addLinkUrl(element,type){
+  // download browser data in pdf file
+  public captureScreen() {
+    var specialElementHandlers = {
+      '#editor': function (element, renderer) {
+        return true;
+      }
+    };
+    var doc = new jsPDF();
+    doc.setFont("arial");
+    let margins = {
+      top: 15,
+      bottom: 0,
+      left: 18,
+      width: 170
+    };
+    doc.fromHTML(
+      $('#print').html(), margins.left, margins.top,
+      { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
+      function () { doc.save('sample-file.pdf'); }, margins
+    );
+  }
+
+  // capture pagination page event
+  addLinkUrl(element, type) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
-    if(type == "create"){
+    if (type == "create") {
       this.addUrlTitle = "ADD URL"
       document.querySelector("#add-url-input")["value"] = "";
-    }else{
+    } else {
       this.addUrlTitle = "EDIT URL"
       document.querySelector("#add-url-input")["value"] = element.link_to_results;
     }
   }
 
-  saveLinkURL(){
+  saveLinkURL() {
     let link = document.querySelector("#add-url-input")["value"]
-    let data = {request_id:this.linkUrlId,link_to_results:link}
+    let data = { request_id: this.linkUrlId, link_to_results: link }
     Utils.showSpinner();
-    this.django.add_link_to_url(data).subscribe(response =>{
-     if(response['message'] == "updated successfully"){
-      document.querySelector("#add-url-input")["value"] = "";
-      $('#addUrl').modal('hide');
-      this.toastr.success("URL Updated Successfully !")
-      Utils.hideSpinner()
-      this.reports.map(item =>{
-        if(item.ddm_rmp_post_report_id == this.linkUrlId){
-          item.link_to_results = link
-        }
-      })
-     }
-    },error =>{
+    this.django.add_link_to_url(data).subscribe(response => {
+      if (response['message'] == "updated successfully") {
+        document.querySelector("#add-url-input")["value"] = "";
+        $('#addUrl').modal('hide');
+        this.toastr.success("URL Updated Successfully !")
+        Utils.hideSpinner()
+        this.reports.map(item => {
+          if (item.ddm_rmp_post_report_id == this.linkUrlId) {
+            item.link_to_results = link
+          }
+        })
+      }
+    }, error => {
       this.toastr.error("Failed To Add URL, Please Try Again")
       Utils.hideSpinner()
     })
-   
+
   }
 
-  openNewWindow(url){
+  openNewWindow(url) {
     window.open(url)
   }
 
-  openEditStatusModal(element){
+  openEditStatusModal(element) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     document.querySelector("#selectReportStatus")["value"] = "Active"
   }
 
-  setselectReportStatus(){
+  setselectReportStatus() {
     this.selectReportStatus = document.querySelector("#selectReportStatus")["value"]
   }
 
-  saveReportStatus(){
+  saveReportStatus() {
     let link = document.querySelector("#add-url-input")["value"]
-    let data = {request_id:this.linkUrlId,status:"Completed",status_date:new Date()}
+    let data = { request_id: this.linkUrlId, status: "Completed", status_date: new Date() }
     Utils.showSpinner();
-    this.django.update_report_status(data).subscribe(response =>{
-      if(response['message'] == "updated successfully"){
+    this.django.update_report_status(data).subscribe(response => {
+      if (response['message'] == "updated successfully") {
         $('#changeStatusModal').modal('hide');
         this.toastr.success("Status updated Successfully !")
         Utils.hideSpinner()
-        this.reports.map(item =>{
-          if(item.ddm_rmp_post_report_id == this.linkUrlId){
+        this.reports.map(item => {
+          if (item.ddm_rmp_post_report_id == this.linkUrlId) {
             item.status = "Completed"
             item.ddm_rmp_status_date = new Date()
           }
         })
-       }
-      },error =>{
-        this.toastr.error("Failed To Change Status, Please Try Again")
-        Utils.hideSpinner()
-      })
+      }
+    }, error => {
+      this.toastr.error("Failed To Change Status, Please Try Again")
+      Utils.hideSpinner()
+    })
   }
 
-  closeLinkUrl(){
+  closeLinkUrl() {
     $('#addUrl').modal('hide');
   }
 
-  closeStatusUrl(){
+  closeStatusUrl() {
     $('#changeStatusModal').modal('hide');
   }
-  public onPaginationChange(event){
+  public onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
-    }
+  }
 }

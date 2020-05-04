@@ -101,5 +101,4 @@ describe('OndemandService', () => {
     req.flush(data)
   }))
 
-
 });

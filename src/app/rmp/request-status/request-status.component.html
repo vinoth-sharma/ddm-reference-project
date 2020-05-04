@@ -12,7 +12,6 @@
           Comment</button>
       </a>
       <button id="enter_comment_button" data-toggle="modal" data-target="#ModalComment" style="display:none"></button>
-
       <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="Accept()">Accept Assignment</button></a>
       <button id="post_link_button" data-toggle="modal" data-target="#postLink" style="display:none"></button>
     </div>
@@ -232,7 +231,8 @@
                 </div>
               </td>
               <td>
-                <div *ngIf="element.status != 'Recurring' && element.status != 'Active'" style="width: 115px !important;">
+                <div *ngIf="element.status != 'Recurring' && element.status != 'Active'"
+                  style="width: 115px !important;">
                   {{element.status}}
                 </div>
                 <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
@@ -246,8 +246,8 @@
                 <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#changeStatusModal"
-                    (click)="openEditStatusModal(element)">
+                    <button class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal"
+                      data-target="#changeStatusModal" (click)="openEditStatusModal(element)">
                       Edit
                     </button>
                   </div>
@@ -259,36 +259,21 @@
                 </div>
               </td>
               <td style="position: relative;">
-                <!-- <div style="width: 50px !important;">
-                  <button 
-                    class="btn btn-primary" 
-                    *ngIf="element.status == 'Completed'"
-                    [id]='"link"+element.ddm_rmp_post_report_id' 
-                    (click)="getLink(element.ddm_rmp_post_report_id)" 
-                    style="width: 50px;">
-                    <a data-toggle="tooltip" title="Download" style="width:100%;color: white;">
-                      <i id="ic" class="material-icons" style="width:100%;padding-right: 7px;color: white;">get_app</i>
-                    </a>
-                  </button>
-                </div> -->
-               
-                <!-- <button class="btn" style="position: relative;" *ngIf="element.link_to_results != ''" >
-                  <a data-toggle="tooltip" [title]="'Go To : '+element.link_to_results"><i id="ic" class="material-icons custom-changes-edit">create</i></a>
-                  <a data-toggle="tooltip" [title]="'Go To : '+element.link_to_results"><i id="ic" class="material-icons custom-changes-icon">open_in_new</i></a>
-                </button> -->
-                <!-- <a data-toggle="tooltip"  data-toggle="modal" data-target="#addUrl" title="edit" (click)="addLinkUrl(element,'edit')" ><i id="ic" *ngIf="element.link_to_results != ''"  class="material-icons custom-changes-edit">create</i></a> -->
                 <button class="btn btn-outline-primary" [title]="element.link_to_results"
-                (click)="openNewWindow(element.link_to_results)" *ngIf="element.link_to_results != '' && element.status=='Completed'"
-                style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
-                Url&nbsp;&nbsp;&#10145;
-              </button>
-                <button class="btn btn-outline-primary" 
-                  data-toggle="modal" data-target="#addUrl" (click)="addLinkUrl(element,'create')" *ngIf="element.link_to_results == '' && element.status=='Completed' && user_role =='Admin'"
+                  (click)="openNewWindow(element.link_to_results)"
+                  *ngIf="element.link_to_results != '' && element.status=='Completed'"
+                  style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
+                  Url&nbsp;&nbsp;&#10145;
+                </button>
+                <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addUrl"
+                  (click)="addLinkUrl(element,'create')"
+                  *ngIf="element.link_to_results == '' && element.status=='Completed' && user_role =='Admin'"
                   style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                   Add Url
                 </button>
-                <button *ngIf="element.link_to_results != '' && element.status=='Completed' && user_role =='Admin'" class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
-                (click)="addLinkUrl(element,'edit')">
+                <button *ngIf="element.link_to_results != '' && element.status=='Completed' && user_role =='Admin'"
+                  class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
+                  (click)="addLinkUrl(element,'edit')">
                   Edit
                 </button>
 
@@ -364,10 +349,8 @@
         </table>
       </div>
       <div style="padding-top: 0.7%;">
-        <mat-paginator [length]="paginatorlength"
-               [pageSize]="paginatorpageSize"
-               [pageSizeOptions]="paginatorOptions"
-               (page)="onPaginationChange($event)">
+        <mat-paginator [length]="paginatorlength" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
+          (page)="onPaginationChange($event)">
         </mat-paginator>
       </div>
     </div>
@@ -405,7 +388,6 @@
 </div>
 
 <!--Modal - Insert Link-->
-
 <div id="ModalInsertLink" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -723,8 +705,8 @@
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" class="btn btn-secondary"(click)="resetHelpParams()" 
-                data-dismiss="modal">Close</button>
+        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="resetHelpParams()"
+          data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -741,8 +723,7 @@
         <h3>Alert!</h3>
       </div>
       <div class="modal-body error-modal-message">
-        <h5 [(ngModel)]='errorModalMessageRequest' 
-            [ngModelOptions]="{standalone: true}" ngDefaultControl>
+        <h5 [(ngModel)]='errorModalMessageRequest' [ngModelOptions]="{standalone: true}" ngDefaultControl>
         </h5>
       </div>
       <div class="modal-footer">
@@ -966,9 +947,19 @@
   </div>
 </div>
 
-<!-- <app-ongoing-schedule [scheduleReportData]="scheduleDataToBeSent" [reportId]="reportListIdToSchedule" (confirmOnGoing)="changeOngoingStatus($event)"></app-ongoing-schedule> -->
-<!-- <app-schedule ></app-schedule> -->
-<!-- [scheduleReportData]="scheduleDataToBeSent" (update)="tableSorting()" --> 
+<!--========================================DOWNLOAD PDF===================================================================-->
+
+<pre class="container-fluid" style="height: auto;display: none" id="print">
+    <pre>
+        <h1>Distribution DataMart (DDM)       </h1>
+        <h1>Report Request Confirmation</h1>
+      </pre>
+<pre>
+        <h3>Vehicle Event Status</h3>
+      </pre>
+<br>
+<br>
+</pre>
 
 <!-- add url modal -->
 <div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true">
@@ -984,12 +975,11 @@
           </div>
         </div>
       </div>
-      <div class="modal-body" >
-        <input id="add-url-input" type="text" placeholder="add Url" class="form-control"/>
-            <!-- <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span> -->
+      <div class="modal-body">
+        <input id="add-url-input" type="text" placeholder="add Url" class="form-control" />
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success"  (click)="saveLinkURL()">Save Changes</button>
+        <button type="button" class="btn btn-success" (click)="saveLinkURL()">Save Changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeLinkUrl()">Close</button>
       </div>
     </div>
@@ -1010,15 +1000,16 @@
           </div>
         </div>
       </div>
-      <div class="modal-body" >
-       <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%" id="selectReportStatus"> 
-         <option value="Active" > Active </option>
-         <option value="Completed"> Completed </option>
-       </select>
-            <!-- <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span> -->
+      <div class="modal-body">
+        <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%"
+          id="selectReportStatus">
+          <option value="Active"> Active </option>
+          <option value="Completed"> Completed </option>
+        </select>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'" (click)="saveReportStatus()">Save Changes</button>
+        <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'"
+          (click)="saveReportStatus()">Save Changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
       </div>
     </div>

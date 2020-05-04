@@ -319,12 +319,13 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.django.getLookupValues().subscribe(check_user_data => {
       check_user_data['data']['users_list'].forEach(ele => {
         this.fullName = ele.first_name + ' ' + ele.last_name;
-        this.usersList.push({ 'full_name': this.fullName, 'users_table_id': ele.users_table_id });
+        this.usersList.push({ 'full_name': this.fullName, 'users_table_id': ele.users_table_id ,role:ele.role});
 
         if (ele['disclaimer_ack'] != null || ele['disclaimer_ack'] != undefined)
           this.ackList['data'].push(ele);
       });
-      this.tbddropdownListfinal_report = this.tbddropdownListfinalAssigned = this.usersList;
+       this.tbddropdownListfinalAssigned = this.usersList.filter(item => item.role == 1);;
+       this.tbddropdownListfinal_report = this.usersList
       this.discList = check_user_data['data']['users_list'];
     });
 

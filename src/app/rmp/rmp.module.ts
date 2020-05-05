@@ -29,7 +29,6 @@ import { DataProviderService } from "./data-provider.service";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
 import { TagInputModule } from 'ngx-chips';
-import { CustomModalsModule } from './custom-modals/custom-modals.module';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { QuillModule } from "ngx-quill";
@@ -68,7 +67,6 @@ import { ManageNotesComponent } from './admin-notes/manage-notes/manage-notes.co
   imports: [
     QuillModule.forRoot(),
     RMPRoutingModule,
-    CustomModalsModule,
     FormsModule,
     ReactiveFormsModule,
     TagInputModule,

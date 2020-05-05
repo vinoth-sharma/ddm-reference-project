@@ -150,8 +150,7 @@
               <td>
                 <div>{{element.title}}</div>
               </td>
-              <td class="ddm-report-name"
-                [ngStyle]="{ 'background-color': (element.frequency === 'On Demand' || element.frequency === 'On Demand Configurable') ? '#ccc' : 'none'  }">
+              <td class="ddm-report-name">
                 <div (click)="toggleShowInput(element)" *ngIf="!element.clicked && element.report_name">
                   {{element.report_name}}</div>
                 <div *ngIf="element.clicked || !element.report_name"><input style="max-width:140px"
@@ -256,10 +255,6 @@
       </div>
     </div>
   </div>
-  <app-ondemand-reports [requestNumber]="reportRequestNumberOD" [reportId]="reportIdOD"
-    (odScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-reports>
-  <app-ondemand-config-reports [requestNumber]="reportRequestNumber" [title]="reportTitle" [name]="reportName"
-    [reportId]="reportId" (odcScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-config-reports>
 
   <div id="change-Frequency" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">

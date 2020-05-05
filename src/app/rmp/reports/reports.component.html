@@ -291,6 +291,23 @@
           <div class="col-sm-12">
             <div class="card">
               <div class="card-header">
+                Report Frequency
+              </div>
+              <div class="card-body">
+                <span><i><strong><u>
+                  Select a Report Frequency
+                </u></strong></i></span>
+                <div>
+                    <div class="col-xs-7">
+                      <select class="form-control pt-0 pb-0" [(ngModel)]="selectedNewFrequency" id="reportFormat" (change)="setSelectedFrequency(selectedNewFrequency)"> 
+                        <option *ngFor="let choice of frequencySelections" [value]="choice">{{ choice }}</option>
+                      </select>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="card" *ngIf="isRecurringFrequency">
+              <div class="card-header" >
                 Select Frequency for Ongoing Routine Reports
               </div>
               <div class="card-body top-padding">

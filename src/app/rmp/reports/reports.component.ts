@@ -162,6 +162,11 @@ export class ReportsComponent implements OnInit {
   public paginatorHigherValue = 10;
   public linkUrlId : number;
   public addUrlTitle : String = '';
+
+  public frequencySelections = ['One Time', 'Recurring', 'On Demand', 'On Demand Configurable']
+  public selectedNewFrequency: string = "";
+  public isRecurringFrequency : boolean = true ;
+
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service: AuthenticationService,
     private django: DjangoService,
@@ -670,6 +675,23 @@ export class ReportsComponent implements OnInit {
     this.freq_val_on_demand = Object.values(this.Select_on_demand);
 
   }
+// when the user changes the dropdown values
+  public setSelectedFrequency(choice: string, event: any) {
+    this.selectedNewFrequency = choice;
+    this.changeInFreq = true;
+    if (this.selectedNewFrequency != 'Recurring') {
+      this.isRecurringFrequency = false;
+
+
+      // reset all the MTWTF if 
+      // or is it needed
+      // this is only for recurring , take out one-time option 
+      // paused due to prod priority works
+    }
+    else{
+      this.isRecurringFrequency = true;
+    }
+  }
 
   setFrequency() {
     var temp = this.jsonfinal;
@@ -695,7 +717,7 @@ export class ReportsComponent implements OnInit {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
     this.jsonfinal['status'] = "Recurring"
-    this.jsonfinal['frequency'] = this.changeFrequency;
+    this.jsonfinal['frequency'] = this.selectedNewFrequency;
     this.setFrequency();
     this.django.ddm_rmp_frequency_update(this.jsonfinal).subscribe(element => {
       this.spinner.hide();
@@ -705,6 +727,7 @@ export class ReportsComponent implements OnInit {
       this.jsonfinal['frequency'] = "";
       this.jsonfinal['select_frequency'] = [];
       this.changeInFreq = true;
+      $('#change-Frequency').modal('hide');
     }, err => {
       this.spinner.hide();
       this.toasterService.error("Server Error");
@@ -732,10 +755,12 @@ export class ReportsComponent implements OnInit {
     this.django.get_report_description(requestId).subscribe(element => {
       if (element["frequency_data"].length !== 0) {
         this.frequencyLength = element['frequency_data']
+        console.log("Subdata selcted : ", subData)
         var subData = element["frequency_data"];
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
             $('.sub').each(function (i, obj) {
+              console.log("obj value being checked: ", obj);
               if (subData[x]['select_frequency_description'] == false) {
                 if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
                   obj.checked = true;
@@ -754,6 +779,14 @@ export class ReportsComponent implements OnInit {
         }
       } else { }
       this.spinner.hide();
+      this.selectedNewFrequency = element['frequency_of_report'];
+      if(this.selectedNewFrequency != 'Recurring')
+      {
+        this.isRecurringFrequency = false;
+      }
+      else{
+        this.isRecurringFrequency = true;
+      }
     }, err => {
       this.spinner.hide();
     });

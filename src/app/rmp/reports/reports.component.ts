@@ -160,12 +160,12 @@ export class ReportsComponent implements OnInit {
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
-  public linkUrlId : number;
-  public addUrlTitle : String = '';
+  public linkUrlId: number;
+  public addUrlTitle: String = '';
 
   public frequencySelections = ['One Time', 'Recurring', 'On Demand', 'On Demand Configurable']
   public selectedNewFrequency: string = "";
-  public isRecurringFrequency : boolean = true ;
+  public isRecurringFrequencyHidden: boolean = false;
 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service: AuthenticationService,
@@ -188,21 +188,21 @@ export class ReportsComponent implements OnInit {
    * @param event event catched on change of the input value
    * @param reportObject the current report object being edited
    */
-  changeReportName(event:any , reportObject){
+  changeReportName(event: any, reportObject) {
 
     const changedReport = {};
-    changedReport['request_id']= reportObject.ddm_rmp_post_report_id;
+    changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
     changedReport['report_name'] = event.target['value'];
     this.django.update_rmpReports_DDMName(changedReport)
-    .subscribe(
-      resp=> {
-        reportObject.clicked=false;
-        reportObject.report_name = changedReport['report_name'];
-      }
-      ,
-      ()=> {
+      .subscribe(
+        resp => {
+          reportObject.clicked = false;
+          reportObject.report_name = changedReport['report_name'];
+        }
+        ,
+        () => {
         },
-    );
+      );
   }
 
   /**
@@ -212,10 +212,10 @@ export class ReportsComponent implements OnInit {
   toggleShowInput(element) {
 
     this.reports.forEach(ele => {
-      if (ele.report_name !=element.report_name) {
+      if (ele.report_name != element.report_name) {
         ele.clicked = false;
       } else {
-        ele.clicked =true;
+        ele.clicked = true;
       }
     });
   }
@@ -238,7 +238,7 @@ export class ReportsComponent implements OnInit {
           return element['ddm_rmp_desc_text_id'] == 23;
         });
 
-        if (temps){ 
+        if (temps) {
           this.original_contents = temps.description;
         }
         else { this.original_contents = '' }
@@ -285,7 +285,6 @@ export class ReportsComponent implements OnInit {
   getReportList() {
 
     this.django.get_report_list().subscribe(list => {
-      
       if (list) {
         this.reportContainer = list['data'];
         this.reportContainer.map(reportRow => {
@@ -336,10 +335,9 @@ export class ReportsComponent implements OnInit {
         this.reportContainer.forEach(ele => {
           if (ele['frequency_data_filtered']) {
             ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");
-            
           }
-          ele['clicked']=false;
-          
+          ele['clicked'] = false;
+
         })
 
         this.reportContainer.sort((a, b) => {
@@ -382,9 +380,9 @@ export class ReportsComponent implements OnInit {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
-      const headings = ["Request No","Date","Title","DDM Name","Frequency","Frequency Details","Other"]
+      const headings = ["Request No", "Date", "Title", "DDM Name", "Frequency", "Frequency Details", "Other"]
       const reportBody = this.createNewBodyForExcel()
-      
+
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
@@ -414,18 +412,17 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  createNewBodyForExcel(){
+  createNewBodyForExcel() {
     let reportBody = []
-    this.reports.forEach(item =>{
+    this.reports.forEach(item => {
       let obj = {
-        "Request No" : item["ddm_rmp_post_report_id"],
+        "Request No": item["ddm_rmp_post_report_id"],
         "Date": item["ddm_rmp_status_date"],
-        "Title":item["title"],
-        "DDM Name":item['report_name'],
-        "Frequency":item["frequency"],
-        "Frequency Details":item["frequency_data"] ? item["frequency_data"].join(','):"",
-        "Other":item["description"]? item["description"].join(','):""
-      
+        "Title": item["title"],
+        "DDM Name": item['report_name'],
+        "Frequency": item["frequency"],
+        "Frequency Details": item["frequency_data"] ? item["frequency_data"].join(',') : "",
+        "Other": item["description"] ? item["description"].join(',') : ""
       }
       reportBody.push(obj)
     })
@@ -675,21 +672,16 @@ export class ReportsComponent implements OnInit {
     this.freq_val_on_demand = Object.values(this.Select_on_demand);
 
   }
-// when the user changes the dropdown values
+
+  // when the user changes the dropdown values
   public setSelectedFrequency(choice: string, event: any) {
     this.selectedNewFrequency = choice;
-    this.changeInFreq = true;
-    if (this.selectedNewFrequency != 'Recurring') {
-      this.isRecurringFrequency = false;
-
-
-      // reset all the MTWTF if 
-      // or is it needed
-      // this is only for recurring , take out one-time option 
-      // paused due to prod priority works
+    this.changeInFreq = false;
+    if (this.selectedNewFrequency == 'One Time') {
+      this.isRecurringFrequencyHidden = true;
     }
-    else{
-      this.isRecurringFrequency = true;
+    else {
+      this.isRecurringFrequencyHidden = false;
     }
   }
 
@@ -697,20 +689,32 @@ export class ReportsComponent implements OnInit {
     var temp = this.jsonfinal;
     temp.select_frequency = [];
 
-    $.each($("input[class='sub']:checked"), function () {
-      var id = $(this).val();
-      if ((<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))) != null && (<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))).value != undefined) {
-        this.identifierData = {
-          "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))).value
-        };
-      } else {
-        this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": "" };
-      }
+    if (this.jsonfinal['frequency'] != 'One Time') {
+      $.each($("input[class='sub']:checked"), function () {
+        var id = $(this).val();
+        if ((<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))) != null && (<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))).value != undefined) {
+          this.identifierData = {
+            "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))).value
+          };
+        } else {
+          this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": "" };
+        }
 
-      temp.select_frequency.push(this.identifierData);
-    });
+        temp.select_frequency.push(this.identifierData);
+      });
 
-    this.jsonfinal = temp;
+      this.jsonfinal = temp;
+    }
+    else {
+      this.jsonfinal['select_frequency'] = [{ "ddm_rmp_lookup_select_frequency_id": 39, "description": "" }];
+    }
+
+    if (this.jsonfinal['frequency'] === 'On Demand' && this.jsonfinal['select_frequency'].length == 0) {
+      this.jsonfinal['select_frequency'] = [{ "ddm_rmp_lookup_select_frequency_id": 37, "description": "" }];
+    }
+    else if (this.jsonfinal['frequency'] === 'On Demand Configurable' && this.jsonfinal['select_frequency'].length == 0) {
+      this.jsonfinal['select_frequency'] = [{ "ddm_rmp_lookup_select_frequency_id": 38, "description": "" }];
+    }
   }
 
   updateFreq(request_id) {
@@ -739,6 +743,7 @@ export class ReportsComponent implements OnInit {
     this.jsonfinal['status'] = ""
     this.jsonfinal['frequency'] = "";
     this.jsonfinal['select_frequency'] = [];
+    this.selectedNewFrequency = '';
     this.changeInFreq = true;
   }
 
@@ -753,7 +758,7 @@ export class ReportsComponent implements OnInit {
     this.changeFreqDate = date;
     this.FrequencySelection()
     this.django.get_report_description(requestId).subscribe(element => {
-      if (element["frequency_data"].length !== 0) {
+      if (element["frequency_data"].length !== 0 && element["frequency_data"][0]['select_frequency_values'] !== 'One Time') {
         this.frequencyLength = element['frequency_data']
         console.log("Subdata selcted : ", subData)
         var subData = element["frequency_data"];
@@ -780,12 +785,16 @@ export class ReportsComponent implements OnInit {
       } else { }
       this.spinner.hide();
       this.selectedNewFrequency = element['frequency_of_report'];
-      if(this.selectedNewFrequency != 'Recurring')
-      {
-        this.isRecurringFrequency = false;
+      if (this.selectedNewFrequency === 'One Time') {
+        this.isRecurringFrequencyHidden = true;
       }
-      else{
-        this.isRecurringFrequency = true;
+      else {
+        if ((this.selectedNewFrequency === 'On Demand' || 'On Demand Configurable') && element["frequency_data"].length == 1) {
+          this.isRecurringFrequencyHidden = true;
+        }
+        else {
+          this.isRecurringFrequencyHidden = false;
+        }
       }
     }, err => {
       this.spinner.hide();
@@ -1143,45 +1152,45 @@ export class ReportsComponent implements OnInit {
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   }
 
-  addLinkUrl(element,type){
+  addLinkUrl(element, type) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
-    if(type == "create"){
+    if (type == "create") {
       this.addUrlTitle = "ADD URL"
       document.querySelector("#add-url-input")["value"] = "";
-    }else{
+    } else {
       this.addUrlTitle = "EDIT URL"
       document.querySelector("#add-url-input")["value"] = element.link_to_results;
     }
   }
 
-  saveLinkURL(){
+  saveLinkURL() {
     let link = document.querySelector("#add-url-input")["value"]
-    let data = {request_id:this.linkUrlId,link_to_results:link}
+    let data = { request_id: this.linkUrlId, link_to_results: link }
     Utils.showSpinner();
-    this.django.add_link_to_url(data).subscribe(response =>{
-     if(response['message'] == "updated successfully"){
-      document.querySelector("#add-url-input")["value"] = "";
-      $('#addUrl').modal('hide');
-      this.toasterService.success("URL Updated Successfully !")
-      Utils.hideSpinner()
-      this.reports.map(item =>{
-        if(item.ddm_rmp_post_report_id == this.linkUrlId){
-          item.link_to_results = link
-        }
-      })
-     }
-    },error =>{
+    this.django.add_link_to_url(data).subscribe(response => {
+      if (response['message'] == "updated successfully") {
+        document.querySelector("#add-url-input")["value"] = "";
+        $('#addUrl').modal('hide');
+        this.toasterService.success("URL Updated Successfully !")
+        Utils.hideSpinner()
+        this.reports.map(item => {
+          if (item.ddm_rmp_post_report_id == this.linkUrlId) {
+            item.link_to_results = link
+          }
+        })
+      }
+    }, error => {
       this.toasterService.error("Failed To Add URL, Please Try Again")
       Utils.hideSpinner()
     })
-   
+
   }
 
-  openNewWindow(url){
+  openNewWindow(url) {
     window.open(url)
   }
 
-  closeTBD_Assigned(){
+  closeTBD_Assigned() {
     $('#addUrl').modal('hide');
   }
 }

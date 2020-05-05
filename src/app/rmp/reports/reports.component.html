@@ -158,12 +158,9 @@
                     [value]="element.report_name?element.report_name:''" (change)="changeReportName($event , element)">
                 </div>
               </td>
-              <td class="change-freq" *ngIf="element.changeFreqReq"
+              <td class="change-freq"
                 (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
                 <div>{{element.frequency}}</div>
-              </td>
-              <td *ngIf="!element.changeFreqReq">
-                <div>{{element.frequency}} </div>
               </td>
               <td *ngFor="let weekDay of weekDays">
                 <div style="width: 20px">
@@ -286,8 +283,7 @@
               <p><b>{{changeFreqDate}}</b></p>
             </div>
           </div>
-          <br>
-          <br>
+          <!--------------------------- Select Report Frequency------------------->
           <div class="col-sm-12">
             <div class="card">
               <div class="card-header">
@@ -295,23 +291,23 @@
               </div>
               <div class="card-body">
                 <span><i><strong><u>
-                  Select a Report Frequency
-                </u></strong></i></span>
+                        Select a Report Frequency
+                      </u></strong></i></span>
                 <div>
-                    <div class="col-xs-7">
-                      <select class="form-control pt-0 pb-0" [(ngModel)]="selectedNewFrequency" id="reportFormat" (change)="setSelectedFrequency(selectedNewFrequency)"> 
-                        <option *ngFor="let choice of frequencySelections" [value]="choice">{{ choice }}</option>
-                      </select>
-                    </div>
+                  <div class="col-xs-7">
+                    <select class="form-control pt-0 pb-0" [(ngModel)]="selectedNewFrequency" id="reportFormat"
+                      (change)="setSelectedFrequency(selectedNewFrequency)">
+                      <option *ngFor="let choice of frequencySelections" [value]="choice">{{ choice }}</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="card" *ngIf="isRecurringFrequency">
-              <div class="card-header" >
+            <div class="card" [hidden]="isRecurringFrequencyHidden">
+              <div class="card-header">
                 Select Frequency for Ongoing Routine Reports
               </div>
-              <div class="card-body top-padding">
-                <!--------------------------- Select Report Frequency------------------->
+              <div class="card-body-second top-padding">
                 <span><i><strong><u>
                         Frequency for Vehicle Events Status Requests
                       </u></strong></i></span>

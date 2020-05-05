@@ -142,6 +142,13 @@ label input[type="checkbox"] {
   max-height: 315px;
 }
 
+.card-body-second { 
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 225px; 
+  padding-left: 4vw;
+}
+
 .change-freq:hover {
   cursor: pointer;
   background-color: #ccc !important;

@@ -594,7 +594,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <div class="row">
+        <div class="row" style="width: 100%;">
           <div class="col-sm-2" style="padding-right:0;">
             <img class="logo" src="/assets/OFT_Logo.jpg">
           </div>
@@ -604,10 +604,11 @@
         </div>
       </div>
       <div class="modal-body">
-        <input id="add-url-input" type="text" placeholder="add Url" class="form-control" />
+        <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" type="text" placeholder="https://example.com" class="form-control" />
+        <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" (click)="saveLinkURL()">Save Changes</button>
+        <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save Changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal"
           (click)="closeTBD_Assigned()">Close</button>
       </div>

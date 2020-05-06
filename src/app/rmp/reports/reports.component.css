@@ -176,4 +176,9 @@ td > div {
   padding: 3px;
 }
 
+.modal-dialog{
+  margin-top: auto;
+  top:15%
+}
+
 

@@ -25,7 +25,8 @@ export class HeaderComponent implements OnInit {
     private dataProvider: DataProviderService) {
     this.subscribeToService()
   }
-
+// subscribe to observables in authenticationservice and dataProvider service 
+// to get user info and notification details
   public subscribeToService() {
     this.authenticationService.myMethod$.subscribe((arr) => {
       this.arr = arr;
@@ -60,7 +61,6 @@ export class HeaderComponent implements OnInit {
               setBuilder.push({ reportNo: element.ddm_rmp_post_report, comment_read_flag: element.comment_read_flag })
             })
             this.notification_set = new Set(setBuilder)
-
           }
         })
       }
@@ -76,7 +76,7 @@ export class HeaderComponent implements OnInit {
   public modulePageRoute() {
     this.route.navigate(['user'])
   }
-
+// open downloaded pdf in a new window
   public redirect(value: string) {
     Utils.showSpinner();
     this.authenticationService.getHelpRedirection(value).subscribe(res => {

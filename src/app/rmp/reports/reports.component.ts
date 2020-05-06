@@ -674,7 +674,7 @@ export class ReportsComponent implements OnInit {
   }
 
   // when the user changes the dropdown values
-  public setSelectedFrequency(choice: string, event: any) {
+  public setSelectedFrequency(choice: string) {
     this.selectedNewFrequency = choice;
     this.changeInFreq = false;
     if (this.selectedNewFrequency == 'One Time') {
@@ -760,12 +760,10 @@ export class ReportsComponent implements OnInit {
     this.django.get_report_description(requestId).subscribe(element => {
       if (element["frequency_data"].length !== 0 && element["frequency_data"][0]['select_frequency_values'] !== 'One Time') {
         this.frequencyLength = element['frequency_data']
-        console.log("Subdata selcted : ", subData)
         var subData = element["frequency_data"];
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
             $('.sub').each(function (i, obj) {
-              console.log("obj value being checked: ", obj);
               if (subData[x]['select_frequency_description'] == false) {
                 if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
                   obj.checked = true;
@@ -799,13 +797,7 @@ export class ReportsComponent implements OnInit {
     }, err => {
       this.spinner.hide();
     });
-    this.showChangeFrequencyModal()
-
-  }
-
-  showChangeFrequencyModal() {
     $('#change-Frequency').modal('show');
-
   }
 
   //-------------------------frequency update--------------------------------------------

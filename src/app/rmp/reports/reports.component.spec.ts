@@ -90,7 +90,7 @@ describe('ReportsComponent', () => {
       declarations: [ReportsComponent, OrderByPipe, NgCustomSpinnerComponent, FilterTablePipe, OndemandReportsComponent, OndemandConfigReportsComponent, NgToasterComponent],
       imports: [FormsModule, MaterialModule, BrowserAnimationsModule,
         HttpClientTestingModule, RouterTestingModule, QuillModule.forRoot({})],
-      providers: [DatePipe]
+      providers: [DatePipe,Utils]
     })
       .compileComponents();
   }));
@@ -99,7 +99,6 @@ describe('ReportsComponent', () => {
     fixture = TestBed.createComponent(ReportsComponent);
     component = fixture.componentInstance;
   });
-
 
   it('should create', () => {
     spyOn(component, "ngOnInit")
@@ -119,6 +118,20 @@ describe('ReportsComponent', () => {
 
   it("should return values", () => {
     expect(component.getValues({ a: "a", "b": "b" })).toEqual(['a', 'b'])
+  })
+
+  it('should check isRecurringFrequencyHidden values inside the API call of changeFreq()',()=>{
+    let testRequestId = 416;
+    let title = 'testRequestId'; 
+    let date = '04/04/2020';
+    let frequency = 'One Time'
+    spyOn(component,"FrequencySelection");
+
+    component.changeFreq(testRequestId,title,date,frequency);
+
+    expect(component.selectedNewFrequency).toEqual('One Time');
+    expect(component.isRecurringFrequencyHidden).toEqual(true);
+
   })
 
   it("should set semanticLayerId", () => {
@@ -330,7 +343,6 @@ describe('ReportsComponent', () => {
     let serverData = { frequency_data: [1, 2, 3] }
     let djangoService = TestBed.inject(DjangoService);
     spyOn(djangoService, "get_report_description").and.returnValue(of(serverData));
-    spyOn(component, "showChangeFrequencyModal")
     component.changeFreq(requestId, title, date, frequency);
     expect(component.changeFrequency).toEqual(frequency);
     expect(component.changeFreqId).toEqual(requestId);
@@ -351,20 +363,6 @@ describe('ReportsComponent', () => {
     expect(component.jsonfinal.select_frequency).toEqual([frequencyData]);
     expect(component.changeInFreq).toBeTruthy();
     expect(spy).toHaveBeenCalled();
-  })
-
-
-  it("should set a few properties ", () => {
-    let val = { ddm_rmp_lookup_select_frequency_id: 1 };
-    let event = { target: { checked: true } }
-    let frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" }
-    component.obj_keys = ["1", "2"]
-    component.frequencyLength = [{ ddm_rmp_lookup_select_frequency_id: 1 }]
-    spyOn(component, "ngOnInit")
-    fixture.detectChanges();
-    component.frequencySelectedDropdown(val, event);
-    expect(component.frequencyData).toEqual(frequencyData);
-    expect(component.jsonfinal.select_frequency).toEqual([frequencyData]);
   })
 
   it("sholud parse the filter property", () => {
@@ -447,6 +445,79 @@ describe('ReportsComponent', () => {
     expect(component.fan_desc).toEqual("a, b")
     expect(component.text_notification).toEqual(222)
   })
+
+  it('should check the setSelectedFrequency() methods value set process with OT',()=>{
+    let testChoice = 'One Time'
+
+    component.setSelectedFrequency(testChoice);
+
+    expect(component.selectedNewFrequency).toEqual(testChoice);
+    expect(component.changeInFreq).toEqual(false);
+    expect(component.isRecurringFrequencyHidden).toEqual(true);
+  })
+
+  it('should check the setSelectedFrequency() methods value set process with OD',()=>{
+    let testChoice = 'On Demand'
+
+    component.setSelectedFrequency(testChoice);
+
+    expect(component.selectedNewFrequency).toEqual(testChoice);
+    expect(component.changeInFreq).toEqual(false);
+    expect(component.isRecurringFrequencyHidden).toEqual(false);
+  })
+
+  it("should check the jsonFinal['select_frequency'] being set with One Time",()=>{
+    let testJsonFinal = { select_frequency : [] , frequency : 'One Time'};
+    let targetJsonFinalSelectFrequency = [ { "ddm_rmp_lookup_select_frequency_id": 39, "description": "" } ] 
+
+    component.jsonfinal = testJsonFinal;
+    component.setFrequency();
+
+    expect(component.jsonfinal.select_frequency).toEqual(targetJsonFinalSelectFrequency);
+  })
+
+  it("should check the jsonFinal['select_frequency'] being set with On Demand Configurable",()=>{
+    let testJsonFinal = { select_frequency : [] , frequency : 'On Demand Configurable'};
+    let targetJsonFinalSelectFrequency = [ { "ddm_rmp_lookup_select_frequency_id": 38, "description": "" } ] 
+
+    component.jsonfinal = testJsonFinal;
+    component.setFrequency();
+
+    expect(component.jsonfinal.select_frequency).toEqual(targetJsonFinalSelectFrequency);
+  })
+
+  it('should check isRecurringFrequencyHidden values inside the API call of changeFreq()', () => {
+    let testRequestId = 416;
+    spyOn(component, "ngOnInit")
+    spyOn(Utils,'hideSpinner')
+    spyOn(Utils,'showSpinner')
+
+    // One Time frequency case
+    fixture = TestBed.createComponent(ReportsComponent);
+    component = fixture.componentInstance;
+    let service = fixture.debugElement.injector.get(DjangoService);
+    fixture.detectChanges();
+    service.get_report_description(testRequestId).subscribe(res => {
+      res['frequency_of_report'] = 'One Time'
+      component.selectedNewFrequency = res['frequency_of_report']
+
+      expect(component.isRecurringFrequencyHidden).toEqual(true)
+    })
+
+    // On Demand frequency case
+    fixture = TestBed.createComponent(ReportsComponent);
+    component = fixture.componentInstance;
+    let serviceSecond = fixture.debugElement.injector.get(DjangoService);
+    fixture.detectChanges();
+    service.get_report_description(testRequestId).subscribe(res => {
+      res['frequency_of_report'] = 'On Demand'
+      component.selectedNewFrequency = res['frequency_of_report']
+
+      expect(component.isRecurringFrequencyHidden).toEqual(false)
+    })
+  });
+
+
 });
 @Component({
   selector: 'app-ondemand-reports',
@@ -469,6 +540,5 @@ class OndemandConfigReportsComponent {
   @Input() name
   odcScheduleConfirmation = new EventEmitter();
 }
-
 
 

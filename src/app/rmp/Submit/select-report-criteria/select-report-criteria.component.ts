@@ -1449,5 +1449,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   
-
+  ngOnDestroy(){
+    this.cancelUpdate();
+  }
 }

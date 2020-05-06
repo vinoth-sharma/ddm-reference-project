@@ -976,10 +976,11 @@
         </div>
       </div>
       <div class="modal-body">
-        <input id="add-url-input" type="text" placeholder="add Url" class="form-control" />
+        <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" placeholder="https://example.com" type="text" class="form-control" />
+        <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" (click)="saveLinkURL()">Save Changes</button>
+        <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save Changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeLinkUrl()">Close</button>
       </div>
     </div>

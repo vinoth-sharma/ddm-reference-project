@@ -215,15 +215,7 @@ describe('ReportsComponent', () => {
     expect(component.namings).toBe("original_contents");
   })
 
-  it('should set a few properties of component', () => {
-    spyOn(Utils, 'showSpinner');
-    spyOn(Utils, 'hideSpinner');
-    spyOn(component, "hideDemandScheduleConfigurableModal")
-    component.reports = reportData.data
-    component.reportContainer = [{ report_name: "report_name", title: "title" }]
-    component.goToReports("report_name", "title");
-    expect(component.reportTitle).toEqual("title")
-  })
+ 
 
   it("startOnDemandScheduling(), should set a few properties and call getScheduleReportData", fakeAsync(() => {
     let scheduleService = TestBed.inject(ScheduleService)
@@ -381,15 +373,7 @@ describe('ReportsComponent', () => {
     expect(typeof (component.filters)).toEqual("object")
   })
 
-  it("should getlink from django service ", () => {
-    let djangoservice = TestBed.get(DjangoService);
-    let serverData = { data: { url: "url" } }
-    spyOn(djangoservice, "get_report_link").and.returnValue(of(serverData));
-    let spy = spyOn(window, "open")
-    component.getLink(1);
-    expect(spy).toHaveBeenCalledWith(serverData.data.url, "_blank")
-
-  })
+  
 
   it("should get data from get_report_description and assegin values to a few properties", () => {
     let djangoService = TestBed.inject(DjangoService)

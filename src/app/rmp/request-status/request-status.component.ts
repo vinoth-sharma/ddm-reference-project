@@ -416,8 +416,8 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       if (ele.ddm_rmp_post_report_id === element.ddm_rmp_post_report_id) {
         this.finalData = [ele];
         ele.isChecked = event.target.checked;
-        if (event.target.checked)
-          localStorage.setItem('report_id', element.ddm_rmp_post_report_id);
+        // if (event.target.checked)
+        //   localStorage.setItem('report_id', element.ddm_rmp_post_report_id);
       } else ele.isChecked = false;
     });
   }
@@ -1099,6 +1099,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       $('#errorModalRequest').modal('show');
     }
     else {
+      localStorage.setItem('report_id',$(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.router.navigate(["user/submit-request/select-report-criteria"]);
     }

@@ -673,7 +673,7 @@ export class ReportsComponent implements OnInit {
 
   }
 
-  // when the user changes the dropdown values
+  // when the user changes the frequency dropdown values
   public setSelectedFrequency(choice: string) {
     this.selectedNewFrequency = choice;
     this.changeInFreq = false;
@@ -685,7 +685,8 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-  setFrequency() {
+  // populates the new/edited frequency parameters
+  public setFrequency() {
     var temp = this.jsonfinal;
     temp.select_frequency = [];
 
@@ -717,7 +718,8 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-  updateFreq(request_id) {
+  // captures the request details for updating its respective status
+  public updateFreq(request_id) {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
     this.jsonfinal['status'] = "Recurring"
@@ -738,7 +740,8 @@ export class ReportsComponent implements OnInit {
     })
   }
 
-  clearFreq() {
+  // clears the set values while closing the modal
+  public clearFreq() {
     this.jsonfinal['report_id'] = "";
     this.jsonfinal['status'] = ""
     this.jsonfinal['frequency'] = "";
@@ -748,9 +751,9 @@ export class ReportsComponent implements OnInit {
   }
 
 
-  /*---------------------------Change Freq----------------------*/
+  /*---------------------------Change Frequency----------------------*/
 
-  changeFreq(requestId, title, date, frequency) {
+  public changeFreq(requestId, title, date, frequency) {
     this.spinner.show()
     this.changeFrequency = frequency
     this.changeFreqId = requestId;

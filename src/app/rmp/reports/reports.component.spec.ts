@@ -1,4 +1,3 @@
-// Author : Bharath
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReportsComponent } from './reports.component';
 import { FormsModule } from '@angular/forms';
@@ -23,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgCustomSpinnerComponent } from 'src/app/custom-directives/ng-custom-spinner/ng-custom-spinner.component';
 declare var $: any;
 
+// Angular test cases written by Bharath and Deepak Urs G V
 describe('ReportsComponent', () => {
   let component: ReportsComponent;
   let fixture: ComponentFixture<ReportsComponent>;
@@ -90,7 +90,7 @@ describe('ReportsComponent', () => {
       declarations: [ReportsComponent, OrderByPipe, NgCustomSpinnerComponent, FilterTablePipe, OndemandReportsComponent, OndemandConfigReportsComponent, NgToasterComponent],
       imports: [FormsModule, MaterialModule, BrowserAnimationsModule,
         HttpClientTestingModule, RouterTestingModule, QuillModule.forRoot({})],
-      providers: [DatePipe,Utils]
+      providers: [DatePipe, Utils]
     })
       .compileComponents();
   }));
@@ -118,20 +118,6 @@ describe('ReportsComponent', () => {
 
   it("should return values", () => {
     expect(component.getValues({ a: "a", "b": "b" })).toEqual(['a', 'b'])
-  })
-
-  it('should check isRecurringFrequencyHidden values inside the API call of changeFreq()',()=>{
-    let testRequestId = 416;
-    let title = 'testRequestId'; 
-    let date = '04/04/2020';
-    let frequency = 'One Time'
-    spyOn(component,"FrequencySelection");
-
-    component.changeFreq(testRequestId,title,date,frequency);
-
-    expect(component.selectedNewFrequency).toEqual('One Time');
-    expect(component.isRecurringFrequencyHidden).toEqual(true);
-
   })
 
   it("should set semanticLayerId", () => {
@@ -446,7 +432,7 @@ describe('ReportsComponent', () => {
     expect(component.text_notification).toEqual(222)
   })
 
-  it('should check the setSelectedFrequency() methods value set process with OT',()=>{
+  it('should check the setSelectedFrequency() methods value set process with OT', () => {
     let testChoice = 'One Time'
 
     component.setSelectedFrequency(testChoice);
@@ -456,7 +442,7 @@ describe('ReportsComponent', () => {
     expect(component.isRecurringFrequencyHidden).toEqual(true);
   })
 
-  it('should check the setSelectedFrequency() methods value set process with OD',()=>{
+  it('should check the setSelectedFrequency() methods value set process with OD', () => {
     let testChoice = 'On Demand'
 
     component.setSelectedFrequency(testChoice);
@@ -466,9 +452,9 @@ describe('ReportsComponent', () => {
     expect(component.isRecurringFrequencyHidden).toEqual(false);
   })
 
-  it("should check the jsonFinal['select_frequency'] being set with One Time",()=>{
-    let testJsonFinal = { select_frequency : [] , frequency : 'One Time'};
-    let targetJsonFinalSelectFrequency = [ { "ddm_rmp_lookup_select_frequency_id": 39, "description": "" } ] 
+  it("should check the jsonFinal['select_frequency'] being set with One Time", () => {
+    let testJsonFinal = { select_frequency: [], frequency: 'One Time' };
+    let targetJsonFinalSelectFrequency = [{ "ddm_rmp_lookup_select_frequency_id": 39, "description": "" }]
 
     component.jsonfinal = testJsonFinal;
     component.setFrequency();
@@ -476,9 +462,9 @@ describe('ReportsComponent', () => {
     expect(component.jsonfinal.select_frequency).toEqual(targetJsonFinalSelectFrequency);
   })
 
-  it("should check the jsonFinal['select_frequency'] being set with On Demand Configurable",()=>{
-    let testJsonFinal = { select_frequency : [] , frequency : 'On Demand Configurable'};
-    let targetJsonFinalSelectFrequency = [ { "ddm_rmp_lookup_select_frequency_id": 38, "description": "" } ] 
+  it("should check the jsonFinal['select_frequency'] being set with On Demand Configurable", () => {
+    let testJsonFinal = { select_frequency: [], frequency: 'On Demand Configurable' };
+    let targetJsonFinalSelectFrequency = [{ "ddm_rmp_lookup_select_frequency_id": 38, "description": "" }]
 
     component.jsonfinal = testJsonFinal;
     component.setFrequency();
@@ -488,9 +474,22 @@ describe('ReportsComponent', () => {
 
   it('should check isRecurringFrequencyHidden values inside the API call of changeFreq()', () => {
     let testRequestId = 416;
+    let title = 'testRequestId';
+    let date = '04/04/2020';
+    let frequency = 'One Time'
+    spyOn(component, "FrequencySelection");
+
+    component.changeFreq(testRequestId, title, date, frequency);
+
+    expect(component.selectedNewFrequency).toEqual('One Time');
+    expect(component.isRecurringFrequencyHidden).toEqual(true);
+  })
+
+  it('should check isRecurringFrequencyHidden values inside the API call of changeFreq()', () => {
+    let testRequestId = 416;
     spyOn(component, "ngOnInit")
-    spyOn(Utils,'hideSpinner')
-    spyOn(Utils,'showSpinner')
+    spyOn(Utils, 'hideSpinner')
+    spyOn(Utils, 'showSpinner')
 
     // One Time frequency case
     fixture = TestBed.createComponent(ReportsComponent);
@@ -540,5 +539,3 @@ class OndemandConfigReportsComponent {
   @Input() name
   odcScheduleConfirmation = new EventEmitter();
 }
-
-

@@ -1392,7 +1392,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     $('#changeStatusModal').modal('hide');
   }
 
-
+// used to validate weather input is empty or not
   validateLinkToUrl(data){
    if(data == "") this.linkToUrlFlag = true
    else this.linkToUrlFlag = false;

@@ -23,7 +23,7 @@ export class UserProfileComponent implements OnInit {
   public text_notification: any;
   public countryCode_notification: any;
   public notiNumber: boolean;
-  public text_number: any;
+  public text_number: any = '';
   public code: any;
   public te_number: any;
   public textChange = false;
@@ -262,6 +262,7 @@ export class UserProfileComponent implements OnInit {
     $('#dropdownHolder').find('angular4-multiselect').find('.dropdown-list').css('position', 'relative');
   }
 
+  // get user info from server and set a few properties of component
   public getUserInfo() {
     this.django.division_selected().subscribe(response => {
       this.changed_settings = false
@@ -293,18 +294,21 @@ export class UserProfileComponent implements OnInit {
     })
   }
 
+  // change textChange property when changes are made in quill editor
   public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
+  // for number validation
   public numberOnly(event) {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
     return true;
   }
 
+  // save changes made in help modal
   public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       this.spinner.show()
@@ -336,22 +340,26 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  // setting a few properties of component
   public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.naming = this.original_content;
   }
 
+  // setting a few properties of component
   public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.naming = this.original_content;
   }
 
+  // setting a few properties of component
   public carrier(value) {
     this.carrier_selected = value
   }
 
+  // enable  a few input field based on checkbox selection
   public enableNotificationBox() {
     this.changed_settings = true;
     $("#notification_yes").prop("checked", "true")
@@ -386,6 +394,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  // disable  a few input field based on checkbox selection
   public disableNotificationBox() {
     (<HTMLTextAreaElement>(document.getElementById("phone"))).value = "";
     $("#carrier option[value = '']").prop("selected", "true")
@@ -394,7 +403,7 @@ export class UserProfileComponent implements OnInit {
     $("#phone").prop("disabled", "disabled");
     $("#carrier").prop("disabled", "disabled");
   }
-
+  // setting a few properties of component from lookup
   public getUserMarketInfo() {
     this.spinner.show()
     this.dropdownList = this.lookup['market_data'].sort((a, b) => a.market > b.market ? 1 : -1);
@@ -490,6 +499,7 @@ export class UserProfileComponent implements OnInit {
     this.spinner.hide()
   }
 
+  // setting a few properties of component from market_selection
   public UserMarketSelections() {
     this.changed_settings = false
     if (this.marketselections['has_previous_selections']) {
@@ -536,7 +546,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-
+  // toggle hide/view password
   public showPassword() {
     let ele_phone = <HTMLInputElement>document.getElementById("phone");
     if (ele_phone.style['webkitTextSecurity'] === 'disc') {
@@ -546,6 +556,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  // save marked selections
   public getSelectedMarkets() {
     this.report_id_service.changeSaved(true);
 
@@ -591,6 +602,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  // called when an item is selected in multi select dropdown
   public onItemSelect(item: any) {
     this.changed_settings = true
     this.selectedItems.map(element => {
@@ -601,6 +613,7 @@ export class UserProfileComponent implements OnInit {
     this.MarketDependencies(this.marketindex)
   }
 
+  // called when an item is deselected in multi select dropdown
   public onItemDeSelect(item: any) {
     this.changed_settings = true
     this.marketindex.splice(this.marketindex.indexOf(item.ddm_rmp_lookup_market_id), 1)
@@ -611,6 +624,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  // deselect all marked dependencies
   public MarketDependenciesDeselect(marketindex: any) {
     this.regionselectedItems = this.regionselectedItems.filter(element => {
       return this.marketindex.includes(element.ddm_rmp_lookup_market)
@@ -664,6 +678,7 @@ export class UserProfileComponent implements OnInit {
 
   }
 
+  // select all marked dependencies
   public onSelectAll(items: any) {
     this.changed_settings = true
     for (let index = 1; index <= items.length; index++) {
@@ -684,6 +699,7 @@ export class UserProfileComponent implements OnInit {
     this.bacselectedItems = []
   }
 
+  // select region item selected
   public regiononItemSelect(item: any) {
     this.changed_settings = true
     this.regionselectedItems.map(element => {
@@ -694,6 +710,7 @@ export class UserProfileComponent implements OnInit {
     this.regionSelection(this.regionindex)
   }
 
+  // deselect region item selected
   public regiononItemDeSelect(item: any) {
     this.changed_settings = true
     this.regionindex.splice(this.regionindex.indexOf(item.ddm_rmp_lookup_country_region_id), 1)
@@ -711,6 +728,7 @@ export class UserProfileComponent implements OnInit {
     this.zoneDeSelection(this.zoneindex)
   }
 
+  // select all region
   public regiononSelectAll(items: any) {
     this.changed_settings = true
     for (let index = 1; index <= items.length; index++) {
@@ -721,6 +739,7 @@ export class UserProfileComponent implements OnInit {
     this.regionSelection(this.regionindex)
   }
 
+  // deselect all region
   public regiononItemDeSelectAll(items: any) {
     this.changed_settings = true
     this.regionindex = []
@@ -729,18 +748,21 @@ export class UserProfileComponent implements OnInit {
     this.zoneonDeSelectAll(this.zoneselectedItems)
   }
 
+  // filter zone dropdown
   public regionSelection(regionindex: any) {
     this.zonedropdownListfinal = this.zonedropdownList.filter(element => {
       return this.regionindex.includes(element.ddm_rmp_lookup_country_region)
     })
   }
 
+  // filter zone selection
   public regionDeselection(regionindex: any) {
     this.zoneselectedItems = this.zoneselectedItems.filter(element => {
       return this.regionindex.includes(element.ddm_rmp_lookup_country_region)
     })
   }
 
+  // add selected zone
   public zoneonItemSelect(item: any) {
     this.changed_settings = true
     this.zoneselectedItems.map(element => {
@@ -751,6 +773,7 @@ export class UserProfileComponent implements OnInit {
     this.zoneSelection(this.zoneindex)
   }
 
+  // remove selected zone
   public zoneonItemDeSelect(item: any) {
     this.changed_settings = true
     this.zoneindex.splice(this.zoneindex.indexOf(item.ddm_rmp_lookup_region_zone_id), 1)
@@ -758,6 +781,7 @@ export class UserProfileComponent implements OnInit {
     this.zoneDeSelection(this.zoneindex)
   }
 
+  // select all zones
   public zoneonSelectAll(items: any) {
     this.changed_settings = true
     for (let index = 1; index <= items.length; index++) {
@@ -768,6 +792,7 @@ export class UserProfileComponent implements OnInit {
     this.zoneSelection(this.zoneindex)
   }
 
+  // deselect all zones
   public zoneonDeSelectAll(items: any) {
     this.changed_settings = true
     this.zoneindex = []
@@ -775,34 +800,42 @@ export class UserProfileComponent implements OnInit {
     this.zoneDeSelection(this.zoneDeSelection)
   }
 
+  // filter zones
   public zoneSelection(zoneindex: any) {
     this.areadropdownListfinal = this.areadropdownList.filter(element => {
       return this.zoneindex.includes(element.ddm_rmp_lookup_region_zone)
     })
   }
 
+  // filter zones
   public zoneDeSelection(zoneindex: any) {
     this.areaselectedItems = this.areaselectedItems.filter(element => {
       return this.zoneindex.includes(element.ddm_rmp_lookup_region_zone)
     })
   }
 
+  // setting a few properties of component
   public saveTriggeronItemSelect(items: any) {
     this.changed_settings = true
   }
 
+  // setting a few properties of component
   public saveTriggeronItemDeSelect(items: any) {
     this.changed_settings = true
   }
+
+  // setting a few properties of component
 
   public saveTriggeronSelectAll(items: any) {
     this.changed_settings = true
   }
 
+  // setting a few properties of component
   public saveTriggeronDeSelectAll(items: any) {
     this.changed_settings = true
   }
 
+  // get notification info from server
   public getNotificationInformation() {
     var phoneno = /^(\d+-?)+\d+$/;
     this.cellPhone = (<HTMLInputElement>document.getElementById("phone")).value;

@@ -6,11 +6,12 @@ import { AuthenticationService } from '../authentication.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { MaterialModule } from '../material.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing'
-import { Router, RouterState } from '@angular/router';
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import Utils from '../../utils';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -24,11 +25,11 @@ describe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HeaderComponent, DummyComponent],
       providers: [
-
+        
         { provide: AuthenticationService, useClass: AuthenticationMockMockService },
         { provide: DataProviderService, useClass: DataProviderMockMockService }
       ],
-      imports: [BrowserAnimationsModule, MaterialModule, HttpClientTestingModule,]
+      imports: [BrowserAnimationsModule, MaterialModule, HttpClientTestingModule,RouterTestingModule]
     })
       .compileComponents();
   }));

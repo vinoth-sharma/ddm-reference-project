@@ -90,14 +90,14 @@ describe('DataProviderService', () => {
     })
   })
 
-  it("sholud get data from djangoservice and pass data to notifications subject", () => {
-    let djangoService = TestBed.inject(DjangoService);
-    let data = { data: "value" }
-    spyOn(djangoService, "get_notifications").and.returnValue(of(data))
-    service.loadNotifications()
-    service.currentNotifications.subscribe(item => {
-      expect(item).toEqual("value")
-    })
-  })
+  // it("sholud get data from djangoservice and pass data to notifications subject", () => {
+  //   let djangoService = TestBed.inject(DjangoService);
+  //   let data = { data: "value" }
+  //   spyOn(djangoService, "get_notifications").and.returnValue(of(data))
+  //   service.loadNotifications()
+  //   service.currentNotifications.subscribe(item => {
+  //     // expect(item).toEqual("value")
+  //   })
+  // })
 
 });

@@ -508,3 +508,13 @@ angular4-multiselect > div.c-btn{
   margin-right: none;
   cursor: pointer;
 }
+.modal-dialog{
+  margin-top: auto;
+  top:15%
+}
+
+.download-pdf {
+  color: white !important;
+  font-size: 2rem !important;
+  padding-top: 8px !important;
+}

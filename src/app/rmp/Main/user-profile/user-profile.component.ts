@@ -23,7 +23,7 @@ export class UserProfileComponent implements OnInit {
   public text_notification: any;
   public countryCode_notification: any;
   public notiNumber: boolean;
-  public text_number: any;
+  public text_number: any = '';
   public code: any;
   public te_number: any;
   public textChange = false;

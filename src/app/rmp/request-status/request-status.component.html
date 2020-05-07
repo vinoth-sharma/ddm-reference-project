@@ -506,7 +506,14 @@
               Allocation</div>
           </div><br>
           <div class="col-sm-9"></div>
-          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal">x</button></div>
+          <div class="col-sm-1" >
+            <i id="ic" class="material-icons download-pdf" (click)='captureScreen()'>
+              get_app
+            </i>
+          </div>
+          <div class="col-sm-1">
+            <button type="button" class="close" data-dismiss="modal">x</button>
+          </div>
         </div>
       </div>
       <div class="modal-body display-summary-scroll">
@@ -658,7 +665,9 @@
               </div>
               <div class="div-wrap">
                 <b>Consensus Data:</b> &nbsp;&nbsp;<span
-                  *ngFor="let element of summary?.da_data.concensus_data">{{element?.cd_values}}&nbsp;&nbsp;</span>
+                  *ngFor="let element of summary?.da_data.concensus_data">
+                  {{element?.cd_values}}&nbsp;&nbsp;
+                </span>
                 <br>
               </div>
               <div class="div-wrap">
@@ -723,7 +732,8 @@
         <h3>Alert!</h3>
       </div>
       <div class="modal-body error-modal-message">
-        <h5 [(ngModel)]='errorModalMessageRequest' [ngModelOptions]="{standalone: true}" ngDefaultControl>
+        <h5 style="color: inherit !important;font-size: 20px;">
+          {{errorModalMessageRequest}}
         </h5>
       </div>
       <div class="modal-footer">
@@ -951,67 +961,174 @@
 
 <pre class="container-fluid" style="height: auto;display: none" id="print">
     <pre>
-        <h1>Distribution DataMart (DDM)       </h1>
-        <h1>Report Request Confirmation</h1>
-      </pre>
-<pre>
-        <h3>Vehicle Event Status</h3>
-      </pre>
-<br>
-<br>
+      <h1>Distribution DataMart (DDM)       </h1>
+      <h1>Report Request Confirmation</h1>
+    </pre>
+    <pre>
+      <h3>Vehicle Event Status</h3>
+    </pre>
+    <br>
+    <br>
+  <pre style="width: 100%;float: left;margin-bottom: 10px;">
+    <pre class="div-wrap">
+        <span> <b>Request Date:</b>
+          &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
+    </pre>
+    <pre class="div-wrap">
+        <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+    </pre>
+    <pre *ngFor="let element of summary?.requestor" class="div-wrap">
+        <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}
+    </pre>
+    <pre class="div-wrap">
+        <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
+    </pre> 
+  </pre>
+<pre class="Request-summary">
+  <b style="font-size:150%">Market Selections</b>
+  <pre class="div-wrap">
+    <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
+      *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Division(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Region(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ region_description }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Zone(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ zone_description }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Area(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ area_description }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>LMA(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ lma_description }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ gmma_description }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>BAC(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ bac_description }}&nbsp;&nbsp;</span>
+                <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>FAN(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ fan_desc }}&nbsp;&nbsp;</span>
+    <br><br>
+  </pre>
+  <b style="font-size:120%">Frequency of Reports</b>
+  <pre class="div-wrap" *ngIf="!frequency_flag">
+    <span>{{ report_frequency }}&nbsp;&nbsp;</span> <br><br>
+  </pre>
+  <b style="font-size:120%">Special Identifiers</b>
+  <pre class="div-wrap">
+    <p>{{ special_identifier }}</p>
+  </pre>
+  <h5>
+    <b>Text Notification, when Requests are fulfilled?</b>
+  </h5>
+  <pre class="div-wrap">
+    <p *ngIf='text_notification == ""'>No</p>
+    <p *ngIf='text_notification != ""'>Yes</p>
+  </pre>
+<!--                                Order To Sale Start                                    -->
+
+<pre class="div-wrap" *ngIf="summary && summary?.report_type == 'ots'">
+    <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
+  <pre class="div-wrap">
+    <b style="font-size:120%">Order Criteria</b><br>
+    <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ model_year }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
+    <br>
+    </pre>
+  <pre class="div-wrap">
+    <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ order_event }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ order_type }}&nbsp;&nbsp;</span>
+    <br><br><br>
+  </pre>
+  <pre class="div-wrap">
+    <b style="font-size:120%">Order Metrics</b><br><br>
+    <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
+    <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
+    <br><br>
+    </pre>
+  <pre class="div-wrap">
+    <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+    <span *ngFor="let element of summary?.ost_data.data_date_range">
+      <b>Start:</b>&nbsp;{{element?.start_date| date: 'dd-MMM-yyyy'}}
+      <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
+    </span>
+  </pre>
+  <pre class="div-wrap">
+    <b>Additional Requirements:</b> <br>
+    <span>{{summary?.additional_req}}</span>
+  </pre>
+  </pre>
+  <pre class="div-wrap">
+    <h5><b>Dealer Allocation Selections</b></h5><br>
+    <pre class="div-wrap">
+      <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
+      <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+    </pre>
+    <pre class="div-wrap">
+      <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
+      <span>{{ model_year }}&nbsp;&nbsp;</span>
+      <br>
+    </pre>
+    <pre class="div-wrap" *ngIf='summary && summary.da_data && summary.da_data.concensus_time_date && summary.da_data.concensus_time_date.length > 0'>
+      <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+      <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
+        <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
+        <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
+      </span>
+    </pre>
+    <pre class="div-wrap" *ngIf='summary && summary.da_data && 
+                                    summary.da_data.concensus_data && 
+                                    summary.da_data.concensus_data.length > 0'>
+        <b>Consensus Data:</b> &nbsp;&nbsp;
+        <span *ngFor="let element of summary?.da_data.concensus_data">
+          {{element?.cd_values}}&nbsp;&nbsp;
+        </span>
+      <br>
+    </pre>
+    <pre class="div-wrap">
+        <b>Additional Requirements:</b> <br>
+        <span>{{summary?.additional_req}}</span>
+    </pre>
 </pre>
-
-<!-- add url modal -->
-<div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="row">
-          <div class="col-sm-2" style="padding-right:0;">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
-          <div class="col-sm-10" style="margin:0;">
-            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b> {{addUrlTitle}}</b></h2>
-          </div>
-        </div>
-      </div>
-      <div class="modal-body">
-        <input id="add-url-input" type="text" placeholder="add Url" class="form-control" />
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" (click)="saveLinkURL()">Save Changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeLinkUrl()">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- edit Status Modal -->
-<div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="row">
-          <div class="col-sm-2" style="padding-right:0;">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
-          <div class="col-sm-10" style="margin:0;">
-            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b> Edit Status</b></h2>
-          </div>
-        </div>
-      </div>
-      <div class="modal-body">
-        <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%"
-          id="selectReportStatus">
-          <option value="Active"> Active </option>
-          <option value="Completed"> Completed </option>
-        </select>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'"
-          (click)="saveReportStatus()">Save Changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+</pre>

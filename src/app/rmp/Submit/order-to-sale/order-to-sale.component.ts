@@ -303,23 +303,23 @@ export class OrderToSaleComponent implements OnInit {
     public DatePipe: DatePipe, public dataProvider: DataProviderService, public toastr: NgToasterComponent,
     public reportDataService: ReportCriteriaDataService,
     private formBuilder: FormBuilder) {
-    this.myForm = this.formBuilder.group({
-      'startDate': [''],
-      'endDate': ['']
-    }, { validator: this.checkDates });
+    // this.myForm = this.formBuilder.group({
+    //   'startDate': [''],
+    //   'endDate': ['']
+    // }, { validator: this.checkDates });
 
-    this.myForm.setValue({
-      startDate: this.targetStart,
-      endDate: this.targetend
-    });
+    // this.myForm.setValue({
+    //   startDate: this.targetStart,
+    //   endDate: this.targetend
+    // });
   }
 
-  public checkDates(group: FormGroup) {
-    if (group.controls.endDate.value < group.controls.startDate.value) {
-      return { endDateLessThanStartDate: true }
-    }
-    return null;
-  }
+  // public checkDates(group: FormGroup) {
+  //   if (group.controls.endDate.value < group.controls.startDate.value) {
+  //     return { endDateLessThanStartDate: true }
+  //   }
+  //   return null;
+  // }
 
   public notify() {
     this.enable_edits = !this.enable_edits
@@ -413,47 +413,47 @@ export class OrderToSaleComponent implements OnInit {
     this.getOrderToSaleContent();
   }
 
-  // select from date
-  public startDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-    this.targetStart = new Date(this.dateFormat(event.value)).toISOString();
-    this.finalData['tpd_start_date'] = this.dateFormat(event.value);
-    this.targetStartDate = new Date(event.value).getDate();
-    this.targetStartMonth = new Date(event.value).getMonth() + 1;
-    this.markDates();
-  }
+  // // select from date
+  // public startDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+  //   this.targetStart = new Date(this.dateFormat(event.value)).toISOString();
+  //   this.finalData['tpd_start_date'] = this.dateFormat(event.value);
+  //   this.targetStartDate = new Date(event.value).getDate();
+  //   this.targetStartMonth = new Date(event.value).getMonth() + 1;
+  //   this.markDates();
+  // }
 
-  // select to date
-  public endDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-    this.targetEndDate = new Date(event.value).getDate();
-    this.targetend = new Date(this.dateFormat(event.value)).toISOString();
-    this.finalData['tpd_end_date'] = this.dateFormat(event.value);
-    this.targetEndMonth = new Date(event.value).getMonth() + 1;
-    this.markDates();
-  }
+  // // select to date
+  // public endDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+  //   this.targetEndDate = new Date(event.value).getDate();
+  //   this.targetend = new Date(this.dateFormat(event.value)).toISOString();
+  //   this.finalData['tpd_end_date'] = this.dateFormat(event.value);
+  //   this.targetEndMonth = new Date(event.value).getMonth() + 1;
+  //   this.markDates();
+  // }
 
-  // heighligth background color dates from fromDate to endDate
-  public markDates() {
-    if (this.targetStartMonth && this.targetEndMonth) {
-      this.dateClass = (d: Date): MatCalendarCellCssClasses => {
-        const date = d.getDate();
-        const m = d.getMonth() + 1;
-        if (m === this.targetStartMonth && m === this.targetEndMonth) {
-          if (date > this.targetStartDate && date < this.targetEndDate)
-            return 'custom-date-class';
-        } else if (m >= this.targetStartMonth && m <= this.targetEndMonth) {
-          if (m > this.targetStartMonth && m < this.targetEndMonth)
-            return 'custom-date-class';
-          else if (m === this.targetStartMonth) {
-            if (date > this.targetStartDate)
-              return 'custom-date-class';
-          } else if (m === this.targetEndMonth) {
-            if (date < this.targetEndDate)
-              return 'custom-date-class';
-          }
-        }
-      };
-    }
-  }
+  // // heighligth background color dates from fromDate to endDate
+  // public markDates() {
+  //   if (this.targetStartMonth && this.targetEndMonth) {
+  //     this.dateClass = (d: Date): MatCalendarCellCssClasses => {
+  //       const date = d.getDate();
+  //       const m = d.getMonth() + 1;
+  //       if (m === this.targetStartMonth && m === this.targetEndMonth) {
+  //         if (date > this.targetStartDate && date < this.targetEndDate)
+  //           return 'custom-date-class';
+  //       } else if (m >= this.targetStartMonth && m <= this.targetEndMonth) {
+  //         if (m > this.targetStartMonth && m < this.targetEndMonth)
+  //           return 'custom-date-class';
+  //         else if (m === this.targetStartMonth) {
+  //           if (date > this.targetStartDate)
+  //             return 'custom-date-class';
+  //         } else if (m === this.targetEndMonth) {
+  //           if (date < this.targetEndDate)
+  //             return 'custom-date-class';
+  //         }
+  //       }
+  //     };
+  //   }
+  // }
 
   // formating date 
   public dateFormat(str: any) {
@@ -485,7 +485,7 @@ export class OrderToSaleComponent implements OnInit {
             temp_desc_text[index] = this.description_text
           }
         })
-        this.lookup['data']['desc_text'] = temp_desc_text
+        this.lookup['data']['desc_text'] = temp_desc_text;
         this.dataProvider.changelookUpTableData(this.lookup)
         this.editModes = false;
         this.ngOnInit()
@@ -848,7 +848,16 @@ export class OrderToSaleComponent implements OnInit {
     this.finalData["vehicle_line"] = { "dropdown": this.selectedItemsVehicleLine, "radio_button": this.otsObj.vlbRadio }
     this.finalData["merchandizing_model"] = { "dropdown": this.merchandizeItemsSelect, "radio_button": this.otsObj.merchRadio }
     this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.otsObj.orderTypeRadio }
-    this.finalData["order_event"] = { "dropdown": this.selectedItemsOrderEvent }
+    if(this.selectedItemsOrderEvent.length > 0)
+        this.finalData["order_event"] = { "dropdown": this.selectedItemsOrderEvent }
+    else {
+      let otherText = [{
+                        ddm_rmp_lookup_dropdown_order_event_id: 0,
+                        order_event:this.otsObj.otherDesc
+                      }];
+        this.finalData["order_event"] = { "dropdown": otherText }
+    }
+       
     this.finalData["report_id"] = this.generated_report_id;
     if (this.other_description == undefined) {
       this.finalData["other_desc"] = "";
@@ -955,7 +964,7 @@ export class OrderToSaleComponent implements OnInit {
         }
       })
       let filteredDistributionData = this.finalData.distribution_data
-      this.order_to_sales_selection = this.finalData
+      this.order_to_sales_selection = this.finalData;
       Utils.showSpinner();
       this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
         this.getreportSummary();
@@ -1591,13 +1600,12 @@ export class OrderToSaleComponent implements OnInit {
   public previousSelections(requestId) {
     Utils.showSpinner();
     this.django.get_report_description(requestId).subscribe(element => {
-      // console.log(element);
-      if (element['ost_data']) {
-
-        this.selectedItemsAllocation = []
-        this.allocationFinalList.forEach(eleAllo => {
-          element['ost_data']['allocation_group'].forEach(resAllo => {
-            if (eleAllo['ddm_rmp_lookup_dropdown_allocation_group_id'] == resAllo['ddm_rmp_lookup_dropdown_allocation_group']) {
+      if(element['ost_data']){
+        
+      this.selectedItemsAllocation = []
+        this.allocationFinalList.forEach(eleAllo=>{
+          element['ost_data']['allocation_group'].forEach(resAllo=>{
+            if(eleAllo['ddm_rmp_lookup_dropdown_allocation_group_id'] == resAllo['ddm_rmp_lookup_dropdown_allocation_group']){
               this.selectedItemsAllocation.push(eleAllo)
             }
           })

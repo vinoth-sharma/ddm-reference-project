@@ -231,8 +231,8 @@
                 <option *ngFor="let ele of dropdownOptions" value={{ele}}>{{ele}}</option>
               </select>
             </div>
-            <div style="display: flex;" *ngIf="!targetProd">
-              <form [formGroup]="myForm" class="target-date">
+            <!-- <div style="display: flex;" *ngIf="!targetProd"> -->
+              <!-- <form [formGroup]="myForm" class="target-date">
                 <mat-form-field>
                   <mat-label>Choose a start date</mat-label>
                   <input matInput [matDatepicker]="startDatepicker" (dateInput)="startDateEvent('input', $event)"
@@ -251,7 +251,7 @@
                   </mat-error>
                 </mat-form-field>
               </form>
-            </div>
+            </div> -->
           </tr>
           </td>
           </tr>
@@ -460,15 +460,16 @@
           <tr class="d-flex">
             <td class="col-sm-12"><i>Please select an order event to specify the date range</i></td>
           </tr>
-          <tr class="d-flex" *ngIf="selectedItemsOrderEvent.length>0">
+          <tr class="d-flex" *ngIf="selectedItemsOrderEvent.length>0 || otsObj.otherDesc !== ''">
             <td class="col-sm-6">
-              <mat-form-field>
-                <mat-label>Start Date:</mat-label>
-                <input matInput [matDatepicker]="fromOrderEvent" [formControl]="fromDate" textEditable="false"
-                  (dateChange)="onOrderEventdateSelection()">
-                <mat-datepicker-toggle matSuffix [for]="fromOrderEvent"></mat-datepicker-toggle>
-                <mat-datepicker #fromOrderEvent></mat-datepicker>
-              </mat-form-field>
+                <mat-form-field >
+                  <mat-label>Start Date:</mat-label>
+                  <input matInput [matDatepicker]="fromOrderEvent" [formControl]="fromDate" 
+                          textEditable="false"
+                         (dateChange)="onOrderEventdateSelection()">
+                  <mat-datepicker-toggle matSuffix [for]="fromOrderEvent"></mat-datepicker-toggle>
+                  <mat-datepicker #fromOrderEvent></mat-datepicker>
+                </mat-form-field>
             </td>
             <td class="col-sm-6">
               <mat-form-field>

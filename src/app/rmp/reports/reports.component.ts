@@ -7,9 +7,10 @@ import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { Router } from '@angular/router';
-import Utils from "../../../utils";
+import Utils from "../../../utils"
+import '../../../assets/debug2.js';
+declare var jsPDF: any;
 declare var $: any;
-
 import { ScheduleService } from '../../schedule/schedule.service';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
@@ -188,7 +189,7 @@ export class ReportsComponent implements OnInit {
 
     const changedReport = {};
     changedReport['request_id']= reportObject.ddm_rmp_post_report_id;
-    changedReport['report_name'] = event.target['value'];
+    changedReport['report_name'] = reportObject.report_name;
     this.django.update_rmpReports_DDMName(changedReport)
     .subscribe(
       resp=> {
@@ -211,7 +212,7 @@ export class ReportsComponent implements OnInit {
       if (ele.report_name !=element.report_name) {
         ele.clicked = false;
       } else {
-        ele.clicked =true;
+        ele.clicked = !ele.clicked;
       }
     });
   }
@@ -991,7 +992,7 @@ export class ReportsComponent implements OnInit {
         }
       }
 
-      //-----DA-----//
+      // //-----DA-----//
       if (this.summary["da_data"] != undefined) {
         tempArray = []
         if (this.summary["da_data"]["allocation_grp"].length != 0) {
@@ -1057,6 +1058,29 @@ export class ReportsComponent implements OnInit {
     })
   }
 
+   // download browser data in pdf file
+   public captureScreen() {
+    var specialElementHandlers = {
+      '#editor': function (element, renderer) {
+        return true;
+      }
+    };
+    var doc = new jsPDF();
+    doc.setFont("arial");
+    let margins = {
+                    top: 15,
+                    bottom: 0,
+                    left: 18,
+                    width: 170
+                  };
+    doc.fromHTML(
+      $('#print').html(), margins.left,margins.top,
+      { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
+      function () { doc.save('sample-file.pdf'); },margins
+    );
+  }
+
+
 // filter data based on pagination data
   onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
@@ -1109,7 +1133,7 @@ export class ReportsComponent implements OnInit {
   closeTBD_Assigned(){
     $('#addUrl').modal('hide');
   }
-  
+
 // used to validate weather input is empty or not
   validateLinkToUrl(data){
    if(data == "") this.linkToUrlFlag = true

@@ -310,7 +310,7 @@ export class MetricsComponent implements OnInit {
     }).catch(error => {
     });
   }
-
+  // creating a body to generate excel report
   createNewBodyForExcel() {
     const reportBody = [];
     this.reports.forEach(item => {

@@ -107,7 +107,7 @@ export class DdmAdminComponent implements OnInit {
     else { this.original_content = "" }
     this.namings = this.original_content;
   }
-
+  // get current files from server
   public getCurrentFiles() {
     this.dataProvider.currentFiles.subscribe(ele => {
       if (ele) {
@@ -121,13 +121,13 @@ export class DdmAdminComponent implements OnInit {
       }
     })
   }
-
+  // subscribing to an observable in dataprovier service
   public getCurrentTableLookupData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       this.content = element;
     })
   }
-
+  // subscribing to an observable to get user info from auth_service
   public getUserInfo() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -136,7 +136,7 @@ export class DdmAdminComponent implements OnInit {
       }
     })
   }
-
+// getting links from server
   public getLink(index) {
     this.spinner.show();
     this.django.get_doc_link(index).subscribe(ele => {
@@ -148,13 +148,13 @@ export class DdmAdminComponent implements OnInit {
       this.toastr.error("Server Error");
     })
   }
-
+// read data from quill editor
   public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
-
+// save changes made in help modal
   public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       this.spinner.show();
@@ -185,33 +185,33 @@ export class DdmAdminComponent implements OnInit {
       this.toastr.error("please enter the data");
     }
   }
-
+  // setting a few properties of component
   public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_content;
   }
-
+// setting a few properties of component
   public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_content;
   }
-
+// setting a few properties of component
   public content_edit() {
     this.editMode = false;
   }
-
+// setting a few properties of component
   public editTrue() {
     this.editMode = !this.editMode;
   }
-
+// setting a few properties of component
   public NewDoc() {
     this.editid = undefined;
     (<HTMLInputElement>document.getElementById('document-name')).value = "";
     (<HTMLInputElement>document.getElementById('document-url')).value = "";
   }
-
+// used to disable/enable url input field
   public upload(isChecked) {
     if ($('#uploadCheckbox').is(':checked')) {
       $('#document-url').attr('disabled', 'disabled');
@@ -224,7 +224,7 @@ export class DdmAdminComponent implements OnInit {
       $("#attach-file1").val('');
     }
   }
-
+// add document to server
   public addDocument() {
     this.document_details = {
       "title": "",
@@ -286,7 +286,7 @@ export class DdmAdminComponent implements OnInit {
     }
 
   }
-
+// delete document from server
   public deleteDocument(id: number, index: number) {
     this.spinner.show()
     this.django.ddm_rmp_admin_documents_delete(id).subscribe(response => {
@@ -298,7 +298,7 @@ export class DdmAdminComponent implements OnInit {
       this.toastr.error("Server problem encountered")
     })
   }
-
+// delete file from server
   public delete_upload_file(id, index) {
     this.spinner.show();
     this.django.delete_upload_doc(id).subscribe(res => {
@@ -325,7 +325,7 @@ export class DdmAdminComponent implements OnInit {
     }
   }
 
-
+  // upload file to server
   public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
@@ -359,14 +359,14 @@ export class DdmAdminComponent implements OnInit {
       $('#uploadCheckbox').prop('checked', false);
     });
   }
-
+// setting a few properties of component
   public editDoc(id, val, url) {
     this.editid = id;
     this.changeDoc = true;
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
   }
-
+  // edit doc and save it
   public editDocument() {
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();

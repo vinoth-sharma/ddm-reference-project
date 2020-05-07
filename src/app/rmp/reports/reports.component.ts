@@ -163,6 +163,7 @@ export class ReportsComponent implements OnInit {
   public paginatorHigherValue = 10;
   public linkUrlId : number;
   public addUrlTitle : String = '';
+  public linkToUrlFlag = true;
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service: AuthenticationService,
     private django: DjangoService,
@@ -216,6 +217,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+// read user role from an observable
   readUserRole() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -224,6 +226,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+//  get lookup table data from the server
   getLookUptableData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
@@ -243,6 +246,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+// get valuse from obj
   getValues(obj: Object) {
     return Object.values(obj);
   }
@@ -257,6 +261,7 @@ export class ReportsComponent implements OnInit {
     this.getReportList();
   }
 
+// set semanticlayer id
   getSemanticLayerID() {
     this.changeInFreq = true;
     this.router.config.forEach(element => {
@@ -266,6 +271,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+// get scheduled reports from server
   public getScheduledReports() {
     if (this.semanticLayerId != undefined && this.semanticLayerId != null) {
       this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res => {
@@ -278,10 +284,9 @@ export class ReportsComponent implements OnInit {
     }
   }
 
+// get reports list from server
   getReportList() {
-
     this.django.get_report_list().subscribe(list => {
-      
       if (list) {
         this.reportContainer = list['data'];
         this.reportContainer.map(reportRow => {
@@ -354,6 +359,7 @@ export class ReportsComponent implements OnInit {
 
   }
 
+// to mark a report as favourites
   checked(id, event) {
     this.spinner.show()
     this.favourite = event.target.checked;
@@ -368,12 +374,14 @@ export class ReportsComponent implements OnInit {
     })
   }
 
+// used to set typeval property of reports
   sort(typeVal) {
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
   }
 
+// generates excel report
   xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
@@ -410,6 +418,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+  // creating a body to generate excel report
   createNewBodyForExcel(){
     let reportBody = []
     this.reports.forEach(item =>{
@@ -427,7 +436,8 @@ export class ReportsComponent implements OnInit {
     })
     return reportBody
   }
-
+  
+// used ti toggle reverse property
   setOrder(value: any) {
     if (this.order === value) {
       this.reverse = !this.reverse;
@@ -435,12 +445,14 @@ export class ReportsComponent implements OnInit {
     this.order = value;
   }
 
+// used to set a few properties when content get changed in quill editor
   textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
+// save changes made to help
   content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       this.spinner.show()
@@ -473,11 +485,14 @@ export class ReportsComponent implements OnInit {
     }
   }
 
+// used to set a few properties of component
   edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
+
+// used to set a few properties of component
 
   editEnable() {
     this.editModes = true;
@@ -485,57 +500,7 @@ export class ReportsComponent implements OnInit {
     this.namings = this.original_contents;
   }
 
-  public goToReports(selectedReportName: string, reportTitle: string) {
-    Utils.showSpinner();
-
-    let isOnDemandOnly;
-    this.reports.filter(i => i['report_name'] === selectedReportName).map(i => {
-      if (i['frequency'] != null) {
-        if (i['frequency'].includes("On Demand Configurable")) {
-          isOnDemandOnly = i.frequency;
-        }
-        else if (i['frequency'].includes("On Demand")) {
-          isOnDemandOnly = i.frequency;
-        }
-      }
-    });
-    if (isOnDemandOnly === "On Demand Configurable") {
-      let tempReport = this.reports.filter(i => i['report_name'] === selectedReportName && i['title'] === reportTitle)
-      this.reportTitle = tempReport.map(i => i['title'])[0];
-      this.reportName = tempReport.map(i => i['report_name'])[0];
-      this.reportId = tempReport.map(i => i['report_list_id'])[0];
-
-      this.reportContainer.map(i => {
-        if (i.report_name === this.reportName && i.title === this.reportTitle) {
-          this.reportRequestNumber = i.ddm_rmp_post_report_id;
-        }
-      });
-      this.hideDemandScheduleConfigurableModal();
-      Utils.hideSpinner();
-      return;
-    }
-
-    // On Demand reports only
-    else if (isOnDemandOnly === "On Demand") {
-      Utils.showSpinner();
-      let tempReport = this.reports.filter(i => i['report_name'] === selectedReportName && i['title'] === reportTitle)
-      this.reportRequestNumberOD = tempReport.map(i => i['ddm_rmp_post_report_id'])[0];
-      this.reportIdOD = tempReport.map(i => i['report_list_id'])[0];
-      $('#onDemandModal').modal('show');
-      Utils.hideSpinner();
-    }
-
-    else {
-      this.toasterService.error('Please select a report name with On Demand/On Demand Configurable frequency');
-      Utils.hideSpinner();
-      return;
-    }
-  }
-
-  hideDemandScheduleConfigurableModal() {
-    $('#onDemandScheduleConfigurableModal').modal('show');
-  }
-
+// used to update schedule report data
   public startOnDemandScheduling(data) {
     let dateDetails = new Date();
     let todaysDate = (dateDetails.getMonth() + 1) + '/' + (dateDetails.getDate()) + '/' + (dateDetails.getFullYear())
@@ -610,9 +575,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  public commonScheduler() {
-
-  }
+ 
 
   /*-------------------Freq Selections------------------------------------- */
   FrequencySelection() {
@@ -672,6 +635,7 @@ export class ReportsComponent implements OnInit {
 
   }
 
+// setting final json value based on the selection made in check boxes
   setFrequency() {
     var temp = this.jsonfinal;
     temp.select_frequency = [];
@@ -691,7 +655,8 @@ export class ReportsComponent implements OnInit {
 
     this.jsonfinal = temp;
   }
-
+  
+// update frequency to the server
   updateFreq(request_id) {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
@@ -712,6 +677,7 @@ export class ReportsComponent implements OnInit {
     })
   }
 
+// clear jsonfinal property
   clearFreq() {
     this.jsonfinal['report_id'] = "";
     this.jsonfinal['status'] = ""
@@ -761,7 +727,7 @@ export class ReportsComponent implements OnInit {
     this.showChangeFrequencyModal()
 
   }
-
+// open change-frequency modal
   showChangeFrequencyModal() {
     $('#change-Frequency').modal('show');
 
@@ -799,6 +765,7 @@ export class ReportsComponent implements OnInit {
 
   }
 
+// freuency selected through checkbox
   frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
@@ -820,25 +787,11 @@ export class ReportsComponent implements OnInit {
 
   searchObj;
 
-
+// parsing filters into obj
   filterData() {
-
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
-
-  getLink(index) {
-    this.spinner.show();
-    this.django.get_report_link(index).subscribe(ele => {
-      var url = ele['data']['url']
-      window.open(url, '_blank');
-      this.spinner.hide();
-    }, err => {
-      this.spinner.hide();
-      this.toasterService.error("Report has not been uploaded properly,Please save/upload the report again!!");
-    })
-
-  }
 
   /*--------------Query Criteria repeated--------------*/
   query_criteria_report(query_report_id) {
@@ -1128,12 +1081,13 @@ export class ReportsComponent implements OnInit {
   }
 
 
-
+// filter data based on pagination data
   onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   }
 
+  // setting report id to edit link to url and also change the title of modal to edit or create respectively
   addLinkUrl(element,type){
     this.linkUrlId = element.ddm_rmp_post_report_id;
     if(type == "create"){
@@ -1142,9 +1096,11 @@ export class ReportsComponent implements OnInit {
     }else{
       this.addUrlTitle = "EDIT URL"
       document.querySelector("#add-url-input")["value"] = element.link_to_results;
+      this.validateLinkToUrl(element.link_to_results)
     }
   }
-
+  
+  // save link to url
   saveLinkURL(){
     let link = document.querySelector("#add-url-input")["value"]
     let data = {request_id:this.linkUrlId,link_to_results:link}
@@ -1162,17 +1118,25 @@ export class ReportsComponent implements OnInit {
       })
      }
     },error =>{
-      this.toasterService.error("Failed To Add URL, Please Try Again")
+      this.toasterService.error(error.error.error.link_to_results.join())
       Utils.hideSpinner()
     })
    
   }
 
+  // open links in an new window
   openNewWindow(url){
     window.open(url)
   }
 
+  // close modal
   closeTBD_Assigned(){
     $('#addUrl').modal('hide');
+  }
+
+// used to validate weather input is empty or not
+  validateLinkToUrl(data){
+   if(data == "") this.linkToUrlFlag = true
+   else this.linkToUrlFlag = false;
   }
 }

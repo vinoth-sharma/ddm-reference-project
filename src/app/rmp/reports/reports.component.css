@@ -13,17 +13,19 @@ h3 {
   top: 0;
   z-index: 1;
 }
+
 .report-name-edit{
   display:flex;
   flex-direction: row;
   justify-content: space-between !important;
 
 }
+
 #ic{
   font-size: 8 !important;
 }
-.tableFixHead {
 
+.tableFixHead {
   padding-left: 1%;
 }
 
@@ -92,6 +94,7 @@ h3 {
 label {
   font-size: 30px;
 }
+
 .modal-body {
   max-height: 400px;
 }

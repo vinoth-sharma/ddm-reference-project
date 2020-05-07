@@ -800,11 +800,11 @@ export class DealerAllocationComponent implements OnInit {
   }
 
   public getDADefaultSelection() {
-    
+
     var temp = this.finalData;
     let ele = document.querySelectorAll("#consensusDataRef input[class='events']:checked");
-    ele.forEach((row:any)=>{
-      temp.concensus_data.push({id:row.value,value:row.value})
+    ele.forEach((row: any) => {
+      temp.concensus_data.push({ id: row.value, value: row.value })
     })
     // $.each($("input[class='events']:checked"), function () {
     //   this.concencusDataCheckbox = { "id": $(this).val(), "value": $(this).val() };

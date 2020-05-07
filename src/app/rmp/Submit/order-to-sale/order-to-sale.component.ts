@@ -848,16 +848,16 @@ export class OrderToSaleComponent implements OnInit {
     this.finalData["vehicle_line"] = { "dropdown": this.selectedItemsVehicleLine, "radio_button": this.otsObj.vlbRadio }
     this.finalData["merchandizing_model"] = { "dropdown": this.merchandizeItemsSelect, "radio_button": this.otsObj.merchRadio }
     this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.otsObj.orderTypeRadio }
-    if(this.selectedItemsOrderEvent.length > 0)
-        this.finalData["order_event"] = { "dropdown": this.selectedItemsOrderEvent }
+    if (this.selectedItemsOrderEvent.length > 0)
+      this.finalData["order_event"] = { "dropdown": this.selectedItemsOrderEvent }
     else {
       let otherText = [{
-                        ddm_rmp_lookup_dropdown_order_event_id: 0,
-                        order_event:this.otsObj.otherDesc
-                      }];
-        this.finalData["order_event"] = { "dropdown": otherText }
+        ddm_rmp_lookup_dropdown_order_event_id: 0,
+        order_event: this.otsObj.otherDesc
+      }];
+      this.finalData["order_event"] = { "dropdown": otherText }
     }
-       
+
     this.finalData["report_id"] = this.generated_report_id;
     if (this.other_description == undefined) {
       this.finalData["other_desc"] = "";
@@ -1600,12 +1600,12 @@ export class OrderToSaleComponent implements OnInit {
   public previousSelections(requestId) {
     Utils.showSpinner();
     this.django.get_report_description(requestId).subscribe(element => {
-      if(element['ost_data']){
-        
-      this.selectedItemsAllocation = []
-        this.allocationFinalList.forEach(eleAllo=>{
-          element['ost_data']['allocation_group'].forEach(resAllo=>{
-            if(eleAllo['ddm_rmp_lookup_dropdown_allocation_group_id'] == resAllo['ddm_rmp_lookup_dropdown_allocation_group']){
+      if (element['ost_data']) {
+
+        this.selectedItemsAllocation = []
+        this.allocationFinalList.forEach(eleAllo => {
+          element['ost_data']['allocation_group'].forEach(resAllo => {
+            if (eleAllo['ddm_rmp_lookup_dropdown_allocation_group_id'] == resAllo['ddm_rmp_lookup_dropdown_allocation_group']) {
               this.selectedItemsAllocation.push(eleAllo)
             }
           })

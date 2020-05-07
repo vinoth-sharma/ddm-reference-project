@@ -145,7 +145,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   };
   dl_flag = false;
 
- 
+
   contents;
   enable_edits = false
   editModes = false;
@@ -173,15 +173,15 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   config = {
     toolbar: [
-      ['bold','italic','underline','strike'],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
-      [{'list' : 'ordered'}, {'list' : 'bullet'}],
-      [{'script' : 'sub'},{'script' : 'super'}],
-      [{'size':['small',false, 'large','huge']}],
-      [{'header':[1,2,3,4,5,6,false]}],
-      [{'color': []},{'background':[]}],
-      [{'font': []}],
-      [{'align': []}],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
       ['clean'],
       ['image']
     ]
@@ -191,7 +191,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService, private auth_service: AuthenticationService,
     private report_id_service: GeneratedReportService,
-    public toastr:NgToasterComponent,
+    public toastr: NgToasterComponent,
     private reportDataService: ReportCriteriaDataService) {
     this.model = "";
     this.auth_service.myMethod$.subscribe(role => {
@@ -202,7 +202,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       }
     })
     dataProvider.currentlookUpTableData.subscribe(element => {
-      if (element){
+      if (element) {
         this.lookup = element
         this.getMarketSelectionData();
       }
@@ -227,7 +227,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     }
   }
 
-  getMarketSelectionData(){
+  getMarketSelectionData() {
     this.dataProvider.currentlookupData.subscribe(element => {
       if (element) {
         this.lookup_data = element
@@ -314,7 +314,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   textChanged(event) {
     this.textChange = true;
-    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
@@ -413,30 +413,32 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["fan_selection"] = this.fanselectedItems_report
         this.jsonUpdate["dl_list"] = this.contacts
 
-        if(this.behalf == "" || this.behalf == null || this.behalf == undefined){
+        if (this.behalf == "" || this.behalf == null || this.behalf == undefined) {
           this.behalf = this.report_on_behalf
         }
-        if(this.report_status == "Completed" || this.report_status == "Pending"){
+        if (this.report_status == "Completed" || this.report_status == "Pending") {
           this.report_status = "Pending";
           this.assigned_to = ""
         }
-        else if(this.report_status == "Active"){
+        else if (this.report_status == "Active") {
           this.report_status = "Active"
         }
 
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonUpdate["report_detail"] = { "requestor": this.report_user,
-         "status": this.report_status, 
-         "status_date": this.date, 
-         "report_type": this.report_type, 
-         "title": this.report_title, 
-         "additional_req": this.report_req, 
-         "created_on": this.report_create, 
-         "on_behalf_of": this.behalf, 
-         "assigned_to": this.assigned_to, 
-         "link_to_results": "", 
-         "query_criteria": "", 
-         "link_title": "" }
+        this.jsonUpdate["report_detail"] = {
+          "requestor": this.report_user,
+          "status": this.report_status,
+          "status_date": this.date,
+          "report_type": this.report_type,
+          "title": this.report_title,
+          "additional_req": this.report_req,
+          "created_on": this.report_create,
+          "on_behalf_of": this.behalf,
+          "assigned_to": this.assigned_to,
+          "link_to_results": "",
+          "query_criteria": "",
+          "link_title": ""
+        }
 
         this.jsonUpdate["dl_list"] = this.contacts
       }
@@ -1001,8 +1003,6 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   checkSelections() {
-
-
     this.report_id_service.behalf_of_name.subscribe(element => {
       this.behalf = element
     })
@@ -1059,7 +1059,7 @@ export class SelectReportCriteriaComponent implements OnInit {
           this.jsonfinal.select_frequency.push(frequencyDatas);
           this.jsonUpdate['select_frequency'].push(frequencyDatas);
         }
-        
+
         this.django.ddm_rmp_report_market_selection(this.select_report_selection).subscribe(response => {
           if (response["message"] == "success") {
             this.report_id_service.changeUpdate(true)
@@ -1149,15 +1149,15 @@ export class SelectReportCriteriaComponent implements OnInit {
     Utils.showSpinner()
     this.django.get_report_description(report_id).subscribe(element => {
       // console.log(element);
-      if(element['status'] == "Incomplete" || element['status'] == "Active" || 
-          element['status'] == "Pending" || element['status'] == "Cancelled"){
+      if (element['status'] == "Incomplete" || element['status'] == "Active" ||
+        element['status'] == "Pending" || element['status'] == "Cancelled") {
         this.report_id_service.changeUpdate(true)
       }
-      else if(element['status'] == 'Completed'){
-        if(element['frequency_data'].length > 1){
+      else if (element['status'] == 'Completed') {
+        if (element['frequency_data'].length > 1) {
           this.report_id_service.changeUpdate(true)
         }
-        else{
+        else {
           this.report_id_service.changeUpdate(false)
         }
       }
@@ -1299,11 +1299,11 @@ export class SelectReportCriteriaComponent implements OnInit {
       }
 
       if (element["frequency_data"][0]['select_frequency_values'] == 'On Demand Configurable' || element["frequency_data"][0]['select_frequency_values'] == 'On Demand'
-      || element['frequency_data'][0]['select_frequency_values'] == 'One Time') {
-        if(element["frequency_data"][0]['select_frequency_values'] == 'On Demand') {
+        || element['frequency_data'][0]['select_frequency_values'] == 'One Time') {
+        if (element["frequency_data"][0]['select_frequency_values'] == 'On Demand') {
           $("#odCheckbox37").prop("checked", true);
         }
-        if(element["frequency_data"][0]['select_frequency_values'] == 'On Demand Configurable') {
+        if (element["frequency_data"][0]['select_frequency_values'] == 'On Demand Configurable') {
           $("#odCheckbox38").prop("checked", true);
         }
         // console.log(element['frequency_data'][0]['select_frequency_values'])
@@ -1332,7 +1332,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         catch (err) {
         }
       } else {
-         this.toggle_freq("frequency0", "");
+        this.toggle_freq("frequency0", "");
         $("#frequency0").prop("checked", true);
         var subData = element["frequency_data"];
         // console.log("Check prepopulation")
@@ -1423,22 +1423,22 @@ export class SelectReportCriteriaComponent implements OnInit {
       if (frequencyType.length && frequencyType === 'On Demand') {
         this.jsonfinal['frequency'] = "On Demand"
         this.jsonUpdate['frequency'] = "On Demand"
-        let dat = this.jsonUpdate.select_frequency.filter( item => item.ddm_rmp_lookup_select_frequency_id == subelement.ddm_rmp_lookup_select_frequency_id)
-        if(dat.length ==0){
+        let dat = this.jsonUpdate.select_frequency.filter(item => item.ddm_rmp_lookup_select_frequency_id == subelement.ddm_rmp_lookup_select_frequency_id)
+        if (dat.length == 0) {
           var frequencyData = { "ddm_rmp_lookup_select_frequency_id": subelement.ddm_rmp_lookup_select_frequency_id, "description": "" };
           this.jsonfinal.select_frequency.push(frequencyData);
           this.jsonUpdate['select_frequency'].push(frequencyData);
         }
-     
+
       }
       else if (frequencyType.length && frequencyType === 'On Demand Configurable') {
         this.jsonfinal['frequency'] = "On Demand Configurable"
         this.jsonUpdate['frequency'] = "On Demand Configurable"
-        let dat = this.jsonUpdate.select_frequency.filter( item => item.ddm_rmp_lookup_select_frequency_id == subelement.ddm_rmp_lookup_select_frequency_id)
-        if(dat.length ==0){
+        let dat = this.jsonUpdate.select_frequency.filter(item => item.ddm_rmp_lookup_select_frequency_id == subelement.ddm_rmp_lookup_select_frequency_id)
+        if (dat.length == 0) {
           var frequency_Data = { "ddm_rmp_lookup_select_frequency_id": subelement.ddm_rmp_lookup_select_frequency_id, "description": "" };
-        this.jsonfinal.select_frequency.push(frequency_Data);
-        this.jsonUpdate['select_frequency'].push(frequency_Data);
+          this.jsonfinal.select_frequency.push(frequency_Data);
+          this.jsonUpdate['select_frequency'].push(frequency_Data);
         }
       }
       else {
@@ -1448,8 +1448,8 @@ export class SelectReportCriteriaComponent implements OnInit {
     }
   }
 
-  
-  ngOnDestroy(){
+
+  ngOnDestroy() {
     // this.cancelUpdate();
   }
 }

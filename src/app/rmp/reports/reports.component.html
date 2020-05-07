@@ -152,10 +152,17 @@
               </td>
               <td class="ddm-report-name"
                 [ngStyle]="{ 'background-color': (element.frequency === 'On Demand' || element.frequency === 'On Demand Configurable') ? '#ccc' : 'none'  }">
-                <div (click)="toggleShowInput(element)" *ngIf="!element.clicked && element.report_name">
-                  {{element.report_name}}</div>
-                <div *ngIf="element.clicked || !element.report_name"><input style="max-width:140px"
-                    [value]="element.report_name?element.report_name:''" (change)="changeReportName($event , element)">
+                <div class="report-name-edit" *ngIf="!element.clicked">
+                  <a style="font-size:18px" data-toggle="tooltip" title="EDIT" (click)="toggleShowInput(element)"><i id="ic" class="material-icons">mode_edit</i></a>
+                  <p *ngIf="element.report_name">{{element.report_name}}</p>
+                </div>
+                <div  class="report-name-edit" *ngIf="element.clicked "><input style="max-width:110px" maxlength="50" placeholder="Name max 50 characters"
+                  [(ngModel)]="element.report_name" [value]="element.report_name?element.report_name:''" (change)="changeReportName($event , element)">
+                  <div>
+
+                    <a data-toggle="tooltip" title="Save" (click)="changeReportName($event , element)" style="color:grey ; "><i id="ic" class="material-icons">save</i></a>
+                    <a data-toggle="tooltip" title="Cancel" (click)="toggleShowInput(element)" style="color:grey ; "><i id="ic" class="material-icons">cancel</i></a>
+                  </div>
                 </div>
               </td>
               <td class="change-freq" *ngIf="element.changeFreqReq"

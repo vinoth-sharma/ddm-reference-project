@@ -4,9 +4,7 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { AuthenticationService } from "src/app/authentication.service";
 declare var $: any;
-import { FormControl, FormGroupDirective, NgForm, FormGroup} from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { DisplayNotesComponent } from '../admin-notes/display-notes/display-notes.component';
 import { NotesWrapperComponent } from '../admin-notes/notes-wrapper/notes-wrapper.component';
 
@@ -38,14 +36,6 @@ export class RmpLandingPageComponent implements OnInit{
     public dataProvider: DataProviderService, 
     public  auth_service: AuthenticationService, 
     private dialog: MatDialog) {
-  }
-
-  // checking date
-  public checkDates(group: FormGroup) {
-    if (group.controls.endDate.value < group.controls.startDate.value) {
-      return { endDateLessThanStartDate: true }
-    }
-    return null;
   }
   
   public ngOnInit() { 
@@ -124,13 +114,4 @@ export class RmpLandingPageComponent implements OnInit{
         this.note_status = this.info.data.admin_note[0].admin_note_status;
     }
   }  
-}
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const invalidCtrl = !!(control && control.invalid);
-    const invalidParent = !!(control && control.parent && control.parent.invalid);
-
-    return (invalidCtrl || invalidParent);
-  }
 }

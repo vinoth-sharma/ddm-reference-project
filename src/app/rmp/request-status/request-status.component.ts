@@ -183,6 +183,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   public addUrlTitle: String = "";
   public selectReportStatus = "";
   public changeDoc:boolean = false;
+  public linkToUrlFlag = true;
 
   // paginator params
   public paginatorlength = 100;
@@ -306,12 +307,13 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.django.getLookupValues().subscribe(check_user_data => {
       check_user_data['data']['users_list'].forEach(ele => {
         this.fullName = ele.first_name + ' ' + ele.last_name;
-        this.usersList.push({ 'full_name': this.fullName, 'users_table_id': ele.users_table_id });
+        this.usersList.push({ 'full_name': this.fullName, 'users_table_id': ele.users_table_id ,role:ele.role});
 
         if (ele['disclaimer_ack'] != null || ele['disclaimer_ack'] != undefined)
           this.ackList['data'].push(ele);
       });
-      this.tbddropdownListfinal_report = this.tbddropdownListfinalAssigned = this.usersList;
+       this.tbddropdownListfinalAssigned = this.usersList.filter(item => item.role == 1);;
+       this.tbddropdownListfinal_report = this.usersList
       this.discList = check_user_data['data']['users_list'];
     });
 
@@ -696,7 +698,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }).catch(error => {
     });
   }
-
+  // creating a body to generate excel report
   createNewBodyForExcel() {
     let reportBody = []
     this.reports.forEach(item => {
@@ -797,7 +799,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
 
   // adding comment to reports
   public extract_comment() {
-    if (this.comment_text == "") {
+    if (!this.comment_text || this.comment_text == "") {
       this.errorModalMessageRequest = "Enter some comment";
       $('#errorModalRequest').modal('show');
     }
@@ -847,8 +849,11 @@ export class RequestStatusComponent implements OnInit, OnChanges {
         this.django.update_comment_flags({ report_id: report_id }).subscribe(() => {
           this.notification_list = [];
           this.dataProvider.currentNotifications.subscribe((response: Array<any>) => {
-            this.notification_list = response.filter(element => {
-              return (element.commentor != this.user_name) && (element.ddm_rmp_post_report != report_id)
+            this.notification_list = response
+            this.notification_list.map(element => {
+              if(element.ddm_rmp_post_report == report_id){
+                element.comment_read_flag = true
+              }
             });
           })
           this.dataProvider.changeNotificationData(this.notification_list);
@@ -1313,14 +1318,17 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     if (type == "create") {
       this.addUrlTitle = "ADD URL"
       document.querySelector("#add-url-input")["value"] = "";
+     
     } else {
       this.addUrlTitle = "EDIT URL"
       document.querySelector("#add-url-input")["value"] = element.link_to_results;
+      this.validateLinkToUrl(element.link_to_results)
     }
   }
-
+//  save link to url
   saveLinkURL() {
     let link = document.querySelector("#add-url-input")["value"]
+
     let data = { request_id: this.linkUrlId, link_to_results: link }
     Utils.showSpinner();
     this.django.add_link_to_url(data).subscribe(response => {
@@ -1336,25 +1344,25 @@ export class RequestStatusComponent implements OnInit, OnChanges {
         })
       }
     }, error => {
-      this.toastr.error("Failed To Add URL, Please Try Again")
+      this.toastr.error(error.error.error.link_to_results.join())
       Utils.hideSpinner()
     })
 
   }
-
+// open link in a new window
   openNewWindow(url) {
     window.open(url)
   }
-
+// setting report id inorder to edit
   openEditStatusModal(element) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     document.querySelector("#selectReportStatus")["value"] = "Active"
   }
-
+// capturing report status from input
   setselectReportStatus() {
     this.selectReportStatus = document.querySelector("#selectReportStatus")["value"]
   }
-
+// saving report status to server
   saveReportStatus() {
     let link = document.querySelector("#add-url-input")["value"]
     let data = { request_id: this.linkUrlId, status: "Completed", status_date: new Date() }
@@ -1376,13 +1384,19 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       Utils.hideSpinner()
     })
   }
-
+// close modal
   closeLinkUrl() {
     $('#addUrl').modal('hide');
   }
-
+// close modal
   closeStatusUrl() {
     $('#changeStatusModal').modal('hide');
+  }
+
+// used to validate weather input is empty or not
+  validateLinkToUrl(data){
+   if(data == "") this.linkToUrlFlag = true
+   else this.linkToUrlFlag = false;
   }
   public onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;

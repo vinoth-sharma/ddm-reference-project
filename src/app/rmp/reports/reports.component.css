@@ -13,8 +13,17 @@ h3 {
   top: 0;
   z-index: 1;
 }
+.report-name-edit{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between !important;
 
+}
+#ic{
+  font-size: 8 !important;
+}
 .tableFixHead {
+
   padding-left: 1%;
 }
 
@@ -181,4 +190,14 @@ td > div {
 .quillEditor {
   position: relative;
   padding: 3px;
+}
+
+.modal-dialog{
+  margin-top: auto;
+  top:15%
+}
+
+.material-icons {
+  margin-right: none;
+  cursor: pointer;
 }

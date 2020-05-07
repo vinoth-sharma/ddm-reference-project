@@ -28,4 +28,10 @@ export class SubmitRequestComponent implements OnInit {
       this.generated_id_service.changeButtonStatus(true)
     })
   }
+
+  ngOnDestroy(){
+    localStorage.removeItem('report_id');
+    this.generated_id_service.changeUpdate(false);
+
+  }
 }

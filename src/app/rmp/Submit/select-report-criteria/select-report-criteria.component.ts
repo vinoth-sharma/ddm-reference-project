@@ -362,7 +362,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   cancelUpdate() {
     this.contacts = [];
     localStorage.removeItem('report_id');
-    this.update = false;
+    this.update = !this.update;
     this.message = null
     this.proceed_instruction = null;
     $.each($("input[class='special-checkbox']"), function () {
@@ -1450,6 +1450,6 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   
   ngOnDestroy(){
-    this.cancelUpdate();
+    // this.cancelUpdate();
   }
 }

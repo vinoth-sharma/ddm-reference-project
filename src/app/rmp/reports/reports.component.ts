@@ -215,6 +215,7 @@ export class ReportsComponent implements OnInit {
       }
     });
   }
+
 // read user role from an observable
   readUserRole() {
     this.auth_service.myMethod$.subscribe(role => {
@@ -223,6 +224,7 @@ export class ReportsComponent implements OnInit {
       }
     });
   }
+
 //  get lookup table data from the server
   getLookUptableData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
@@ -242,6 +244,7 @@ export class ReportsComponent implements OnInit {
       }
     });
   }
+
 // get valuse from obj
   getValues(obj: Object) {
     return Object.values(obj);
@@ -256,6 +259,7 @@ export class ReportsComponent implements OnInit {
     })
     this.getReportList();
   }
+
 // set semanticlayer id
   getSemanticLayerID() {
     this.changeInFreq = true;
@@ -265,6 +269,7 @@ export class ReportsComponent implements OnInit {
       }
     });
   }
+
 // get scheduled reports from server
   public getScheduledReports() {
     if (this.semanticLayerId != undefined && this.semanticLayerId != null) {
@@ -277,6 +282,7 @@ export class ReportsComponent implements OnInit {
       );
     }
   }
+
 // get reports list from server
   getReportList() {
     this.django.get_report_list().subscribe(list => {
@@ -351,6 +357,7 @@ export class ReportsComponent implements OnInit {
     })
 
   }
+
 // to mark a report as favourites
   checked(id, event) {
     this.spinner.show()
@@ -365,12 +372,14 @@ export class ReportsComponent implements OnInit {
       this.spinner.hide()
     })
   }
+
 // used to set typeval property of reports
   sort(typeVal) {
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
   }
+
 // generates excel report
   xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {
@@ -407,6 +416,7 @@ export class ReportsComponent implements OnInit {
     }).catch(error => {
     });
   }
+
   // creating a body to generate excel report
   createNewBodyForExcel(){
     let reportBody = []
@@ -425,6 +435,7 @@ export class ReportsComponent implements OnInit {
     })
     return reportBody
   }
+  
 // used ti toggle reverse property
   setOrder(value: any) {
     if (this.order === value) {
@@ -432,12 +443,14 @@ export class ReportsComponent implements OnInit {
     }
     this.order = value;
   }
+
 // used to set a few properties when content get changed in quill editor
   textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
+
 // save changes made to help
   content_edits() {
     if (!this.textChange || this.enableUpdateData) {
@@ -470,12 +483,14 @@ export class ReportsComponent implements OnInit {
       this.toasterService.error("please enter the data");
     }
   }
+
 // used to set a few properties of component
   edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
+
 // used to set a few properties of component
 
   editEnable() {
@@ -483,6 +498,7 @@ export class ReportsComponent implements OnInit {
     this.readOnlyContentHelper = false;
     this.namings = this.original_contents;
   }
+
 // used to update schedule report data
   public startOnDemandScheduling(data) {
     let dateDetails = new Date();
@@ -617,6 +633,7 @@ export class ReportsComponent implements OnInit {
     this.freq_val_on_demand = Object.values(this.Select_on_demand);
 
   }
+
 // setting final json value based on the selection made in check boxes
   setFrequency() {
     var temp = this.jsonfinal;
@@ -637,6 +654,7 @@ export class ReportsComponent implements OnInit {
 
     this.jsonfinal = temp;
   }
+  
 // update frequency to the server
   updateFreq(request_id) {
     this.spinner.show();
@@ -657,6 +675,7 @@ export class ReportsComponent implements OnInit {
       this.toasterService.error("Server Error");
     })
   }
+
 // clear jsonfinal property
   clearFreq() {
     this.jsonfinal['report_id'] = "";
@@ -744,6 +763,7 @@ export class ReportsComponent implements OnInit {
     }
 
   }
+
 // freuency selected through checkbox
   frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
@@ -1055,6 +1075,7 @@ export class ReportsComponent implements OnInit {
       this.validateLinkToUrl(element.link_to_results)
     }
   }
+  
   // save link to url
   saveLinkURL(){
     let link = document.querySelector("#add-url-input")["value"]
@@ -1078,14 +1099,17 @@ export class ReportsComponent implements OnInit {
     })
    
   }
+
   // open links in an new window
   openNewWindow(url){
     window.open(url)
   }
+
   // close modal
   closeTBD_Assigned(){
     $('#addUrl').modal('hide');
   }
+  
 // used to validate weather input is empty or not
   validateLinkToUrl(data){
    if(data == "") this.linkToUrlFlag = true

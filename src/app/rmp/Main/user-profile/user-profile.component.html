@@ -32,13 +32,13 @@
           <strong>No</strong>
         </div>
         <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
-          <p>Enter a 10-digit valid phone number</p>
-          <input type="text" id="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;-webkit-text-security: disc;" name="phone" title="Phone No." (keypress)='numberOnly($event)' 
+          <p>Enter a 10-digit valid phone number (For Ex: (555) 555-1234 should be 5555551234)</p>
+          <input type="text" id="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;-webkit-text-security: disc;" 
+                name="phone" title="Phone No." (keypress)='numberOnly($event)' 
                 [value]="text_number" [maxLength]='10'>
           <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click)="showPassword()">
             remove_red_eye
           </i>
-          <div class="col-sm-4"></div>
         </div>
         <div class="row" style="margin-bottom:4px;">
           <select class="carrier" name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>

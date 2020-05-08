@@ -486,7 +486,7 @@ export class OrderToSaleComponent implements OnInit {
             temp_desc_text[index] = this.description_text
           }
         })
-        this.lookup['data']['desc_text'] = temp_desc_text
+        this.lookup['data']['desc_text'] = temp_desc_text;
         this.dataProvider.changelookUpTableData(this.lookup)
         this.editModes = false;
         this.ngOnInit()
@@ -842,14 +842,22 @@ export class OrderToSaleComponent implements OnInit {
 
   //--------------------Final JSON CREATION----------------------------------------------------------------------------------------------
   DropdownSelected() {
-
     this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": this.otsObj.modelRadio }
     this.finalData["division_selected"] = { "radio_button": this.otsObj.divisionRadio }
     this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": this.otsObj.alloRadio }
     this.finalData["vehicle_line"] = { "dropdown": this.selectedItemsVehicleLine, "radio_button": this.otsObj.vlbRadio }
     this.finalData["merchandizing_model"] = { "dropdown": this.merchandizeItemsSelect, "radio_button": this.otsObj.merchRadio }
     this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.otsObj.orderTypeRadio }
-    this.finalData["order_event"] = { "dropdown": this.selectedItemsOrderEvent }
+    if(this.selectedItemsOrderEvent.length > 0)
+        this.finalData["order_event"] = { "dropdown": this.selectedItemsOrderEvent }
+    else {
+      let otherText = [{
+                        ddm_rmp_lookup_dropdown_order_event_id: 0,
+                        order_event:this.otsObj.otherDesc
+                      }];
+        this.finalData["order_event"] = { "dropdown": otherText }
+    }
+       
     this.finalData["report_id"] = this.generated_report_id;
     if (this.other_description == undefined) {
       this.finalData["other_desc"] = "";
@@ -954,7 +962,7 @@ export class OrderToSaleComponent implements OnInit {
         }
       })
       let filteredDistributionData = this.finalData.distribution_data
-      this.order_to_sales_selection = this.finalData
+      this.order_to_sales_selection = this.finalData;
       Utils.showSpinner();
       this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
         this.getreportSummary();
@@ -1588,7 +1596,6 @@ export class OrderToSaleComponent implements OnInit {
   previousSelections(requestId){
     Utils.showSpinner();
     this.django.get_report_description(requestId).subscribe(element => {
-      // console.log(element);
       if(element['ost_data']){
         
       this.selectedItemsAllocation = []

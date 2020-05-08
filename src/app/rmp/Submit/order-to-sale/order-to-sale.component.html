@@ -465,7 +465,7 @@
           <tr class="d-flex">
             <td class="col-sm-12"><i>Please select an order event to specify the date range</i></td>
           </tr>
-          <tr class="d-flex" *ngIf="selectedItemsOrderEvent.length>0">
+          <tr class="d-flex" *ngIf="selectedItemsOrderEvent.length>0 || otsObj.otherDesc !== ''">
             <td class="col-sm-6">
                 <mat-form-field >
                   <mat-label>Start Date:</mat-label>
@@ -475,9 +475,6 @@
                   <mat-datepicker-toggle matSuffix [for]="fromOrderEvent"></mat-datepicker-toggle>
                   <mat-datepicker #fromOrderEvent></mat-datepicker>
                 </mat-form-field>
-
-
-
             </td>
             <td class="col-sm-6">
                 <mat-form-field >

@@ -761,7 +761,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
 
   // adding comment to reports
   public extract_comment() {
-    if (this.comment_text == "") {
+    if (!this.comment_text || this.comment_text == "") {
       this.errorModalMessageRequest = "Enter some comment";
       $('#errorModalRequest').modal('show');
     }

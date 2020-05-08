@@ -6,9 +6,6 @@ import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaste
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from '../../../utils';
 declare var $: any;
-import { FormControl, FormGroupDirective, 
-         NgForm, Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { DisplayNotesComponent } from '../admin-notes/display-notes/display-notes.component';
 import { NotesWrapperComponent } from '../admin-notes/notes-wrapper/notes-wrapper.component';
@@ -42,14 +39,6 @@ export class RmpLandingPageComponent implements OnInit{
     public  auth_service: AuthenticationService, 
     private toastr: NgToasterComponent,
     private dialog: MatDialog) {
-  }
-
-  // checking date
-  public checkDates(group: FormGroup) {
-    if (group.controls.endDate.value < group.controls.startDate.value) {
-      return { endDateLessThanStartDate: true }
-    }
-    return null;
   }
   
   public ngOnInit() { 
@@ -132,13 +121,4 @@ export class RmpLandingPageComponent implements OnInit{
     }
   }  
 
-}
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const invalidCtrl = !!(control && control.invalid);
-    const invalidParent = !!(control && control.parent && control.parent.invalid);
-
-    return (invalidCtrl || invalidParent);
-  }
 }

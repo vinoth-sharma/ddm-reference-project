@@ -7,8 +7,9 @@ import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { Router } from '@angular/router';
 import Utils from "../../../utils"
+import '../../../assets/debug2.js';
+declare var jsPDF: any;
 declare var $: any;
-
 import { ScheduleService } from '../../schedule/schedule.service';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
@@ -775,9 +776,11 @@ export class ReportsComponent implements OnInit {
 
   /*--------------Query Criteria repeated--------------*/
   query_criteria_report(query_report_id) {
+    console.log(query_report_id, 'query_report_id----');
     this.spinner.show();
     this.summary = [];
     this.django.get_report_description(query_report_id).subscribe(response => {
+      console.log(response, 'response-------**************');
       this.summary = response;
       this.spinner.hide();
 
@@ -972,7 +975,7 @@ export class ReportsComponent implements OnInit {
         }
       }
 
-      //-----DA-----//
+      // //-----DA-----//
       if (this.summary["da_data"] != undefined) {
         tempArray = []
         if (this.summary["da_data"]["allocation_grp"].length != 0) {
@@ -1032,11 +1035,36 @@ export class ReportsComponent implements OnInit {
         this.fan_desc = []
       }
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
+      console.log(this.summary, 'summary------------');
 
     }, err => {
+      console.log(err, 'error *************');
       this.spinner.hide()
     })
   }
+
+   // download browser data in pdf file
+   public captureScreen() {
+    var specialElementHandlers = {
+      '#editor': function (element, renderer) {
+        return true;
+      }
+    };
+    var doc = new jsPDF();
+    doc.setFont("arial");
+    let margins = {
+                    top: 15,
+                    bottom: 0,
+                    left: 18,
+                    width: 170
+                  };
+    doc.fromHTML(
+      $('#print').html(), margins.left,margins.top,
+      { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
+      function () { doc.save('sample-file.pdf'); },margins
+    );
+  }
+
 
 
   onPaginationChange(event) {

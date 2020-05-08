@@ -201,7 +201,7 @@
               <td>
                 <div>
                   <button class="btn btn-outline-primary"
-                    (click)="query_criteria_report(element.ddm_rmp_post_report_id)" data-toggle="modal"
+                    (click)="query_criteria_report(element.ddm_rmp_post_report_id)"  data-toggle="modal"
                     data-target="#queryCriteriaReport">
                     QueryCriteria
                   </button>
@@ -427,7 +427,14 @@
                 Allocation</div>
             </div><br>
             <div class="col-sm-9"></div>
-            <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal">x</button></div>
+            <div class="col-sm-1" style="color: white">
+              <i id="ic" class="material-icons" style="margin-top: 10px;" (click)='captureScreen()'>
+                get_app
+              </i>
+            </div>
+            <div class="col-sm-1">
+              <button type="button" class="close" data-dismiss="modal">x</button>
+            </div>
           </div>
         </div>
         <div class="modal-body display-summary-scroll">
@@ -594,3 +601,176 @@
       </div>
     </div>
   </div>
+
+
+  <!--========================================DOWNLOAD PDF===================================================================-->
+
+<pre class="container-fluid" style="height: auto;display: none" id="print">
+    <pre>
+      <h1>Distribution DataMart (DDM)       </h1>
+      <h1>Report Request Confirmation</h1>
+    </pre>
+    <pre>
+      <h3>Vehicle Event Status</h3>
+    </pre>
+    <br>
+    <br>
+ <pre class="Request-summary" *ngIf='summary'>
+    <span> <b>Request Date:</b>
+      &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
+    <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+    <pre class="div-wrap" *ngFor="let element of summary?.requestor">
+        <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}
+        <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
+    </pre>
+  <b style="font-size:150%">Market Selections</b>
+  <pre class="div-wrap">
+    <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
+      *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+   <pre class="div-wrap">
+    <b>Division(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  
+  <pre class="div-wrap">
+    <b>Region(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ region_description }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Zone(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ zone_description }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Area(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ area_description }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>LMA(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ lma_description }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ gmma_description }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>BAC(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ bac_description }}&nbsp;&nbsp;</span>
+                <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>FAN(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ fan_desc }}&nbsp;&nbsp;</span>
+    <br><br>
+  </pre>
+  <b style="font-size:120%">Frequency of Reports</b>
+  <pre class="div-wrap" *ngIf="!frequency_flag">
+    <span>{{ report_frequency }}&nbsp;&nbsp;</span> <br><br>
+  </pre>
+  <b style="font-size:120%">Special Identifiers</b>
+  <pre class="div-wrap">
+    <p>{{ special_identifier }}</p>
+  </pre>
+  <h5>
+    <b>Text Notification, when Requests are fulfilled?</b>
+  </h5>
+  <pre class="div-wrap">
+    <p *ngIf='text_notification == ""'>No</p>
+    <p *ngIf='text_notification != ""'>Yes</p>
+  </pre> 
+<!--                                Order To Sale Start                                    -->
+
+ <pre class="div-wrap" *ngIf="summary?.report_type == 'ots'">
+    <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
+  <pre class="div-wrap">
+    <b style="font-size:120%">Order Criteria</b><br>
+    <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ model_year }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
+    <br>
+    </pre>
+  <pre class="div-wrap">
+    <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ order_event }}&nbsp;&nbsp;</span>
+    <br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
+    <span>{{ order_type }}&nbsp;&nbsp;</span>
+    <br><br><br>
+  </pre>
+  <pre class="div-wrap">
+    <b style="font-size:120%">Order Metrics</b><br><br>
+    <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
+    <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
+    <br><br>
+  </pre>
+  <pre class="div-wrap">
+    <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+    <span *ngFor="let element of summary?.ost_data.data_date_range">
+      <b>Start:</b>&nbsp;{{element?.start_date| date: 'dd-MMM-yyyy'}}
+      <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
+    </span>
+  </pre>
+   <pre class="div-wrap">
+    <b>Additional Requirements:</b> <br>
+    <span>{{summary?.additional_req}}</span>
+  </pre>
+  </pre>
+  <pre class="div-wrap">
+    <h5><b>Dealer Allocation Selections</b></h5><br>
+    <pre class="div-wrap">
+      <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
+      <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+    </pre>
+    <pre class="div-wrap">
+      <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
+      <span>{{ model_year }}&nbsp;&nbsp;</span>
+      <br>
+    </pre>
+    <pre class="div-wrap" *ngIf='summary && summary.da_data && 
+                                  summary.da_data.concensus_data && 
+                                  summary.da_data.concensus_data.length > 0'>
+      <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+      <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
+        <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
+        <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
+      </span>
+    </pre>
+    <pre class="div-wrap" *ngIf='summary && summary.da_data && 
+                                summary.da_data.concensus_data && 
+                                summary.da_data.concensus_data.length > 0'>
+        <b>Consensus Data:</b> &nbsp;&nbsp;
+        <span *ngFor="let element of summary?.da_data.concensus_data">
+          {{element?.cd_values}}&nbsp;&nbsp;
+        </span>
+      <br>
+    </pre>
+    <pre class="div-wrap">
+        <b>Additional Requirements:</b> <br>
+        <span>{{summary?.additional_req}}</span>
+    </pre>
+</pre>
+</pre>
+</pre>

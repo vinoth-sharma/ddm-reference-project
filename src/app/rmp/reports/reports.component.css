@@ -172,4 +172,10 @@ td > div {
   padding: 3px;
 }
 
+.material-icons {
+  margin-right: none;
+  cursor: pointer;
+}
+
+
 

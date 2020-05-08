@@ -25,7 +25,7 @@ export class UserProfileComponent implements OnInit {
   text_notification: any;
   countryCode_notification: any;
   notiNumber: boolean;
-  text_number: any;
+  text_number: any = '';
   code: any;
   te_number: any;
   textChange = false;

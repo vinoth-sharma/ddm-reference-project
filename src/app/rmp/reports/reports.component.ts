@@ -188,7 +188,7 @@ export class ReportsComponent implements OnInit {
 
     const changedReport = {};
     changedReport['request_id']= reportObject.ddm_rmp_post_report_id;
-    changedReport['report_name'] = event.target['value'];
+    changedReport['report_name'] = reportObject.report_name;
     this.django.update_rmpReports_DDMName(changedReport)
     .subscribe(
       resp=> {
@@ -211,7 +211,7 @@ export class ReportsComponent implements OnInit {
       if (ele.report_name !=element.report_name) {
         ele.clicked = false;
       } else {
-        ele.clicked =true;
+        ele.clicked = !ele.clicked;
       }
     });
   }

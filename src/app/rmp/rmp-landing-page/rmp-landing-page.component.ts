@@ -2,9 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
-import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { AuthenticationService } from "src/app/authentication.service";
-import Utils from '../../../utils';
 declare var $: any;
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { DisplayNotesComponent } from '../admin-notes/display-notes/display-notes.component';
@@ -37,7 +35,6 @@ export class RmpLandingPageComponent implements OnInit{
     private report_id_service: GeneratedReportService,
     public dataProvider: DataProviderService, 
     public  auth_service: AuthenticationService, 
-    private toastr: NgToasterComponent,
     private dialog: MatDialog) {
   }
   
@@ -68,11 +65,8 @@ export class RmpLandingPageComponent implements OnInit{
     if (this.note_status) {
       if(today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
           this.dialog.open(DisplayNotesComponent,{
-            // width : '135vh',
-            // height : '75vh',
             data : { notes : adminNotes.notes_content }
           })
-          // $('#DisplayNotesModal').modal('show');
     } else 
     $('#display-notes-status').prop("checked", true);
   }
@@ -120,5 +114,4 @@ export class RmpLandingPageComponent implements OnInit{
         this.note_status = this.info.data.admin_note[0].admin_note_status;
     }
   }  
-
 }

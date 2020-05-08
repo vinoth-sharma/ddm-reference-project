@@ -1,6 +1,7 @@
 .active > button.btn.btn-primary {
   background-color: rgb(250, 250, 250);
 }
+
 .tool-header {
   height: 12%;
   background-color: rgb(00, 78, 99);
@@ -11,6 +12,7 @@
   margin-left: 0;
   margin-right: 0;
 }
+
 h3 {
   font-size: 150%;
   font-weight: bold;
@@ -90,6 +92,7 @@ h3 {
   height: 460px;
   overflow-x: auto;
 }
+
 .tableFixHead thead th {
   position: sticky;
   top: 0;
@@ -99,10 +102,11 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
-th,
-td {
+
+th,td {
   padding: 8px 16px;
 }
+
 th {
   background: #ccc;
   z-index: 1000;
@@ -460,6 +464,41 @@ angular4-multiselect > div.c-btn{
   overflow: auto;
 }
 
+#CancelPermanently .modal-body,#errorModalRequest .modal-body {
+  height:100px;
+}
+
+#ModalComment .modal-body{
+  height: 180px;
+  overflow: hidden;
+}
+.custom-changes-icon{
+  padding-left: 16px;
+  position: relative;
+  top: 10px;
+  font-size: 2.5rem;
+}
+.custom-changes-edit{
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: -23px;
+  font-size: 1.75rem;
+  left: 80px;
+  color: #007bff;
+  cursor: pointer;
+}
+
+#changeStatusModal .modal-body{
+  height : 120px;
+  min-height: 120px;
+}
+
+#addUrl .modal-body{
+  height :120px;
+  min-height: 120px;
+}
+
 .error-modal-message {
   height: auto !important;
   max-height: 400px;
@@ -468,4 +507,10 @@ angular4-multiselect > div.c-btn{
 .material-icons {
   margin-right: none;
   cursor: pointer;
+}
+
+.download-pdf {
+  color: white !important;
+  font-size: 2rem !important;
+  padding-top: 8px !important;
 }

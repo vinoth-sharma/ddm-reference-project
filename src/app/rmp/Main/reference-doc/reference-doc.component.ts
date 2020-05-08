@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
-import { Router } from '@angular/router';
 import Utils from "../../../../utils";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
@@ -12,76 +11,76 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './reference-doc.component.html',
   styleUrls: ['./reference-doc.component.css']
 })
-export class ReferenceDocComponent implements OnInit{
-  content;
-  get_url;
-  naming: Array<object>;
-  file = null;
-  editMode: Boolean;
-  changeDoc = false;
-  editid;
-  textChange = false;
-  document_details = {
+export class ReferenceDocComponent implements OnInit {
+  public content;
+  public get_url;
+  public naming: Array<object>;
+  public file = null;
+  public editMode: Boolean;
+  public changeDoc = false;
+  public editid;
+  public textChange = false;
+  public document_details = {
     "title": "",
     "url": "",
     "admin_flag": false
   }
-  document_detailsEdit = {
+  public document_detailsEdit = {
     "ddm_rmp_desc_text_reference_documents_id": "",
     "title": "",
     "url": "",
     "admin_flag": false
   }
 
-  filesList;
-  contents;
-  enable_edits = false
-  editModes = false;
-  original_content;
+  public filesList;
+  public contents;
+  public enable_edits = false
+  public editModes = false;
+  public original_content;
   public isChecked;
-  namings: string = "Loading";
+  public namings: string = "Loading";
   public delete_document_details;
-  user_role : string;
-  isRef = {
-    'docs' : []
+  public user_role: string;
+  public isRef = {
+    'docs': []
   };
-  readOnlyContentHelper = true;
-  config = {
+  public readOnlyContentHelper = true;
+  public config = {
     toolbar: [
-      ['bold','italic','underline','strike'],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
-      [{'list' : 'ordered'}, {'list' : 'bullet'}],
-      [{'script' : 'sub'},{'script' : 'super'}],
-      [{'size':['small',false, 'large','huge']}],
-      [{'header':[1,2,3,4,5,6,false]}],
-      [{'color': []},{'background':[]}],
-      [{'font': []}],
-      [{'align': []}],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
       ['clean'],
       ['image']
     ]
   };
-  
-  constructor(private django: DjangoService,private auth_service:AuthenticationService, 
-    private toastr: NgToasterComponent ,
+
+  constructor(private django: DjangoService, private auth_service: AuthenticationService,
+    private toastr: NgToasterComponent,
     private dataProvider: DataProviderService) {
     this.editMode = false;
-    
-    dataProvider.currentFiles.subscribe(ele =>{
-      if(ele){
+
+    dataProvider.currentFiles.subscribe(ele => {
+      if (ele) {
         this.isRef['docs'] = []
         this.filesList = ele['list'];
-        this.filesList.forEach(ele =>{
-          if(ele['flag'] == 'is_ref'){
+        this.filesList.forEach(ele => {
+          if (ele['flag'] == 'is_ref') {
             this.isRef['docs'].push(ele);
           }
         })
       }
     })
-    dataProvider.currentlookUpTableData.subscribe(element=>{
+    dataProvider.currentlookUpTableData.subscribe(element => {
       this.content = element;
     })
-    this.auth_service.myMethod$.subscribe(role =>{
+    this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
       }
@@ -89,19 +88,11 @@ export class ReferenceDocComponent implements OnInit{
   }
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
-    description_text = {
-      "ddm_rmp_desc_text_id": 8,
-      "module_name": "Help_RefDoc",
-      "description": ""
-    }
-
-    // notify(){
-    //   this.enable_edits = !this.enable_edits
-    //   this.parentsSubject.next(this.enable_edits)
-    //   this.editModes = true
-    //   $('#edit_button').hide()
-    // }
-  
+  description_text = {
+    "ddm_rmp_desc_text_id": 8,
+    "module_name": "Help_RefDoc",
+    "description": ""
+  }
 
   ngOnInit() {
     Utils.showSpinner();
@@ -111,38 +102,38 @@ export class ReferenceDocComponent implements OnInit{
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 8;
     })
-    if(temps){
+    if (temps) {
       this.original_content = temps.description;
     }
-    else{ this.original_content = ""}
+    else { this.original_content = "" }
     this.namings = this.original_content;
     Utils.hideSpinner();
   }
 
-  upload(isChecked){
-    if($('#uploadCheckbox').is(':checked')){
+  public upload(isChecked) {
+    if ($('#uploadCheckbox').is(':checked')) {
       $('#document-url').attr('disabled', 'disabled');
       $('#attach-file1').removeAttr('disabled');
       (<HTMLInputElement>document.getElementById('document-url')).value = "";
     }
-    else{
+    else {
       $('#document-url').removeAttr('disabled');
       $('#attach-file1').attr('disabled', 'disabled');
-     $("#attach-file1").val('');
-     (<HTMLInputElement>document.getElementById('document-url')).value = "";
+      $("#attach-file1").val('');
+      (<HTMLInputElement>document.getElementById('document-url')).value = "";
     }
   }
 
-  enableUpdateData = false;
+  public enableUpdateData = false;
 
-  textChanged(event) {
+  public textChanged(event) {
     this.textChange = true;
-    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
-  content_edits() {
-    if(!this.textChange || this.enableUpdateData) {
+  public content_edits() {
+    if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
       this.editModes = false;
       this.readOnlyContentHelper = true;
@@ -166,98 +157,104 @@ export class ReferenceDocComponent implements OnInit{
         Utils.hideSpinner();
         this.toastr.error("Data not Updated")
       })
-    } else  {
+    } else {
       this.toastr.error("please enter the data");
-      }
+    }
   }
 
-  edit_True() {
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_content;
   }
 
-  editEnable() {
+  public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_content;
   }
 
-  content_edit() {
+  public content_edit() {
     this.editMode = false;
   }
-  editTrue() {
+
+  public editTrue() {
     this.editMode = !this.editMode;
   }
 
-  getLink(index){
+  public getLink(index) {
     Utils.showSpinner();
-    this.django.get_doc_link(index).subscribe(ele =>{
+    this.django.get_doc_link(index).subscribe(ele => {
       var url = ele['data']['url']
       Utils.hideSpinner();
       window.open(url, '_blank');
-    },err =>{
+    }, err => {
       Utils.hideSpinner();
       this.toastr.error("Server Error");
     })
   }
 
-  url(){
+  public url() {
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
 
-    if(link_url != ""){
+    if (link_url != "") {
       $("#attach-file1").attr('disabled', 'disabled');
-      $("#upload-doc").attr('disabled', 'disabled'); 
+      $("#upload-doc").attr('disabled', 'disabled');
     }
-    else{
+    else {
       $("#attach-file1").removeAttr('disabled');
       $("#upload-doc").removeAttr('disabled');
-    } 
+    }
   }
 
-  doc(){
+  public doc() {
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     this.url();
-    if(upload_doc != null){
+    if (upload_doc != null) {
       $("#document-url").attr('disabled', 'disabled');
     }
-    if(upload_doc == null){
+    if (upload_doc == null) {
       $("#document-url").removeAttr('disabled');
     }
   }
 
-  addDocument() {
+  public addDocument() {
+    this.document_details = {
+      "title": "",
+      "url": "",
+      "admin_flag": false
+    }
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
-    let duplicateName = this.naming.find(ele => (ele['title'] == link_title) );
-    if(!this.editid && duplicateName) {
+    let duplicateName = this.naming.find(ele => (ele['title'] == link_title));
+    if (!this.editid && duplicateName) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
       document.getElementById("errorTrigger").click()
     } else if (link_title == "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
-    } 
-    else if(link_title != "" && link_url == "" && upload_doc == undefined){
+    }
+    else if (link_title != "" && link_url == "" && upload_doc == undefined) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
     }
-    else if(link_title != "" && link_url != "" && upload_doc == undefined) {
+    else if (link_title != "" && link_url != "" && upload_doc == undefined) {
       $("#close_modal:button").click()
       Utils.showSpinner();
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
-      if(this.editid)
-      this.document_details["ddm_rmp_desc_text_reference_documents_id"] = this.editid;
+      if (this.editid)
+        this.document_details["ddm_rmp_desc_text_reference_documents_id"] = this.editid;
       this.document_details["title"] = document_title;
       this.document_details["url"] = document_url;
       this.django.ddm_rmp_reference_documents_post(this.document_details).subscribe(response => {
         Utils.showSpinner();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_reference_documents;
-          if(this.editid) this.toastr.success("Document updated");
+          if (this.editid) this.toastr.success("Document updated");
           else this.toastr.success("New document added");
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
@@ -274,18 +271,17 @@ export class ReferenceDocComponent implements OnInit{
       });
       this.naming.push(this.document_details);
     }
-    else if(link_title != "" && upload_doc != undefined && link_url == ""){
+    else if (link_title != "" && upload_doc != undefined && link_url == "") {
       $("#close_modal:button").click()
       this.files()
     }
-    else if(link_title != "" && upload_doc != null && link_url != ""){
+    else if (link_title != "" && upload_doc != null && link_url != "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Select one, either Url or Upload</h5>";
       document.getElementById("errorTrigger").click()
     }
-    
   }
 
-  deleteDocument(id: number, index: number) {
+  public deleteDocument(id: number, index: number) {
     Utils.showSpinner();
     this.django.ddm_rmp_reference_documents_delete(id).subscribe(response => {
       document.getElementById("editable" + index).style.display = "none"
@@ -297,33 +293,32 @@ export class ReferenceDocComponent implements OnInit{
     })
   }
 
-  delete_upload_file(id,index){
+  public delete_upload_file(id, index) {
     Utils.showSpinner();
-    this.django.delete_upload_doc(id).subscribe(res =>{
-      document.getElementById("upload_doc"+ index).style.display = "none"
+    this.django.delete_upload_doc(id).subscribe(res => {
+      document.getElementById("upload_doc" + index).style.display = "none"
       Utils.hideSpinner();
       this.toastr.success("Document deleted successfully");
-    },err=>{
-        Utils.hideSpinner();
+    }, err => {
+      Utils.hideSpinner();
       this.toastr.error("Server problem encountered");
     })
   }
 
-
-  editDoc(id, val, url) {
+  public editDoc(id, val, url) {
     this.editid = id;
     this.changeDoc = true;
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
   }
-  
-  NewDoc() {
+
+  public NewDoc() {
     this.editid = undefined;
     (<HTMLInputElement>document.getElementById('document-name')).value = "";
     (<HTMLInputElement>document.getElementById('document-url')).value = "";
   }
 
-  files() {
+  public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     var formData = new FormData();
@@ -331,13 +326,13 @@ export class ReferenceDocComponent implements OnInit{
     formData.append('uploaded_file_name', document_title);
     formData.append('flag', "is_ref");
     formData.append('type', 'rmp');
-    
+
     Utils.showSpinner();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      this.django.get_files().subscribe(ele =>{
+      this.django.get_files().subscribe(ele => {
         this.filesList = ele['list'];
-        if(this.filesList){
-          this.dataProvider.changeFiles(ele)         
+        if (this.filesList) {
+          this.dataProvider.changeFiles(ele)
         }
       })
       Utils.hideSpinner();
@@ -345,19 +340,19 @@ export class ReferenceDocComponent implements OnInit{
       $('#uploadCheckbox').prop('checked', false);
       $("#attach-file1").val('');
       this.toastr.success("Uploaded Successfully");
-    },err=>{
+    }, err => {
       Utils.hideSpinner();
       $("#document-url").removeAttr('disabled');
       $("#attach-file1").val('');
-      if(err && err['status'] === 400) 
+      if (err && err['status'] === 400)
         this.toastr.error("Submitted file is empty");
-      else    
-        this.toastr.error("Server Error"); 
+      else
+        this.toastr.error("Server Error");
       $('#uploadCheckbox').prop('checked', false);
     });
   }
 
-  editDocument() {
+  public editDocument() {
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     if (link_title == "" || link_url == "") {
@@ -391,9 +386,7 @@ export class ReferenceDocComponent implements OnInit{
         Utils.hideSpinner();
         this.toastr.error("Server problem encountered");
       });
-
     }
   }
-
 
 }

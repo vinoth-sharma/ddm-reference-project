@@ -121,24 +121,24 @@ export class SubmitLandingPageComponent implements OnInit {
     //  });
   }
 
-  notify() {
+  public notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
   }
 
-  notify_disc() {
+  public notify_disc() {
     this.enable_edit_disc = !this.enable_edit_disc
     this.parentsSubjectss.next(this.enable_edit_disc)
     this.editModes_disc = true
     $('#edit_button').hide()
   }
 
-  openDisclaimerModal() {
+  public openDisclaimerModal() {
     document.getElementById('disclaimer-modal').style.overflowY = 'hidden';
   }
 
-  closeDisclaimerModal() {
+  public closeDisclaimerModal() {
     $('#disclaimer-modal').modal('hide');
     document.getElementById('disclaimer-modal').style.overflowY = 'auto';
   }
@@ -224,7 +224,7 @@ export class SubmitLandingPageComponent implements OnInit {
     })
   }
 
-  disclaimerNotAcknowledged() {
+  public disclaimerNotAcknowledged() {
     $('#disclaimer-modal').modal('show');
     this.disclaimer_message = "Acknowledgement Required";
     $(".disclaimer-checkbox").prop("checked", false);
@@ -235,7 +235,7 @@ export class SubmitLandingPageComponent implements OnInit {
     document.getElementById('disclaimer-id').style.backgroundColor = "rgb(1, 126, 17)";
   }
 
-  disclaimerAcknowledged(date: String) {
+  public disclaimerAcknowledged(date: String) {
     $(".disclaimer-checkbox").prop("checked", true);
     $(".disclaimer-checkbox").prop("disabled", true);
     $('#disclaimer-id').prop('disabled', true);
@@ -245,13 +245,13 @@ export class SubmitLandingPageComponent implements OnInit {
     document.getElementById('disclaimer-id').style.backgroundColor = "gray";
   }
 
-  textChanged(event) {
+  public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
-  content_edits() {
+  public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
       this.editModes = false;
@@ -272,6 +272,7 @@ export class SubmitLandingPageComponent implements OnInit {
         this.ngOnInit();
         this.original_contents = this.namings;
         this.toaster.success("Updated Successfully");
+        $('#helpModal').modal('hide');
         Utils.hideSpinner()
       }, err => {
         Utils.hideSpinner()
@@ -282,7 +283,7 @@ export class SubmitLandingPageComponent implements OnInit {
     }
   }
 
-  edit_True() {
+  public edit_True() {
     if (this.editModes) {
       this.readOnlyContentHelper = true;
     } else {
@@ -293,7 +294,7 @@ export class SubmitLandingPageComponent implements OnInit {
     $('#edit_button').show()
   }
 
-  content_edit() {
+  public content_edit() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner()
       this.editMode = false;
@@ -323,7 +324,7 @@ export class SubmitLandingPageComponent implements OnInit {
     }
   }
 
-  editTrue() {
+  public editTrue() {
     if (this.editMode) {
       this.readOnlyContent = true;
     } else {
@@ -334,11 +335,11 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
 
-  content_edit_disclaimer() {
+  public content_edit_disclaimer() {
     document.getElementById("disclaimer_button").click();
   }
 
-  disclaimer_confirmation() {
+  public disclaimer_confirmation() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
       this.editModes_disc = false;
@@ -373,7 +374,7 @@ export class SubmitLandingPageComponent implements OnInit {
     }
   }
 
-  edit_True_disclaimer() {
+  public edit_True_disclaimer() {
     if (this.editModes_disc) {
       this.readOnlyContentDisclaimer = true;
     } else {
@@ -384,7 +385,7 @@ export class SubmitLandingPageComponent implements OnInit {
     $('#edit_button').show()
   }
 
-  checkDisclaimer() {
+  public checkDisclaimer() {
     Utils.showSpinner()
     this.django.getLookupValues().subscribe(data => {
       this.saved = data
@@ -408,18 +409,16 @@ export class SubmitLandingPageComponent implements OnInit {
     }
     else {
       this.finalData["disclaimer_ack"] = this.DatePipe.transform(this.disclaimer_date, 'yyyy-MM-dd hh:mm:ss.SSS');
-
     }
   }
 
-  captureScreen() {
+  public captureScreen() {
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
       }
     };
     var doc = new jsPDF();
-    // doc.setFont("arial");
     let margins = {
       top: 15,
       bottom: 0,
@@ -431,7 +430,6 @@ export class SubmitLandingPageComponent implements OnInit {
       this.naming_disclaimer, margins.left, margins.top,
       { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
       function () { doc.save('DDM Disclaimers.pdf'); }, margins
-
     )
   }
 }

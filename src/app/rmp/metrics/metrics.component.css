@@ -3,16 +3,36 @@ h3 {
 }
 
 
-.tableMetrics    { overflow-y: auto; height: 435px; overflow-x: auto }
-.tableMetrics thead th { position: sticky; top: 0;z-index: 10; }
-.tableMetrics {
-  width: 80%;
+.tableMetrics { 
+    overflow-y: auto; 
+    height: 435px; 
+    overflow-x: auto 
+}
+
+.tableMetrics thead th { 
+    position: sticky; 
+    top: 0;
+    z-index: 10;
+}
+
+.tableMetrics {  
+  width: 100%;
   overflow-x: auto;
 }
 
-table  { border-collapse: collapse; width: 100%; }
-th, td { padding: 8px 16px; }
-th { background: #ccc}
+table  { 
+    border-collapse: 
+    collapse; 
+    width: 100%; 
+}
+
+th, td { 
+    padding: 8px 16px; 
+}
+
+th { 
+    background: #ccc
+}
 
 .table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
     background-color: #F9F9F9;
@@ -40,7 +60,7 @@ h3 {
     max-height: 60vh;
     border: 1px solid rgb(187, 187, 187);
     padding-left: 1%;
-  }
+}
 
 .metricToggleButton {
   background-color: white; 
@@ -51,7 +71,6 @@ h3 {
     align-items: left; 
     border: 1px solid rgb(226, 226, 226)
 }
-
 
 .main-tool-body {
     width: 94.15%;
@@ -89,7 +108,6 @@ h3 {
 angular4-multiselect > .c-btn {
     padding: 10px 30px 10px 10px !important;
 }
-
 
 .quillEditor{
     position: relative;

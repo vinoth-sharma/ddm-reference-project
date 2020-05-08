@@ -109,13 +109,11 @@ a:active {
     height: 4vh;
 }
 
-
 .editButton {
     background: transparent;
     border: none;
     float: right;
     padding-right:0px;
-    /* padding-left:70% */
 }
 
 .quillEditor{
@@ -126,7 +124,6 @@ a:active {
 .help_logo{
     width: 15%;
 }
-
 
 .modal-title {
     margin-bottom: auto;

@@ -12,7 +12,6 @@
           Comment</button>
       </a>
       <button id="enter_comment_button" data-toggle="modal" data-target="#ModalComment" style="display:none"></button>
-
       <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="Accept()">Accept Assignment</button></a>
       <button id="post_link_button" data-toggle="modal" data-target="#postLink" style="display:none"></button>
     </div>
@@ -232,7 +231,8 @@
                 </div>
               </td>
               <td>
-                <div *ngIf="element.status != 'Recurring'" style="width: 135px !important;">
+                <div *ngIf="element.status != 'Recurring' && element.status != 'Active'"
+                  style="width: 115px !important;">
                   {{element.status}}
                 </div>
                 <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
@@ -243,22 +243,41 @@
                     </button>
                   </div>
                 </div>
+                <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
+                  {{element.status}}
+                  <div *ngIf="user_role=='Admin'">
+                    <button class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal"
+                      data-target="#changeStatusModal" (click)="openEditStatusModal(element)">
+                      Edit
+                    </button>
+                  </div>
+                </div>
               </td>
               <td>
                 <div style="width: 70px !important;">
                   {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
                 </div>
               </td>
-              <td>
-                <div style="width: 50px !important;">
-                  <button class="btn btn-primary" *ngIf="element.status == 'Completed'"
-                    [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)"
-                    style="width: 50px;">
-                    <a data-toggle="tooltip" title="Download" style="width:100%;color: white;">
-                      <i id="ic" class="material-icons" style="width:100%;padding-right: 7px;color: white;">get_app</i>
-                    </a>
-                  </button>
-                </div>
+              <td style="position: relative;">
+                <button class="btn btn-outline-primary" [title]="element.link_to_results"
+                  (click)="openNewWindow(element.link_to_results)"
+                  *ngIf="element.link_to_results != '' && element.status=='Completed'"
+                  style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
+                  Url&nbsp;&nbsp;&#10145;
+                </button>
+                <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addUrl"
+                  (click)="addLinkUrl(element,'create')"
+                  *ngIf="element.link_to_results == '' && element.status=='Completed' && user_role =='Admin'"
+                  style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
+                  Add Url
+                </button>
+                <button *ngIf="element.link_to_results != '' && element.status=='Completed' && user_role =='Admin'"
+                  class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
+                  (click)="addLinkUrl(element,'edit')">
+                  Edit
+                </button>
+
+
               </td>
 
               <td *ngIf="element.status != 'Incomplete'">
@@ -330,10 +349,8 @@
         </table>
       </div>
       <div style="padding-top: 0.7%;">
-        <mat-paginator [length]="paginatorlength"
-               [pageSize]="paginatorpageSize"
-               [pageSizeOptions]="paginatorOptions"
-               (page)="onPaginationChange($event)">
+        <mat-paginator [length]="paginatorlength" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
+          (page)="onPaginationChange($event)">
         </mat-paginator>
       </div>
     </div>
@@ -371,7 +388,6 @@
 </div>
 
 <!--Modal - Insert Link-->
-
 <div id="ModalInsertLink" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -490,8 +506,10 @@
               Allocation</div>
           </div><br>
           <div class="col-sm-9"></div>
-          <div class="col-sm-1" style="color: white !important;">
-            <i id="ic" class="material-icons" (click)='captureScreen()'>get_app</i>
+          <div class="col-sm-1" >
+            <i id="ic" class="material-icons download-pdf" (click)='captureScreen()'>
+              get_app
+            </i>
           </div>
           <div class="col-sm-1">
             <button type="button" class="close" data-dismiss="modal">x</button>
@@ -623,7 +641,7 @@
                 <b>Additional Requirements:</b> <br>
                 <span>{{summary?.additional_req}}</span>
               </div>
-            </div>
+            </div>transformedData
             <!--                                Order To Sale Start                                    -->
 
             <!--                      Dealer allocation Part Start                          -->
@@ -696,8 +714,8 @@
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" class="btn btn-secondary"(click)="resetHelpParams()" 
-                data-dismiss="modal">Close</button>
+        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="resetHelpParams()"
+          data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -951,6 +969,21 @@
     </pre>
     <br>
     <br>
+  <pre style="width: 100%;float: left;margin-bottom: 10px;">
+    <pre class="div-wrap">
+        <span> <b>Request Date:</b>
+          &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
+    </pre>
+    <pre class="div-wrap">
+        <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+    </pre>
+    <pre *ngFor="let element of summary?.requestor" class="div-wrap">
+        <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}
+    </pre>
+    <pre class="div-wrap">
+        <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
+    </pre> 
+  </pre>
 <pre class="Request-summary">
   <b style="font-size:150%">Market Selections</b>
   <pre class="div-wrap">

@@ -19,13 +19,12 @@
     width: 95%;
     border: 1px solid rgb(175, 175, 175);
     margin-left: 2.5%;
-    /* overflow: scroll; */
-    overflow: hidden;
+    overflow: auto;
     -webkit-print-color-adjust: exact
 }
 
 ::ng-deep .main-tool-body-content .information .quill .ql-container .ql-editor {
-        max-height: 360px;
+        overflow: auto;
 }
 
 .editButton {

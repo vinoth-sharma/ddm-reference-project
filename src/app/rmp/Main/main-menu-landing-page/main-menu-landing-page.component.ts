@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-declare var $: any;
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+declare var $: any;
 
 @Component({
   selector: 'app-main-menu-landing-page',
@@ -15,28 +15,28 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
   styleUrls: ['./main-menu-landing-page.component.css']
 })
 export class MainMenuLandingPageComponent implements OnInit {
-  content;
-  enable_edit: boolean = false;
-  content_loaded: boolean = false;
-  textChange: boolean = false;
-  original_content;
-  naming: string = "Loading";
-  enable_edits: boolean = false
-  editModes: boolean = false;
-  main_menu_content: Array<object>
-  newContent: boolean = false
-  contentForm: FormGroup;
-  active_content_id: number;
-  active_content: any;
-  displayDelete: Boolean = true;
-  data: () => Promise<{}>;
-  data2: () => Promise<{}>;
-  user_name: string = '';
-  user_role: string = '';
-  readOnlyContentHelper: boolean = true;
-  enableUpdateData: boolean = false;
+  public content;
+  public enable_edit: boolean = false;
+  public content_loaded: boolean = false;
+  public textChange: boolean = false;
+  public original_content;
+  public naming: string = "Loading";
+  public enable_edits: boolean = false
+  public editModes: boolean = false;
+  public main_menu_content: Array<object>
+  public newContent: boolean = false
+  public contentForm: FormGroup;
+  public active_content_id: number;
+  public active_content: any;
+  public displayDelete: Boolean = true;
+  public data: () => Promise<{}>;
+  public data2: () => Promise<{}>;
+  public user_name: string = '';
+  public user_role: string = '';
+  public readOnlyContentHelper: boolean = true;
+  public enableUpdateData: boolean = false;
 
-  config = {
+  public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
@@ -60,10 +60,10 @@ export class MainMenuLandingPageComponent implements OnInit {
     private toastr: NgToasterComponent) {
 
     this.contentForm = this.fb.group({
-                        question: ['', Validators.required],
-                        answer: ['', Validators.required],
-                        link_title_url: this.fb.array([])
-                      });
+      question: ['', Validators.required],
+      answer: ['', Validators.required],
+      link_title_url: this.fb.array([])
+    });
     this.auth_service.myMethod$.subscribe(currentUser => {
       if (currentUser) {
         this.user_name = currentUser["first_name"] + " " + currentUser["last_name"]
@@ -74,22 +74,23 @@ export class MainMenuLandingPageComponent implements OnInit {
     this.data = this.dataProvider.loadLookUpTableData
     this.data2 = this.dataProvider.loadLookUpData
   }
-  parentSubject: Rx.Subject<any> = new Rx.Subject();
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  restorepage: any;
-  printcontent: any
+  public parentSubject: Rx.Subject<any> = new Rx.Subject();
+  public parentsSubject: Rx.Subject<any> = new Rx.Subject();
+  public restorepage: any;
+  public printcontent: any
 
-  description_text = {
+  public description_text = {
     "ddm_rmp_desc_text_id": 4,
     "module_name": "Help_MainMenu",
     "description": ""
   }
 
-  notifyChildren() {
+  public notifyChildren() {
     this.enable_edit = !this.enable_edit
     this.parentSubject.next(this.enable_edit)
   }
-  notify() {
+
+  public notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
@@ -119,10 +120,9 @@ export class MainMenuLandingPageComponent implements OnInit {
         Utils.hideSpinner();
       }
     })
-
   }
 
-  content_edits() {
+  public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
       this.editModes = false;
@@ -144,6 +144,7 @@ export class MainMenuLandingPageComponent implements OnInit {
         this.toastr.success("Updated Successfully");
         $('#helpModal').modal('hide');
         Utils.hideSpinner();
+        $('#helpModal').modal('hide');
       }, err => {
         Utils.hideSpinner();
         this.toastr.error("Data not Updated");
@@ -153,37 +154,34 @@ export class MainMenuLandingPageComponent implements OnInit {
     }
   }
 
-  textChanged(event) {
+  public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
-  edit_True() {
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.naming = this.original_content;
   }
 
-  editEnable() {
+  public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.naming = this.original_content;
   }
 
-  content_edit(element_id) {
+  public content_edit(element_id) {
     this.newContent = false;
     this.active_content_id = element_id;
-    let target_object = {
-                          question: [],
-                          answer: []
-                        };
+    let target_object = { question: [], answer: [] };
     this.main_menu_content.map(element => {
       if (element['ddm_rmp_main_menu_description_text_id'] == element_id) {
-        if(element['link_title_url'].length) {
+        if (element['link_title_url'].length) {
           target_object['link_title_url'] = this.fb.array([this.fb.group({ title: ['', Validators.required], link: ['', Validators.required] })]);
           this.contentForm = this.fb.group(target_object);
-        } else if(!element['link_title_url'].length) {
+        } else if (!element['link_title_url'].length) {
           target_object['link_title_url'] = this.fb.array([]);
           this.contentForm = this.fb.group(target_object);
         }
@@ -197,11 +195,11 @@ export class MainMenuLandingPageComponent implements OnInit {
     });
   }
 
-  content_delete(element_id) {
+  public content_delete(element_id) {
     this.active_content_id = element_id
   }
 
-  delete_confirmation() {
+  public delete_confirmation() {
     Utils.showSpinner();
     this.django.ddm_rmp_main_menu_description_text_delete(this.active_content_id).subscribe(response => {
       this.main_menu_content = this.main_menu_content.filter(element => {
@@ -221,7 +219,7 @@ export class MainMenuLandingPageComponent implements OnInit {
     })
   }
 
-  content_new() {
+  public content_new() {
     this.newContent = true;
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
@@ -230,7 +228,7 @@ export class MainMenuLandingPageComponent implements OnInit {
     })
   }
 
-  PrintDiv() {
+  public PrintDiv() {
     this.restorepage = document.body.innerHTML;
     this.printcontent = document.getElementById('print-content').innerHTML;
     document.body.innerHTML = this.printcontent;
@@ -242,22 +240,22 @@ export class MainMenuLandingPageComponent implements OnInit {
     return this.contentForm.get('link_title_url') as FormArray;
   }
 
-  addLinkTitleURL() {
+  public addLinkTitleURL() {
     this.LinkTitleURL.push(this.fb.group({
       title: ['', Validators.required],
       link: ['', Validators.required]
     }));
   }
 
-  deleteLinkTitleURL(index) {
+  public deleteLinkTitleURL(index) {
     this.LinkTitleURL.removeAt(index);
   }
 
-  route_url(url) {
+  public route_url(url) {
     this.router.navigateByUrl(url)
   }
 
-  saveChanges() {
+  public saveChanges() {
     if (!this.newContent) {
       Utils.showSpinner();
       let response_json = {
@@ -275,6 +273,7 @@ export class MainMenuLandingPageComponent implements OnInit {
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
         })
+        $('#mainMenuModal').modal('hide');
         Utils.hideSpinner();
         $('#mainMenuModal').modal('hide');
         this.toastr.success("FAQ has been edited successfully");
@@ -298,6 +297,7 @@ export class MainMenuLandingPageComponent implements OnInit {
         Utils.hideSpinner();
         $('#mainMenuModal').modal('hide');
         this.toastr.success("New FAQ has been successfully created");
+        $('#mainMenuModal').modal('hide');
       }, err => {
         $(function () {
           $("#mainMenuModal #modal_close_button").click();

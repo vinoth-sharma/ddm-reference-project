@@ -4,7 +4,6 @@
     align-content: center;
 }
 
-
 #tp{
     background-color: linear-gradient(rgb(27, 116, 206), rgb(133, 187, 241));
     background-image: linear-gradient(rgb(38, 61, 79), rgb(63, 100, 131));
@@ -150,7 +149,6 @@ primary.dropdown-toggle:focus {
     float: left;
     color: white;
     font-size: 3.5vh;
-    /* font-family: Helvetica; */
     padding-top: 0.9%;
 }
 
@@ -175,7 +173,6 @@ primary.dropdown-toggle:focus {
 
 #role-text {
     text-align: center;
-    /* font-family: Helvetica; */
     height: 100%;
     width: 55%;
     float: left;
@@ -193,7 +190,6 @@ primary.dropdown-toggle:focus {
     float: left;
     text-align: left;
     font-size: 100%;
-    /* font-family: Helvetica; */
     padding-bottom: 5%;
     margin-bottom:30%;
     margin:0px;
@@ -255,7 +251,7 @@ primary.dropdown-toggle:focus {
     flex-direction: column;
 }
 
-/*--------------------*/
+/*---------- dropdown-styles ----------*/
 
 .dropdown-submenu {
     position: relative;
@@ -333,3 +329,4 @@ primary.dropdown-toggle:focus {
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+

@@ -1,7 +1,8 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+// Migrated by bharath
+import { Component, OnInit } from '@angular/core';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
@@ -21,19 +22,19 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 })
 export class ReportsComponent implements OnInit {
 
-  namings: any;
-  enableUpdateData = false;
-  description_texts = {
-    "ddm_rmp_desc_text_id": 23,
-    "module_name": "Help_Reports",
-    "description": ""
+  public namings: any;
+  public enableUpdateData = false;
+  public description_texts = {
+    'ddm_rmp_desc_text_id': 23,
+    'module_name': 'Help_Reports',
+    'description': ''
   };
-  frequencyData: {};
-  jsonfinal = {
+  public frequencyData: {};
+  public jsonfinal = {
     'select_frequency': []
-  }
-  editModes = false;
-  textChange = false;
+  };
+  public editModes = false;
+  public textChange = false;
   public searchText;
   public p;
   public ddm_rmp_post_report_id;
@@ -53,59 +54,59 @@ export class ReportsComponent implements OnInit {
     'W',
     'Th',
     'F'];
-  order: string = 'info.name';
-  reverse: boolean = false;
-  report: any;
-  sortedCollection: any[];
-  column: any[];
-  reports: any;
-  favourite: any = [];
-  user_role: string;
-  param: any;
-  frequency_selections: any;
-  lookup;
-
+  public order: string = 'info.name';
+  public reverse: boolean = false;
+  public report: any;
+  public sortedCollection: any[];
+  public column: any[];
+  public reports: any;
+  public favourite: any = [];
+  public user_role: string;
+  public param: any;
+  public frequency_selections: any;
+  public lookup;
+  public showInput = false;
   /*----------Query Criteria params---------------*/
-  market_description: any;
-  zone_description: any;
-  area_description: any;
-  region_description: any;
-  lma_description: any;
-  gmma_description: any;
-  allocation_group: any;
-  model_year: any;
-  merchandising_model: any;
-  vehicle_line_brand: any;
-  order_event: any;
-  order_type: any;
-  checkbox_data: any;
-  report_frequency: any;
-  special_identifier: any;
-  concensus_data: any;
-  division_dropdown: any;
-  summary: any;
-  bac_description: any;
-  fan_desc: any;
-  text_notification: any;
+  public market_description: any;
+  public zone_description: any;
+  public area_description: any;
+  public region_description: any;
+  public lma_description: any;
+  public gmma_description: any;
+  public allocation_group: any;
+  public model_year: any;
+  public merchandising_model: any;
+  public vehicle_line_brand: any;
+  public order_event: any;
+  public order_type: any;
+  public checkbox_data: any;
+  public report_frequency: any;
+  public special_identifier: any;
+  public concensus_data: any;
+  public division_dropdown: any;
+  public summary: any;
+  public bac_description: any;
+  public fan_desc: any;
+  public text_notification: any;
 
   /*--------------------------------------*/
 
-  select_frequency_ots: any;
-  select_frequency_da: any;
-  on_demand_freq: any;
-  Select_ots = {};
-  Select_da = {};
-  Select_on_demand = {};
-  obj_keys: Array<string>
-  obj_keys_da: Array<string>
-  obj_keys_on_demand: Array<string>;
-  freq_val: {}[];
-  freq_val_da: {}[];
-  freq_val_on_demand: {}[];
-
-  orderType: any;
-  content: object;
-  original_contents: any;
+  public select_frequency_ots: any;
+  public select_frequency_da: any;
+  public on_demand_freq: any;
+  public Select_ots = {};
+  public Select_da = {};
+  public Select_on_demand = {};
+  public obj_keys: Array<string>;
+  public obj_keys_da: Array<string>;
+  public obj_keys_on_demand: Array<string>;
+  public freq_val: {}[];
+  public freq_val_da: {}[];
+  public freq_val_on_demand: {}[];
+  public selectedReportName = "";
+  public orderType: any;
+  public content: object;
+  public original_contents: any;
   public userId: any = {};
   public todaysDate: string;
   public semanticLayerId: any;
@@ -122,10 +123,10 @@ export class ReportsComponent implements OnInit {
   public reportNameOD: any;
   public reportRequestNumberOD: any;
   public reportIdOD: any;
-  changeFreqId: "";
-  changeFreqTitle: "";
-  changeFreqDate: "";
-  changeFrequency: any;
+  public changeFreqId: '';
+  public changeFreqTitle: '';
+  public changeFreqDate: '';
+  public changeFrequency: any;
   public filters = {
     global: '',
     ddm_rmp_post_report_id: '',
@@ -134,12 +135,12 @@ export class ReportsComponent implements OnInit {
     title: '',
     frequency: '',
     frequency_data_filtered: '',
-  }
+  };
   private reportsOriginal = [];
-  frequencyLength: any;
-  changeInFreq: boolean;
-  readOnlyContentHelper = true;
-  config = {
+  public frequencyLength: any;
+  public changeInFreq: boolean;
+  public readOnlyContentHelper = true;
+  public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
@@ -155,12 +156,13 @@ export class ReportsComponent implements OnInit {
     ]
   };
   // paginator params
-  paginatorlength = 100;
-  paginatorpageSize = 10;
-  paginatorOptions: number[] = [5, 10, 25, 100]
-  paginatorLowerValue = 0;
-  paginatorHigherValue = 10;
-  // 
+  public paginatorlength = 100;
+  public paginatorpageSize = 10;
+  public paginatorOptions: number[] = [5, 10, 25, 100]
+  public paginatorLowerValue = 0;
+  public paginatorHigherValue = 10;
+  public linkUrlId : number;
+  public addUrlTitle : String = '';
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service: AuthenticationService,
     private django: DjangoService,
@@ -171,36 +173,74 @@ export class ReportsComponent implements OnInit {
     public router: Router,
     private toasterService: NgToasterComponent
   ) {
-    this.readUserRole()
-    this.getLookUptableData()
+    this.readUserRole();
+    this.getLookUptableData();
     this.editModes = false;
 
+  }
+
+  /**
+   * @function to change the DDM name report name in the reports table 
+   * @param event event catched on change of the input value
+   * @param reportObject the current report object being edited
+   */
+  changeReportName(event:any , reportObject){
+
+    const changedReport = {};
+    changedReport['request_id']= reportObject.ddm_rmp_post_report_id;
+    changedReport['report_name'] = event.target['value'];
+    this.django.update_rmpReports_DDMName(changedReport)
+    .subscribe(
+      resp=> {
+        reportObject.clicked=false;
+        reportObject.report_name = changedReport['report_name'];
+      }
+      ,
+      ()=> {
+        },
+    );
+  }
+
+  /**
+   * @function to toggle the input field on DDM Name 
+   * @param element the report element which is being clicked
+   */
+  toggleShowInput(element) {
+
+    this.reports.forEach(ele => {
+      if (ele.report_name !=element.report_name) {
+        ele.clicked = false;
+      } else {
+        ele.clicked =true;
+      }
+    });
   }
 
   readUserRole() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
-        this.user_role = role["role"]
+        this.user_role = role['role'];
       }
-    })
+    });
   }
 
   getLookUptableData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
-        this.content = element
+        this.content = element;
         this.frequency_selections = this.content['data']['report_frequency']
-        let refs = this.content['data']['desc_text']
-        let temps = refs.find(function (element) {
-          return element["ddm_rmp_desc_text_id"] == 23;
-        })
-        if (temps) {
+        const refs = this.content['data']['desc_text'];
+        const temps = refs.find(function (element) {
+          return element['ddm_rmp_desc_text_id'] == 23;
+        });
+
+        if (temps){ 
           this.original_contents = temps.description;
         }
-        else { this.original_contents = "" }
+        else { this.original_contents = '' }
         this.namings = this.original_contents;
       }
-    })
+    });
   }
 
   getValues(obj: Object) {
@@ -239,7 +279,9 @@ export class ReportsComponent implements OnInit {
   }
 
   getReportList() {
+
     this.django.get_report_list().subscribe(list => {
+      
       if (list) {
         this.reportContainer = list['data'];
         this.reportContainer.map(reportRow => {
@@ -253,7 +295,6 @@ export class ReportsComponent implements OnInit {
         for (var i = 0; i < this.reportContainer.length; i++) {
           if (this.reportContainer[i]['frequency_data'] != null) {
             this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday'))
-            //&& element != 'Other'
             if (this.reportContainer[i]['description'] != null) {
               this.reportContainer[i]['description'].forEach(ele => {
                 this.reportContainer[i]['frequency_data_filtered'].push(ele)
@@ -291,8 +332,12 @@ export class ReportsComponent implements OnInit {
         this.reportContainer.forEach(ele => {
           if (ele['frequency_data_filtered']) {
             ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");
+            
           }
+          ele['clicked']=false;
+          
         })
+
         this.reportContainer.sort((a, b) => {
           if (b['favorites'] == a['favorites']) {
             return a['report_name'] > b['report_name'] ? 1 : -1
@@ -333,13 +378,15 @@ export class ReportsComponent implements OnInit {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
-      const headings = Object.keys(this.reports[0]);
+      const headings = ["Request No","Date","Title","DDM Name","Frequency","Frequency Details","Other"]
+      const reportBody = this.createNewBodyForExcel()
+      
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
 
-      const transformedData = this.reports.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
+      const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
 
       workbook.outputAsync().then(function (blob) {
@@ -361,6 +408,24 @@ export class ReportsComponent implements OnInit {
       })
     }).catch(error => {
     });
+  }
+
+  createNewBodyForExcel(){
+    let reportBody = []
+    this.reports.forEach(item =>{
+      let obj = {
+        "Request No" : item["ddm_rmp_post_report_id"],
+        "Date": item["ddm_rmp_status_date"],
+        "Title":item["title"],
+        "DDM Name":item['report_name'],
+        "Frequency":item["frequency"],
+        "Frequency Details":item["frequency_data"] ? item["frequency_data"].join(','):"",
+        "Other":item["description"]? item["description"].join(','):""
+      
+      }
+      reportBody.push(obj)
+    })
+    return reportBody
   }
 
   setOrder(value: any) {
@@ -398,6 +463,7 @@ export class ReportsComponent implements OnInit {
         this.original_contents = this.namings;
         this.toasterService.success("Updated Successfully");
         this.spinner.hide()
+        $('#helpModal').modal('hide');
       }, err => {
         this.spinner.hide()
         this.toasterService.error("Data not Updated")
@@ -1072,4 +1138,45 @@ export class ReportsComponent implements OnInit {
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   }
 
+  addLinkUrl(element,type){
+    this.linkUrlId = element.ddm_rmp_post_report_id;
+    if(type == "create"){
+      this.addUrlTitle = "ADD URL"
+      document.querySelector("#add-url-input")["value"] = "";
+    }else{
+      this.addUrlTitle = "EDIT URL"
+      document.querySelector("#add-url-input")["value"] = element.link_to_results;
+    }
+  }
+
+  saveLinkURL(){
+    let link = document.querySelector("#add-url-input")["value"]
+    let data = {request_id:this.linkUrlId,link_to_results:link}
+    Utils.showSpinner();
+    this.django.add_link_to_url(data).subscribe(response =>{
+     if(response['message'] == "updated successfully"){
+      document.querySelector("#add-url-input")["value"] = "";
+      $('#addUrl').modal('hide');
+      this.toasterService.success("URL Updated Successfully !")
+      Utils.hideSpinner()
+      this.reports.map(item =>{
+        if(item.ddm_rmp_post_report_id == this.linkUrlId){
+          item.link_to_results = link
+        }
+      })
+     }
+    },error =>{
+      this.toasterService.error("Failed To Add URL, Please Try Again")
+      Utils.hideSpinner()
+    })
+   
+  }
+
+  openNewWindow(url){
+    window.open(url)
+  }
+
+  closeTBD_Assigned(){
+    $('#addUrl').modal('hide');
+  }
 }

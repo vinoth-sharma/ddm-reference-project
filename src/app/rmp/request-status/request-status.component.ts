@@ -3,7 +3,7 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ReportCriteriaDataService } from "../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
@@ -12,8 +12,6 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
 import { SharedDataService } from '../../create-report/shared-data.service';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
-import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
-import { environment } from "./../../../environments/environment"
 import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from 'src/utils';
 import '../../../assets/debug2.js';
@@ -181,37 +179,40 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   public assigned_res: any;
   public add_response: any;
   public tbd_assign_res: any;
+  public linkUrlId: number
+  public addUrlTitle: String = "";
+  public selectReportStatus = "";
+  public changeDoc:boolean = false;
 
   // paginator params
   public paginatorlength = 100;
   public paginatorpageSize = 10;
-  public paginatorOptions :number[] = [5,10,25,100] 
+  public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
 
-  constructor(private generated_id_service: GeneratedReportService, 
-              private router: Router, 
-              private reportDataService: ReportCriteriaDataService,
-              private django: DjangoService, private DatePipe: DatePipe,
-              private sharedDataService: SharedDataService, 
-              private semanticReportsService: SemanticReportsService,
-              private dataProvider: DataProviderService, 
-              private auth_service: AuthenticationService, 
-              private toastr: NgToasterComponent, 
-              private scheduleService:ScheduleService) {
-          this.getCurrentNotifications(); 
-          this.model = "";
-          this.getRoleDetails();
-          this.Status_List = [      
-            { 'status_id': 1, 'status': 'Incomplete' },
-            { 'status_id': 2, 'status': 'Pending' },
-            { 'status_id': 3, 'status': 'Active' },
-            { 'status_id': 4, 'status': 'Completed' },
-            { 'status_id': 5, 'status': 'Recurring'},
-            { 'status_id': 6, 'status': 'Cancelled' }
-          ];
-          this.contacts = [];
-          this.currentLookUpTableData();
+  constructor(private generated_id_service: GeneratedReportService,
+    private router: Router,
+    private reportDataService: ReportCriteriaDataService,
+    private django: DjangoService, private DatePipe: DatePipe,
+    private sharedDataService: SharedDataService,
+    private dataProvider: DataProviderService,
+    private auth_service: AuthenticationService,
+    private toastr: NgToasterComponent,
+    private scheduleService: ScheduleService) {
+    this.getCurrentNotifications();
+    this.model = "";
+    this.getRoleDetails();
+    this.Status_List = [
+      { 'status_id': 1, 'status': 'Incomplete' },
+      { 'status_id': 2, 'status': 'Pending' },
+      { 'status_id': 3, 'status': 'Active' },
+      { 'status_id': 4, 'status': 'Completed' },
+      { 'status_id': 5, 'status': 'Recurring' },
+      { 'status_id': 6, 'status': 'Cancelled' }
+    ];
+    this.contacts = [];
+    this.currentLookUpTableData();
   }
 
   //get current notification details
@@ -368,6 +369,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
           this.ngOnInit();
           this.original_contents = this.namings;
           this.toastr.success("Updated Successfully");
+          $('#helpModal').modal('hide');
           Utils.hideSpinner();
         }, err => {
           Utils.hideSpinner();
@@ -422,7 +424,6 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   }
 
   public OrderToSale(event) {
-
   }
 
   // check status of selected report and take action on based on status
@@ -464,11 +465,11 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   public Cancel() {
     Utils.showSpinner();
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
-      this.cancel_report.cancel_reports.push({ 
-              'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
-              'status': "Cancelled", 
-              'status_date': this.date 
-            });
+    this.cancel_report.cancel_reports.push({
+      'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
+      'status': "Cancelled",
+      'status_date': this.date
+    });
 
     this.django.cancel_report(this.cancel_report).subscribe(response => {
       this.cancel_response = response;
@@ -497,7 +498,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     $('#CancelRequest').modal('hide');
   }
 
- 
+
   public AssignTBD() {
     Utils.showSpinner();
     this.assignTBD['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];
@@ -587,7 +588,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     })
     this.tbdselectedItemsAssigned = [];
   }
-  
+
   public closeTBD_Assigned() {
     this.tbdselectedItemsAssigned = [];
   }
@@ -665,14 +666,15 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
-      const headings = Object.keys(this.reports[0]);
+      // const headings = Object.keys(this.reports[0]);
+      const headings = ["Request Number", "Created On", "Requestor", "On Behalf Of", "Title", "Frequency", "Assigned To", "Status", "Status Date"]
+      const reportBody = this.createNewBodyForExcel()
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
-      const transformedData = this.reports.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
+      const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
-
       workbook.outputAsync().then(function (blob) {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           window.navigator.msSaveOrOpenBlob(blob,
@@ -695,6 +697,45 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     });
   }
 
+  createNewBodyForExcel() {
+    let reportBody = []
+    this.reports.forEach(item => {
+      let obj = {
+        "Request Number": item["ddm_rmp_post_report_id"],
+        "Created On": item["created_on"],
+        "Requestor": item["requestor"],
+        "On Behalf Of": item["on_behalf_of"],
+        "Title": item["title"],
+        "Frequency": item["frequency"],
+        "Assigned To": item["assigned_to"],
+        "Status": item[status],
+        "Status Date": new Date(item["ddm_rmp_status_date"]).toDateString()
+      }
+      reportBody.push(obj)
+    })
+    return reportBody
+  }
+
+  public post_link() {
+    this.checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
+    if (this.checkbox_length == 0) {
+      this.errorModalMessageRequest = "Select a report to post link for it";
+      $('#errorModalRequest').modal('show');
+    }
+    else if (this.checkbox_length > 1) {
+      this.errorModalMessageRequest = "You cannot post link on multiple reports at once";
+      $('#errorModalRequest').modal('show');
+      this.finalData = [];
+    } else if (this.checkbox_length == 1) {
+      if (this.finalData[0].status != "Active") {
+        this.errorModalMessageRequest = "Request not Active yet. Can't post link to results.";
+        $('#errorModalRequest').modal('show');
+        this.finalData = [];
+      } else if (this.finalData[0].status == "Active" ||
+        this.finalData[0].status == "Completed") { }
+      $("#post_link_button:button").trigger('click');
+    }
+  }
   public closePostLink() {
     this.hidVar = true;
   }
@@ -728,11 +769,6 @@ export class RequestStatusComponent implements OnInit, OnChanges {
         $('#errorModalRequest').modal('show');
       }
     }
-  }
-
-  public onItemSelect(item: any) {
-  }
-  public onSelectAll(items: any) {
   }
 
   // check validation of reports to avoid multiple select
@@ -1018,7 +1054,6 @@ export class RequestStatusComponent implements OnInit, OnChanges {
         } else {
           this.concensus_data = [];
         }
-
       }
 
       if (this.summary["bac_data"].length) {
@@ -1259,21 +1294,97 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     var doc = new jsPDF();
     doc.setFont("arial");
     let margins = {
-                    top: 15,
-                    bottom: 0,
-                    left: 18,
-                    width: 170
-                  };
+      top: 15,
+      bottom: 0,
+      left: 18,
+      width: 170
+    };
     doc.fromHTML(
-      $('#print').html(), margins.left,margins.top,
+      $('#print').html(), margins.left, margins.top,
       { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
-      function () { doc.save('sample-file.pdf'); },margins
+      function () { doc.save('sample-file.pdf'); }, margins
     );
   }
 
   // capture pagination page event
-  public onPaginationChange(event){
+  addLinkUrl(element, type) {
+    this.linkUrlId = element.ddm_rmp_post_report_id;
+    if (type == "create") {
+      this.addUrlTitle = "ADD URL"
+      document.querySelector("#add-url-input")["value"] = "";
+    } else {
+      this.addUrlTitle = "EDIT URL"
+      document.querySelector("#add-url-input")["value"] = element.link_to_results;
+    }
+  }
+
+  saveLinkURL() {
+    let link = document.querySelector("#add-url-input")["value"]
+    let data = { request_id: this.linkUrlId, link_to_results: link }
+    Utils.showSpinner();
+    this.django.add_link_to_url(data).subscribe(response => {
+      if (response['message'] == "updated successfully") {
+        document.querySelector("#add-url-input")["value"] = "";
+        $('#addUrl').modal('hide');
+        this.toastr.success("URL Updated Successfully !")
+        Utils.hideSpinner()
+        this.reports.map(item => {
+          if (item.ddm_rmp_post_report_id == this.linkUrlId) {
+            item.link_to_results = link
+          }
+        })
+      }
+    }, error => {
+      this.toastr.error("Failed To Add URL, Please Try Again")
+      Utils.hideSpinner()
+    })
+
+  }
+
+  openNewWindow(url) {
+    window.open(url)
+  }
+
+  openEditStatusModal(element) {
+    this.linkUrlId = element.ddm_rmp_post_report_id;
+    document.querySelector("#selectReportStatus")["value"] = "Active"
+  }
+
+  setselectReportStatus() {
+    this.selectReportStatus = document.querySelector("#selectReportStatus")["value"]
+  }
+
+  saveReportStatus() {
+    let link = document.querySelector("#add-url-input")["value"]
+    let data = { request_id: this.linkUrlId, status: "Completed", status_date: new Date() }
+    Utils.showSpinner();
+    this.django.update_report_status(data).subscribe(response => {
+      if (response['message'] == "updated successfully") {
+        $('#changeStatusModal').modal('hide');
+        this.toastr.success("Status updated Successfully !")
+        Utils.hideSpinner()
+        this.reports.map(item => {
+          if (item.ddm_rmp_post_report_id == this.linkUrlId) {
+            item.status = "Completed"
+            item.ddm_rmp_status_date = new Date()
+          }
+        })
+      }
+    }, error => {
+      this.toastr.error("Failed To Change Status, Please Try Again")
+      Utils.hideSpinner()
+    })
+  }
+
+  closeLinkUrl() {
+    $('#addUrl').modal('hide');
+  }
+
+  closeStatusUrl() {
+    $('#changeStatusModal').modal('hide');
+  }
+  public onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
-    }
+  }
 }

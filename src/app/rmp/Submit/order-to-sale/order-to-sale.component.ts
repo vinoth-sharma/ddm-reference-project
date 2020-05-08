@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import "../../../../assets/debug2.js";
-// import 'jquery'
 declare var jsPDF: any;
 declare var $: any;
 import { Router } from "@angular/router";
@@ -13,14 +12,16 @@ import Utils from "../../../../utils";
 import { ReportCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
-import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
 
 import { MatCalendarCellCssClasses } from '@angular/material/datepicker';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { FormControl, FormGroupDirective, 
-         NgForm, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import {
+  FormControl, FormGroupDirective,
+  NgForm, FormGroup, FormBuilder
+} from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 const moment = _moment;
@@ -47,21 +48,21 @@ const MY_FORMATS = {
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
     },
 
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
 export class OrderToSaleComponent implements OnInit {
 
-  generated_report_status: string;
-  generated_report_id: number;
-  selectedItems = [];
-  dropdownSettings = {};
-  order_to_sales_selection = {};
+  public generated_report_status: string;
+  public generated_report_id: number;
+  public selectedItems = [];
+  public dropdownSettings = {};
+  public order_to_sales_selection = {};
 
-  order_to_sale_selection: any;
-  textData;
-  type_data_value = {};
-  finalData = {
+  public order_to_sale_selection: any;
+  public textData;
+  public type_data_value = {};
+  public finalData = {
     "dosp_start_date": null,
     "dosp_end_date": null,
     "checkbox_data": [],
@@ -84,190 +85,190 @@ export class OrderToSaleComponent implements OnInit {
   }
 
 
-  temp_freq = {
+  public temp_freq = {
     'freq_values': [],
     'desc': []
   }
-  Report = {}
-  report_status: string;
-  Report_title: string;
-  Report_Req: string = "";
-  date: string
-  targetValue : any;
-  saveit = false;
-  fromDate:any = new FormControl();
-  toDate:any = new FormControl();
-  fromDateDOSP:any = new FormControl();
-  toDateDOSP:any = new FormControl();
-  Checkbox_selected = {}
-  targetProd: boolean = true;
-  textChange = false;
-  otsObj = {
-    divisionRadio : "Display",
-    modelRadio : "Display",
-    vlbRadio : "Display",
-    alloRadio : "Display",
-    merchRadio : "Display",
-    orderTypeRadio : "Display",
-    otherDesc : ""
+  public Report = {}
+  public report_status: string;
+  public Report_title: string;
+  public Report_Req: string = "";
+  public date: string
+  public targetValue: any;
+  public saveit = false;
+  public fromDate: any = new FormControl();
+  public toDate: any = new FormControl();
+  public fromDateDOSP: any = new FormControl();
+  public toDateDOSP: any = new FormControl();
+  public Checkbox_selected = {}
+  public targetProd: boolean = true;
+  public textChange = false;
+  public otsObj = {
+    divisionRadio: "Display",
+    modelRadio: "Display",
+    vlbRadio: "Display",
+    alloRadio: "Display",
+    merchRadio: "Display",
+    orderTypeRadio: "Display",
+    otherDesc: ""
   }
-  dateSelect: any;
+  public dateSelect: any;
 
-  title = 'date-picker';
-  model_start;
-  model_end;
-  dataModel: any;
-  dropdownOptions = ["Original", "Subsequent", "Both"];
+  public title = 'date-picker';
+  public model_start;
+  public model_end;
+  public dataModel: any;
+  public dropdownOptions = ["Original", "Subsequent", "Both"];
 
-  dropdownSettingsTarget = {};
-  TargetSelect: any;
-  selectedItemsDivision = {};
-  divisionRadioSelection: any;
-  division_index = [];
+  public dropdownSettingsTarget = {};
+  public TargetSelect: any;
+  public selectedItemsDivision = {};
+  public divisionRadioSelection: any;
+  public division_index = [];
 
-  selectedItemsModelYear = [];
-  dropdownSettingsModelYear = {};
-  modelRadio: any;
-  modelYearSelectedItems: any = [];
-  modelYear: any;
+  public selectedItemsModelYear = [];
+  public dropdownSettingsModelYear = {};
+  public modelRadio: any;
+  public modelYearSelectedItems: any = [];
+  public modelYear: any;
 
-  allocationSelectItems = [];
-  allocationIndex: Array<number> = [];
-  selectedItemsAllocation = [];
-  dropdownSettingsAllocation = {};
-  alloRadio: any;
-  allo: any = [];
-  allocationFinalList = []
+  public allocationSelectItems = [];
+  public allocationIndex: Array<number> = [];
+  public selectedItemsAllocation = [];
+  public dropdownSettingsAllocation = {};
+  public alloRadio: any;
+  public allo: any = [];
+  public allocationFinalList = []
 
-  selectedItemsMerchandize = {};
-  dropdownSettingsMerchandize = {};
-  merchandizeItemsSelect = [];
-  merchandizeFinalList = [];
-  merchandiseRadio: any;
-  merchandizeSelecteditems: any;
-  merchandize: any = [];
+  public selectedItemsMerchandize = {};
+  public dropdownSettingsMerchandize = {};
+  public merchandizeItemsSelect = [];
+  public merchandizeFinalList = [];
+  public merchandiseRadio: any;
+  public merchandizeSelecteditems: any;
+  public merchandize: any = [];
 
-  selectedItemsOrderType = [];
-  dropdownSettingsOrderType = {};
-  orderRadio: any;
-  orderTypeSelecteditems: any = []; 
-  orderType: any;
+  public selectedItemsOrderType = [];
+  public dropdownSettingsOrderType = {};
+  public orderRadio: any;
+  public orderTypeSelecteditems: any = [];
+  public orderType: any;
 
-  vehicleIndex: Array<number> = [];
-  selectedItemsVehicleLine = [];
-  dropdownSettingsVehicleLine = {};
-  vehicleDataSelecteditems: any = []
-  vehicleData: any;
+  public vehicleIndex: Array<number> = [];
+  public selectedItemsVehicleLine = [];
+  public dropdownSettingsVehicleLine = {};
+  public vehicleDataSelecteditems: any = []
+  public vehicleData: any;
 
-  selectedItemsOrderEvent = [];
-  dropdownSettingsOrderEvent = {};
-  orderEvent: any = [];
+  public selectedItemsOrderEvent = [];
+  public dropdownSettingsOrderEvent = {};
+  public orderEvent: any = [];
 
-  gcheck: boolean = false;
-  ncheck: boolean = false;
-  check: boolean = false;
+  public gcheck: boolean = false;
+  public ncheck: boolean = false;
+  public check: boolean = false;
 
-  orderToSaleDropdowns: any;
-  typeOfData: any;
-  displaySummary: any;
-  orderEventsAvailable: any;
-  dospDataAvailable: any;
-  commonlyRequestedFields: any;
-  commonReqCheckbox = {};
+  public orderToSaleDropdowns: any;
+  public typeOfData: any;
+  public displaySummary: any;
+  public orderEventsAvailable: any;
+  public dospDataAvailable: any;
+  public commonlyRequestedFields: any;
+  public commonReqCheckbox = {};
 
-  distributionEntityFields: any;
-  distributionEntityCheckbox = {};
-  optionContentAvailable: any;
-  optionContentCheckbox = {};
-  daysSupply: any;
-  DaysSupplyCheckbox = {};
+  public distributionEntityFields: any;
+  public distributionEntityCheckbox = {};
+  public optionContentAvailable: any;
+  public optionContentCheckbox = {};
+  public daysSupply: any;
+  public DaysSupplyCheckbox = {};
 
-  salesDataAvailable: any;
-  SalesAvailabilityCheckbox = {};
-  DospCheckbox = {};
-  orderEventsCheckbox = {};
-  selectedMonth: any;
-  Checkbox_data: any;
-  Checkbox_value = {};
-  DropValues = {};
- 
-  distributionRadio = "";
-  distId;
-  counter;
-  startDate: {};
-  endDate: {};
-  otsElement: Object;
-  abcd: any;
-  report_message: string;
-  summary: any;
-  restorepage: any;
-  printcontent: any;
-  lookup;
-  userdivdata;
-  divDataSelected = [];
-  reportId = 0;
-  orderEventCheck: any;
-  orderEventId = [];
-  checkboxId = [];
-  left = [];
-  other_description: any[];
-  orderEventCheckFilter: any;
-  file;
-  flag = true;
-  summary_flag = true;
-  typeofdata_flag = false;
-  modal_validation_flag = false;
-  frequency_flag: boolean;
-  contact_flag: boolean;
-  ot_flag = false;
+  public salesDataAvailable: any;
+  public SalesAvailabilityCheckbox = {};
+  public DospCheckbox = {};
+  public orderEventsCheckbox = {};
+  public selectedMonth: any;
+  public Checkbox_data: any;
+  public Checkbox_value = {};
+  public DropValues = {};
 
-  contents;
-  enable_edits = false
-  editModes = false;
-  original_content;
-  namings: any;
+  public distributionRadio = "";
+  public distId;
+  public counter;
+  public startDate: {};
+  public endDate: {};
+  public otsElement: Object;
+  public abcd: any;
+  public report_message: string;
+  public summary: any;
+  public restorepage: any;
+  public printcontent: any;
+  public lookup;
+  public userdivdata;
+  public divDataSelected = [];
+  public reportId = 0;
+  public orderEventCheck: any;
+  public orderEventId = [];
+  public checkboxId = [];
+  public left = [];
+  public other_description: any[];
+  public orderEventCheckFilter: any;
+  public file;
+  public flag = true;
+  public summary_flag = true;
+  public typeofdata_flag = false;
+  public modal_validation_flag = false;
+  public frequency_flag: boolean;
+  public contact_flag: boolean;
+  public ot_flag = false;
 
-  user_role: string;
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  description_text = {
+  public contents;
+  public enable_edits = false
+  public editModes = false;
+  public original_content;
+  public namings: any;
+
+  public user_role: string;
+  public parentsSubject: Rx.Subject<any> = new Rx.Subject();
+  public description_text = {
     "ddm_rmp_desc_text_id": 12,
     "module_name": "He_OrderToSale",
     "description": ""
   }
-  from_date: string;
-  user_name: string;
-  error_message: string;
-  
-  bac_description: any;
-  fan_desc: any;
-  text_notification: any;
-  market_description: any;
-  zone_description: any;
-  area_description: any;
-  region_description: any;
-  lma_description: any;
-  gmma_description: any;
-  allocation_group: any;
-  model_year: any;
-  merchandising_model: any;
-  vehicle_line_brand: any;
-  order_event: any;
-  order_type: any;
-  checkbox_data: any;
-  report_frequency: any;
-  special_identifier: any;
-  division_dropdown: any;
-  report_frequency_desc: any;
-  other_info: any;
-  startDateDOSP: {};
-  endDateDOSP: {};
-  dosp_calendar_flag: boolean ;
+  public from_date: string;
+  public user_name: string;
+  public error_message: string;
+  public
+  public bac_description: any;
+  public fan_desc: any;
+  public text_notification: any;
+  public market_description: any;
+  public zone_description: any;
+  public area_description: any;
+  public region_description: any;
+  public lma_description: any;
+  public gmma_description: any;
+  public allocation_group: any;
+  public model_year: any;
+  public merchandising_model: any;
+  public vehicle_line_brand: any;
+  public order_event: any;
+  public order_type: any;
+  public checkbox_data: any;
+  public report_frequency: any;
+  public special_identifier: any;
+  public division_dropdown: any;
+  public report_frequency_desc: any;
+  public other_info: any;
+  public startDateDOSP: {};
+  public endDateDOSP: {};
+  public dosp_calendar_flag: boolean;
 
-  report_create: any;
-  assigned_to: any;
-  report_on_behalf = "";
-  readOnlyContentHelper = true;
-  enableUpdateData = false;
+  public report_create: any;
+  public assigned_to: any;
+  public report_on_behalf = "";
+  public readOnlyContentHelper = true;
+  public enableUpdateData = false;
 
   public myForm: FormGroup;
   public matcher = new MyErrorStateMatcher();
@@ -275,50 +276,52 @@ export class OrderToSaleComponent implements OnInit {
   public targetend = "";
   public dateClass: any;
   public targetStartDate: any;
-  public targetEndDate: any; 
+  public targetEndDate: any;
   public targetStartMonth: any;
   public targetEndMonth: any;
+  public minOrderEventDate: any = "";
+  public minDate: any = "";
 
-  config = {
+  public config = {
     toolbar: [
-      ['bold','italic','underline','strike'],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
-      [{'list' : 'ordered'}, {'list' : 'bullet'}],
-      [{'script' : 'sub'},{'script' : 'super'}],
-      [{'size':['small',false, 'large','huge']}],
-      [{'header':[1,2,3,4,5,6,false]}],
-      [{'color': []},{'background':[]}],
-      [{'font': []}],
-      [{'align': []}],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
       ['clean'],
       ['image']
     ]
   };
- 
+
   constructor(public router: Router,
     public django: DjangoService, public report_id_service: GeneratedReportService, public auth_service: AuthenticationService,
     public DatePipe: DatePipe, public dataProvider: DataProviderService, public toastr: NgToasterComponent,
     public reportDataService: ReportCriteriaDataService,
     private formBuilder: FormBuilder) {
-      this.myForm = this.formBuilder.group({
-        'startDate': [''],
-        'endDate': ['']
-      }, { validator: this.checkDates });
-  
-      this.myForm.setValue({
-        startDate: this.targetStart,
-        endDate: this.targetend
-      });
+    // this.myForm = this.formBuilder.group({
+    //   'startDate': [''],
+    //   'endDate': ['']
+    // }, { validator: this.checkDates });
+
+    // this.myForm.setValue({
+    //   startDate: this.targetStart,
+    //   endDate: this.targetend
+    // });
   }
 
-  checkDates(group: FormGroup) {
-    if (group.controls.endDate.value < group.controls.startDate.value) {
-      return { endDateLessThanStartDate: true }
-    }
-    return null;
-  }
+  // public checkDates(group: FormGroup) {
+  //   if (group.controls.endDate.value < group.controls.startDate.value) {
+  //     return { endDateLessThanStartDate: true }
+  //   }
+  //   return null;
+  // }
 
-  notify() {
+  public notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
@@ -332,7 +335,7 @@ export class OrderToSaleComponent implements OnInit {
         this.user_role = role["role"]
       }
     })
-    
+
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
         this.lookupDateReassigning(element);
@@ -342,15 +345,11 @@ export class OrderToSaleComponent implements OnInit {
     if (localStorage.getItem('report_id')) {
       this.previousSelections(localStorage.getItem('report_id'));
     }
-    else{
-      // Utils.hideSpinner();
-    }
-    // this.targetProd = true;
-    this.salesDataAvailable = this.Checkbox_data?this.Checkbox_data.filter(element => element.checkbox_desc == "Sales and Availability"):[];
+    this.salesDataAvailable = this.Checkbox_data ? this.Checkbox_data.filter(element => element.checkbox_desc == "Sales and Availability") : [];
   }
 
-  lookupDateReassigning(element){
-        
+  public lookupDateReassigning(element) {
+
     this.lookup = element
     let ref = this.lookup['data']['desc_text']
     let temps = ref.find(function (element) {
@@ -414,64 +413,64 @@ export class OrderToSaleComponent implements OnInit {
     this.getOrderToSaleContent();
   }
 
-    // select from date
-    public startDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-      this.targetStart = new Date(this.dateFormat(event.value)).toISOString();
-      this.finalData['tpd_start_date'] = this.dateFormat(event.value);
-      this.targetStartDate = new Date(event.value).getDate();
-      this.targetStartMonth = new Date(event.value).getMonth()+1;
-      this.markDates();
-    }
-  
-    // select to date
-    public endDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-      this.targetEndDate = new Date(event.value).getDate();
-      this.targetend = new Date(this.dateFormat(event.value)).toISOString();
-      this.finalData['tpd_end_date']  = this.dateFormat(event.value);
-      this.targetEndMonth = new Date(event.value).getMonth()+1;
-      this.markDates();
-    }
-  
-    // heighligth background color dates from fromDate to endDate
-    public markDates(){
-      if(this.targetStartMonth && this.targetEndMonth) { 
-        this.dateClass = (d: Date): MatCalendarCellCssClasses => {
-          const date = d.getDate();
-          const m = d.getMonth()+1;
-          if(m === this.targetStartMonth && m === this.targetEndMonth) {
-               if(date > this.targetStartDate && date < this.targetEndDate) 
-                  return 'custom-date-class';
-          } else if(m >= this.targetStartMonth && m <= this.targetEndMonth) {
-              if(m > this.targetStartMonth && m < this.targetEndMonth) 
-                  return 'custom-date-class';
-              else if(m === this.targetStartMonth) {
-                  if(date > this.targetStartDate) 
-                    return 'custom-date-class';
-              } else if(m === this.targetEndMonth) {
-                      if(date < this.targetEndDate) 
-                        return 'custom-date-class';
-              }
-          }
-        };
-      }
-    }
-  
-    // formating date 
-    public dateFormat(str:any) {
-      var date = new Date(str),
-        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-        day = ("0" + date.getDate()).slice(-2);
-      return [date.getFullYear(), mnth, day].join("-");
-    }
+  // // select from date
+  // public startDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+  //   this.targetStart = new Date(this.dateFormat(event.value)).toISOString();
+  //   this.finalData['tpd_start_date'] = this.dateFormat(event.value);
+  //   this.targetStartDate = new Date(event.value).getDate();
+  //   this.targetStartMonth = new Date(event.value).getMonth() + 1;
+  //   this.markDates();
+  // }
 
-  textChanged(event) {
+  // // select to date
+  // public endDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+  //   this.targetEndDate = new Date(event.value).getDate();
+  //   this.targetend = new Date(this.dateFormat(event.value)).toISOString();
+  //   this.finalData['tpd_end_date'] = this.dateFormat(event.value);
+  //   this.targetEndMonth = new Date(event.value).getMonth() + 1;
+  //   this.markDates();
+  // }
+
+  // // heighligth background color dates from fromDate to endDate
+  // public markDates() {
+  //   if (this.targetStartMonth && this.targetEndMonth) {
+  //     this.dateClass = (d: Date): MatCalendarCellCssClasses => {
+  //       const date = d.getDate();
+  //       const m = d.getMonth() + 1;
+  //       if (m === this.targetStartMonth && m === this.targetEndMonth) {
+  //         if (date > this.targetStartDate && date < this.targetEndDate)
+  //           return 'custom-date-class';
+  //       } else if (m >= this.targetStartMonth && m <= this.targetEndMonth) {
+  //         if (m > this.targetStartMonth && m < this.targetEndMonth)
+  //           return 'custom-date-class';
+  //         else if (m === this.targetStartMonth) {
+  //           if (date > this.targetStartDate)
+  //             return 'custom-date-class';
+  //         } else if (m === this.targetEndMonth) {
+  //           if (date < this.targetEndDate)
+  //             return 'custom-date-class';
+  //         }
+  //       }
+  //     };
+  //   }
+  // }
+
+  // formating date 
+  public dateFormat(str: any) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
+  public textChanged(event) {
     this.textChange = true;
-    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
 
-  content_edits() {
+  public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
       this.editModes = false;
@@ -501,24 +500,24 @@ export class OrderToSaleComponent implements OnInit {
   }
 
 
-  edit_True() {
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_content;
   }
 
-  editEnable() {
+  public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_content;
   }
 
 
-  getOrderToSaleContent() {
+  public getOrderToSaleContent() {
     this.Checkbox_data = this.lookup.data.checkbox_data
 
     //---------------------------------------DropDown Data-----------------------------------------------------------------------------
-    
+
     this.allo = this.lookup.data.allocation_grp.sort((a, b) => a.allocation_group > b.allocation_group ? 1 : -1);
     this.modelYearSelectedItems = this.lookup.data.model_year
     this.merchandize = this.lookup.data.merchandising_data.sort((a, b) => a.merchandising_model > b.merchandising_model ? 1 : -1);
@@ -528,13 +527,13 @@ export class OrderToSaleComponent implements OnInit {
     this.vehicleDataSelecteditems = this.vehicleData.filter(element => {
       return this.division_index.includes(element.ddm_rmp_lookup_division)
     })
-      this.allocationFinalList = this.allo.filter(element=>{
-        return this.division_index.includes(element.ddm_rmp_lookup_division)
-      })
-      this.merchandizeFinalList = this.merchandize.filter(element=>{
-        return this.division_index.includes(element.ddm_rmp_lookup_division)
-      })
-    
+    this.allocationFinalList = this.allo.filter(element => {
+      return this.division_index.includes(element.ddm_rmp_lookup_division)
+    })
+    this.merchandizeFinalList = this.merchandize.filter(element => {
+      return this.division_index.includes(element.ddm_rmp_lookup_division)
+    })
+
 
     //------------------------------- For the Dropdowns-----------------------------------------------------------------------
     //------------------------------- For Checkbox groups--------------------------------------------------------------------
@@ -582,7 +581,7 @@ export class OrderToSaleComponent implements OnInit {
 
   //----------------------------------------------DEPENDENT DROPDOWNS SETTINGS----------------------------------------------------------
 
-  vehicleItemSelect(item: any) {
+  public vehicleItemSelect(item: any) {
     this.selectedItemsVehicleLine.map(element => {
       if (!(this.vehicleIndex.includes(element["ddm_rmp_lookup_dropdown_vehicle_line_brand_id"]))) {
         this.vehicleIndex.push(element["ddm_rmp_lookup_dropdown_vehicle_line_brand_id"])
@@ -591,24 +590,24 @@ export class OrderToSaleComponent implements OnInit {
     this.vehicleSelection(this.vehicleIndex)
   }
 
-  vehicleItemDeSelect(item: any) {
+  public vehicleItemDeSelect(item: any) {
     this.vehicleIndex.splice(this.vehicleIndex.indexOf(item['ddm_rmp_lookup_dropdown_vehicle_line_brand_id']), 1)
-    
+
     this.vehicleSelection(this.vehicleIndex)
     this.vehicleDeSelection(this.vehicleIndex)
     this.allocationIndex = []
-      this.selectedItemsAllocation.map(element => {
-        if (!(this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group_id"]))) {
-          this.allocationIndex.push(element["ddm_rmp_lookup_dropdown_allocation_group_id"])
-        }
-        this.vehicleSelection(this.vehicleIndex)
-        this.vehicleDeSelection(this.vehicleIndex)
-      })
+    this.selectedItemsAllocation.map(element => {
+      if (!(this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group_id"]))) {
+        this.allocationIndex.push(element["ddm_rmp_lookup_dropdown_allocation_group_id"])
+      }
+      this.vehicleSelection(this.vehicleIndex)
+      this.vehicleDeSelection(this.vehicleIndex)
+    })
     this.allocationSelection(this.allocationIndex)
     this.allocationDeSelection(this.allocationIndex)
   }
 
-  vehicleSelectAll(items: any) {
+  public vehicleSelectAll(items: any) {
     for (let index = 1; index <= items.length; index++) {
       if (!(this.vehicleIndex.includes(index))) {
         this.vehicleIndex.push(index)
@@ -617,64 +616,64 @@ export class OrderToSaleComponent implements OnInit {
     this.vehicleSelection(this.vehicleIndex)
   }
 
-  vehicleDeSelectAll(items: any) {
+  public vehicleDeSelectAll(items: any) {
     this.vehicleIndex = []
     this.vehicleSelection(this.vehicleIndex)
     this.vehicleDeSelection(this.vehicleIndex)
     this.allocationDeSelectAll(this.selectedItemsAllocation)
   }
 
-  vehicleSelection(vehicleIndex: any) {
-    if(this.vehicleIndex.length != 0){
+  public vehicleSelection(vehicleIndex: any) {
+    if (this.vehicleIndex.length != 0) {
       this.allocationFinalList = this.allo.filter(element => {
         return this.vehicleIndex.includes(element["ddm_rmp_lookup_dropdown_vehicle_line_brand"])
       })
 
-      this.merchandizeFinalList = this.merchandize.filter(element =>{
+      this.merchandizeFinalList = this.merchandize.filter(element => {
         return this.vehicleIndex.includes(element["ddm_rmp_lookup_dropdown_vehicle_line_brand"])
       });
     }
-    else if(this.vehicleIndex.length == 0){
-      this.allocationFinalList = this.allo.filter(element=>{
+    else if (this.vehicleIndex.length == 0) {
+      this.allocationFinalList = this.allo.filter(element => {
         return this.division_index.includes(element.ddm_rmp_lookup_division)
       })
 
-      this.merchandizeFinalList = this.merchandize.filter(element=>{
+      this.merchandizeFinalList = this.merchandize.filter(element => {
         return this.division_index.includes(element.ddm_rmp_lookup_division)
       })
     }
 
     this.allocationIndex = []
-      this.selectedItemsAllocation.map(element => {
-        if (!(this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group_id"]))) {
-          this.allocationIndex.push(element["ddm_rmp_lookup_dropdown_allocation_group_id"])
-        }
-      })
-    
+    this.selectedItemsAllocation.map(element => {
+      if (!(this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group_id"]))) {
+        this.allocationIndex.push(element["ddm_rmp_lookup_dropdown_allocation_group_id"])
+      }
+    })
+
   }
 
-  vehicleDeSelection(vehicleIndex: any) {
+  public vehicleDeSelection(vehicleIndex: any) {
 
-      this.selectedItemsAllocation = this.selectedItemsAllocation.filter(element => {
-        return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
-      })
-      this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element =>{
-        return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
-      })
-    
-    if(this.vehicleIndex.length == 0){
-      this.allocationFinalList = this.allo.filter(element=>{
+    this.selectedItemsAllocation = this.selectedItemsAllocation.filter(element => {
+      return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
+    })
+    this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element => {
+      return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
+    })
+
+    if (this.vehicleIndex.length == 0) {
+      this.allocationFinalList = this.allo.filter(element => {
         return this.division_index.includes(element.ddm_rmp_lookup_division)
       })
 
-      this.merchandizeFinalList = this.merchandize.filter(element=>{
+      this.merchandizeFinalList = this.merchandize.filter(element => {
         return this.division_index.includes(element.ddm_rmp_lookup_division)
       })
     }
-    
+
   }
 
-  allocationItemsSelect(item: any) {
+  public allocationItemsSelect(item: any) {
     this.selectedItemsAllocation.map(element => {
       if (!(this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group_id"]))) {
         this.allocationIndex.push(element["ddm_rmp_lookup_dropdown_allocation_group_id"])
@@ -683,13 +682,13 @@ export class OrderToSaleComponent implements OnInit {
     this.allocationSelection(this.allocationIndex)
   }
 
-  allocationItemDeSelect(item: any) {
+  public allocationItemDeSelect(item: any) {
     this.allocationIndex.splice(this.allocationIndex.indexOf(item["ddm_rmp_lookup_dropdown_allocation_group_id"]), 1)
     this.allocationSelection(this.allocationIndex)
     this.allocationDeSelection(this.allocationIndex)
   }
 
-  allocationSelectAll(items: any) {
+  public allocationSelectAll(items: any) {
     for (let index = 1; index <= items.length; index++) {
       if (!(this.allocationIndex.includes(index))) {
         this.allocationIndex.push(index)
@@ -698,42 +697,42 @@ export class OrderToSaleComponent implements OnInit {
     this.allocationSelection(this.allocationIndex)
   }
 
-  allocationDeSelectAll(item: any) {
+  public allocationDeSelectAll(item: any) {
     this.allocationIndex = []
     this.allocationSelection(this.allocationIndex)
     this.allocationDeSelection(this.allocationIndex)
     this.merchandizeFinalList = this.merchandize
   }
 
-  allocationSelection(allocationIndex: any) {
-    if(this.allocationIndex.length != 0){
+  public allocationSelection(allocationIndex: any) {
+    if (this.allocationIndex.length != 0) {
       this.merchandizeFinalList = this.merchandize.filter(element => {
         return this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group"])
       })
     }
-    else if(this.allocationIndex.length == 0){
-      if(this.vehicleIndex.length != 0){
-        this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element =>{
+    else if (this.allocationIndex.length == 0) {
+      if (this.vehicleIndex.length != 0) {
+        this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element => {
           return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
         })
       }
-      else if(this.vehicleIndex.length == 0){
-        this.merchandizeFinalList = this.merchandize.filter(element=>{
+      else if (this.vehicleIndex.length == 0) {
+        this.merchandizeFinalList = this.merchandize.filter(element => {
           return this.division_index.includes(element.ddm_rmp_lookup_division)
         })
       }
     }
   }
 
-  allocationDeSelection(allocationIndex: any) {
+  public allocationDeSelection(allocationIndex: any) {
     if (this.allocationIndex.length == 0) {
-      if(this.vehicleIndex.length != 0){
-        this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element =>{
+      if (this.vehicleIndex.length != 0) {
+        this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element => {
           return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
         })
       }
-      else if(this.vehicleIndex.length == 0){
-        this.merchandizeFinalList = this.merchandize.filter(element=>{
+      else if (this.vehicleIndex.length == 0) {
+        this.merchandizeFinalList = this.merchandize.filter(element => {
           return this.division_index.includes(element.ddm_rmp_lookup_division)
         })
       }
@@ -747,7 +746,7 @@ export class OrderToSaleComponent implements OnInit {
 
   //-----------------------------CHECKBOXES------------------------------------------------------------------------------------
 
-  distributionEntityRadio(i,val, event) {
+  public distributionEntityRadio(i, val, event) {
 
     let DistributionEntityId = event.target.id
     let DistributionEntityIdentifier = DistributionEntityId.charAt(6)
@@ -766,11 +765,11 @@ export class OrderToSaleComponent implements OnInit {
     this.finalData.distribution_data.push(this.distributionEntityCheckbox);
   }
 
-  desc(element) {
+  public desc(element) {
     this.textData = element;
   }
 
-  CheckboxCheck(val, event) {
+  public CheckboxCheck(val, event) {
     if (event.target.checked) {
       if (this.textData == undefined) {
         this.commonReqCheckbox = { "value": val.field_values, "id": val.ddm_rmp_lookup_ots_checkbox_values_id, "desc": "" };
@@ -795,7 +794,7 @@ export class OrderToSaleComponent implements OnInit {
       this.dosp_calendar_flag = true;
   }
 
-  CheckboxCheckDropdown(val, event) {
+  public CheckboxCheckDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_ots_checkbox_values_id.toString()))).disabled = false
       this.commonReqCheckbox = {
@@ -806,7 +805,7 @@ export class OrderToSaleComponent implements OnInit {
       if (val.ddm_rmp_lookup_ots_checkbox_values_id == 5) {
         this.targetProd = false;
       }
-      else{this.targetProd = true;}
+      else { this.targetProd = true; }
       this.finalData.checkbox_data.push(this.commonReqCheckbox);
     }
     else {
@@ -824,15 +823,15 @@ export class OrderToSaleComponent implements OnInit {
     }
   }
 
-  selectionChanged(val, ng) {
+  public selectionChanged(val, ng) {
     for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
       if (this.finalData.checkbox_data[i].id == val) {
         this.finalData.checkbox_data[i].desc = ng
       }
     }
   }
-  
-  getSpecifyContent(val, event) {
+
+  public getSpecifyContent(val, event) {
     for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
       if (this.finalData.checkbox_data[i].id == val) {
         this.finalData.checkbox_data[i].desc = event.target.value
@@ -841,7 +840,8 @@ export class OrderToSaleComponent implements OnInit {
   }
 
   //--------------------Final JSON CREATION----------------------------------------------------------------------------------------------
-  DropdownSelected() {
+  public DropdownSelected() {
+
     this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": this.otsObj.modelRadio }
     this.finalData["division_selected"] = { "radio_button": this.otsObj.divisionRadio }
     this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": this.otsObj.alloRadio }
@@ -866,40 +866,42 @@ export class OrderToSaleComponent implements OnInit {
       this.finalData["other_desc"] = this.other_description;
     }
 
-    if(this.report_create == null || this.report_create == "" || this.report_create == undefined){
+    if (this.report_create == null || this.report_create == "" || this.report_create == undefined) {
       this.finalData['report_detail']['created_on'] = ""
       this.report_create = ""
     }
 
-    if(this.assigned_to == null || this.assigned_to == "" || this.assigned_to == undefined){
+    if (this.assigned_to == null || this.assigned_to == "" || this.assigned_to == undefined) {
       this.finalData['report_detail']['assigned_to'] = ""
       this.assigned_to = ""
     }
-    if(this.report_status == "" || this.report_status == null || this.report_status == undefined){
+    if (this.report_status == "" || this.report_status == null || this.report_status == undefined) {
       this.finalData['report_detail']['status'] = "Pending"
       this.report_status = "Pending"
     }
-    
+
 
     this.date = "";
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-    this.finalData["report_detail"] = { "title": this.Report_title,
-        "additional_req": this.Report_Req, 
-        "report_type": "ots",
-         "status_date": this.date,
-          "status": this.report_status,
-          "created_on" : this.report_create,
-          "assigned_to" : this.assigned_to,
-          "on_behalf_of": this.report_on_behalf,
-          "link_to_results": "",
-           "query_criteria": "",
-            "link_title": "", 
-            "requestor": this.user_name }
+    this.finalData["report_detail"] = {
+      "title": this.Report_title,
+      "additional_req": this.Report_Req,
+      "report_type": "ots",
+      "status_date": this.date,
+      "status": this.report_status,
+      "created_on": this.report_create,
+      "assigned_to": this.assigned_to,
+      "on_behalf_of": this.report_on_behalf,
+      "link_to_results": "",
+      "query_criteria": "",
+      "link_title": "",
+      "requestor": this.user_name
+    }
     this.order_to_sale_selection = this.finalData
 
   }
 
-  validateInput() {
+  public validateInput() {
     var selected_check = []
     $(".tod_checkbox_group:checkbox").each(function () {
       var $this = $(this);
@@ -935,7 +937,7 @@ export class OrderToSaleComponent implements OnInit {
     }
   }
 
-  submit() {
+  public submit() {
     if (this.Report_title == "" || this.Report_title == undefined || this.Report_Req == "" || this.Report_Req == undefined) {
       this.modal_validation_flag = true;
       this.summary_flag = false;
@@ -949,7 +951,7 @@ export class OrderToSaleComponent implements OnInit {
       if (this.reportId != 0) {
       }
 
-      if(this.report_status == "" || this.report_status == null){
+      if (this.report_status == "" || this.report_status == null) {
         this.finalData
       }
 
@@ -983,7 +985,7 @@ export class OrderToSaleComponent implements OnInit {
     $('.modal-backdrop').remove();
   }
 
-  getreportSummary() {
+  public getreportSummary() {
     Utils.showSpinner();
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
@@ -1215,29 +1217,31 @@ export class OrderToSaleComponent implements OnInit {
     })
   }
 
-  onItemSelect(item: any) {
+  public onItemSelect(item: any) {
   }
-  other_desc(event) {
+
+  public other_desc(event) {
     this.otsObj.otherDesc = event.target.value
   }
-  onSelectAll(items: any) {
+
+  public onSelectAll(items: any) {
   }
 
   //---------------------------------------Dropdown Radio Buttons---------------------------------------------------------------------
 
-  AllocationRadio(val) {
+  public AllocationRadio(val) {
     this.alloRadio = val;
   }
 
-  MerchandizeRadio(val) {
+  public MerchandizeRadio(val) {
     this.merchandiseRadio = val;
   }
 
-  OrderRadio(val) {
+  public OrderRadio(val) {
     this.orderRadio = val;
   }
 
-  changeReportMessage() {
+  public changeReportMessage() {
     this.report_message = "";
     this.report_id_service.changeMessage("");
     this.router.navigate(["user/request-status"]);
@@ -1246,63 +1250,63 @@ export class OrderToSaleComponent implements OnInit {
 
   //------------------------------------CALENDAR SETTINGS---------------------------------------------------------------------
 
-  public minOrderEventDate:any = "";
-  onOrderEventdateSelection(){
+
+  public onOrderEventdateSelection() {
     let from = this.fromDate.value;
     let to = this.toDate.value;
-    
+
     //conditions to manage minDate when from,to selected 
-    if(from){
-      this.minOrderEventDate = new Date(from.year(),from.month(),from.date());
-      if(to){
-        to = +to>=+from?to:"";
-        this.toDate = +to>=+from?this.toDate:new FormControl();
-      } 
+    if (from) {
+      this.minOrderEventDate = new Date(from.year(), from.month(), from.date());
+      if (to) {
+        to = +to >= +from ? to : "";
+        this.toDate = +to >= +from ? this.toDate : new FormControl();
+      }
     }
 
-    if(from && to){
-      this.startDate = from.year() + "-" + (from.month()+1) + "-" + from.date();
-      this.endDate = to.year() + "-" + (to.month()+1)  + "-" + to.date();
+    if (from && to) {
+      this.startDate = from.year() + "-" + (from.month() + 1) + "-" + from.date();
+      this.endDate = to.year() + "-" + (to.month() + 1) + "-" + to.date();
       this.finalData['data_date_range'] = { "StartDate": this.startDate, "EndDate": this.endDate };
     }
-    else{
+    else {
       this.finalData['data_date_range'] = { "StartDate": "", "EndDate": "" };
     }
   }
 
   //------------------------------------CALENDAR SETTINGS DOSP---------------------------------------------------------------------
 
-  public minDate:any = "";
-  onDOSPDateSelection(){
+
+  public onDOSPDateSelection() {
     let from = this.fromDateDOSP.value;
     let to = this.toDateDOSP.value;
-    
+
     //conditions to manage minDate when from,to selected 
-    if(from){
-      this.minDate = new Date(from.year(),from.month(),from.date());
-      if(to){
-        to = +to>=+from?to:"";
-        this.toDateDOSP = +to>=+from?this.toDateDOSP:new FormControl();
-      } 
+    if (from) {
+      this.minDate = new Date(from.year(), from.month(), from.date());
+      if (to) {
+        to = +to >= +from ? to : "";
+        this.toDateDOSP = +to >= +from ? this.toDateDOSP : new FormControl();
+      }
     }
 
-    if(from && to){
-      this.startDateDOSP = from.year() + "-" + (from.month()+1) + "-" + from.date();
-      this.endDateDOSP = to.year() + "-" + (to.month()+1)  + "-" + to.date();
+    if (from && to) {
+      this.startDateDOSP = from.year() + "-" + (from.month() + 1) + "-" + from.date();
+      this.endDateDOSP = to.year() + "-" + (to.month() + 1) + "-" + to.date();
       this.finalData['dosp_start_date'] = this.startDateDOSP;
       this.finalData['dosp_end_date'] = this.endDateDOSP;
     }
-    else{
+    else {
       this.finalData['dosp_start_date'] = "";
       this.finalData['dosp_end_date'] = "";
     }
   }
 
-  back() {
+  public back() {
     this.router.navigate(["user/submit-request/select-report-criteria"]);
   }
 
-  gros() {
+  public gros() {
     if (this.gcheck == false) {
       $('.gross-sales').prop("disabled", false);
       this.gcheck = true;
@@ -1315,7 +1319,7 @@ export class OrderToSaleComponent implements OnInit {
     }
   }
 
-  nets() {
+  public nets() {
     if (this.ncheck == false) {
       $('.net-sales').prop("disabled", false);
       this.ncheck = true;
@@ -1328,7 +1332,7 @@ export class OrderToSaleComponent implements OnInit {
     }
   }
 
-  allClick() {
+  public allClick() {
     if (this.check == false) {
 
       $(".events").prop("checked", true);
@@ -1373,7 +1377,7 @@ export class OrderToSaleComponent implements OnInit {
     }
   }
 
-  func() {
+  public func() {
     if ((this.selectedItemsOrderEvent).length > 0) {
       var x = document.getElementById("calendars");
       if (x.style.display === "none") {
@@ -1387,7 +1391,7 @@ export class OrderToSaleComponent implements OnInit {
     }
   }
 
-  captureScreen() {
+  public captureScreen() {
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
@@ -1402,15 +1406,15 @@ export class OrderToSaleComponent implements OnInit {
       width: 170
     };
     doc.fromHTML(
-      $('#print').html(), margins.left,margins.top,
+      $('#print').html(), margins.left, margins.top,
       { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
-      function () { doc.save('sample-file.pdf'); },margins
+      function () { doc.save('sample-file.pdf'); }, margins
     );
   }
 
   //------------------------------------------START GET Defaults-------------------------------------------------//
 
-  getDefaultSelections() {
+  public getDefaultSelections() {
     var retail, nonRetail, fleet;
     var temp = this.finalData;
     $.each($("input[class='chk']:checked"), function () {
@@ -1468,17 +1472,17 @@ export class OrderToSaleComponent implements OnInit {
   }
 
   //------------------------------------------------------START SET Defaults-------------------------------------------//
-  setDefaultSelections() {
+  public setDefaultSelections() {
     Utils.showSpinner();
     this.django.get_report_details(this.reportId).subscribe(element => {
       var subData = element["ots_data"]["checkbox_data"];
-        for (var x = 0; x <= subData.length - 1; x++) {
-          $('.chk').each(function (i, obj) {
-            if (subData[x].ddm_rmp_lookup_ots_checkbox_values == $(obj).prop("value")) {
-              $(obj).prop("checked", true);
-            }
-          })
-        }
+      for (var x = 0; x <= subData.length - 1; x++) {
+        $('.chk').each(function (i, obj) {
+          if (subData[x].ddm_rmp_lookup_ots_checkbox_values == $(obj).prop("value")) {
+            $(obj).prop("checked", true);
+          }
+        })
+      }
       var typeData = element["ots_data"]["distribution_data"];
       for (var i = 0; i <= typeData.length - 1; i++) {
         if (typeData[i].value == "Retail Only") {
@@ -1551,13 +1555,13 @@ export class OrderToSaleComponent implements OnInit {
         })
       });
       Utils.hideSpinner();
-    },err=>{
+    }, err => {
       Utils.hideSpinner();
     });
   }
 
   //====================================File Upload Functionality====================================================//
-  files() {
+  public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     var formData = new FormData();
     formData.append('file_upload', this.file);
@@ -1569,7 +1573,7 @@ export class OrderToSaleComponent implements OnInit {
     });
   }
 
-  disableCheck(id) {
+  public disableCheck(id) {
     let id_field = '#tod_check' + id
     if ($(id_field).prop("checked")) {
       return false;
@@ -1579,7 +1583,7 @@ export class OrderToSaleComponent implements OnInit {
     }
   }
 
-  Check($event, i, val) {
+  public Check($event, i, val) {
     if ($event.target.checked) {
       const id = `disSum${i}1`;
       const radioButton = <HTMLInputElement>document.getElementById(id);
@@ -1593,7 +1597,7 @@ export class OrderToSaleComponent implements OnInit {
     }
   }
 
-  previousSelections(requestId){
+  public previousSelections(requestId) {
     Utils.showSpinner();
     this.django.get_report_description(requestId).subscribe(element => {
       if(element['ost_data']){
@@ -1607,224 +1611,219 @@ export class OrderToSaleComponent implements OnInit {
           })
         })
 
-      this.merchandizeItemsSelect = []
-        this.merchandizeFinalList.forEach(eleMerch =>{
-          element['ost_data']['merchandizing_model'].forEach(resMerch=>{
-            if(eleMerch['ddm_rmp_lookup_dropdown_merchandising_model_id'] == resMerch['ddm_rmp_lookup_dropdown_merchandising_model']){
+        this.merchandizeItemsSelect = []
+        this.merchandizeFinalList.forEach(eleMerch => {
+          element['ost_data']['merchandizing_model'].forEach(resMerch => {
+            if (eleMerch['ddm_rmp_lookup_dropdown_merchandising_model_id'] == resMerch['ddm_rmp_lookup_dropdown_merchandising_model']) {
               this.merchandizeItemsSelect.push(eleMerch)
             }
           })
         })
 
-      this.selectedItemsVehicleLine = []
-        this.vehicleDataSelecteditems.forEach(eleVlb =>{
-          element['ost_data']['vehicle_line'].forEach(resVlb =>{
-            if(eleVlb['ddm_rmp_lookup_dropdown_vehicle_line_brand_id'] == resVlb['ddm_rmp_lookup_dropdown_vehicle_line_brand']){
+        this.selectedItemsVehicleLine = []
+        this.vehicleDataSelecteditems.forEach(eleVlb => {
+          element['ost_data']['vehicle_line'].forEach(resVlb => {
+            if (eleVlb['ddm_rmp_lookup_dropdown_vehicle_line_brand_id'] == resVlb['ddm_rmp_lookup_dropdown_vehicle_line_brand']) {
               this.selectedItemsVehicleLine.push(eleVlb)
             }
           })
         })
 
         this.selectedItemsModelYear = []
-          this.modelYearSelectedItems.forEach(eleModel =>{
-            element['ost_data']['model_year'].forEach(resModel =>{
-              if(eleModel['ddm_rmp_lookup_dropdown_model_year_id'] == resModel['ddm_rmp_lookup_dropdown_model_year']){
-                this.selectedItemsModelYear.push(eleModel)
-              }
-            })
+        this.modelYearSelectedItems.forEach(eleModel => {
+          element['ost_data']['model_year'].forEach(resModel => {
+            if (eleModel['ddm_rmp_lookup_dropdown_model_year_id'] == resModel['ddm_rmp_lookup_dropdown_model_year']) {
+              this.selectedItemsModelYear.push(eleModel)
+            }
           })
+        })
 
         this.selectedItemsOrderType = []
-          this.orderTypeSelecteditems.forEach(eleOrderType =>{
-            element['ost_data']['order_type'].forEach(resOrderType =>{
-              if(eleOrderType['ddm_rmp_lookup_dropdown_order_type_id'] == resOrderType['ddm_rmp_lookup_dropdown_order_type']){
-                this.selectedItemsOrderType.push(eleOrderType)
-              }
-            })
+        this.orderTypeSelecteditems.forEach(eleOrderType => {
+          element['ost_data']['order_type'].forEach(resOrderType => {
+            if (eleOrderType['ddm_rmp_lookup_dropdown_order_type_id'] == resOrderType['ddm_rmp_lookup_dropdown_order_type']) {
+              this.selectedItemsOrderType.push(eleOrderType)
+            }
           })
+        })
 
         this.selectedItemsOrderEvent = []
-          this.orderEvent.forEach(eleEvent =>{
-            element['ost_data']['order_event'].forEach(resEvent =>{
-              if(eleEvent['ddm_rmp_lookup_dropdown_order_event_id'] == resEvent['ddm_rmp_lookup_dropdown_order_event']){
-                this.selectedItemsOrderEvent.push(eleEvent)
-              }
-            })
+        this.orderEvent.forEach(eleEvent => {
+          element['ost_data']['order_event'].forEach(resEvent => {
+            if (eleEvent['ddm_rmp_lookup_dropdown_order_event_id'] == resEvent['ddm_rmp_lookup_dropdown_order_event']) {
+              this.selectedItemsOrderEvent.push(eleEvent)
+            }
           })
-          
-        if(element['ost_data']['allocation_group'][0]){
+        })
+
+        if (element['ost_data']['allocation_group'][0]) {
           this.otsObj.alloRadio = element['ost_data']['allocation_group'][0]['display_summary_value']
         }
-        if(element['ost_data']['model_year'][0]){
+        if (element['ost_data']['model_year'][0]) {
           this.otsObj.modelRadio = element['ost_data']['model_year'][0]['display_summary_value']
         }
-        if(element['ost_data']['division_selected'][0]){
+        if (element['ost_data']['division_selected'][0]) {
           this.otsObj.divisionRadio = element['ost_data']['division_selected'][0]['display_summary_value']
         }
-        if(element['ost_data']['vehicle_line'][0]){
+        if (element['ost_data']['vehicle_line'][0]) {
           this.otsObj.vlbRadio = element['ost_data']['vehicle_line'][0]['display_summary_value']
         }
-        if(element['ost_data']['merchandizing_model'][0]){
+        if (element['ost_data']['merchandizing_model'][0]) {
           this.otsObj.merchRadio = element['ost_data']['merchandizing_model'][0]['display_summary_value']
         }
-        if(element['ost_data']['order_type'][0]){
+        if (element['ost_data']['order_type'][0]) {
           this.otsObj.orderTypeRadio = element['ost_data']['order_type'][0]['display_summary_value']
         }
-        if(element['ost_data']['other_desc'][0]){
+        if (element['ost_data']['other_desc'][0]) {
           this.otsObj.otherDesc = element['ost_data']['other_desc'][0]['other_desc']
         }
 
-        if(element['ost_data']['checkbox_data']){
+        if (element['ost_data']['checkbox_data']) {
           var subData = element['ost_data']['checkbox_data']
         }
-       
+
         var temp = this.finalData;
         temp.checkbox_data = [];
-        for(var x=0; x <= subData.length - 1; x++){
+        for (var x = 0; x <= subData.length - 1; x++) {
           $('.chk').each(function (i, obj) {
-            if(subData[x]['ddm_rmp_lookup_ots_checkbox_values'] == obj.value){
+            if (subData[x]['ddm_rmp_lookup_ots_checkbox_values'] == obj.value) {
 
-              if(subData[x].description_text == ""){
+              if (subData[x].description_text == "") {
                 obj.checked = true;
                 this.Checkbox_selected = { "value": subData[x].checkbox_description, "id": subData[x].ddm_rmp_lookup_ots_checkbox_values, "desc": subData[x].description_text };
                 temp.checkbox_data.push(this.Checkbox_selected);
                 this.dosp_calendar_flag = false;
               }
-              else if(subData[x].description_text != ""){
-                if(subData[x].checkbox_description == 'Target Production Date'){
+              else if (subData[x].description_text != "") {
+                if (subData[x].checkbox_description == 'Target Production Date') {
                   obj.checked = true;
                   this.targetValue = subData[x].description_text
                   this.targetProd = false;
                 }
-                else{
+                else {
                   obj.checked = true;
                   (<HTMLTextAreaElement>(document.getElementById("drop" + subData[x].ddm_rmp_lookup_ots_checkbox_values.toString()))).value = subData[x]['description_text'];
                   (<HTMLTextAreaElement>(document.getElementById("drop" + subData[x].ddm_rmp_lookup_ots_checkbox_values.toString()))).removeAttribute("disabled")
                   this.Checkbox_selected = { "value": subData[x].checkbox_description, "id": subData[x].ddm_rmp_lookup_ots_checkbox_values, "desc": subData[x].description_text };
-                  temp.checkbox_data.push(this.Checkbox_selected); 
+                  temp.checkbox_data.push(this.Checkbox_selected);
                 }
               }
             }
-            
+
           })
         }
 
         //Key Element Calendar----------------
-          temp.data_date_range.StartDate = null;
-          temp.data_date_range.EndDate = null;
-          if(element['ost_data']['data_date_range'][0]['start_date']){
-            var dateStart = element['ost_data']['data_date_range'][0]['start_date'].toString();
-            let dateArr = dateStart.split("-");
-            let from = new Date(dateArr[0],dateArr[1]-1,dateArr[2]);
-            this.fromDate = new FormControl(moment(from));
-            this.minOrderEventDate = from;
-            this.startDate = from.getFullYear() + "-" + (from.getMonth()+1) + "-" + from.getDate();
-          }
+        temp.data_date_range.StartDate = null;
+        temp.data_date_range.EndDate = null;
+        if (element['ost_data']['data_date_range'][0]['start_date']) {
+          var dateStart = element['ost_data']['data_date_range'][0]['start_date'].toString();
+          let dateArr = dateStart.split("-");
+          let from = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]);
+          this.fromDate = new FormControl(moment(from));
+          this.minOrderEventDate = from;
+          this.startDate = from.getFullYear() + "-" + (from.getMonth() + 1) + "-" + from.getDate();
+        }
 
-          if(element['ost_data']['data_date_range'][0]['end_date']){
-            var dateEnd = element['ost_data']['data_date_range'][0]['end_date'].toString();
-            let dateArr = dateEnd.split("-");
-            let to = new Date(dateArr[0],dateArr[1]-1,dateArr[2]);
-            this.toDate = new FormControl(moment(to));
-            this.endDate = to.getFullYear() + "-" + (to.getMonth()+1) + "-" + to.getDate();
-            temp.data_date_range = { "StartDate": this.startDate, "EndDate": this.endDate };
-          }
+        if (element['ost_data']['data_date_range'][0]['end_date']) {
+          var dateEnd = element['ost_data']['data_date_range'][0]['end_date'].toString();
+          let dateArr = dateEnd.split("-");
+          let to = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]);
+          this.toDate = new FormControl(moment(to));
+          this.endDate = to.getFullYear() + "-" + (to.getMonth() + 1) + "-" + to.getDate();
+          temp.data_date_range = { "StartDate": this.startDate, "EndDate": this.endDate };
+        }
 
-          
 
-          //--------------------DOSP Calendar------------------------
-          temp.dosp_start_date = null;
-          temp.dosp_end_date = null;
 
-          if(element['ost_data']['data_date_range'][0]['dosp_start_date']){
-            var dateStartDOSP = element['ost_data']['data_date_range'][0]['dosp_start_date'].toString();
-            let dateArr = dateStartDOSP.split("-");
-            let from = new Date(dateArr[0],dateArr[1]-1,dateArr[2]);
-            this.fromDateDOSP = new FormControl(moment(from));
-            this.minDate = from;
-            this.startDateDOSP = from.getFullYear() + "-" + (from.getMonth()+1) + "-" + from.getDate();
-            temp.dosp_start_date = this.startDateDOSP;
-          }
+        //--------------------DOSP Calendar------------------------
+        temp.dosp_start_date = null;
+        temp.dosp_end_date = null;
 
-          if(element['ost_data']['data_date_range'][0]['dosp_end_date']){
-            var dateEndDOSP = element['ost_data']['data_date_range'][0]['dosp_end_date'].toString();
-            let dateArr = dateEndDOSP.split("-");
-            let to = new Date(dateArr[0],dateArr[1]-1,dateArr[2]);
-            this.toDateDOSP = new FormControl(moment(to));
-            this.endDateDOSP = to.getFullYear() + "-" + (to.getMonth()+1) + "-" + to.getDate();
-            temp.dosp_end_date = this.endDateDOSP;
-          }
-          
-          var disrtibutionData = element['ost_data']['distribution_data']
-          
-          for(var x=0; x <= disrtibutionData.length - 1; x++){
-            $('.tod_checkbox_group').each(function (i, obj) {
-              if(disrtibutionData[x]['ddm_rmp_lookup_ots_type_data'] == obj.value){
-                obj.checked = true
-                const id = `disSum${obj.value}1`;
-                const radioButton = <HTMLInputElement>document.getElementById(id);
-                radioButton.checked = true;
+        if (element['ost_data']['data_date_range'][0]['dosp_start_date']) {
+          var dateStartDOSP = element['ost_data']['data_date_range'][0]['dosp_start_date'].toString();
+          let dateArr = dateStartDOSP.split("-");
+          let from = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]);
+          this.fromDateDOSP = new FormControl(moment(from));
+          this.minDate = from;
+          this.startDateDOSP = from.getFullYear() + "-" + (from.getMonth() + 1) + "-" + from.getDate();
+          temp.dosp_start_date = this.startDateDOSP;
+        }
 
-            
-                this.distributionEntityCheckbox = {
-                  value: disrtibutionData[x]['value'],
-                  id: disrtibutionData[x]['ddm_rmp_lookup_ots_type_data'],
-                  radio: radioButton.value
-                };
-                temp.distribution_data.push(this.distributionEntityCheckbox);
-              }
-            })
-          }
-          
-          var report_data = element['report_data']
-          this.Report_title = report_data.title
-          this.Report_Req = report_data.additional_req
-          if(report_data.status == "Completed"){
-            this.report_status = "Pending"
-            this.assigned_to = ""
-          }
-          else if(report_data.status == "Active"){
-            this.report_status = "Active";
-            this.assigned_to = report_data.assigned_to
-          }
-          else{
-            this.report_status = "Pending"
-          }
+        if (element['ost_data']['data_date_range'][0]['dosp_end_date']) {
+          var dateEndDOSP = element['ost_data']['data_date_range'][0]['dosp_end_date'].toString();
+          let dateArr = dateEndDOSP.split("-");
+          let to = new Date(dateArr[0], dateArr[1] - 1, dateArr[2]);
+          this.toDateDOSP = new FormControl(moment(to));
+          this.endDateDOSP = to.getFullYear() + "-" + (to.getMonth() + 1) + "-" + to.getDate();
+          temp.dosp_end_date = this.endDateDOSP;
+        }
 
-          this.report_create = report_data.created_on
-          this.report_on_behalf = report_data.on_behalf_of
-          this.user_name = report_data.requestor
-        
-          // this.finalData['report_detail'] = { "title": this.Report_title,"status": this.report_status, 
-          // "additional_req": this.Report_Req, "report_type": "ots", "status_date": this.date, "created_on": this.report_create, 
-          // "on_behalf_of": this.report_on_behalf, "assigned_to": this.assigned_to, 
-          // "link_to_results": "", "query_criteria": "", "link_title": "", "requestor": this.user_name }
+        var disrtibutionData = element['ost_data']['distribution_data']
 
-          this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": this.otsObj.modelRadio }
-          this.finalData["division_selected"] = { "radio_button": this.otsObj.divisionRadio }
-          this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": this.otsObj.alloRadio }
-          this.finalData["vehicle_line"] = { "dropdown": this.selectedItemsVehicleLine, "radio_button": this.otsObj.vlbRadio }
-          this.finalData["merchandizing_model"] = { "dropdown": this.merchandizeItemsSelect, "radio_button": this.otsObj.merchRadio }
-          this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.otsObj.orderTypeRadio }
+        for (var x = 0; x <= disrtibutionData.length - 1; x++) {
+          $('.tod_checkbox_group').each(function (i, obj) {
+            if (disrtibutionData[x]['ddm_rmp_lookup_ots_type_data'] == obj.value) {
+              obj.checked = true
+              const id = `disSum${obj.value}1`;
+              const radioButton = <HTMLInputElement>document.getElementById(id);
+              radioButton.checked = true;
 
-        for(var x=0; x <= subData.length- 1; x++){
-          if(subData[x].checkbox_description == 'Target Production Date'){
+
+              this.distributionEntityCheckbox = {
+                value: disrtibutionData[x]['value'],
+                id: disrtibutionData[x]['ddm_rmp_lookup_ots_type_data'],
+                radio: radioButton.value
+              };
+              temp.distribution_data.push(this.distributionEntityCheckbox);
+            }
+          })
+        }
+
+        var report_data = element['report_data']
+        this.Report_title = report_data.title
+        this.Report_Req = report_data.additional_req
+        if (report_data.status == "Completed") {
+          this.report_status = "Pending"
+          this.assigned_to = ""
+        }
+        else if (report_data.status == "Active") {
+          this.report_status = "Active";
+          this.assigned_to = report_data.assigned_to
+        }
+        else {
+          this.report_status = "Pending"
+        }
+
+        this.report_create = report_data.created_on
+        this.report_on_behalf = report_data.on_behalf_of
+        this.user_name = report_data.requestor
+
+        this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": this.otsObj.modelRadio }
+        this.finalData["division_selected"] = { "radio_button": this.otsObj.divisionRadio }
+        this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": this.otsObj.alloRadio }
+        this.finalData["vehicle_line"] = { "dropdown": this.selectedItemsVehicleLine, "radio_button": this.otsObj.vlbRadio }
+        this.finalData["merchandizing_model"] = { "dropdown": this.merchandizeItemsSelect, "radio_button": this.otsObj.merchRadio }
+        this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.otsObj.orderTypeRadio }
+
+        for (var x = 0; x <= subData.length - 1; x++) {
+          if (subData[x].checkbox_description == 'Target Production Date') {
             this.targetProd = false
             this.targetValue = subData[x].description_text
             this.Checkbox_selected = { "value": subData[x].checkbox_description, "id": subData[x].ddm_rmp_lookup_ots_checkbox_values, "desc": this.targetValue };
-            temp.checkbox_data.push(this.Checkbox_selected); 
+            temp.checkbox_data.push(this.Checkbox_selected);
           }
         }
 
         this.finalData = temp
       }
       Utils.hideSpinner();
-    },err=>{
+    }, err => {
       Utils.hideSpinner();
     })
   }
 
-  setDropDownDefaultSettings(){
+  public setDropDownDefaultSettings() {
     this.dropdownSettingsOrderEvent = {
       singleSelection: false,
       primaryKey: 'ddm_rmp_lookup_dropdown_order_event_id',
@@ -1861,8 +1860,8 @@ export class OrderToSaleComponent implements OnInit {
       labelKey: 'model_year',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      enableSearchFilter: true ,
-      badgeShowLimit : 2
+      enableSearchFilter: true,
+      badgeShowLimit: 2
     };
 
     this.dropdownSettingsOrderType = {
@@ -1884,7 +1883,6 @@ export class OrderToSaleComponent implements OnInit {
       badgeShowLimit: 2,
       enableSearchFilter: true
     };
-
   }
 }
 

@@ -842,11 +842,9 @@ export class ReportsComponent implements OnInit {
 
   /*--------------Query Criteria repeated--------------*/
   query_criteria_report(query_report_id) {
-    console.log(query_report_id, 'query_report_id----');
     this.spinner.show();
     this.summary = [];
     this.django.get_report_description(query_report_id).subscribe(response => {
-      console.log(response, 'response-------**************');
       this.summary = response;
       this.spinner.hide();
 
@@ -1101,10 +1099,8 @@ export class ReportsComponent implements OnInit {
         this.fan_desc = []
       }
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      console.log(this.summary, 'summary------------');
 
     }, err => {
-      console.log(err, 'error *************');
       this.spinner.hide()
     })
   }

@@ -1,0 +1,37 @@
+<div class="disclaimer-wrapper">
+    <div class="disclaimer-header" style="">
+        <span class="">Steps to Submit a Request and View Results</span>
+        <div>
+            <button mat-icon-button style="margin-right: 15px;">
+                <mat-icon  class="notification-icon">edit</mat-icon>
+            </button>
+            <button mat-icon-button style="margin-right: 15px;">
+                <mat-icon  class="notification-icon">help</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="disclaimer-body">
+        <p class=""><br>Before you submit a request...<br></p>
+        <p >Read <a class="custom-link" (click)='openDisclaimerModal()'
+            style="cursor:pointer">Disclaimers</a>
+            and click the Acknowledge button when complete</p>
+
+            <div class="quillEditorSubmit">
+                <quill-editor class="quill" [(ngModel)]='submitReqDesc' [modules]='config' [readOnly]='readOnlyContent'
+                  (onContentChanged)='textChanged($event)'></quill-editor>
+                <div>
+                    <button mat-raised-button [cssBtn]="'ok'">Save</button>
+                    <button  mat-raised-button [cssBtn]="'cancel'">Cancel</button>
+                </div>
+                </div>
+          
+    </div>
+    <div>
+        <!-- <button  mat-raised-button color="primary">Proceed to select report criteria</button> -->
+        <button mat-raised-button 
+        *ngIf="true"
+      [cssBtn]="'ok'" >
+      Proceed to select report criteria
+      </button>
+    </div>
+</div>

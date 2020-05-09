@@ -1,37 +1,34 @@
 <div class="disclaimer-wrapper">
-    <div class="disclaimer-header" style="">
+    <div class="disclaimer-header" style="height: 80px;padding: 0px 35px;">
         <span class="">Steps to Submit a Request and View Results</span>
         <div>
-            <button mat-icon-button style="margin-right: 15px;">
-                <mat-icon  class="notification-icon">edit</mat-icon>
+            <button mat-icon-button style="margin-right: 15px;" matTooltip="edit">
+                <mat-icon class="notification-icon">edit</mat-icon>
             </button>
-            <button mat-icon-button style="margin-right: 15px;">
-                <mat-icon  class="notification-icon">help</mat-icon>
+            <button mat-icon-button style="" (click)='openDisclaimerHelpModal()' matTooltip="help">
+                <mat-icon class="notification-icon">help</mat-icon>
             </button>
         </div>
     </div>
-    <div class="disclaimer-body">
+    <div class="disclaimer-body" style="height: calc(100% - 150px);overflow: auto;padding: 0px 35px;">
         <p class=""><br>Before you submit a request...<br></p>
-        <p >Read <a class="custom-link" (click)='openDisclaimerModal()'
-            style="cursor:pointer">Disclaimers</a>
+        <p>Read <a class="custom-link" (click)='openDisclaimerModal()' style="cursor:pointer">Disclaimers</a>
             and click the Acknowledge button when complete</p>
 
-            <div class="quillEditorSubmit">
-                <quill-editor class="quill" [(ngModel)]='submitReqDesc' [modules]='config' [readOnly]='readOnlyContent'
-                  (onContentChanged)='textChanged($event)'></quill-editor>
-                <div>
-                    <button mat-raised-button [cssBtn]="'ok'">Save</button>
-                    <button  mat-raised-button [cssBtn]="'cancel'">Cancel</button>
-                </div>
-                </div>
-          
+        <div class="quillEditorSubmit">
+            <quill-editor class="quill" [(ngModel)]='submitReqDesc' [modules]='config' [readOnly]='readOnlyContent'
+                (onContentChanged)='textChanged($event)'></quill-editor>
+            <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre">
+                <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;">Save</button>
+                <button mat-raised-button [cssBtn]="'cancel'">Cancel</button>
+            </div>
+        </div>
+
     </div>
-    <div>
+    <div class="disclaimer-footer ds-flex-centre" style="height: 70px;">
         <!-- <button  mat-raised-button color="primary">Proceed to select report criteria</button> -->
-        <button mat-raised-button 
-        *ngIf="true"
-      [cssBtn]="'ok'" >
-      Proceed to select report criteria
-      </button>
+        <button mat-raised-button [cssBtn]="'ok'" style="background-color: #144214 !important">
+            Proceed to select report criteria
+        </button>
     </div>
 </div>

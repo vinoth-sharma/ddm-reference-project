@@ -1,0 +1,19 @@
+<div class="modal-container">
+    <div class="modal-header" style="font-size: 22px;">
+        Help
+      <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
+    </div>
+    <div class="modal-body">
+        <div class="quillEditorSubmit">
+            <quill-editor class="quill" [(ngModel)]='disclaimerHelpDesc' [modules]='config' [readOnly]='readOnlyContent'
+              (onContentChanged)='textChanged($event)'></quill-editor>
+            <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre">
+                <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;">Save</button>
+                <button  mat-raised-button [cssBtn]="'cancel'">Cancel</button>
+            </div>
+            </div>
+    </div>
+    <div class="modal-footer">
+      <button [cssBtn]="'cancel'" mat-raised-button (click)="closeDailog();">Close</button>
+    </div>
+  </div>

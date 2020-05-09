@@ -41,6 +41,7 @@ import { ManageNotesComponent } from './admin-notes/manage-notes/manage-notes.co
 import { DisclaimerModalComponent } from "./submit-request/disclaimer-modal/disclaimer-modal.component";
 import { DisclaimerWrapperComponent } from "./submit-request/disclaimer-wrapper/disclaimer-wrapper.component";
 import { SubmitRequestWrapperComponent } from "./submit-request/submit-request-wrapper/submit-request-wrapper.component";
+import { DisclaimerHelpModalComponent } from './submit-request/disclaimer-help-modal/disclaimer-help-modal.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { SubmitRequestWrapperComponent } from "./submit-request/submit-request-w
     ManageNotesComponent,
     DisclaimerModalComponent,
     DisclaimerWrapperComponent,
-    SubmitRequestWrapperComponent
+    SubmitRequestWrapperComponent,
+    DisclaimerHelpModalComponent
   ],
   imports: [
     QuillModule.forRoot(),
@@ -93,6 +95,6 @@ import { SubmitRequestWrapperComponent } from "./submit-request/submit-request-w
     DatePipe,
     DataProviderService
   ],
-  entryComponents: [DisplayNotesComponent, NotesWrapperComponent,DisclaimerModalComponent]
+  entryComponents: [DisplayNotesComponent, NotesWrapperComponent,DisclaimerModalComponent,DisclaimerHelpModalComponent]
 })
 export class RMPModule { }

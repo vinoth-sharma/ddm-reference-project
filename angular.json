@@ -25,6 +25,7 @@
             "styles": [
               "src/styles.css",
               "src/reports-mat.css",
+              "src/custom-class.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/quill/dist/quill.bubble.css",
               "node_modules/quill/dist/quill.snow.css"
@@ -80,6 +81,7 @@
             "karmaConfig": "src/karma.conf.js",
             "styles": [
               "src/styles.css",
+              "src/custom-class.css",
               "src/reports-mat.css"
             ],
             "scripts": [

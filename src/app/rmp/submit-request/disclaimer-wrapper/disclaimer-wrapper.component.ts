@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DisclaimerModalComponent } from '../disclaimer-modal/disclaimer-modal.component';
+import { DisclaimerHelpModalComponent } from '../disclaimer-help-modal/disclaimer-help-modal.component';
 
 @Component({
   selector: 'app-disclaimer-wrapper',
@@ -38,6 +39,14 @@ export class DisclaimerWrapperComponent implements OnInit {
       data: ""
     })
   }
+
+  openDisclaimerHelpModal(){
+    this.dialog.open(DisclaimerHelpModalComponent, {
+      data: ""
+    })
+  }
+
+  
 
   textChanged(){
 

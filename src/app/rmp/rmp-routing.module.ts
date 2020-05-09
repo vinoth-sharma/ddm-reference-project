@@ -16,6 +16,7 @@ import { DealerAllocationComponent } from './Submit/dealer-allocation/dealer-all
 import { OrderToSaleComponent } from './Submit/order-to-sale/order-to-sale.component';
 import { SelectReportCriteriaComponent } from './Submit/select-report-criteria/select-report-criteria.component';
 import { SubmitLandingPageComponent } from './Submit/submit-landing-page/submit-landing-page.component';
+import { DisclaimerWrapperComponent } from './submit-request/disclaimer-wrapper/disclaimer-wrapper.component';
 
 export const RMP_Routes = [
   {
@@ -33,12 +34,12 @@ export const RMP_Routes = [
         ]
       },
       {
-        path: 'submit-request', component: SubmitRequestComponent,
+        path: 'submit-request', component: DisclaimerWrapperComponent,
         children: [
           { path: 'select-report-criteria', component: SelectReportCriteriaComponent },
           { path: 'dealer-allocation', component: DealerAllocationComponent },
           { path: 'order-to-sale', component: OrderToSaleComponent },
-          { path: '', component: SubmitLandingPageComponent }
+          // { path: '', component: SubmitLandingPageComponent }
         ]
       },
       { path: 'request-status', component: RequestStatusComponent },

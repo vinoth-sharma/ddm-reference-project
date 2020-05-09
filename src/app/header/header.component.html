@@ -5,8 +5,18 @@
       Order Fulfillment Distribution Data Mart
     </div>
   </div>
-  <div class="header-cont-part" style="justify-content: flex-end;">
-    <button mat-icon-button style="margin-right: 55px;" [matMenuTriggerFor]="notifcations">
+  <div style="" class="menu-container">
+    <a routerLink="main" routerLinkActive="active"><button mat-button>Main
+        Menu</button></a>
+    <a routerLink="submit-request" routerLinkActive="active"><button mat-button>Submit
+        Request</button></a>
+    <a routerLink="request-status" routerLinkActive="active"><button mat-button>Request
+        Status</button></a>
+    <a routerLink="reports" routerLinkActive="active"><button mat-button>Reports</button></a>
+    <a *ngIf="user_role=='Admin'" routerLink="metrics" routerLinkActive="active"><button mat-button>Metrics</button></a>
+  </div>
+  <div class="header-cont-part" style="justify-content: flex-end; width: 25%;">
+    <button mat-icon-button style="margin-right: 15px;" [matMenuTriggerFor]="notifcations">
       <mat-icon [matBadge]="notification_number" matBadgeColor="warn" class="notification-icon">notifications_active
       </mat-icon>
     </button>

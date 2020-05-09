@@ -9,7 +9,7 @@
                 0px 1px 18px 0px rgba(0,0,0,0.72)
 }
 #DDM_logo{
-    width: 85px;
+    width: 64px;
     height: 100%;
     cursor: pointer;
 }
@@ -19,12 +19,12 @@
 }
 .header-title{
     color: white;
-    font-size: 24px;
+    font-size: 1.4em;
     font-weight: 800;
     margin-left: 20px;
 }
 .header-cont-part{
-    width: 50%;
+    /* width: 50%; */
     display: flex;
     align-items: center;
 }
@@ -46,7 +46,18 @@
     max-height: 296px !important;
     max-width: 350px !important;
 }
-
+.menu-container{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.menu-container a{
+    color: white;
+}
+.menu-container a button{
+    font-weight: 700;
+}
 
 /* #tp{
     background-color: linear-gradient(rgb(27, 116, 206), rgb(133, 187, 241));

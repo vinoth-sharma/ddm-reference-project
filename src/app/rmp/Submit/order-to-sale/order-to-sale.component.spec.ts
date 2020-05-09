@@ -10,13 +10,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { QuillModule } from 'ngx-quill';
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
-// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MaterialModule } from "../../../material.module";
 import { DatePipe } from '@angular/common'
 import { of } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import Utils from "../../../../utils";
 
+// Angular test cases written by Ganesha
 describe('OrderToSaleComponent', () => {
   let component: OrderToSaleComponent;
   let fixture: ComponentFixture<OrderToSaleComponent>;

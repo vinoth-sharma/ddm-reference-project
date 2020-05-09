@@ -1,3 +1,4 @@
+// Migrated by Ganesha
 import { Component, OnInit } from '@angular/core';
 import "../../../../assets/debug2.js";
 declare var jsPDF: any;
@@ -11,7 +12,7 @@ import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toa
 import Utils from "../../../../utils";
 import { ReportCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as Rx from "rxjs";
-import { AuthenticationService } from "src/app/authentication.service";
+import { AuthenticationService } from "src/app/authentication.service";// Migrated by Ganesha
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';

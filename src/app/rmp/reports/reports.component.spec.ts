@@ -101,21 +101,21 @@ describe('ReportsComponent', () => {
   });
 
 
-  // it('should create', () => {
-  //   spyOn(component, "ngOnInit")
-  //   expect(component).toBeTruthy();
-  //   expect(component.editModes).toBeFalsy();
-  //   let authService = TestBed.inject(AuthenticationService);
-  //   let dataService = TestBed.inject(DataProviderService);
-  //   let userData = { role: "admin" }
-  //   let lookuptabledata = { data: { report_frequency: "report_frequency", desc_text: [{ ddm_rmp_desc_text_id: "22", description: "desc1" }, { ddm_rmp_desc_text_id: "23", description: "desc2" }] }, flag: "is_admin" }
-  //   dataService.changelookUpTableData(lookuptabledata);
-  //   authService.myMethod(userData, null, null);
-  //   expect(component.user_role).toEqual('admin');
-  //   expect(component.content).toEqual(lookuptabledata);
-  //   expect(component.frequency_selections).toEqual(lookuptabledata.data.report_frequency);
-  //   expect(component.original_contents).toEqual(lookuptabledata.data.desc_text[1].description)
-  // });
+  it('should create', () => {
+    spyOn(component, "ngOnInit")
+    expect(component).toBeTruthy();
+    expect(component.editModes).toBeFalsy();
+    let authService = TestBed.inject(AuthenticationService);
+    let dataService = TestBed.inject(DataProviderService);
+    let userData = { role: "admin" }
+    let lookuptabledata = { data: { report_frequency: "report_frequency", desc_text: [{ ddm_rmp_desc_text_id: "22", description: "desc1" }, { ddm_rmp_desc_text_id: "23", description: "desc2" }] }, flag: "is_admin" }
+    dataService.changelookUpTableData(lookuptabledata);
+    authService.myMethod(userData, null, null);
+    expect(component.user_role).toEqual('admin');
+    expect(component.content).toEqual(lookuptabledata);
+    expect(component.frequency_selections).toEqual(lookuptabledata.data.report_frequency);
+    expect(component.original_contents).toEqual(lookuptabledata.data.desc_text[1].description)
+  });
 
   it("should return values", () => {
     expect(component.getValues({ a: "a", b: "b" })).toEqual(['a', 'b'])

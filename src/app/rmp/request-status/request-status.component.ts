@@ -1,3 +1,4 @@
+// Migrated by Ganesha
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common';

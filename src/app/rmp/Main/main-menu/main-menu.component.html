@@ -1,7 +1,7 @@
-<div class="flex-container row tool-body" style="    width: 100%;">
+<div class="flex-container tool-body" style="">
     <!--                            Left Tabs                                 -->
     <div class="left-tabs">
-        <div class="tabs">
+        <div class="tabs-list-container">
             <a routerLink="ddm" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button
                     class="btn btn-primary">What is DDM?</button></a>
             <a routerLink="user-profile" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button
@@ -21,7 +21,7 @@
         </div>
     </div>
     <!--                            Main Body Content                         -->
-    <div class="main-tool-body" style="height:100%">
+    <div class="main-tool-body" >
         <router-outlet></router-outlet>
     </div>
 </div>

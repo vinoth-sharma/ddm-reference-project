@@ -1,11 +1,11 @@
 .modal-container{
     width: 60vw;
-    height: 70vh;
+    /* height: 70vh; */
     overflow: hidden;
 }
 .modal-body{
-    height: 74%;
-    overflow: hidden;
+    /* height: 74%; */
+    overflow: auto;
 }
 ::ng-deep quill-editor .ql-container.ql-snow{
     height: 160px;

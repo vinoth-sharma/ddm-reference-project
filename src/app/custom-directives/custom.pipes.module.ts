@@ -10,14 +10,17 @@ import { OrderByPipe } from "./filters/order-by.pipe";
 import { CustomCookieService } from "./ng-custom-cookies-service/custom.cookies.service";
 import { NgTimePickerComponent } from './ng-time-picker/ng-time-picker.component';
 import { FormsModule } from '@angular/forms';
+import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
 
 @NgModule({
     declarations : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,
-                    NgCustomSpinnerComponent,OrderByPipe, NgTimePickerComponent],
+                    NgCustomSpinnerComponent,OrderByPipe, NgTimePickerComponent,ConfirmationDialogComponent],
     providers:[NgLoaderService,CustomCookieService],
     imports : [MaterialModule,FormsModule],
     exports : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,
-        NgCustomSpinnerComponent,MaterialModule,OrderByPipe,NgTimePickerComponent]
+        NgCustomSpinnerComponent,MaterialModule,OrderByPipe,NgTimePickerComponent,ConfirmationDialogComponent],
+    entryComponents:[ConfirmationDialogComponent]
+
 })
 export class CustomPipeModules{
 

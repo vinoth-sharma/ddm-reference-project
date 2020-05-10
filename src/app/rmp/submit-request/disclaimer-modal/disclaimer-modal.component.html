@@ -4,7 +4,29 @@
       <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
     </div>
     <div class="modal-body">
+      <div style="text-align: center;">
+        <button mat-raised-button>Acknowledge Disclaimers</button>
+      </div>
+      <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre">
+        <ng-container *ngIf="showEditOption">
+        <button mat-icon-button style="margin-right: 15px;" matTooltip="edit" 
+          (click)="showEditOption=!showEditOption">
+          <mat-icon class="notification-icon">edit</mat-icon>
+        </button>
+        <button mat-icon-button style="margin-right: 15px;" matTooltip="Download Disclaimers"
+        (click)="downloadDisclaimer()">
+        <mat-icon class="notification-icon">get_app</mat-icon>
+        </button>
+      </ng-container>
+        <ng-container *ngIf="!showEditOption">
+          <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;"
+            (click)="confirmDisclaimerSubmit()">Save</button>
+          <button mat-raised-button [cssBtn]="'cancel'" (click)="showEditOption=true">Cancel</button>
+        </ng-container>
 
+      </div>
+      <quill-editor class="quill" [(ngModel)]="submitReqDisclaimerObj.description" [modules]='config'
+        [readOnly]="showEditOption" (onContentChanged)='textChanged($event)'></quill-editor>
     </div>
     <div class="modal-footer">
       <button [cssBtn]="'cancel'" mat-raised-button (click)="closeDailog();">Close</button>

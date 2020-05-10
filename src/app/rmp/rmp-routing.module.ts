@@ -17,6 +17,7 @@ import { OrderToSaleComponent } from './Submit/order-to-sale/order-to-sale.compo
 import { SelectReportCriteriaComponent } from './Submit/select-report-criteria/select-report-criteria.component';
 import { SubmitLandingPageComponent } from './Submit/submit-landing-page/submit-landing-page.component';
 import { DisclaimerWrapperComponent } from './submit-request/disclaimer-wrapper/disclaimer-wrapper.component';
+import { SubmitRequestWrapperComponent } from './submit-request/submit-request-wrapper/submit-request-wrapper.component';
 
 export const RMP_Routes = [
   {
@@ -34,7 +35,9 @@ export const RMP_Routes = [
         ]
       },
       {
-        path: 'submit-request', component: DisclaimerWrapperComponent,
+        path: 'disclaimer', component: DisclaimerWrapperComponent
+      },{
+        path: 'submit-request', component: SubmitRequestWrapperComponent,
         children: [
           { path: 'select-report-criteria', component: SelectReportCriteriaComponent },
           { path: 'dealer-allocation', component: DealerAllocationComponent },

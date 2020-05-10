@@ -5,7 +5,7 @@
     </div>
     <div class="modal-body">
       <div style="text-align: center;">
-        <button mat-raised-button>Acknowledge Disclaimers</button>
+        <button mat-raised-button (click)="acknowledgeDisclaimer()">Acknowledge Disclaimers</button>
       </div>
       <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre">
         <ng-container *ngIf="showEditOption">

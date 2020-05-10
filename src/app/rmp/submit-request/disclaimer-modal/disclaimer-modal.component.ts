@@ -39,6 +39,10 @@ export class DisclaimerModalComponent implements OnInit {
     description : ""
   }
 
+  disclaimerAckObj = {
+    disclaimer_ack : undefined
+  }
+
   constructor(public dialogRef: MatDialogRef<DisclaimerModalComponent>,
     public subReqService: SubmitRequestService,
     private toaster: NgToasterComponent,
@@ -53,6 +57,19 @@ export class DisclaimerModalComponent implements OnInit {
      if(element.ddm_rmp_desc_text_id === 15)
       this.submitReqDisclaimerObj.description = element.description
    });
+  }
+
+  acknowledgeDisclaimer(){
+    this.disclaimerAckObj.disclaimer_ack = new Date();
+    Utils.showSpinner();
+    this.django.user_info_disclaimer(this.disclaimerAckObj).subscribe(response => {
+    
+      Utils.hideSpinner()
+      this.toaster.success("Acknowledge Disclaimers successfull");
+    },err=>{
+      Utils.hideSpinner()
+      this.toaster.success("server error");
+    })
   }
 
   confirmDisclaimerSubmit(){

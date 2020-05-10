@@ -42,6 +42,7 @@ import { DisclaimerModalComponent } from "./submit-request/disclaimer-modal/disc
 import { DisclaimerWrapperComponent } from "./submit-request/disclaimer-wrapper/disclaimer-wrapper.component";
 import { SubmitRequestWrapperComponent } from "./submit-request/submit-request-wrapper/submit-request-wrapper.component";
 import { DisclaimerHelpModalComponent } from './submit-request/disclaimer-help-modal/disclaimer-help-modal.component';
+import { VehicleEventStatusComponent } from './submit-request/vehicle-event-status/vehicle-event-status.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { DisclaimerHelpModalComponent } from './submit-request/disclaimer-help-m
     DisclaimerModalComponent,
     DisclaimerWrapperComponent,
     SubmitRequestWrapperComponent,
-    DisclaimerHelpModalComponent
+    DisclaimerHelpModalComponent,
+    VehicleEventStatusComponent
   ],
   imports: [
     QuillModule.forRoot(),

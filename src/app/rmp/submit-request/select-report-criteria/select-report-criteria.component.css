@@ -1,0 +1,24 @@
+.src-header{
+
+}
+.src-row-1 angular4-multiselect{
+    /* width: 15%; */
+}
+.src-row-1 table td{
+    padding: 20px;
+}
+
+.src-row-1 table td div{
+    padding: 15px 0px;
+    color: grey;
+    font-size: 16px;
+    font-weight: 700;
+}
+.first-half {
+    float: left;
+    width: 50%;
+}
+.second-half {
+    float: right;
+    width: 50%;
+}

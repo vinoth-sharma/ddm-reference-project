@@ -11,6 +11,7 @@ import { ClickOutsideDirective, ScrollDirective, styleDirective, SetPosition } f
 import { ListFilterPipe } from './list-filter';
 import { Item, Badge, Search, TemplateRenderer } from './menu-item';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatIconModule } from '@angular/material/icon';
 
 export const DROPDOWN_CONTROL_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -414,7 +415,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
 }
 
 @NgModule({
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule,MatIconModule],
     // tslint:disable-next-line:max-line-length
     declarations: [AngularMultiSelect, ClickOutsideDirective, ScrollDirective, styleDirective,
         ListFilterPipe, Item, TemplateRenderer, Badge, Search, SetPosition],

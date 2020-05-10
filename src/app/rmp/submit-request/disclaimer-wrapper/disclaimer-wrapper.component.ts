@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DisclaimerModalComponent } from '../disclaimer-modal/disclaimer-modal.component';
 import { DisclaimerHelpModalComponent } from '../disclaimer-help-modal/disclaimer-help-modal.component';
+import Utils from '../../../../utils';
+import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
+import { DjangoService } from '../../django.service';
+import { SubmitRequestService } from "../submit-request.service";
 
 @Component({
   selector: 'app-disclaimer-wrapper',
@@ -25,13 +29,34 @@ export class DisclaimerWrapperComponent implements OnInit {
       ['image']
     ]
   };
+  public showEditOption:boolean = true;
 
-  submitReqDesc = "";
+  public submitReqDescObj = {
+    ddm_rmp_desc_text_id : 3,
+    module_name : "Submit Request",
+    description : ""
+  };
+  public l_lookupTableData:any = {};
 
-  constructor(
+  constructor( private toaster: NgToasterComponent,
+    private django: DjangoService,
+    private subReqService: SubmitRequestService,
     private dialog: MatDialog) {}
 
   ngOnInit(): void {
+    Utils.showSpinner();
+    this.subReqService.loadLookUpTableData().subscribe(res=>{
+      this.l_lookupTableData = res.data;
+      console.log(this.l_lookupTableData);
+      this.l_lookupTableData.desc_text.forEach(element => {
+        if(element.ddm_rmp_desc_text_id === 3)
+         this.submitReqDescObj.description = element.description
+      });
+
+      Utils.hideSpinner();
+    },err=>{
+      Utils.hideSpinner();
+    })
   }
 
   openDisclaimerModal(){
@@ -46,6 +71,16 @@ export class DisclaimerWrapperComponent implements OnInit {
     })
   }
 
+  saveSubmitReqDesc(){
+
+    this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDescObj).subscribe(response => {
+      Utils.hideSpinner()
+      this.toaster.success("Updated Successfully");
+    }, err => {
+      Utils.hideSpinner()
+      this.toaster.error("Server Error");
+    })
+  }
   
 
   textChanged(){

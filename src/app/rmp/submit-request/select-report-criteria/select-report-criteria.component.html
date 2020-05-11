@@ -9,64 +9,103 @@
         <!-- <caption>Life Expectancy By Current Age</caption> -->
         <tr>
             <td>
-                <div>{{ market_settings.text }}</div>
+                <div class="dropdown-title">{{ market_settings.text }}</div>
                 <angular4-multiselect [data]="filtered_master_data.market" [(ngModel)]="selected.market"
-                [settings]="market_settings">
-                <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    [settings]="market_settings">
+                    <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
                 </angular4-multiselect>
             </td>
             <td>
-                <div>{{ division_settings.text }}</div>
+                <div class="dropdown-title">{{ division_settings.text }}</div>
                 <angular4-multiselect [data]="filtered_master_data.division" [(ngModel)]="selected.division"
-                [settings]="division_settings">
-                <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    [settings]="division_settings">
+                    <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
                 </angular4-multiselect>
             </td>
             <td>
-                <div>{{ region_settings.text }}</div>
+                <div class="dropdown-title">{{ region_settings.text }}</div>
                 <angular4-multiselect [data]="filtered_master_data.region" [(ngModel)]="selected.region"
-                [settings]="region_settings">
-                <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    [settings]="region_settings">
+                    <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
                 </angular4-multiselect>
             </td>
             <td>
-                <div>{{ zone_settings.text }}</div>
+                <div class="dropdown-title">{{ zone_settings.text }}</div>
                 <angular4-multiselect [data]="filtered_master_data.zone" [(ngModel)]="selected.zone"
-                [settings]="zone_settings">
-                <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    [settings]="zone_settings">
+                    <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
                 </angular4-multiselect>
             </td>
             <td>
-                <div>{{ area_settings.text }}</div>
+                <div class="dropdown-title">{{ area_settings.text }}</div>
                 <angular4-multiselect [data]="filtered_master_data.area" [(ngModel)]="selected.area"
-                [settings]="area_settings">
-                <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    [settings]="area_settings">
+                    <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
                 </angular4-multiselect>
             </td>
         </tr>
         <tr>
             <td>
-                <div>{{ gmma_settings.text }}</div>
+                <div class="dropdown-title">{{ gmma_settings.text }}</div>
                 <angular4-multiselect [data]="filtered_master_data.gmma" [(ngModel)]="selected.gmma"
-                [settings]="gmma_settings">
-                <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    [settings]="gmma_settings">
+                    <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
                 </angular4-multiselect>
             </td>
             <td>
-                <div>{{ lma_settings.text }}</div>
+                <div class="dropdown-title">{{ lma_settings.text }}</div>
                 <angular4-multiselect [data]="filtered_master_data.lma" [(ngModel)]="selected.lma"
-                [settings]="lma_settings">
-                <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    [settings]="lma_settings">
+                    <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
                 </angular4-multiselect>
             </td>
             <td colspan="3">
                 <div class="first-half">
                     <app-ng-chips></app-ng-chips>
+                    <div class="ds-flex-centre">
+                        <div style="width: 50%;">Do you only want Business Elite Dealers?</div>
+                        <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
+                        <mat-radio-button value="Yes">Yes</mat-radio-button>
+                        <mat-radio-button value="No">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="ds-flex-centre" style="margin-top: 10px">
+                        <div style="width: 50%;">Do you want All Dealers and the Business Elite Dealers Identified?</div>
+                        <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
+                        <mat-radio-button value="Yes">Yes</mat-radio-button>
+                        <mat-radio-button value="No">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    
                 </div>
                 <div class="second-half">
                     <app-ng-chips></app-ng-chips>
+                    <div class="ds-flex-centre">
+                        <div style="width: 50%;">Based on Primary FAN?</div>
+                        <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
+                        <mat-radio-button value="Yes">Yes</mat-radio-button>
+                        <mat-radio-button value="No">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="ds-flex-centre" style="margin-top: 10px">
+                        <div style="width: 50%;">Do you want All Dealers and the Business Elite Dealers Identified?</div>
+                        <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
+                        <mat-radio-button value="Yes">Yes</mat-radio-button>
+                        <mat-radio-button value="No">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
                 </div>
             </td>
         </tr>
-</table>
+    </table>
+</div>
+<mat-divider></mat-divider>
+<div class="frequency-wrapper">
+    <div style="width: 50%;">
+        <div>Add email</div>
+        <app-ng-chips></app-ng-chips>
+    </div>
+    <div style="width: 50%;">
+        <app-report-frequency></app-report-frequency>
+    </div>
 </div>

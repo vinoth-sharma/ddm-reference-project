@@ -44,7 +44,8 @@ import { SubmitRequestWrapperComponent } from "./submit-request/submit-request-w
 import { DisclaimerHelpModalComponent } from './submit-request/disclaimer-help-modal/disclaimer-help-modal.component';
 import { VehicleEventStatusComponent } from './submit-request/vehicle-event-status/vehicle-event-status.component';
 import { SelectReportCriteriaComp } from "./submit-request/select-report-criteria/select-report-criteria.component";
-import { NgChipsComponent } from './submit-request/ng-chips/ng-chips.component';
+import { NgChipsComponent } from './submit-request/sub-components/ng-chips/ng-chips.component';
+import { ReportFrequencyComponent } from './submit-request/sub-components/report-frequency/report-frequency.component';
 @NgModule({
   declarations: [
     RmpLandingPageComponent,
@@ -75,7 +76,8 @@ import { NgChipsComponent } from './submit-request/ng-chips/ng-chips.component';
     DisclaimerHelpModalComponent,
     VehicleEventStatusComponent,
     SelectReportCriteriaComp,
-    NgChipsComponent
+    NgChipsComponent,
+    ReportFrequencyComponent
   ],
   imports: [
     QuillModule.forRoot(),

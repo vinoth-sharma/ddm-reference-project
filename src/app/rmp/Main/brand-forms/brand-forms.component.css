@@ -1,0 +1,41 @@
+.page-position{
+    width: 50%;
+    padding-left: 5vh;
+}
+
+/* .alignLeft{
+    max-height: 55vh;
+    max-width: 50vh;
+    overflow: auto;
+} */
+
+p {
+    width : 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.inter-spacing{
+    max-height: 55vh;
+    /* max-width: 50vh; */
+    overflow: auto;
+}
+
+.header-spacing{
+    max-height: 55vh;
+    max-width: 75vh;
+    overflow: auto;
+}
+
+.ddm-report-name{
+    width: 75vw;
+}
+
+th {
+    width: 50%;
+}
+
+/* .form-control{
+    width: 50%;
+} */

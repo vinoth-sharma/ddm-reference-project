@@ -1,10 +1,11 @@
 .submit-request-wrapper{
-    font-size: 1.7vmin;
-    width: calc(100% - 70px);
+    width: calc(100% - 140px);
     height: calc(100% - 70px);
-    margin: 35px;
+    margin: 35px 70px;
+    background: white;
+    box-shadow: 0 0 4px #d3d3d3;
     /* border: 1px solid; */
-    box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.61), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+    /* box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.61), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12); */
 }
 .submit-request-header{
     display: flex;

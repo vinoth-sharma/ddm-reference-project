@@ -1,5 +1,9 @@
 .src-header{
-
+    display: flex;
+    justify-content : space-between;
+    font-size: 2.4vmin;
+    margin:20px 0px 5px;
+    /* padding: 20px; */
 }
 .src-row-1 angular4-multiselect{
     /* width: 15%; */
@@ -25,10 +29,13 @@
     width: 45%;
 }
 .src-radio-group{
-    justify-content: space-around;
+    justify-content: flex-end;
     display: flex;
     width: 50%;
 }
 .frequency-wrapper{
     display: flex;
+}
+mat-radio-button{
+    margin-left: 15px;
 }

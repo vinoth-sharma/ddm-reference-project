@@ -1,0 +1,120 @@
+<div style="font-size: 1.7vmin;" id="select-report-criteria">
+
+    <div class="src-header padding20" style="">
+        <div>Report Criteria</div>
+        <button mat-stroked-button color="primary">Clear</button>
+    </div>
+    <div class="padding20">Selections can be used to generate Vehicle Event Status or Dealer Allocation Requests</div>
+    <div class="src-row-1">
+
+        <table style="width: 100%;">
+            <!-- <caption>Life Expectancy By Current Age</caption> -->
+            <tr>
+                <td>
+                    <div class="dropdown-title">Market Selection</div>
+                    <angular4-multiselect [data]="filtered_master_data.market" [(ngModel)]="selected.market"
+                        [settings]="market_settings"
+                        (onSelect)="onChangeMarket()" (onDeSelect)="onChangeMarket()" (onSelectAll)="onChangeMarket()"
+                        (onDeSelectAll)="onChangeMarket()">
+                    </angular4-multiselect>
+                </td>
+                <td>
+                    <div class="dropdown-title">{{ division_settings.text }}</div>
+                    <angular4-multiselect [data]="filtered_master_data.division" [(ngModel)]="selected.division"
+                        [settings]="division_settings">
+                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    </angular4-multiselect>
+                </td>
+                <td>
+                    <div class="dropdown-title">{{ region_settings.text }}</div>
+                    <angular4-multiselect [data]="filtered_master_data.region" [(ngModel)]="selected.region"
+                        [settings]="region_settings">
+                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    </angular4-multiselect>
+                </td>
+                <td>
+                    <div class="dropdown-title">{{ zone_settings.text }}</div>
+                    <angular4-multiselect [data]="filtered_master_data.zone" [(ngModel)]="selected.zone"
+                        [settings]="zone_settings">
+                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    </angular4-multiselect>
+                </td>
+                <td>
+                    <div class="dropdown-title">{{ area_settings.text }}</div>
+                    <angular4-multiselect [data]="filtered_master_data.area" [(ngModel)]="selected.area"
+                        [settings]="area_settings">
+                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    </angular4-multiselect>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="dropdown-title">{{ gmma_settings.text }}</div>
+                    <angular4-multiselect [data]="filtered_master_data.gmma" [(ngModel)]="selected.gmma"
+                        [settings]="gmma_settings">
+                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    </angular4-multiselect>
+                </td>
+                <td>
+                    <div class="dropdown-title">{{ lma_settings.text }}</div>
+                    <angular4-multiselect [data]="filtered_master_data.lma" [(ngModel)]="selected.lma"
+                        [settings]="lma_settings">
+                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                    </angular4-multiselect>
+                </td>
+                <td colspan="3">
+                    <div class="first-half">
+                        <app-ng-chips [custom_placeholder]="'Add BAC'" 
+                        [chipsData]=""></app-ng-chips>
+                        <div class="ds-flex-centre" style="margin-top: 20px;">
+                            <div style="width: 50%;">Do you only want Business Elite Dealers?</div>
+                            <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
+                                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                <mat-radio-button value="No">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div class="ds-flex-centre" style="margin-top: 10px">
+                            <div style="width: 50%;">Do you want All Dealers and the Business Elite Dealers Identified?
+                            </div>
+                            <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
+                                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                <mat-radio-button value="No">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                    </div>
+                    <div class="second-half">
+                        <app-ng-chips [custom_placeholder]="'Add FAN'" ></app-ng-chips>
+                        <div class="ds-flex-centre" style="margin-top: 20px;">
+                            <div style="width: 50%;">Based on Primary FAN?</div>
+                            <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
+                                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                <mat-radio-button value="No">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div class="ds-flex-centre" style="margin-top: 10px">
+                            <div style="width: 50%;">Do you want All Dealers and the Business Elite Dealers Identified?
+                            </div>
+                            <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
+                                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                <mat-radio-button value="No">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="frequency-wrapper">
+        <div style="width: 50%;">
+            <div>Add email</div>
+            <app-ng-chips></app-ng-chips>
+        </div>
+        <div style="width: 50%;">
+            <app-report-frequency></app-report-frequency>
+        </div>
+    </div>
+
+
+</div>

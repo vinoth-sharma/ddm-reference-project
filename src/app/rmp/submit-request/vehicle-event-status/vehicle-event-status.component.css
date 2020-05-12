@@ -1,0 +1,17 @@
+.vehEveStatWrapper{
+    padding: 1vh 1vw;
+    font-size: 0.8vw;
+}
+:host ::ng-deep .mat-checkbox-label{
+    font-weight: normal;
+    line-height: 1vw;
+}
+.ordMetsTitle{
+    font-size: 0.9vw;
+    margin-bottom: 2.5vh;
+}
+.callout{
+    font-size: 0.7vw;
+    font-style: italic;
+    font-weight: normal;
+}

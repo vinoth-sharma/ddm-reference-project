@@ -46,6 +46,9 @@ import { VehicleEventStatusComponent } from './submit-request/vehicle-event-stat
 import { SelectReportCriteriaComp } from "./submit-request/select-report-criteria/select-report-criteria.component";
 import { NgChipsComponent } from './submit-request/sub-components/ng-chips/ng-chips.component';
 import { ReportFrequencyComponent } from './submit-request/sub-components/report-frequency/report-frequency.component';
+import { TopfilterComponent } from "./submit-request/sub-components/topfilter/topfilter.component";
+import { DealerAllocationComp } from "./submit-request/dealer-allocation/dealer-allocation.component";
+
 @NgModule({
   declarations: [
     RmpLandingPageComponent,
@@ -77,7 +80,9 @@ import { ReportFrequencyComponent } from './submit-request/sub-components/report
     VehicleEventStatusComponent,
     SelectReportCriteriaComp,
     NgChipsComponent,
-    ReportFrequencyComponent
+    ReportFrequencyComponent,
+    TopfilterComponent,
+    DealerAllocationComp
   ],
   imports: [
     QuillModule.forRoot(),

@@ -1,0 +1,41 @@
+.src-header{
+    display: flex;
+    justify-content : space-between;
+    font-size: 2.4vmin;
+    margin:20px 0px 5px;
+    /* padding: 20px; */
+}
+.src-row-1 angular4-multiselect{
+    /* width: 15%; */
+}
+.src-row-1 table td{
+    padding: 20px;
+    vertical-align: top;
+    width: 20%;
+}
+
+.dropdown-title{
+    padding: 15px 0px;
+    color: grey;
+    /* font-size: 16px; */
+    font-weight: 700;
+}
+.first-half {
+    float: left;
+    width: 45%;
+}
+.second-half {
+    float: right;
+    width: 45%;
+}
+.src-radio-group{
+    justify-content: flex-end;
+    display: flex;
+    width: 50%;
+}
+.frequency-wrapper{
+    display: flex;
+}
+mat-radio-button{
+    margin-left: 15px;
+}

@@ -6,3 +6,105 @@
 .padding20{
     padding: 0px 20px;
 }
+
+.lineHeight{
+    line-height: 1.5vw;
+}
+:host ::ng-deep .mat-body, .mat-body-1, .mat-typography, .mat-chip{
+    font-size: 0.8vw;
+}
+.width100{
+    width: 100%;
+}
+.noPadding{
+    padding: 0;
+}
+.noPaddingRight{
+    padding-right: 0;
+}
+.alignCenter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.alignLeft{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.alignRight{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #fafafa; }
+
+.bold{
+    font-weight: bold!important;
+}
+.italic{
+    font-style: italic;
+}
+.red{
+    color: red;
+}
+mat-form-field{
+    width: 100%;
+}
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+.borderLeft{
+    border-left: 1px solid lightgray;
+}
+.borderRight{
+    border-right: 1px solid lightgray;
+}
+.borTopRad{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.borRad{
+    border-radius: 5px;
+}
+.modal-title{
+    color: white;
+    font-size: 1.2vw;
+}
+.margBottom{
+    margin-bottom: 2.5vh;
+}
+.mat-checkbox-layout {
+    white-space: normal !important;
+}
+.mat-checkbox-inner-container, .mat-radio-outer-circle, .mat-radio-container, .mat-radio-inner-circle{
+    height: 1vw!important;
+    width: 1vw!important;
+    margin-right: 0.5vw!important;
+}
+mat-icon{
+    display: flex;
+    align-items: center;
+}
+:host ::ng-deep .mat-radio-label-content{
+    padding-left: 0.1vw;
+}
+.modal, .btn{
+    font-size: 0.8vw;
+    line-height: 1vw;
+}
+.modal-dialog{
+    width: 50vw;
+}
+.fontMedium{
+    font-size: 0.9vw;
+}
+
+@media (min-width: 1200px) {
+    .modal-dialog{
+        width: 40vw;
+    }
+}

@@ -1,120 +1,168 @@
-<div style="font-size: 1.7vmin;" id="select-report-criteria">
+<!-- <div class="reportCriteria"> -->
 
-    <div class="src-header padding20" style="">
-        <div>Report Criteria</div>
-        <button mat-stroked-button color="primary">Clear</button>
-    </div>
-    <div class="padding20">Selections can be used to generate Vehicle Event Status or Dealer Allocation Requests</div>
-    <div class="src-row-1">
-
-        <table style="width: 100%;">
-            <!-- <caption>Life Expectancy By Current Age</caption> -->
-            <tr>
-                <td>
-                    <div class="dropdown-title">Market Selection</div>
-                    <angular4-multiselect [data]="filtered_master_data.market" [(ngModel)]="selected.market"
-                        [settings]="market_settings"
-                        (onSelect)="onChangeMarket()" (onDeSelect)="onChangeMarket()" (onSelectAll)="onChangeMarket()"
-                        (onDeSelectAll)="onChangeMarket()">
-                    </angular4-multiselect>
-                </td>
-                <td>
-                    <div class="dropdown-title">{{ division_settings.text }}</div>
-                    <angular4-multiselect [data]="filtered_master_data.division" [(ngModel)]="selected.division"
-                        [settings]="division_settings">
-                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
-                    </angular4-multiselect>
-                </td>
-                <td>
-                    <div class="dropdown-title">{{ region_settings.text }}</div>
-                    <angular4-multiselect [data]="filtered_master_data.region" [(ngModel)]="selected.region"
-                        [settings]="region_settings">
-                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
-                    </angular4-multiselect>
-                </td>
-                <td>
-                    <div class="dropdown-title">{{ zone_settings.text }}</div>
-                    <angular4-multiselect [data]="filtered_master_data.zone" [(ngModel)]="selected.zone"
-                        [settings]="zone_settings">
-                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
-                    </angular4-multiselect>
-                </td>
-                <td>
-                    <div class="dropdown-title">{{ area_settings.text }}</div>
-                    <angular4-multiselect [data]="filtered_master_data.area" [(ngModel)]="selected.area"
-                        [settings]="area_settings">
-                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
-                    </angular4-multiselect>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="dropdown-title">{{ gmma_settings.text }}</div>
-                    <angular4-multiselect [data]="filtered_master_data.gmma" [(ngModel)]="selected.gmma"
-                        [settings]="gmma_settings">
-                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
-                    </angular4-multiselect>
-                </td>
-                <td>
-                    <div class="dropdown-title">{{ lma_settings.text }}</div>
-                    <angular4-multiselect [data]="filtered_master_data.lma" [(ngModel)]="selected.lma"
-                        [settings]="lma_settings">
-                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
-                    </angular4-multiselect>
-                </td>
-                <td colspan="3">
-                    <div class="first-half">
-                        <app-ng-chips [custom_placeholder]="'Add BAC'" 
-                        [chipsData]=""></app-ng-chips>
-                        <div class="ds-flex-centre" style="margin-top: 20px;">
-                            <div style="width: 50%;">Do you only want Business Elite Dealers?</div>
-                            <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
-                        <div class="ds-flex-centre" style="margin-top: 10px">
-                            <div style="width: 50%;">Do you want All Dealers and the Business Elite Dealers Identified?
-                            </div>
-                            <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
-
-                    </div>
-                    <div class="second-half">
-                        <app-ng-chips [custom_placeholder]="'Add FAN'" ></app-ng-chips>
-                        <div class="ds-flex-centre" style="margin-top: 20px;">
-                            <div style="width: 50%;">Based on Primary FAN?</div>
-                            <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
-                        <div class="ds-flex-centre" style="margin-top: 10px">
-                            <div style="width: 50%;">Do you want All Dealers and the Business Elite Dealers Identified?
-                            </div>
-                            <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <mat-divider></mat-divider>
-    <div class="frequency-wrapper">
-        <div style="width: 50%;">
-            <div>Add email</div>
-            <app-ng-chips></app-ng-chips>
+<div class="row" style="width: 100%;">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 rcHeadWrapper">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 noPadding">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding rcTitle">Report Criteria</div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding rcCallout">Selections can be used to generate Vehicle Event Status or Dealer Allocation Requests
+            </div>
         </div>
-        <div style="width: 50%;">
-            <app-report-frequency></app-report-frequency>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 alignRight">
+            <div class="btn btn-primary clearBtn">CLEAR ALL</div>
         </div>
     </div>
+    <div class="row topFiltersWrapper margBottom">
+        <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15">
+            <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-topfilter [userProfile]="mktSelnSltd" [filters]="mktSeln" [title]="'Market Selection'">
+                    </app-topfilter>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-topfilter [userProfile]="divisionSltd" [filters]="division" [title]="'Division'">
+                    </app-topfilter>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-topfilter [userProfile]="regionSltd" [filters]="region" [title]="'Region'">
+                    </app-topfilter>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-topfilter [userProfile]="zoneSltd" [filters]="zone" [title]="'Zone'"></app-topfilter>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-topfilter [userProfile]="areaSltd" [filters]="area" [title]="'Area'"></app-topfilter>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-topfilter [userProfile]="gmmaSltd" [filters]="gmma" [title]="'GMMA'"></app-topfilter>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-topfilter [userProfile]="lmaSltd" [filters]="lma" [title]="'LMA'"></app-topfilter>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 noPadding">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <mat-form-field class="example-chip-list">
+                                <mat-chip-list #chipList>
+                                    <mat-chip *ngFor="let bac of bacs" [selectable]="selectable"
+                                        [removable]="removable" (removed)="removeBac(bac)">
+                                        {{bac.name}}
+                                        <mat-icon matChipRemove *ngIf="removable">x</mat-icon>
+                                    </mat-chip>
+                                    <input placeholder="Add BAC" [matChipInputFor]="chipList"
+                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                        [matChipInputAddOnBlur]="addOnBlur"
+                                        (matChipInputTokenEnd)="addBac($event)">
+                                </mat-chip-list>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter bacDealers">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="lineHeight">Do you only want Business Elite Dealers?</div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    class="example-radio-group" style="width: 100%;">
+                                    <mat-radio-button class="example-radio-button radio-label"
+                                        *ngFor="let splId of ['Yes', 'No']" [value]="splId">
+                                        {{splId}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter bacDealers">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="lineHeight">Do you want All Dealers and the Business Elite Dealers Identified</div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    class="example-radio-group" style="width: 100%;">
+                                    <mat-radio-button class="example-radio-button radio-label"
+                                        *ngFor="let splId of ['Yes', 'No']" [value]="splId">
+                                        {{splId}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <mat-form-field class="example-chip-list">
+                                <mat-chip-list #chipList2>
+                                    <mat-chip *ngFor="let fan of fans" [selectable]="selectable"
+                                        [removable]="removable" (removed)="removeFan(fan)">
+                                        {{fan.name}}
+                                        <mat-icon matChipRemove *ngIf="removable">x</mat-icon>
+                                    </mat-chip>
+                                    <input placeholder="Add FAN" [matChipInputFor]="chipList2"
+                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                        [matChipInputAddOnBlur]="addOnBlur"
+                                        (matChipInputTokenEnd)="addFan($event)">
+                                </mat-chip-list>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding bacDealers">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="lineHeight">Based on Primary FAN?</div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    class="example-radio-group" style="width: 100%;">
+                                    <mat-radio-button class="example-radio-button radio-label"
+                                        *ngFor="let splId of ['Yes', 'No']" [value]="splId">
+                                        {{splId}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding bacDealers">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="lineHeight">Based on Secondary FAN?</div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    class="example-radio-group" style="width: 100%;">
+                                    <mat-radio-button class="example-radio-button radio-label"
+                                        *ngFor="let splId of ['Yes', 'No']" [value]="splId">
+                                        {{splId}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding bacDealers">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="lineHeight">Based on Both?</div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    class="example-radio-group" style="width: 100%;">
+                                    <mat-radio-button class="example-radio-button radio-label"
+                                        *ngFor="let splId of ['Yes', 'No']" [value]="splId">
+                                        {{splId}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-report-frequency></app-report-frequency>
+    <!-- <app-morefilters></app-morefilters> -->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
+        <button type="button" class="btn btn-success savenProceed">Save and Proceed</button>
+    </div>
 
 
+    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+        <app-tabs></app-tabs>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Continue</button>
+        <div class="modal fade" id="myModal" role="dialog">
+            <app-addreq-modal></app-addreq-modal>
+        </div>
+    </div> -->
 </div>
+
+<!-- </div> -->

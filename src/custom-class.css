@@ -10,7 +10,7 @@
 .lineHeight{
     line-height: 1.5vw;
 }
-:host ::ng-deep .mat-body, .mat-body-1, .mat-typography, .mat-chip{
+.mat-body, .mat-body-1, .mat-typography, .mat-chip{
     font-size: 0.8vw;
 }
 .width100{

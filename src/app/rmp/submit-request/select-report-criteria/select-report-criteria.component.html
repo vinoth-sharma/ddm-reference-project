@@ -13,8 +13,9 @@
                 <td>
                     <div class="dropdown-title">Market Selection</div>
                     <angular4-multiselect [data]="filtered_master_data.market" [(ngModel)]="selected.market"
-                        [settings]="market_settings">
-                        <!-- (onSelect)="" (onDeSelect)="" (onSelectAll)="" (onDeSelectAll)=""> -->
+                        [settings]="market_settings"
+                        (onSelect)="onChangeMarket()" (onDeSelect)="onChangeMarket()" (onSelectAll)="onChangeMarket()"
+                        (onDeSelectAll)="onChangeMarket()">
                     </angular4-multiselect>
                 </td>
                 <td>

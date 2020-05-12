@@ -1,5 +1,5 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { FormControl } from '@angular/forms';
 
@@ -9,6 +9,8 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./select-report-criteria.component.css']
 })
 export class SelectReportCriteriaComp implements OnInit {
+  @Input() lookupMasterData = {};
+  l_lookupMasterData:any = {};
 
   selected = {
     market : [],
@@ -33,11 +35,45 @@ export class SelectReportCriteriaComp implements OnInit {
   constructor() { }
   ngOnInit(): void {
     // console.log(market_settings);
-    
+    console.log(this.lookupMasterData);
+    this.l_lookupMasterData =  this.lookupMasterData;
+    this.refillDropdownMasterData();
   }
 
 
+  refillDropdownMasterData(){
+    this.filtered_master_data.market = this.l_lookupMasterData.market_data;
+  }
 
+  onChangeMarket(){
+    console.log(this.selected);
+    this.MarketDependencies(6);
+  }
+
+  MarketDependencies(marketindex: any) {
+    console.log(this.filtered_master_data.market);
+    console.log(this.l_lookupMasterData);
+    let l_market_ids = this.selected.market.map(ele=>ele.ddm_rmp_lookup_market_id);
+    let vv = function (ele){
+      if(l_market_ids.includes(ele.ddm_rmp_lookup_market)){
+        return ele
+      }
+    }
+
+    this.filtered_master_data.region = this.l_lookupMasterData.region_data.filter(vv)
+    this.filtered_master_data.division = this.l_lookupMasterData.division_data.filter(vv)
+    this.filtered_master_data.lma = this.l_lookupMasterData.lma_data.filter(vv)
+    this.filtered_master_data.gmma = this.l_lookupMasterData.lma_data.filter(vv)
+
+    
+
+    console.log(this.selected);
+
+  }
+
+  marketCompareCallback(){
+
+  }
 
 public market_settings = {
   text: "Market",
@@ -121,5 +157,9 @@ public lma_settings = {
   enableCheckAll: true,
   classes: "select_report_criteria_multiselect"
 };
+
+}
+
+function masterIdCBFunc(ele){
 
 }

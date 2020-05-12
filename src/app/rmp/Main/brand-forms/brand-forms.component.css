@@ -1,13 +1,7 @@
 .page-position{
-    width: 50%;
-    padding-left: 5vh;
+    display: grid;
+    margin-left: 2.5vh;
 }
-
-/* .alignLeft{
-    max-height: 55vh;
-    max-width: 50vh;
-    overflow: auto;
-} */
 
 p {
     width : 250px;
@@ -17,8 +11,7 @@ p {
 }
 
 .inter-spacing{
-    max-height: 55vh;
-    /* max-width: 50vh; */
+    max-height: 24vw;
     overflow: auto;
 }
 
@@ -36,6 +29,52 @@ th {
     width: 50%;
 }
 
-/* .form-control{
-    width: 50%;
-} */
+
+.home-page{
+    display: inline-block;
+}
+
+.card-alignment{
+    background-color: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
+    background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
+    color: white;
+    max-width: 50vh;
+    margin-left: 5vw;
+    margin-top: 2vw;
+}
+
+.card-alignment-disabled{
+    max-width: 50vh;
+    margin-left: 5vw;
+    margin-top: 2vw;
+    background-color: #808080;
+    color: white;
+}
+
+.heading{
+    margin-left: 2.5vh;
+}
+
+.mat-card-subtitle{
+    color: #ffffff;
+}
+
+table{
+    border-collapse: collapse;
+}
+
+tr{
+    border: none;
+}
+
+td{
+    border-right: solid 1px #000;
+}
+
+.table-header{
+    border: 0;
+}
+
+tbody{
+    border: solid 1px #000;
+}

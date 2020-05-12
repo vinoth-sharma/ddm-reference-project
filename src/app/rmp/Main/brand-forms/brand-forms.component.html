@@ -1,93 +1,96 @@
-<div class="page-position">
-  <h3>Reference Data Management</h3>
-  <div class="tableFixHead">
-    <table class="table table-striped table-hover">
+<div *ngIf="isHomePage">
+  <div class="heading">
+    <h3><b>Reference Data Management</b></h3>
+  </div>
+  <div>
+    <mat-card class="col-xs-6 card-alignment pointer" (click)="isHomePage = !isHomePage">
+      <mat-card-title>Go To Brand-Forms</mat-card-title>
+      <mat-card-subtitle>Click here to edit the Brand-Forms</mat-card-subtitle>
+    </mat-card>
+    <mat-card class="col-xs-6 card-alignment-disabled">
+      <mat-card-title>Add New Forms</mat-card-title>
+      <mat-card-subtitle>Click here to add new custom forms of your choice</mat-card-subtitle>
+    </mat-card>
+  </div>
+</div>
+
+<div class="page-position" *ngIf="!isHomePage">
+  <div>
+    <h3><b>Reference Data Management</b></h3>
+  </div>
+  <div class="col-xs-12 p-0">
+    <div class="col-xs-11 p-0">
+      <h4><b>Brand-Forms : BRAND_ALLOC_GRP_HIERARCHY</b></h4>
+    </div>
+    <div class="col-xs-1">
+      <a data-toggle="tooltip" title="Close Brand Forms page" (click)="isHomePage = !isHomePage"><i id="ic"
+          class="material-icons pointer">arrow_back</i></a>
+    </div>
+  </div>
+  <div class="col-xs-12 pl-0">
+    <div>
       <div>
-        <div class="col-xs-6 p-0">
-          <input placeholder="Enter data to search" class="form-control" (input)="filterData()"
-            [(ngModel)]="filters.brand" name="filters.brand">
-        </div>
-        <div class="col-xs-6 p-0">
-          <input placeholder="Enter data to search" class="form-control" (input)="filterData()"
-            [(ngModel)]="filters.alloc_grp_cd" name="filters.alloc_grp_cd">
-        </div>
+        <input placeholder="Search BRAND" class="form-control" (input)="filterData()" [(ngModel)]="filters.brand"
+          name="filters.brand">
       </div>
+    </div>
+    <table class="table table-striped table-hover">
       <thead class="thead">
         <tr class="col-xs-12 p-0">
           <div class="col-xs-12 p-0">
             <div class="col-xs-6 p-0">
-              <th>
-                <!-- <div class="alignLeft"> -->
-                  <b>BRAND</b>
-                <!-- </div> -->
+              <th class="table-header">
+                <b>ALLOC_GROUP_CD</b>
               </th>
             </div>
             <div class="col-xs-6 p-0">
-              <th>
-                <!-- <div class="alignLeft"> -->
-                  <b>ALLOC_GROUP_CD</b>
-                <!-- </div> -->
+              <th class="table-header">
+                <b>BRAND</b>
               </th>
             </div>
           </div>
         </tr>
       </thead>
-      <!-- </div> -->
       <tbody>
         <div class="inter-spacing">
           <tr *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType">
             <td class="ddm-report-name">
               <!-- First part -->
-              <div class="report-name-edit" *ngIf="!element.clicked">
+              <div class="report-name-edit">
                 <div class="col-xs-9">
-                  <p *ngIf="element.brand" title="{{element.brand}}">{{element.brand}}</p>
+                  <p *ngIf="element.alloc_grp_cd" title="{{element.alloc_grp_cd}}">{{element.alloc_grp_cd}}</p>
                 </div>
-                <!-- <div class="col-xs-3">
-                  <a style="font-size:18px" data-toggle="tooltip" title="EDIT" (click)="toggleShowInput('brand')"><i
-                      id="ic" class="material-icons pointer">mode_edit</i></a>
-                </div> -->
-              </div>
-              <!-- Second part -->
-              <div class="report-name-edit" *ngIf="element.clicked ">
-                <div class="col-xs-8">
-                  <input maxlength="50" placeholder="Name max 50 characters" [(ngModel)]="element.brand"
-                    [value]="element.brand?element.brand:''" (change)="changeReportName($event , element)">
-                </div>
-                <!-- <div class="col-xs-2">
-                  <a data-toggle="tooltip" title="Save" style="color:grey"
-                    (click)="changeReportName($event , element)"><i id="ic" class="material-icons pointer">save</i></a>
-                </div>
-                <div class="col-xs-2">
-                  <a data-toggle="tooltip" title="Cancel" style="color:grey" (click)="toggleShowInput('element')"><i
-                      id="ic" class="material-icons pointer">cancel</i></a>
-                </div> -->
               </div>
             </td>
             <td class="ddm-report-name">
               <!-- First part -->
               <div class="report-name-edit" *ngIf="!element.clicked">
                 <div class="col-xs-9">
-                  <p *ngIf="element.alloc_grp_cd" title="{{element.alloc_grp_cd}}">{{element.alloc_grp_cd}}</p>
+                  <p *ngIf="element.brand" title="{{element.brand}}">{{element.brand}}</p>
                 </div>
                 <div class="col-xs-3">
-                  <a style="font-size:18px" data-toggle="tooltip" title="EDIT" (click)="toggleShowInput(element)"><i
-                      id="ic" class="material-icons pointer">mode_edit</i></a>
+                  <a style="font-size:18px" data-toggle="tooltip" title="EDIT"
+                    (click)="toggleShowInput(element,'brand')"><i id="ic"
+                      class="material-icons pointer">mode_edit</i></a>
                 </div>
               </div>
               <!-- Second part -->
               <div class="report-name-edit" *ngIf="element.clicked ">
-                <div class="col-xs-8">
-                  <input maxlength="50" placeholder="Name max 50 characters" [(ngModel)]="element.alloc_grp_cd"
-                    [value]="element.alloc_grp_cd?element.alloc_grp_cd:''"
-                    (change)="changeReportName($event , element)">
+                <div class="col-xs-6">
+                  <input maxlength="50" placeholder="Name max 50 characters" [(ngModel)]="element.brand"
+                    [value]="element.brand?element.brand:''" (change)="changeReportName($event , element)">
                 </div>
                 <div class="col-xs-2">
-                  <a data-toggle="tooltip" title="Save" style="color:grey"
-                    (click)="changeReportName($event , element)"><i id="ic" class="material-icons pointer">save</i></a>
+                  <a data-toggle="tooltip" title="Save record" (click)="changeReportName($event , element)"><i id="ic"
+                      class="material-icons pointer">save</i></a>
                 </div>
                 <div class="col-xs-2">
-                  <a data-toggle="tooltip" title="Cancel" style="color:grey" (click)="toggleShowInput(element)"><i
-                      id="ic" class="material-icons pointer">cancel</i></a>
+                  <a data-toggle="tooltip" title="delete record" (click)="deleteRecord(element)"><i id="ic"
+                      class="material-icons pointer">delete</i></a>
+                </div>
+                <div class="col-xs-2">
+                  <a data-toggle="tooltip" title="Cancel action" (click)="toggleShowInput('element')"><i id="ic"
+                      class="material-icons pointer">cancel</i></a>
                 </div>
               </div>
             </td>

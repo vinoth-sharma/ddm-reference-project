@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DjangoService } from 'src/app/rmp/django.service';
+import { BrandFormsService } from './brand-forms.service'
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 
@@ -18,155 +19,102 @@ export class BrandFormsComponent implements OnInit {
   };
   public param: any;
   public orderType: any;
-  public backupObject: any = {};
   public isHomePage: boolean = true;
+  public editDataRecord: any = {};
 
   constructor(private django: DjangoService,
+    private brandFormsService: BrandFormsService,
     private toasterService: NgToasterComponent) {
   }
 
   ngOnInit() {
-    this.getReportList();
     this.isHomePage = true;
+    this.editDataRecord = {};
   }
-
-  // v1
-  // public getReportList(msgFlag? :boolean) {
-  //   Utils.showSpinner();
-  //   this.django.get_report_list().subscribe(list => {
-  //     if (list) {
-  //       let reportContainer = list['data'];
-  //       console.log("input data : ",reportContainer);
-
-  //       // reportContainer = reportContainer.filter(i=>i.report_name)
-  //       reportContainer.filter(i=>{ if(i.report_name == null) { i.report_name = 'null'}})
-  //       console.log("filtered data : ",reportContainer);
-
-  //       reportContainer.sort((a, b) => {
-  //         if (b['favorites'] == a['favorites']) {
-  //           return a['report_name'] > b['report_name'] ? 1 : -1
-  //         }
-  //         return b['favorites'] > a['favorites'] ? 1 : -1
-  //       })
-
-  //       this.reports = reportContainer;
-  //       // this.paginatorlength = this.reports.length
-  //       // this.reportsOriginal = this.reportContainer.slice();
-  //       if(msgFlag){
-  //         this.toasterService.success('Data updated successfully!');
-  //       }
-  //       Utils.hideSpinner();
-  //     }
-  //   }, err => {
-  //   })
-  // }
 
   public getReportList(msgFlag?: boolean) {
-    Utils.showSpinner();
-
-    let results = require('./bfac.json')
-    console.log('RESULTS are : ', results);
-    results = results['data'][0];
-    console.log('results[data][0] : ', results);
-    let brands = results['brand']
-    console.log('brands : ', brands);
-    let alloc_grp_cd = results['alloc_grp_cd']
-    console.log('alloc_grp_cd : ', alloc_grp_cd);
-
-    this.reports = [];
-    for (var i = 0; i < brands.length; i++) {
-      let newObj = {}
-      newObj['brand'] = brands[i];
-      newObj['alloc_grp_cd'] = alloc_grp_cd[i];
-      this.reports[i] = newObj
+    if (this.isHomePage) {
+      this.isHomePage = !this.isHomePage;
     }
+    Utils.showSpinner();
+    this.brandFormsService.getBrandFormsData().subscribe(result => {
+      console.log("INCOMING GTRD results : ", result);
+      this.reports = result['data'];
+      this.reports.forEach(element => {
+        if (element['BRAND']) {
+          element['clicked'] = false;
+        }
+      });
 
-    console.log("NEW JSON OBJ : ", this.reports);
-
-    Utils.hideSpinner();
+      if (msgFlag) {
+        this.toasterService.success('Data updated successfully!');
+      }
+      //sort and display if needed
+      console.log('Checking REPORTS DATA:', this.reports)
+      Utils.hideSpinner();
+    })
   }
 
 
-  public toggleShowInput(element, type: string) {
+  public toggleShowInput(element) {
     console.log('element details', element)
-    this.backupObject = element;
-    console.log('backupObject details', this.backupObject)
-    console.log('element details', type)
+    if (element != undefined) {
+      this.editDataRecord['brand_value_old'] = element['BRAND']
+      this.editDataRecord['alloc_grp_cd_val_old'] = element['ALLOC_GRP_CD']
+    }
 
-    if (type == 'brand') {
-      for (let i = 0; i <= this.reports.length; i++) {
-        if (this.reports[i]['brand'] != element.brand) {
-          this.reports[i]['clicked'] = false;
-        } else {
-          this.reports[i]['clicked'] = !this.reports[i]['clicked'];
-          break;
-        }
+    let i = 0;
+    for (i = 0; i <= this.reports.length; i++) {
+      if (this.reports[i]['BRAND'] == element['BRAND'] && this.reports[i]['ALLOC_GRP_CD'] == element['ALLOC_GRP_CD']) {
+        this.reports[i]['clicked'] = true;
+      } else {
+        this.reports[i]['clicked'] = false;
       }
     }
-    else {
-      for (let i = 0; i <= this.reports.length; i++) {
-        if (this.reports[i]['alloc_grp_cd'] != element.alloc_grp_cd) {
-          this.reports[i]['clicked'] = false;
-        } else {
-          this.reports[i]['clicked'] = !this.reports[i]['clicked'];
-          break;
-        }
-      }
-    }
+    console.log('Checking REPORTS DATA after clicking:', this.reports)
   }
 
-  public changeReportName(event: any, reportObject: any) {
-    const changedReport = {};
+  // updating the data record
+  public changeReportName(newRecordDataObject: any) {
     Utils.showSpinner();
-    changedReport['brand'] = reportObject.brand;
-    changedReport['alloc_grp_cd'] = reportObject.alloc_grp_cd;
-    console.log("NEW OBJ to be pushed : ", changedReport);
 
-    let bbrand = this.backupObject['brand']
-    let bagc = this.backupObject['alloc_grp_cd']
-    //old object delete
-    this.reports = this.reports.filter(function (obj) {
-      return (obj.brand !== bbrand && obj.alloc_grp_cd !== bagc);
-    });
-    console.log("Deleted reports : ", this.reports);
-    console.log("DELETED REPORTS LENGTH : ", this.reports.length)
+    this.editDataRecord['brand_value_new'] = newRecordDataObject['BRAND'];
+    this.editDataRecord['alloc_grp_cd_val_new'] = newRecordDataObject['ALLOC_GRP_CD'];
+    console.log("NEW OBJ to be pushed : ", this.editDataRecord);
 
-    this.reports.push(changedReport)
-
-    console.log("EDITED reports : ", this.reports);
-    console.log("EDITED REPORTS LENGTH : ", this.reports.length)
-
-    //sort and display
-    this.toasterService.success('Data updated successfully!');
-    Utils.hideSpinner();
+    this.brandFormsService.updateBrandFormsDataRecord(this.editDataRecord).subscribe(res => {
+      if (res) {
+        this.getReportList(true);
+        this.editDataRecord = {};
+      }
+    },
+      err => {
+        this.toasterService.error('Data updated failed!');
+        Utils.hideSpinner();
+      })
   }
 
+  // DO NOT DELETE : Used for future implementation 
   public deleteRecord(element: any) {
-    // NOTE that unique deletion has to be done,BE api will handle it
-    const deleteRecord = {}
-    deleteRecord['brand'] = element.brand;
-    deleteRecord['alloc_grp_cd'] = element.alloc_grp_cd;
+    Utils.showSpinner();
+    let deleteRecord = {}
+    deleteRecord['brand_value'] = element['BRAND'];
+    deleteRecord['alloc_grp_cd_val'] = element['ALLOC_GRP_CD'];
 
-    let dbrand = this.backupObject['brand']
-    let dagc = this.backupObject['alloc_grp_cd']
-
-    this.reports = this.reports.filter(function (obj) {
-      return (obj.brand !== dbrand && obj.alloc_grp_cd !== dagc);
-    });
-
-    this.toasterService.success('Data deleted successfully!');
-
+    this.brandFormsService.deleteBrandFormsDataRecord(deleteRecord).subscribe(res => {
+      if (res) {
+        this.toasterService.success('Data deleted successfully!');
+        Utils.hideSpinner();
+      }
+    }, err => {
+      this.toasterService.success('Data deleted failed!');
+      Utils.hideSpinner();
+    })
   }
 
-  // parsing filters into obj
+  // passing filters into obj
   public filterData() {
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
-  }
-
-  public sort(typeVal) {
-    this.param = typeVal;
-    this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
-    this.orderType = this.reports[typeVal];
   }
 
 }

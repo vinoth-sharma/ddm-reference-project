@@ -1,4 +1,4 @@
-.page-position{
+.page-position {
     display: grid;
     margin-left: 2.5vh;
 }
@@ -10,18 +10,18 @@ p {
     text-overflow: ellipsis;
 }
 
-.inter-spacing{
+.inter-spacing {
     max-height: 24vw;
     overflow: auto;
 }
 
-.header-spacing{
+.header-spacing {
     max-height: 55vh;
     max-width: 75vh;
     overflow: auto;
 }
 
-.ddm-report-name{
+.ddm-report-name {
     width: 75vw;
 }
 
@@ -30,11 +30,11 @@ th {
 }
 
 
-.home-page{
+.home-page {
     display: inline-block;
 }
 
-.card-alignment{
+.card-alignment {
     background-color: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
     background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
     color: white;
@@ -43,7 +43,7 @@ th {
     margin-top: 2vw;
 }
 
-.card-alignment-disabled{
+.card-alignment-disabled {
     max-width: 50vh;
     margin-left: 5vw;
     margin-top: 2vw;
@@ -51,30 +51,34 @@ th {
     color: white;
 }
 
-.heading{
+.heading {
     margin-left: 2.5vh;
 }
 
-.mat-card-subtitle{
+.mat-card-subtitle {
     color: #ffffff;
 }
 
-table{
+table {
     border-collapse: collapse;
 }
 
-tr{
+tr {
     border: none;
 }
 
-td{
+td {
     border-right: solid 1px #000;
 }
 
-.table-header{
+.table-header {
     border: 0;
 }
 
-tbody{
+tbody {
     border: solid 1px #000;
+}
+
+.delete-disabled {
+    color: #808080;
 }

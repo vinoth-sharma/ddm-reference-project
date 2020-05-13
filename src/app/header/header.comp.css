@@ -14,7 +14,6 @@
     cursor: pointer;
 }
 #DDM_logo img{
-    /* width: 100%; */
     height: 100%;
 }
 .header-title{
@@ -47,8 +46,9 @@
     max-width: 350px !important;
 }
 
+.mat-badge-medium .mat-badge-content {
+    min-width: 20px;
+    width: auto;
+  }
 
-/* #tp{
-    background-color: linear-gradient(rgb(27, 116, 206), rgb(133, 187, 241));
-    background-image: linear-gradient(rgb(38, 61, 79), rgb(63, 100, 131));
-} */
+

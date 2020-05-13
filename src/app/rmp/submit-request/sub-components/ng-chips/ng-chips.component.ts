@@ -1,5 +1,5 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, SimpleChanges} from '@angular/core';
 import {MatChipInputEvent} from '@angular/material/chips';
 
 export interface Fruit {
@@ -16,10 +16,11 @@ export interface Fruit {
 })
 export class NgChipsComponent {
 
-@Input() chipsData:Array<String> = [];
 @Input() custom_placeholder:String = "";
 @Output() chipSelectedEmittor = new EventEmitter();
 
+@Input() inputModel: Array<String> = [];
+@Output() inputModelChange = new EventEmitter();
   public chipsEntered = [];
 
   visible = true;
@@ -29,6 +30,11 @@ export class NgChipsComponent {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   isTextValid:boolean = true;
+
+  ngOnChanges(changes: SimpleChanges){
+    // console.log(changes);
+    this.chipsEntered = this.inputModel;
+  }
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
@@ -42,8 +48,7 @@ export class NgChipsComponent {
     if (input) {
       input.value = '';
     }
-    console.log(this.chipsEntered);
-    this.chipSelectedEmittor.emit(this.chipsEntered);
+    // this.inputModelChange.emit(this.chipsEntered);
   }
 
   remove(fruit: Fruit): void {
@@ -52,7 +57,7 @@ export class NgChipsComponent {
     if (index >= 0) {
       this.chipsEntered.splice(index, 1);
     }
-    this.chipSelectedEmittor.emit(this.chipsEntered);
+    // this.inputModelChange.emit(this.chipsEntered);
   }
 
   textEntered(event){

@@ -8,7 +8,7 @@
 
     <div class="submit-req-body">
         <select-report-criteria [lookupMasterData]="lookupMasterData"></select-report-criteria>
-        <div class="row" style="width: 100%;">
+        <div class="row" style="width: 100%;" *ngIf="false">
             <mat-tab-group>
                 <mat-tab label="Vehicle Event Status">
                     <app-vehicle-event-status></app-vehicle-event-status>

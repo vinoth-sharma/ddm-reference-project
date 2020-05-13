@@ -19,7 +19,9 @@ export class SelectReportCriteriaComp implements OnInit {
     lma : [],
     gmma : [],
     zone : [],
-    area : []
+    area : [],
+    bac : [],
+    fan : ["fano"]
   }
 
   filtered_master_data = {
@@ -37,7 +39,15 @@ export class SelectReportCriteriaComp implements OnInit {
     // console.log(market_settings);
     console.log(this.lookupMasterData);
     this.l_lookupMasterData =  this.lookupMasterData;
-    this.refillDropdownMasterData();
+    if(this.l_lookupMasterData)
+      this.refillDropdownMasterData();
+  }
+
+  showData(){
+    console.log(this.filtered_master_data);
+    
+    console.log(this.selected);
+    
   }
 
 
@@ -45,30 +55,23 @@ export class SelectReportCriteriaComp implements OnInit {
     this.filtered_master_data.market = this.l_lookupMasterData.market_data;
   }
 
-  onChangeMarket(){
+  multiSelectChange(event){
     console.log(this.selected);
-    this.MarketDependencies(6);
+    this.MarketDependencies();
   }
 
-  MarketDependencies(marketindex: any) {
-    console.log(this.filtered_master_data.market);
-    console.log(this.l_lookupMasterData);
+  MarketDependencies() {
     let l_market_ids = this.selected.market.map(ele=>ele.ddm_rmp_lookup_market_id);
     let vv = function (ele){
       if(l_market_ids.includes(ele.ddm_rmp_lookup_market)){
         return ele
       }
     }
-
     this.filtered_master_data.region = this.l_lookupMasterData.region_data.filter(vv)
     this.filtered_master_data.division = this.l_lookupMasterData.division_data.filter(vv)
     this.filtered_master_data.lma = this.l_lookupMasterData.lma_data.filter(vv)
-    this.filtered_master_data.gmma = this.l_lookupMasterData.lma_data.filter(vv)
-
-    
-
+    this.filtered_master_data.gmma = this.l_lookupMasterData.gmma_data.filter(vv)
     console.log(this.selected);
-
   }
 
   marketCompareCallback(){
@@ -76,86 +79,52 @@ export class SelectReportCriteriaComp implements OnInit {
   }
 
 public market_settings = {
-  text: "Market",
-  singleSelection: false,
-  primaryKey: 'ddm_rmp_lookup_market_id',
-  labelKey: 'market',
-  selectAllText: 'Select All',
-  unSelectAllText: 'UnSelect All',
-  classes: "select_report_criteria_multiselect",
-  maxHeight: '200px'
+  label: "Market",
+  primary_key: 'ddm_rmp_lookup_market_id',
+  label_key: 'market',
+  title : "Market Selection"
 };
 
 public region_settings = {
-  text: "Region",
-  singleSelection: false,
-  primaryKey: 'ddm_rmp_lookup_country_region_id',
-  labelKey: 'region_desc',
-  selectAllText: 'Select All',
-  unSelectAllText: 'UnSelect All',
-  enableCheckAll: true,
-  classes: "select_report_criteria_multiselect",
-  maxHeight: '200px'
+  label: "Region",
+  primary_key: 'ddm_rmp_lookup_country_region_id',
+  label_key: 'region_desc',
+  title : "Region Selection"
 };
 
 public zone_settings = {
-  text: "Zone",
-  singleSelection: false,
-  primaryKey: 'ddm_rmp_lookup_region_zone_id',
-  labelKey: 'zone_desc',
-  selectAllText: 'Select All',
-  unSelectAllText: 'UnSelect All',
-  maxHeight: '200px',
-  enableCheckAll: true,
-  classes: "select_report_criteria_multiselect"
+  label: "Zone",
+  primary_key: 'ddm_rmp_lookup_region_zone_id',
+  label_key: 'zone_desc',
+  title : "Zone Selection"
 };
 
 public area_settings = {
-  text: "Area",
-  singleSelection: false,
-  primaryKey: 'ddm_rmp_lookup_zone_area_id',
-  labelKey: 'area_desc',
-  selectAllText: 'Select All',
-  unSelectAllText: 'UnSelect All',
-  maxHeight: '200px',
-  enableCheckAll: true,
-  classes: "select_report_criteria_multiselect"
+  label: "Area",
+  primary_key: 'ddm_rmp_lookup_zone_area_id',
+  label_key: 'area_desc',
+  title : "Area Selection"
 };
 
 public gmma_settings = {
-  text: "GMMA",
-  singleSelection: false,
-  primaryKey: 'ddm_rmp_lookup_gmma_id',
-  labelKey: 'gmma_desc',
-  selectAllText: 'Select All',
-  unSelectAllText: 'UnSelect All',
-  maxHeight: '200px',
-  enableCheckAll: true,
-  classes: "select_report_criteria_multiselect"
+  label: "GMMA",
+  primary_key: 'ddm_rmp_lookup_gmma_id',
+  label_key: 'gmma_desc',
+  title : "GMMA Selection"
 };
 
 public division_settings = {
-  text: "Division",
-  singleSelection: false,
-  primaryKey: 'ddm_rmp_lookup_division_id',
-  labelKey: 'division_desc',
-  selectAllText: 'Select All',
-  unSelectAllText: 'UnSelect All',
-  maxHeight: '200px',
-  enableCheckAll: true,
-  classes: "select_report_criteria_multiselect"
+  label : "Division",
+  primary_key: 'ddm_rmp_lookup_division_id',
+  label_key: 'division_desc',
+  title : "Division Selection"
 };
 
 public lma_settings = {
-  text: "LMA",
-  singleSelection: false,
-  primaryKey: 'ddm_rmp_lookup_lma_id',
-  labelKey: 'lmg_desc',
-  selectAllText: 'Select All',
-  unSelectAllText: 'UnSelect All',
-  maxHeight: '200px',
-  enableCheckAll: true,
-  classes: "select_report_criteria_multiselect"
+  label: "LMA",
+  primary_key: 'ddm_rmp_lookup_lma_id',
+  label_key: 'lmg_desc',
+  title : "LMA Selection"
 };
 
 }

@@ -8,41 +8,50 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 alignRight">
-            <div class="btn btn-primary clearBtn">CLEAR ALL</div>
+            <div class="btn btn-primary clearBtn" (click)="showData()">CLEAR ALL</div>
         </div>
     </div>
     <div class="row topFiltersWrapper margBottom">
         <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15">
             <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15">
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
-                    <app-topfilter [userProfile]="mktSelnSltd" [filters]="mktSeln" [title]="'Market Selection'">
-                    </app-topfilter>
+                    <app-mat-multiselect [data]="filtered_master_data.market" [settings]="market_settings"
+                    [(inputModel)]="selected.market" (selectionDone)="multiSelectChange($event)"></app-mat-multiselect>
+                    <!-- <app-topfilter [userProfile]="mktSelnSltd" [filters]="mktSeln" [title]="'Market Selection'">
+                    </app-topfilter> -->
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-mat-multiselect [data]="filtered_master_data.division" [settings]="division_settings"
+                    [(inputModel)]="selected.division"></app-mat-multiselect>
+<!--                     
                     <app-topfilter [userProfile]="divisionSltd" [filters]="division" [title]="'Division'">
-                    </app-topfilter>
+                    </app-topfilter> -->
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
-                    <app-topfilter [userProfile]="regionSltd" [filters]="region" [title]="'Region'">
-                    </app-topfilter>
+                    <app-mat-multiselect [data]="filtered_master_data.region" [settings]="region_settings"
+                    [(inputModel)]="selected.region"></app-mat-multiselect>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
-                    <app-topfilter [userProfile]="zoneSltd" [filters]="zone" [title]="'Zone'"></app-topfilter>
+                    <app-mat-multiselect [data]="filtered_master_data.zone" [settings]="zone_settings"
+                    [(inputModel)]="selected.zone"></app-mat-multiselect>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
-                    <app-topfilter [userProfile]="areaSltd" [filters]="area" [title]="'Area'"></app-topfilter>
+                    <app-mat-multiselect [data]="filtered_master_data.area" [settings]="area_settings"
+                    [(inputModel)]="selected.area"></app-mat-multiselect>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
-                    <app-topfilter [userProfile]="gmmaSltd" [filters]="gmma" [title]="'GMMA'"></app-topfilter>
+                    <app-mat-multiselect [data]="filtered_master_data.gmma" [settings]="gmma_settings"
+                    [(inputModel)]="selected.gmma"></app-mat-multiselect>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
-                    <app-topfilter [userProfile]="lmaSltd" [filters]="lma" [title]="'LMA'"></app-topfilter>
+                    <app-mat-multiselect [data]="filtered_master_data.lma" [settings]="lma_settings"
+                    [(inputModel)]="selected.lma"></app-mat-multiselect>
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 noPadding">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <app-ng-chips [custom_placeholder]="'Add BAC'" 
-                            [chipsData]=""></app-ng-chips>
+                            [(inputModel)]="selected.bac"></app-ng-chips>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter bacDealers">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -76,7 +85,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <app-ng-chips [custom_placeholder]="'Add FAN'" 
-                            [chipsData]=""></app-ng-chips>
+                            [(inputModel)]="selected.fan"></app-ng-chips>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding bacDealers">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">

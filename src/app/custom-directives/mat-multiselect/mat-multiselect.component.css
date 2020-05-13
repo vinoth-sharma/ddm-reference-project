@@ -1,0 +1,46 @@
+.custom-checkbox-opt{
+    font-size: inherit;
+    line-height: 3em;
+    height: 3em;
+    
+}
+.custom-checkbox-opt mat-checkbox{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    line-height: 48px;
+    height: 48px;
+    padding: 0 16px;
+    text-align: left;
+    text-decoration: none;
+    max-width: 100%;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
+}
+#multiInput{
+    margin: 0px 4%;
+    height: 38px;
+    border-bottom: 1px solid grey;
+    width: 90%;
+}
+
+::ng-deep .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element{
+    background: #3f51b5;
+}
+::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #3f51b5 !important;
+}
+
+.topFilterTitle{
+    padding: 1vh 0;
+    font-weight: bold;
+}

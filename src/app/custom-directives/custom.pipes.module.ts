@@ -9,18 +9,20 @@ import { MultiSelectComponent } from "./multi-select/multi-select.component";
 import { OrderByPipe } from "./filters/order-by.pipe";
 import { CustomCookieService } from "./ng-custom-cookies-service/custom.cookies.service";
 import { NgTimePickerComponent } from './ng-time-picker/ng-time-picker.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
 import { AngularMultiSelectModule } from './angular4-multiselect-dropdown/multiselect.component';
+// import { MatMultiselect } from "./mat-multiselect/mat-multiselect.component";
+import { MatMultiselect } from "./mat-multiselect/mat-multiselect.component";
 
 @NgModule({
     declarations : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,
-                    NgCustomSpinnerComponent,OrderByPipe, NgTimePickerComponent,ConfirmationDialogComponent],
+                    NgCustomSpinnerComponent,OrderByPipe, NgTimePickerComponent,ConfirmationDialogComponent,MatMultiselect],
     providers:[NgLoaderService,CustomCookieService],
-    imports : [MaterialModule,FormsModule,AngularMultiSelectModule],
+    imports : [MaterialModule,FormsModule,ReactiveFormsModule,AngularMultiSelectModule],
     exports : [spaceFormaterString,ButtonCssDirective,NgToasterComponent,MultiSelectComponent,
         NgCustomSpinnerComponent,MaterialModule,OrderByPipe,NgTimePickerComponent,ConfirmationDialogComponent,
-        AngularMultiSelectModule],
+        AngularMultiSelectModule,MatMultiselect],
     entryComponents:[ConfirmationDialogComponent]
 
 })

@@ -7,7 +7,7 @@
     <!-- <p>Selections can be used to generate Vehicle Event Status or Dealer Allocation Requests</p> -->
 
     <div class="submit-req-body">
-        <select-report-criteria [lookupMasterData]="lookupMasterData"></select-report-criteria>
+        <select-report-criteria [lookupMasterData]="lookupMasterData" [lookupTableMD]="lookupTableMasterData"></select-report-criteria>
         <div class="row" style="width: 100%;" *ngIf="false">
             <mat-tab-group>
                 <mat-tab label="Vehicle Event Status">

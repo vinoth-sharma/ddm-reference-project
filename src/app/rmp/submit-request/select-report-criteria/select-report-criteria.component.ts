@@ -10,6 +10,13 @@ import { FormControl } from '@angular/forms';
 })
 export class SelectReportCriteriaComp implements OnInit {
   @Input() lookupMasterData = {};
+  @Input() lookupTableMD = {};
+
+  l_lookup_MD:any = {
+    market : {},
+    other : {}
+  }
+
   l_lookupMasterData:any = {};
 
   selected = {
@@ -34,25 +41,56 @@ export class SelectReportCriteriaComp implements OnInit {
     area : []
   }
 
+  special_identifiers_obj = {
+    bac : [],
+    fan : []
+  };
+
   constructor() { }
-  ngOnInit(): void {
-    // console.log(market_settings);
-    console.log(this.lookupMasterData);
-    this.l_lookupMasterData =  this.lookupMasterData;
-    if(this.l_lookupMasterData)
-      this.refillDropdownMasterData();
+  ngOnInit(){
+
   }
+
+  ngOnChanges(): void {
+    this.l_lookup_MD.market =  this.lookupMasterData;
+    this.l_lookup_MD.other =  this.lookupTableMD;
+    if(this.l_lookup_MD.market){
+      this.filtered_master_data.market = this.l_lookup_MD.market.market_data;
+    }
+    if(this.l_lookup_MD.other){
+      console.log(this.l_lookup_MD.other);
+      this.special_identifiers_obj.bac= []
+      this.special_identifiers_obj.fan= []
+      this.refillLookupTableData();
+
+    }
+    console.log(this.special_identifiers_obj);
+    
+
+  }
+
+  refillLookupTableData(){
+    //master data of bac/fan radio button
+    this.l_lookup_MD.other.special_identifiers.forEach(si=>{
+      if([1,5].includes(si.ddm_rmp_lookup_special_identifiers))
+        this.special_identifiers_obj.bac.push(si)
+      else
+        this.special_identifiers_obj.fan.push(si)
+    })
+
+  }
+
 
   showData(){
     console.log(this.filtered_master_data);
-    
     console.log(this.selected);
+    console.log(this.special_identifiers_obj);
     
   }
 
 
   refillDropdownMasterData(){
-    this.filtered_master_data.market = this.l_lookupMasterData.market_data;
+    this.filtered_master_data.market = this.l_lookup_MD.market.market_data;
   }
 
   multiSelectChange(event){
@@ -67,10 +105,10 @@ export class SelectReportCriteriaComp implements OnInit {
         return ele
       }
     }
-    this.filtered_master_data.region = this.l_lookupMasterData.region_data.filter(vv)
-    this.filtered_master_data.division = this.l_lookupMasterData.division_data.filter(vv)
-    this.filtered_master_data.lma = this.l_lookupMasterData.lma_data.filter(vv)
-    this.filtered_master_data.gmma = this.l_lookupMasterData.gmma_data.filter(vv)
+    this.filtered_master_data.region = this.l_lookup_MD.market.region_data.filter(vv)
+    this.filtered_master_data.division = this.l_lookup_MD.market.division_data.filter(vv)
+    this.filtered_master_data.lma = this.l_lookup_MD.market.lma_data.filter(vv)
+    this.filtered_master_data.gmma = this.l_lookup_MD.market.gmma_data.filter(vv)
     console.log(this.selected);
   }
 

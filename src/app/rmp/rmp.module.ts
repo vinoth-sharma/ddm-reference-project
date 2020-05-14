@@ -48,6 +48,7 @@ import { NgChipsComponent } from './submit-request/sub-components/ng-chips/ng-ch
 import { ReportFrequencyComponent } from './submit-request/sub-components/report-frequency/report-frequency.component';
 import { TopfilterComponent } from "./submit-request/sub-components/topfilter/topfilter.component";
 import { DealerAllocationComp } from "./submit-request/dealer-allocation/dealer-allocation.component";
+import { NgCipsEmailComponent } from './submit-request/sub-components/ng-cips-email/ng-cips-email.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { DealerAllocationComp } from "./submit-request/dealer-allocation/dealer-
     NgChipsComponent,
     ReportFrequencyComponent,
     TopfilterComponent,
-    DealerAllocationComp
+    DealerAllocationComp,
+    NgCipsEmailComponent
   ],
   imports: [
     QuillModule.forRoot(),

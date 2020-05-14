@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import { COMMA, ENTER} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from "@angular/material/chips";
@@ -12,27 +12,47 @@ export interface Dl {
   styleUrls: ['./report-frequency.component.css']
 })
 export class ReportFrequencyComponent implements OnInit {
-
+  @Input() lookupTableData:any = {}
  
   constructor() { }
-  recReport: string[] = ['Yes', 'No'];
+  reportFreq: {}[] = [{ label : 'Yes' ,id : true },{ label : 'No',id: false }];
+
   dayFreq = new FormControl();
-  dayFreqs: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   
   biMonFreq = new FormControl();
-  biMonFreqs: string[] = ['Day after Sales Reporting month end close', '15th of the month', 'Day after calendar month end', 'Other'];
 
   quarFreq = new FormControl();
-  quarFreqs: string[] = ['Day after Sales Reporting month end close','Day after calendar month end'];
-
-  dealAllocFreq = new FormControl();
-  dealAllocFreqs: string[] = ['Mid-Month Variance', 'Month End Variance', 'Specific Consensus Period', 'Other'];
 
   onDemFreq = new FormControl();
-  onDemFreqs: string[] = ['On Demand', 'On Demand Configurable'];
+  // onDemFreqs: string[] = ['On Demand', 'On Demand Configurable'];
+
+  lookupData = {
+    daily_weekly : [],
+    monthly_bimonthly : [],
+    quaterly : [],
+    freq_dealer_allo : []
+  }
+
+  selected = {
+    reportFreq_regBasis : false ,
+    daily_weekly : [],
+    monthly_bimonthly : [],
+    monthly_others : false,
+    monthly_others_decs : "",
+    quaterly : [],
+    freq_dealer_allo : []
+  }
 
   ngOnInit(): void {
+    console.log(this.lookupTableData);
     
+  }
+
+  ngOnChanges(simpleChange : SimpleChanges){
+    if(simpleChange.lookupTableData){
+      console.log(this.lookupTableData);
+      this.refillMasterData();
+    }
   }
 
   visible = true;
@@ -40,40 +60,41 @@ export class ReportFrequencyComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  dls: Dl[] = [
-    {mail: 'upendra.br@gm.com'},
-    {mail: 'hilary.varghese@gm.com'},
-    {mail: 'aneesha.biju@gm.com'},
-    {mail: 'deepak.urs@gm.com'},
-    {mail: 'vinoth.vvs@gm.com'},
-    {mail: 'baby.kumar@gm.com'},
-    {mail: 'madan.s@gm.com'},
-    {mail: 'mridula.bhutda@gm.com'},
-    {mail: 'vijaya.dodla@gm.com'},
-    {mail: 'chitneni.sairam@gm.com'},
-  ];
 
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
 
-    // Add our dl
-    if ((value || '').trim()) {
-      this.dls.push({mail: value.trim()});
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
+  refillMasterData(){
+    this.resetMDdata();
+    let l_lookuptableData_freq = this.lookupTableData.report_frequency.sort(sortFreq);
+    l_lookuptableData_freq.forEach(freq=>{
+      if(freq.ddm_rmp_lookup_report_frequency_id === 1)
+        this.lookupData.daily_weekly.push(freq)
+      else if(freq.ddm_rmp_lookup_report_frequency_id === 2)
+        this.lookupData.monthly_bimonthly.push(freq)
+      else if(freq.ddm_rmp_lookup_report_frequency_id === 3)
+        this.lookupData.quaterly.push(freq)
+      else if(freq.ddm_rmp_lookup_report_frequency_id === 4)
+        this.lookupData.freq_dealer_allo.push(freq)
+    })
+    console.log(this.lookupData);
+    
   }
 
-  remove(dl: Dl): void {
-    const index = this.dls.indexOf(dl);
-
-    if (index >= 0) {
-      this.dls.splice(index, 1);
+  resetMDdata(){
+    this.lookupData = {
+      daily_weekly : [],
+      monthly_bimonthly : [],
+      quaterly : [],
+      freq_dealer_allo : []
     }
   }
+}
 
+function sortFreq( a, b ) {
+  if ( a.ddm_rmp_lookup_select_frequency_id < b.ddm_rmp_lookup_select_frequency_id ){
+    return -1;
+  }
+  if ( a.ddm_rmp_lookup_select_frequency_id > b.ddm_rmp_lookup_select_frequency_id ){
+    return 1;
+  }
+  return 0;
 }

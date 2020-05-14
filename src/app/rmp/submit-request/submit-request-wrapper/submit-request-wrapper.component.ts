@@ -21,6 +21,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
   }
 
   lookupMasterData = {};
+  lookupTableMasterData = {};
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService, private auth_service: AuthenticationService,
@@ -37,8 +38,13 @@ export class SubmitRequestWrapperComponent implements OnInit {
     })
 
     dataProvider.currentlookupData.subscribe(element => {
-      // console.log(element);
+      console.log(element);
       this.lookupMasterData = element;
+    })
+
+    dataProvider.currentlookUpTableData.subscribe((tableDate:any)=>{
+      console.log(tableDate);
+      this.lookupTableMasterData = tableDate?tableDate.data:{};
     })
   }
 

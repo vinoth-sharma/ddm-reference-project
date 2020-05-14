@@ -1,5 +1,5 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { FormControl } from '@angular/forms';
 
@@ -28,7 +28,7 @@ export class SelectReportCriteriaComp implements OnInit {
     zone : [],
     area : [],
     bac : [],
-    fan : ["fano"]
+    fan : []
   }
 
   filtered_master_data = {
@@ -51,7 +51,7 @@ export class SelectReportCriteriaComp implements OnInit {
 
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.l_lookup_MD.market =  this.lookupMasterData;
     this.l_lookup_MD.other =  this.lookupTableMD;
     if(this.l_lookup_MD.market){
@@ -93,34 +93,78 @@ export class SelectReportCriteriaComp implements OnInit {
     this.filtered_master_data.market = this.l_lookup_MD.market.market_data;
   }
 
-  multiSelectChange(event){
+  multiSelectChange(event,type){
     console.log(this.selected);
-    this.MarketDependencies();
+
+    switch (type) {
+      case 'market':
+        this.MarketDependencies();
+        break;
+      case 'region':
+        this.regionDependencies();
+        break;
+      case 'zone':
+        this.zoneDependencies();
+        break;
+      default:
+        break;
+    }
+    if(type === 'market')
+      this.MarketDependencies();
+  
   }
 
   MarketDependencies() {
     let l_market_ids = this.selected.market.map(ele=>ele.ddm_rmp_lookup_market_id);
-    let vv = function (ele){
+    let marketCBFunc = function (ele){
       if(l_market_ids.includes(ele.ddm_rmp_lookup_market)){
         return ele
       }
     }
-    this.filtered_master_data.region = this.l_lookup_MD.market.region_data.filter(vv)
-    this.filtered_master_data.division = this.l_lookup_MD.market.division_data.filter(vv)
-    this.filtered_master_data.lma = this.l_lookup_MD.market.lma_data.filter(vv)
-    this.filtered_master_data.gmma = this.l_lookup_MD.market.gmma_data.filter(vv)
+    this.filtered_master_data.region = this.l_lookup_MD.market.region_data.filter(marketCBFunc);
+    this.filtered_master_data.division = this.l_lookup_MD.market.division_data.filter(marketCBFunc);
+    this.filtered_master_data.lma = this.l_lookup_MD.market.lma_data.filter(marketCBFunc);
+    this.filtered_master_data.gmma = this.l_lookup_MD.market.gmma_data.filter(marketCBFunc);
+    this.resolveSelectedMarketDependencies(marketCBFunc)
+    this.regionDependencies();
+    this.zoneDependencies();
     console.log(this.selected);
   }
 
-  marketCompareCallback(){
+  resolveSelectedMarketDependencies(callback){
+    this.selected.region = this.selected.region.filter(callback);
+    this.selected.division = this.selected.division.filter(callback);
+    this.selected.lma = this.selected.lma.filter(callback);
+    this.selected.gmma = this.selected.gmma.filter(callback);
+  }
 
+  regionDependencies(){
+    let l_region_ids = this.selected.region.map(ele=>ele.ddm_rmp_lookup_country_region_id);
+    let regionCBFunc = function (ele){
+      if(l_region_ids.includes(ele.ddm_rmp_lookup_country_region)){
+        return ele
+      }
+    }
+    this.filtered_master_data.zone = this.l_lookup_MD.market.zones_data.filter(regionCBFunc)
+    this.selected.zone = this.selected.zone.filter(regionCBFunc);
+  }
+
+  zoneDependencies(){
+    let l_zone_ids = this.selected.zone.map(ele=>ele.ddm_rmp_lookup_region_zone_id);
+    let zoneCBFunc = function (ele){
+      if(l_zone_ids.includes(ele.ddm_rmp_lookup_region_zone)){
+        return ele
+      }
+    }
+    this.filtered_master_data.area = this.l_lookup_MD.market.area_data.filter(zoneCBFunc);
+    this.selected.area = this.selected.area.filter(zoneCBFunc);
   }
 
 public market_settings = {
   label: "Market",
   primary_key: 'ddm_rmp_lookup_market_id',
   label_key: 'market',
-  title : "Market Selection"
+  title : "Market Selection*"
 };
 
 public region_settings = {
@@ -164,9 +208,5 @@ public lma_settings = {
   label_key: 'lmg_desc',
   title : "LMA Selection"
 };
-
-}
-
-function masterIdCBFunc(ele){
 
 }

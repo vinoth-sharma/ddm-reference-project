@@ -16,7 +16,7 @@
             <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15">
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
                     <app-mat-multiselect [data]="filtered_master_data.market" [settings]="market_settings"
-                    [(inputModel)]="selected.market" (selectionDone)="multiSelectChange($event)"></app-mat-multiselect>
+                    [(inputModel)]="selected.market" (selectionDone)="multiSelectChange($event,'market')"></app-mat-multiselect>
                     <!-- <app-topfilter [userProfile]="mktSelnSltd" [filters]="mktSeln" [title]="'Market Selection'">
                     </app-topfilter> -->
                 </div>
@@ -29,11 +29,11 @@
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
                     <app-mat-multiselect [data]="filtered_master_data.region" [settings]="region_settings"
-                    [(inputModel)]="selected.region"></app-mat-multiselect>
+                    [(inputModel)]="selected.region" (selectionDone)="multiSelectChange($event,'region')"></app-mat-multiselect>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
                     <app-mat-multiselect [data]="filtered_master_data.zone" [settings]="zone_settings"
-                    [(inputModel)]="selected.zone"></app-mat-multiselect>
+                    [(inputModel)]="selected.zone" (selectionDone)="multiSelectChange($event,'zone')"></app-mat-multiselect>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
                     <app-mat-multiselect [data]="filtered_master_data.area" [settings]="area_settings"

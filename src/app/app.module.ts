@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppComponent } from "./app.component";
-import { LoginComponent } from "./login/login.component";
 import { setAppInjector } from '../app-injector';
 import { AppRoutingModule } from './app-routing.module';
 // RMP
@@ -16,7 +15,6 @@ import { AuthInterceptor } from './auth-interceptor.service';
 import { InputValidatorDirective } from "./custom-directives/input-validator.directive";
 import { CustomPipeModules } from "./custom-directives/custom.pipes.module";
 import { QuillModule } from "ngx-quill";
-import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privileges/scheduler-privileges.component';
 import { CommonModuleDdmRmp } from "./custom-directives/common.module";
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
@@ -26,9 +24,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    InputValidatorDirective,
-    SchedulerPrivilegesComponent,
+    InputValidatorDirective
   ],
   imports: [
     BrowserModule,
@@ -59,8 +55,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     AuthSsoService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SchedulerPrivilegesComponent
-  ],
+  entryComponents: [],
   exports: []
 })
 export class AppModule {

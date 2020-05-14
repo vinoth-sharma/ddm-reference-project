@@ -171,7 +171,7 @@
               </tr>
               <tr class="row">&nbsp;</tr>
               <tr class="row">
-                <button class="btn btn-primary" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
+                <button class="btn btn-primary medium-btn" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
                   data-toggle="collapse" [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id"
                   style="padding: 0px 0px 0px 4px;font-size: 13px;width: 122%;">Comments
                   <i id="ic" class="material-icons comment-sec"
@@ -192,7 +192,7 @@
                 <div *ngIf="element.requestor == 'TBD'">
                   {{ element.requestor }}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModal" (click)="TBD(element)">
+                    <button class="btn-sm btn-primary" data-toggle="modal" data-target="#tbdModal" (click)="TBD(element)">
                       Assign Owner
                     </button>
                   </div>
@@ -220,7 +220,7 @@
                 <div *ngIf="element.assigned_to == 'TBD'">
                   {{ element.assigned_to }}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModalAssigned"
+                    <button class="btn-sm btn-primary" data-toggle="modal" data-target="#tbdModalAssigned"
                       (click)="TBD(element)">
                       Assign Owner
                     </button>
@@ -238,7 +238,7 @@
                 <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn btn-primary" (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
+                    <button class="btn-sm btn-primary" (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
                       Mark as Complete
                     </button>
                   </div>
@@ -246,7 +246,7 @@
                 <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal"
+                    <button class="btn-sm btn-primary medium-btn" style="margin-left: 15px;" data-toggle="modal"
                       data-target="#changeStatusModal" (click)="openEditStatusModal(element)">
                       Edit
                     </button>
@@ -272,7 +272,7 @@
                   Add Url
                 </button>
                 <button *ngIf="element.link_to_results != '' && element.status=='Completed' && user_role =='Admin'"
-                  class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
+                  class="btn-sm btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
                   (click)="addLinkUrl(element,'edit')">
                   Edit
                 </button>

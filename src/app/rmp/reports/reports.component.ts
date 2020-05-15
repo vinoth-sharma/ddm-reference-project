@@ -477,7 +477,7 @@ export class ReportsComponent implements OnInit {
         this.original_contents = this.namings;
         this.toasterService.success("Updated Successfully");
         this.spinner.hide()
-        $('#helpModal').modal('hide');
+        $('.btn-secondary').click()
       }, err => {
         this.spinner.hide()
         this.toasterService.error("Data not Updated")
@@ -1147,7 +1147,7 @@ export class ReportsComponent implements OnInit {
     this.django.add_link_to_url(data).subscribe(response =>{
      if(response['message'] == "updated successfully"){
       document.querySelector("#add-url-input")["value"] = "";
-      $('#addUrl').modal('hide');
+      $('#close_url_modal').click()
       this.toasterService.success("URL Updated Successfully !")
       Utils.hideSpinner()
       this.reports.map(item =>{
@@ -1170,7 +1170,7 @@ export class ReportsComponent implements OnInit {
 
   // close modal
   closeTBD_Assigned(){
-    $('#addUrl').modal('hide');
+    $('#close_url_modal').click();
   }
 
 // used to validate weather input is empty or not

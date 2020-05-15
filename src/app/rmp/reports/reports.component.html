@@ -605,6 +605,34 @@
     </div>
   </div>
 
+  <!-- add url modal -->
+<div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row" style="width: 100%;">
+          <div class="col-sm-2" style="padding-right:0;">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+          </div>
+          <div class="col-sm-10" style="margin:0;">
+            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b> {{addUrlTitle}}</b></h2>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" type="text" placeholder="https://example.com" class="form-control" />
+        <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save Changes</button>
+        <button type="button" class="btn btn-secondary" id="close_url_modal" data-dismiss="modal"
+          (click)="closeTBD_Assigned()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
   <!--========================================DOWNLOAD PDF===================================================================-->
 
@@ -689,32 +717,6 @@
     <p *ngIf='text_notification != ""'>Yes</p>
   </pre> 
 
-<!-- add url modal -->
-<div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="row" style="width: 100%;">
-          <div class="col-sm-2" style="padding-right:0;">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
-          <div class="col-sm-10" style="margin:0;">
-            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b> {{addUrlTitle}}</b></h2>
-          </div>
-        </div>
-      </div>
-      <div class="modal-body">
-        <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" type="text" placeholder="https://example.com" class="form-control" />
-        <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save Changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-          (click)="closeTBD_Assigned()">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!--                                Order To Sale Start                                    -->
 

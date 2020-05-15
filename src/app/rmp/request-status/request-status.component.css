@@ -504,6 +504,13 @@
   #addUrl .modal-body{
   height :120px;
   min-height: 120px;
+}
+
+#CancelRequest .modal-body{
+  height :100px;
+}
+
+.error-modal-message {
   }
   
   .error-modal-message {

@@ -983,6 +983,37 @@
   </div>
 </div>
 
+
+<!-- edit Status Modal -->
+<div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <div class="col-sm-2" style="padding-right:0;">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+          </div>
+          <div class="col-sm-10" style="margin:0;">
+            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b> Edit Status</b></h2>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%"
+          id="selectReportStatus">
+          <option value="Active"> Active </option>
+          <option value="Completed"> Completed </option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'"
+          (click)="saveReportStatus()">Save Changes</button>
+        <button type="button" class="btn btn-secondary"  data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--========================================DOWNLOAD PDF===================================================================-->
 
 <pre class="container-fluid" style="height: auto;display: none" id="print">

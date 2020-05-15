@@ -7,21 +7,26 @@
   </div>
   <div class="header-cont-part" style="justify-content: flex-end;">
     <button mat-icon-button style="margin-right: 55px;" [matMenuTriggerFor]="notifcations">
-      <mat-icon [matBadge]="notification_number" matBadgeColor="warn" class="notification-icon">notifications_active
+      <mat-icon *ngIf="notification_number != 0"  [matBadge]="notification_number" matBadgeColor="warn" class="notification-icon">notifications_active
+      </mat-icon>
+      <mat-icon *ngIf="notification_number == 0"   matBadgeColor="warn" class="notification-icon">notifications_active
       </mat-icon>
     </button>
     <mat-menu #notifcations="matMenu" class="notification-list">
       <ng-container *ngIf="notification_list">
-        <ng-container *ngIf="notification_set.size != 0">
-          <button mat-menu-item *ngFor="let element of notification_set"
+        <ng-container *ngIf="notification_list.length != 0">
+          <button mat-menu-item *ngFor="let element of unreadNotificationList"
             [ngClass]="{'alert-notification':element.comment_read_flag == false}"
             title="You have unread messages in Request #{{element.reportNo}}">
-            <span style="display: inline-block;width:100%;height: 100%;">
-              You have unread messages in Request #{{element.reportNo}}
+            <span style="display: inline-block;width:100%;height: 100%;" *ngIf="element.comment_read_flag == false">
+              You have {{element?.count}} unread messages in Request #{{element.reportNo}}
+            </span>
+            <span style="display: inline-block;width:100%;height: 100%;" *ngIf="element.comment_read_flag == true">
+              You have {{element?.count}} messages in Request #{{element.reportNo}}
             </span>
           </button>
         </ng-container>
-        <ng-container *ngIf="notification_set.size == 0">
+        <ng-container *ngIf="notification_list.length == 0">
           <button mat-menu-item>No unread messages</button>
         </ng-container>
       </ng-container>

@@ -15,8 +15,8 @@ import { NotesWrapperComponent } from '../admin-notes/notes-wrapper/notes-wrappe
   styleUrls: ['./rmp-landing-page.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class RmpLandingPageComponent implements OnInit{
-  
+export class RmpLandingPageComponent implements OnInit {
+
   public info;
   public notes = [];
   public dateCheck: Date;
@@ -33,12 +33,12 @@ export class RmpLandingPageComponent implements OnInit{
   constructor(
     public django: DjangoService,
     private report_id_service: GeneratedReportService,
-    public dataProvider: DataProviderService, 
-    public  auth_service: AuthenticationService, 
+    public dataProvider: DataProviderService,
+    public auth_service: AuthenticationService,
     private dialog: MatDialog) {
   }
-  
-  public ngOnInit() { 
+
+  public ngOnInit() {
     this.getHeaderDetails();
     this.getCurrentLookUpTable();
     this.report_id_service.buttonStatus.subscribe(showButton => this.showButton = showButton);
@@ -63,12 +63,12 @@ export class RmpLandingPageComponent implements OnInit{
     let endDate = new Date(this.db_end_date);
 
     if (this.note_status) {
-      if(today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
-          this.dialog.open(DisplayNotesComponent,{
-            data : { notes : adminNotes.notes_content }
-          })
-    } else 
-    $('#display-notes-status').prop("checked", true);
+      if (today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
+        this.dialog.open(DisplayNotesComponent, {
+          data: { notes: adminNotes.notes_content }
+        })
+    } else
+      $('#display-notes-status').prop("checked", true);
   }
 
   // to get full data of rmp landing page
@@ -84,14 +84,14 @@ export class RmpLandingPageComponent implements OnInit{
     })
   }
 
-  openNotesModal(){
-    this.dialog.open(NotesWrapperComponent,{
-      data : this.info.data.admin_note
+  openNotesModal() {
+    this.dialog.open(NotesWrapperComponent, {
+      data: this.info.data.admin_note
     })
   }
-  
+
   // to get role and name user details
- public getHeaderDetails() {
+  public getHeaderDetails() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
@@ -108,10 +108,10 @@ export class RmpLandingPageComponent implements OnInit{
   // reset important parameters
   public closeNotes() {
     if (this.info.data.admin_note[0]) {
-        this.db_start_date = this.info.data.admin_note[0].notes_start_date;
-        this.db_end_date = this.info.data.admin_note[0].notes_end_date;
-        this.admin_notes = this.info.data.admin_note[0].notes_content;
-        this.note_status = this.info.data.admin_note[0].admin_note_status;
+      this.db_start_date = this.info.data.admin_note[0].notes_start_date;
+      this.db_end_date = this.info.data.admin_note[0].notes_end_date;
+      this.admin_notes = this.info.data.admin_note[0].notes_content;
+      this.note_status = this.info.data.admin_note[0].admin_note_status;
     }
-  }  
+  }
 }

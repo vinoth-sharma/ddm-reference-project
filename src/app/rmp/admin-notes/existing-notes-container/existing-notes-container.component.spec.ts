@@ -8,9 +8,9 @@ describe('ExistingNotesContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExistingNotesContainerComponent ]
+      declarations: [ExistingNotesContainerComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

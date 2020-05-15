@@ -29,7 +29,6 @@ import { DataProviderService } from "./data-provider.service";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
 import { TagInputModule } from 'ngx-chips';
-import { CustomModalsModule } from './custom-modals/custom-modals.module';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { QuillModule } from "ngx-quill";
@@ -39,6 +38,7 @@ import { NotesWrapperComponent } from './admin-notes/notes-wrapper/notes-wrapper
 import { DisplayNotesComponent } from './admin-notes/display-notes/display-notes.component';
 import { ExistingNotesContainerComponent } from './admin-notes/existing-notes-container/existing-notes-container.component';
 import { ManageNotesComponent } from './admin-notes/manage-notes/manage-notes.component';
+import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
 
 @NgModule({
   declarations: [
@@ -63,12 +63,12 @@ import { ManageNotesComponent } from './admin-notes/manage-notes/manage-notes.co
     NotesWrapperComponent,
     DisplayNotesComponent,
     ExistingNotesContainerComponent,
-    ManageNotesComponent
+    ManageNotesComponent,
+    BrandFormsComponent
   ],
   imports: [
     QuillModule.forRoot(),
     RMPRoutingModule,
-    CustomModalsModule,
     FormsModule,
     ReactiveFormsModule,
     TagInputModule,

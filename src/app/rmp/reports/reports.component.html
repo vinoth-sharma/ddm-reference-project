@@ -150,8 +150,7 @@
               <td>
                 <div>{{element.title}}</div>
               </td>
-              <td class="ddm-report-name"
-                [ngStyle]="{ 'background-color': (element.frequency === 'On Demand' || element.frequency === 'On Demand Configurable') ? '#ccc' : 'none'  }">
+              <td class="ddm-report-name">
                 <div class="report-name-edit" *ngIf="!element.clicked">
                   <a style="font-size:18px" data-toggle="tooltip" title="EDIT" (click)="toggleShowInput(element)"><i id="ic" class="material-icons">mode_edit</i></a>
                   <p *ngIf="element.report_name">{{element.report_name}}</p>
@@ -165,12 +164,9 @@
                   </div>
                 </div>
               </td>
-              <td class="change-freq" *ngIf="element.changeFreqReq"
+              <td class="change-freq"
                 (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
                 <div>{{element.frequency}}</div>
-              </td>
-              <td *ngIf="!element.changeFreqReq">
-                <div>{{element.frequency}} </div>
               </td>
               <td *ngFor="let weekDay of weekDays">
                 <div style="width: 20px">
@@ -266,10 +262,6 @@
       </div>
     </div>
   </div>
-  <app-ondemand-reports [requestNumber]="reportRequestNumberOD" [reportId]="reportIdOD"
-    (odScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-reports>
-  <app-ondemand-config-reports [requestNumber]="reportRequestNumber" [title]="reportTitle" [name]="reportName"
-    [reportId]="reportId" (odcScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-config-reports>
 
   <div id="change-Frequency" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -293,15 +285,29 @@
               <p><b>{{changeFreqDate}}</b></p>
             </div>
           </div>
-          <br>
-          <br>
+          <!--------------------------- Select Report Frequency------------------->
           <div class="col-sm-12">
             <div class="card">
               <div class="card-header">
+                Report Frequency
+              </div>
+              <div class="card-body">
+                <span><i><strong><u>Select a Report Frequency</u></strong></i></span>
+                <div>
+                  <div class="col-xs-7">
+                    <select class="form-control pt-0 pb-0" [(ngModel)]="selectedNewFrequency" id="reportFormat"
+                      (change)="setSelectedFrequency(selectedNewFrequency)">
+                      <option *ngFor="let choice of frequencySelections" [value]="choice">{{ choice }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card" [hidden]="isRecurringFrequencyHidden">
+              <div class="card-header">
                 Select Frequency for Ongoing Routine Reports
               </div>
-              <div class="card-body top-padding">
-                <!--------------------------- Select Report Frequency----------------- -->
+              <div class="card-body-second top-padding">
                 <span><i><strong><u>
                         Frequency for Vehicle Events Status Requests
                       </u></strong></i></span>

@@ -1,0 +1,96 @@
+.page-position {
+    display: grid;
+    margin-left: 2.5vh;
+}
+
+p {
+    width : 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.inter-spacing {
+    max-height: 24vw;
+    overflow: auto;
+}
+
+.header-spacing {
+    max-height: 55vh;
+    max-width: 75vh;
+    overflow: auto;
+}
+
+.ddm-report-name {
+    width: 75vw;
+}
+
+th {
+    width: 50%;
+}
+
+.home-page {
+    display: inline-block;
+}
+
+.card-alignment {
+    background-color: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
+    background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
+    color: white;
+    max-width: 50vh;
+    margin-left: 5vw;
+    margin-top: 2vw;
+}
+
+.card-alignment-disabled {
+    max-width: 50vh;
+    margin-left: 5vw;
+    margin-top: 2vw;
+    background-color: #808080;
+    color: white;
+}
+
+.heading {
+    margin-left: 2.5vh;
+}
+
+.mat-card-subtitle {
+    color: #ffffff;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+tr {
+    border: none;
+}
+
+td {
+    border-right: solid 1px #000;
+}
+
+.table-header {
+    border: 0;
+}
+
+tbody {
+    border: solid 1px #000;
+}
+
+.delete-disabled {
+    color: #808080;
+}
+
+.complete-table {
+    padding-left: 16vw;
+    width: 40vw;
+}
+
+.search-width {
+    width: 40vw;
+}
+
+.input-width {
+    width: 8vw;
+}

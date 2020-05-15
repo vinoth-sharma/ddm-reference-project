@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -7,7 +7,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./vehicle-event-status.component.css']
 })
 export class VehicleEventStatusComponent implements OnInit {
-
+  @Input() lookupTableMD = {};
  
   constructor() { }
 
@@ -66,15 +66,128 @@ export class VehicleEventStatusComponent implements OnInit {
   startPicker = new FormControl(new Date())
   
   endPicker = new FormControl(new Date())
+// ---------------------------------------------------------
+
+  filtered_MD = {
+    model_years : [],
+    divisions : [],
+    vehicle : [],
+    allocation : [],
+    merchandising : [],
+    distribution_entity : [],
+    order_type : []
+  }
+  selected = {
+    model_years : [],
+    divisions : [],
+    vehicle : [],
+    allocation : [],
+    merchandising : [],
+    distribution_entity : [],
+    order_type : []
+
+  }
+
+  l_lookupTableMD:any = {};
 
   ngOnInit() {
 
   }
+
+  ngOnChanges(simpleChanges : SimpleChanges){
+    console.log(simpleChanges);
+    console.log(this.lookupTableMD);
+    if(simpleChanges.lookupTableMD){
+      this.l_lookupTableMD = this.lookupTableMD;
+      this.refillMasterDatatoOptions();
+    }
+  }
+
+  refillMasterDatatoOptions(){
+    this.filtered_MD.model_years = this.l_lookupTableMD.model_year; 
+    this.filtered_MD.vehicle = this.l_lookupTableMD.vehicle_data;
+    this.filtered_MD.allocation = this.l_lookupTableMD.allocation_grp;
+   this.filtered_MD.merchandising = this.l_lookupTableMD.merchandising_data;
+   this.filtered_MD.distribution_entity = this.l_lookupTableMD.type_data;
+   this.filtered_MD.order_type = this.l_lookupTableMD.order_type;
+
+   
+  }
+
+  multiSelectChange(event, type) {
+    console.log(this.selected);
+
+    switch (type) {
+      case 'market':
+        // this.MarketDependencies();
+        break;
+      case 'region':
+        // this.regionDependencies();
+        break;
+      case 'zone':
+        // this.zoneDependencies();
+        break;
+      default:
+        break;
+    }
+
+  }
+
 
   keyElemChecked() {
     if(this.disabled === true) {
       this.keyElem = new FormControl();
     }
   }
+
+  public model_yr_settings = {
+    label: "Models",
+    primary_key: 'ddm_rmp_lookup_dropdown_model_year_id',
+    label_key: 'model_year',
+    title: ""
+  };
+
+  public division_settings = {
+    label: "Division",
+    primary_key: 'ddm_rmp_lookup_division_id',
+    label_key: 'division_desc',
+    title: ""
+  };
+
+  public vehicle_settings = {
+    label: "Vehicle Line Brands",
+    primary_key: 'ddm_rmp_lookup_dropdown_vehicle_line_brand_id',
+    label_key: 'vehicle_line_brand',
+    title: ""
+  };
+
+  public allocation_settings = {
+    label: "Allocation Groups(s)",
+    primary_key: 'ddm_rmp_lookup_dropdown_allocation_group_id',
+    label_key: 'allocation_group',
+    title: ""
+  };
+
+  public merchandising_settings = {
+    label: "Merchandising Model",
+    primary_key: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
+    label_key: 'merchandising_model',
+    title: ""
+  };
+
+
+  public distribution_settings = {
+    label: "Distribution Entities",
+    primary_key: 'ddm_rmp_lookup_ots_type_data_id',
+    label_key: 'type_data_desc',
+    title: ""
+  };
+
+  public orderType_settings = {
+    label: "Order Types",
+    primary_key: 'ddm_rmp_lookup_dropdown_order_type_id',
+    label_key: 'order_type',
+    title: ""
+  };
 
 }

@@ -8,15 +8,14 @@
 
     <div class="submit-req-body">
         <select-report-criteria [lookupMasterData]="lookupMasterData" [lookupTableMD]="lookupTableMasterData"></select-report-criteria>
-        <div class="row" style="width: 100%;" *ngIf="false">
+        <div class="row" style="width: 100%;">
             <mat-tab-group>
                 <mat-tab label="Vehicle Event Status">
-                    <app-vehicle-event-status></app-vehicle-event-status>
+                    <app-vehicle-event-status [lookupTableMD]="lookupTableMasterData"></app-vehicle-event-status>
                     <!-- <app-vehicleevent-status></app-vehicleevent-status> -->
                 </mat-tab>
                 <mat-tab label="Dealer Allocation">
-                    <dealer-allocation></dealer-allocation>
-                    <!-- <app-dealer-allocation></app-dealer-allocation> -->
+                    <!-- <dealer-allocation></dealer-allocation> -->
                 </mat-tab>
                 <mat-tab disabled>
                     <ng-template mat-tab-label>

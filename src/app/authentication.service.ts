@@ -61,4 +61,21 @@ export class AuthenticationService {
     return this.http.get(serviceUrl, { responseType: 'blob' })
   }
 
+  public getListUrl() {
+    let urls = [
+                "user/main/home",
+                "user/main/ddm",
+                "user/main/user-profile",
+                "user/main/reference-documents",
+                "user/main/ddm-admin",
+                "user/submit-request",
+                "user/submit-request/select-report-criteria",
+                "user/submit-request/order-to-sale",
+                "user/request-status",
+                "user/reports",
+                "user/metrics"
+              ];
+    return urls;
+  }
+
 }

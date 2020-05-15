@@ -148,13 +148,16 @@
                 <ng-container *ngFor="let item of LinkTitleURL.controls; let pointIndex=index"
                   [formGroupName]="pointIndex">
                   <div>
-                    <label>
+                    <label style="width: 40%;">
                       Title<span _ngcontent-c1="" class="mandatory-fields">*</span>: <input class="form-control"
                         formControlName="title" required="true" maxlength="35" />
                     </label>
-                    <label>
-                      URL<span _ngcontent-c1="" class="mandatory-fields">*</span>: <input class="form-control"
-                        formControlName="link" required="true" />
+                    <label style="width: 40%;"> 
+                      URL<span _ngcontent-c1=""  class="mandatory-fields">*</span>:
+                      <span>
+                        <span [id]="pointIndex+'url'" class="error-url">please enter valid URL</span>
+                      </span>
+                      <input class="form-control" formControlName="link" required="true" />
                     </label>
                     <button [id]="'form_delete_button_'+pointIndex" type="button"
                       (click)="deleteLinkTitleURL(pointIndex)">Delete

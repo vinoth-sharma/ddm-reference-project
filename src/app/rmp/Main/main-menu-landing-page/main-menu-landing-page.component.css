@@ -105,5 +105,11 @@ a:active {
     max-height: 300px;
 }
 
+.error-url {
+    color: red;
+    display: none;
+    font-size: 10px;
+}
+
 
 

@@ -9,6 +9,7 @@
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 alignRight">
             <div class="btn btn-primary clearBtn" (click)="showData()">CLEAR ALL</div>
+            <div class="btn btn-primary clearBtn" (click)="submitReportCriteria()">Submit</div>
         </div>
     </div>
     <div class="row topFiltersWrapper margBottom">
@@ -97,11 +98,11 @@
             </div>
         </div>
     </div>
-    <app-report-frequency [lookupTableData]="l_lookup_MD.other"></app-report-frequency>
+    <app-report-frequency [lookupTableData]="l_lookup_MD.other" (reportFreqEmitter)="repFreqChange($event)"></app-report-frequency>
     <!-- <app-morefilters></app-morefilters> -->
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
+    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
         <button type="button" class="btn btn-success savenProceed">Save and Proceed</button>
-    </div>
+    </div> -->
 
 
     <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">

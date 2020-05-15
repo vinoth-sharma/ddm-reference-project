@@ -1,5 +1,5 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Component, ElementRef, ViewChild, OnInit} from '@angular/core';
+import {Component, ElementRef, ViewChild, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
@@ -13,6 +13,9 @@ import { DjangoService } from "../../../django.service";
   styleUrls: ['./ng-cips-email.component.css']
 })
 export class NgCipsEmailComponent implements OnInit {
+
+  @Output() emailSelectionEmitter = new EventEmitter()
+
   visible = true;
   selectable = true;
   removable = true;
@@ -48,6 +51,7 @@ export class NgCipsEmailComponent implements OnInit {
     // Add our fruit
     if ((value || '').trim()) {
       this.selectedChips.push(value.trim());
+      this.emailSelectionEmitter.emit(this.selectedChips)
     }
 
     // Reset the input value
@@ -64,6 +68,7 @@ export class NgCipsEmailComponent implements OnInit {
     if (index >= 0) {
       this.selectedChips.splice(index, 1);
     }
+    this.emailSelectionEmitter.emit(this.selectedChips)
   }
 
 
@@ -71,6 +76,7 @@ export class NgCipsEmailComponent implements OnInit {
     this.selectedChips.push(event.option.viewValue);
     this.fruitInput.nativeElement.value = '';
     this.chipCtrl.setValue(null);
+    this.emailSelectionEmitter.emit(this.selectedChips)
   }
 
   // private _filter(value: string): string[] {

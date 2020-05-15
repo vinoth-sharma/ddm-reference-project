@@ -29,7 +29,6 @@ th {
     width: 50%;
 }
 
-
 .home-page {
     display: inline-block;
 }
@@ -81,4 +80,17 @@ tbody {
 
 .delete-disabled {
     color: #808080;
+}
+
+.complete-table {
+    padding-left: 16vw;
+    width: 40vw;
+}
+
+.search-width {
+    width: 40vw;
+}
+
+.input-width {
+    width: 8vw;
 }

@@ -27,9 +27,13 @@
           class="material-icons pointer">arrow_back</i></a>
     </div>
   </div>
-  <div class="col-xs-12 pl-0">
-    <div>
-      <div>
+  <div class="col-xs-12 complete-table">
+    <div class="col-xs-12 pl-0 search-width">
+      <div class="col-xs-6 pl-0">
+        <input placeholder="Search ALLOC_GROUP_CD" class="form-control" (input)="filterData()"
+          [(ngModel)]="filters.ALLOC_GROUP_CD" name="filters.ALLOC_GROUP_CD">
+      </div>
+      <div class="col-xs-6 pl-0">
         <input placeholder="Search BRAND" class="form-control" (input)="filterData()" [(ngModel)]="filters.BRAND"
           name="filters.BRAND">
       </div>
@@ -77,8 +81,8 @@
               <!-- Second part -->
               <div class="report-name-edit" *ngIf="element.clicked ">
                 <div class="col-xs-6">
-                  <input maxlength="50" placeholder="Name max 50 characters" [(ngModel)]="element.BRAND"
-                    [value]="element.BRAND?element.BRAND:''">
+                  <input class="input-width" maxlength="50" placeholder="Name max 50 characters"
+                    [(ngModel)]="element.BRAND" [value]="element.BRAND?element.BRAND:''">
                 </div>
                 <div class="col-xs-2">
                   <a data-toggle="tooltip" title="Save record" (click)="changeReportName(element)"><i id="ic"

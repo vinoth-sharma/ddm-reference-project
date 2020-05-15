@@ -5,6 +5,7 @@ import { BrandFormsService } from './brand-forms.service'
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 
+//Angular Component developed by Deepak Urs G V
 @Component({
   selector: 'app-brand-forms',
   templateUrl: './brand-forms.component.html',
@@ -15,7 +16,8 @@ export class BrandFormsComponent implements OnInit {
   public reports: any = []
   public searchObj: any = [];
   public filters = {
-    report_name: '',
+    BRAND: '',
+    ALLOC_GRP_CD: ''
   };
   public param: any;
   public orderType: any;
@@ -61,6 +63,9 @@ export class BrandFormsComponent implements OnInit {
     if (element != undefined) {
       this.editDataRecord['brand_value_old'] = element['BRAND']
       this.editDataRecord['alloc_grp_cd_val_old'] = element['ALLOC_GRP_CD']
+    }
+    else if (element == 'element') {
+      //set the respective old value
     }
 
     let i = 0;

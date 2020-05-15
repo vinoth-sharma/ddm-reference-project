@@ -45,12 +45,9 @@ export class HeaderComponent implements OnInit {
           if (element) {
             this.user_name = role["first_name"] + " " + role["last_name"]
             this.user_role = role["role"]
-            this.notification_list = element.filter(element => {
-              return element.commentor != this.user_name
-            })
+            this.notification_list = element;
             let unread = [];
             let red = [];
-
             this.notification_list.map(item => {
               if (item.comment_read_flag == true) {
                 red.push(item)
@@ -59,13 +56,6 @@ export class HeaderComponent implements OnInit {
               }
             })
             this.notification_list = unread.concat(red)
-            this.notification_number = unread.length
-
-            var setBuilder = []
-            this.notification_list.map(element => {
-              setBuilder.push({ reportNo: element.ddm_rmp_post_report, comment_read_flag: element.comment_read_flag })
-            })
-            this.notification_set = new Set(setBuilder)
             this.sortNotification(this.notification_list)
           }
         })
@@ -92,16 +82,14 @@ export class HeaderComponent implements OnInit {
       window.open(data);
     })
   }
- 
+//  creating data set to consolidate notification messages
   sortNotification(notificationList){
   this.redNotificationList = []
   this.unreadNotificationList = []
   this.redTraker = [];
   this.unreadTraker = [];
-
   notificationList.forEach(item =>{
     if(item.comment_read_flag && !this.redTraker.includes(item.ddm_rmp_post_report)){
-      console.log()
       this.redTraker.push(item.ddm_rmp_post_report);
       this.redNotificationList.push({reportNo:item.ddm_rmp_post_report,count:0,comment_read_flag:true})
     }
@@ -110,15 +98,15 @@ export class HeaderComponent implements OnInit {
       this.unreadNotificationList.push({reportNo:item.ddm_rmp_post_report,count:0,comment_read_flag:false})
     }
   })
-  this.setReadData()
+  this.sortCommentsBasedOnRequest()
   }
-
-  setReadData(){
+// updating consolidated data sets 
+  sortCommentsBasedOnRequest(){
     this.notification_list.forEach(item =>{
-      if(this.redTraker.indexOf(item.ddm_rmp_post_report) >= 0){
+      if(this.redTraker.indexOf(item.ddm_rmp_post_report) >= 0 && item.comment_read_flag){
       this.redNotificationList[this.redTraker.indexOf(item.ddm_rmp_post_report)].count++
       }
-      if(this.unreadTraker.indexOf(item.ddm_rmp_post_report) >= 0){
+      if(this.unreadTraker.indexOf(item.ddm_rmp_post_report) >= 0 && !item.comment_read_flag){
         this.unreadNotificationList[this.unreadTraker.indexOf(item.ddm_rmp_post_report)].count++
       }
     })

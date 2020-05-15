@@ -92,7 +92,7 @@ describe('DataProviderService', () => {
 
   it("sholud get data from djangoservice and pass data to notifications subject", () => {
     let djangoService = TestBed.inject(DjangoService);
-    let data = { active_requests: [{"abc":"abc"}],pending_requests:[],incomplete_requests:[],complete_requests:[],cancelled_requests:[],ongoing_requests:[],recurring_obj:[] }
+    let data = { active_requests: [{"abc":"abc"}],pending_requests:[],complete_requests:[],cancelled_requests:[],ongoing_requests:[],recurring_requests:[] }
     spyOn(djangoService, "get_notifications").and.returnValue(of(data))
     service.loadNotifications()
     service.currentNotifications.subscribe(item => {

@@ -116,7 +116,7 @@ export class MetricsComponent implements OnInit {
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
-
+  public tableData = [];
   constructor(public django: DjangoService,
     public auth_service: AuthenticationService,
     private generated_report_service: GeneratedReportService,
@@ -180,7 +180,8 @@ export class MetricsComponent implements OnInit {
       if (list) {
         this.reports = list['data'];
         this.dataLoad = true;
-
+        this.tableData = JSON.parse(JSON.stringify(this.reports)).slice(this.paginatorLowerValue , this.paginatorHigherValue);
+        this.paginatorlength = this.reports.length;
         this.reports.map(reportRow => {
           reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy');
           reportRow['created_on'] = this.DatePipe.transform(reportRow['created_on'], 'dd-MMM-yyyy');
@@ -198,6 +199,7 @@ export class MetricsComponent implements OnInit {
               this.reports[i]['frequency_data'].filter(element => !days.includes(element));
           }
         }
+        console.log(this.reports.length)
       }
     });
   }
@@ -343,5 +345,6 @@ export class MetricsComponent implements OnInit {
   public onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
+    this.tableData = this.reports.slice(this.paginatorLowerValue , this.paginatorHigherValue);
   }
 }

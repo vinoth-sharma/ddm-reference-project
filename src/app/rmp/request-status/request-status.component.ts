@@ -535,7 +535,8 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       this.Tbd_res = ele;
       const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
       this.django.list_of_reports(obj).subscribe(list => {
-        this.reports = list["report_list"]
+        this.reports = list["report_list"];
+        this.paginatorlength = this.reports.length;
         Utils.hideSpinner();
         this.finalData = []
       })

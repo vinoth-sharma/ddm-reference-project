@@ -199,7 +199,7 @@ export class MetricsComponent implements OnInit {
               this.reports[i]['frequency_data'].filter(element => !days.includes(element));
           }
         }
-        console.log(this.reports.length)
+
       }
     });
   }

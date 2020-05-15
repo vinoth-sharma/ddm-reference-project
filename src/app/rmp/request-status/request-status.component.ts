@@ -11,7 +11,6 @@ import { Router } from "@angular/router";
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
-import { SharedDataService } from '../../create-report/shared-data.service';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from 'src/utils';
@@ -236,7 +235,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     private router: Router,
     private reportDataService: ReportCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe,
-    private sharedDataService: SharedDataService,
     private dataProvider: DataProviderService,
     private auth_service: AuthenticationService,
     private toastr: NgToasterComponent,
@@ -1194,36 +1192,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       localStorage.setItem('report_id', $(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.router.navigate(["user/submit-request/select-report-criteria"]);
-    }
-  }
-
-  // creating report based on role admin/non-admin
-  public getRequestId(element) {
-    Utils.showSpinner();
-    this.sharedDataService.setObjectExplorerPathValue(false);
-    if (element.requestor != 'TBD') {
-      this.django.get_report_description(element.ddm_rmp_post_report_id).subscribe(response => {
-        if (response) {
-          this.summary = response;
-          let isODC = this.summary["frequency_data"][0]['select_frequency_values'];
-          if (isODC === "On Demand Configurable" || isODC === "On Demand") {
-            this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
-            this.toastr.error(" Please click on the CREATE ODC REPORT and continue !! ");
-            Utils.hideSpinner();
-          }
-          else {
-            Utils.hideSpinner();
-            this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
-            this.router.navigate(['../../semantic/sem-reports/home']);
-            return;
-          }
-        }
-      })
-    }
-    else {
-      Utils.hideSpinner();
-      this.errorModalMessageRequest = "Assign an owner first to create the report";
-      $('#errorModalRequest').modal('show');
     }
   }
 

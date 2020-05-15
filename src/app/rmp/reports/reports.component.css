@@ -13,17 +13,19 @@ h3 {
   top: 0;
   z-index: 1;
 }
+
 .report-name-edit{
   display:flex;
   flex-direction: row;
   justify-content: space-between !important;
 
 }
+
 #ic{
   font-size: 8 !important;
 }
-.tableFixHead {
 
+.tableFixHead {
   padding-left: 1%;
 }
 
@@ -92,6 +94,7 @@ h3 {
 label {
   font-size: 30px;
 }
+
 .modal-body {
   max-height: 400px;
 }
@@ -151,6 +154,13 @@ label input[type="checkbox"] {
   max-height: 315px;
 }
 
+.card-body-second { 
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 225px; 
+  padding-left: 4vw;
+}
+
 .change-freq:hover {
   cursor: pointer;
   background-color: #ccc !important;
@@ -185,4 +195,12 @@ td > div {
   padding: 3px;
 }
 
+.modal-dialog{
+  margin-top: auto;
+  top:15%
+}
 
+.material-icons {
+  margin-right: none;
+  cursor: pointer;
+}

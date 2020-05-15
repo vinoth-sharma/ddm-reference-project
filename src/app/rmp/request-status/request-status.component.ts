@@ -1,4 +1,5 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+// Migrated by Ganesha
+import { Component, OnInit, OnChanges, AfterViewInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
@@ -23,7 +24,7 @@ declare var $: any;
   templateUrl: './request-status.component.html',
   styleUrls: ['./request-status.component.css']
 })
-export class RequestStatusComponent implements OnInit, OnChanges {
+export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit {
 
   public searchText: any = '';
   public p: any;
@@ -182,7 +183,8 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   public linkUrlId: number
   public addUrlTitle: String = "";
   public selectReportStatus = "";
-  public changeDoc:boolean = false;
+  public changeDoc: boolean = false;
+  public linkToUrlFlag = true;
 
   // paginator params
   public paginatorlength = 100;
@@ -190,6 +192,45 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
+
+  public toolbarTooltips = {
+    'font': 'Select a font',
+    'size': 'Select a font size',
+    'header': 'Select the text style',
+    'bold': 'Bold',
+    'italic': 'Italic',
+    'underline': 'Underline',
+    'strike': 'Strikethrough',
+    'color': 'Select a text color',
+    'background': 'Select a background color',
+    'script': {
+      'sub': 'Subscript',
+      'super': 'Superscript'
+    },
+    'list': {
+      'ordered': 'Numbered list',
+      'bullet': 'Bulleted list'
+    },
+    'indent': {
+      '-1': 'Decrease indent',
+      '+1': 'Increase indent'
+    },
+    'direction': {
+      'rtl': 'Text direction (right to left | left to right)',
+      'ltr': 'Text direction (left ro right | right to left)'
+    },
+    'align': 'Text alignment',
+    'link': 'Insert a link',
+    'image': 'Insert an image',
+    'formula': 'Insert a formula',
+    'clean': 'Clear format',
+    'add-table': 'Add a new table',
+    'table-row': 'Add a row to the selected table',
+    'table-column': 'Add a column to the selected table',
+    'remove-table': 'Remove selected table',
+    'help': 'Show help'
+  };
+
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -306,12 +347,13 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     this.django.getLookupValues().subscribe(check_user_data => {
       check_user_data['data']['users_list'].forEach(ele => {
         this.fullName = ele.first_name + ' ' + ele.last_name;
-        this.usersList.push({ 'full_name': this.fullName, 'users_table_id': ele.users_table_id });
+        this.usersList.push({ 'full_name': this.fullName, 'users_table_id': ele.users_table_id, role: ele.role });
 
         if (ele['disclaimer_ack'] != null || ele['disclaimer_ack'] != undefined)
           this.ackList['data'].push(ele);
       });
-      this.tbddropdownListfinal_report = this.tbddropdownListfinalAssigned = this.usersList;
+      this.tbddropdownListfinalAssigned = this.usersList.filter(item => item.role == 1);;
+      this.tbddropdownListfinal_report = this.usersList
       this.discList = check_user_data['data']['users_list'];
     });
 
@@ -337,6 +379,58 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       primaryKey: 'status_id',
       labelKey: 'status',
     };
+  }
+
+  // execute after html initialized
+  public ngAfterViewInit() {
+    this.showTooltips();
+  }
+
+  // quill editor buttons tooltips display
+  public showTooltips() {
+    let showTooltip = (which, el) => {
+      var tool: any;
+      if (which == 'button') {
+        tool = el.className.replace('ql-', '');
+      }
+      else if (which == 'span') {
+        tool = el.className.replace('ql-', '');
+        tool = tool.substr(0, tool.indexOf(' '));
+      }
+      if (tool) {
+        if (tool === 'blockquote') {
+          el.setAttribute('title', 'blockquote');
+        }
+        else if (tool === 'list' || tool === 'script') {
+          if (this.toolbarTooltips[tool][el.value])
+            el.setAttribute('title', this.toolbarTooltips[tool][el.value]);
+        }
+        else if (el.title == '') {
+          if (this.toolbarTooltips[tool])
+            el.setAttribute('title', this.toolbarTooltips[tool]);
+        }
+        //buttons with value
+        else if (typeof el.title !== 'undefined') {
+          if (this.toolbarTooltips[tool][el.title])
+            el.setAttribute('title', this.toolbarTooltips[tool][el.title]);
+        }
+        //defaultlsdfm,nxcm,v vxcn
+        else
+          el.setAttribute('title', this.toolbarTooltips[tool]);
+      }
+    };
+
+    let toolbarElement = document.querySelector('.ql-toolbar');
+    if (toolbarElement) {
+      let matchesButtons = toolbarElement.querySelectorAll('button');
+      for (let i = 0; i < matchesButtons.length; i++) {
+        showTooltip('button', matchesButtons[i]);
+      }
+      let matchesSpans = toolbarElement.querySelectorAll('.ql-toolbar > span > span');
+      for (let i = 0; i < matchesSpans.length; i++) {
+        showTooltip('span', matchesSpans[i]);
+      }
+    }
   }
 
   // detect paramater changes in component
@@ -476,7 +570,6 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 };
       this.django.list_of_reports(obj).subscribe(list => {
         this.reports = list["report_list"];
-        this.finalData = [];
         $('#CancelRequest').modal('hide');
         this.toastr.success("The request-id : " + this.finalData[0]['ddm_rmp_post_report_id'] + " has been cancelled successfully")
         Utils.hideSpinner();
@@ -697,7 +790,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     }).catch(error => {
     });
   }
-
+  // creating a body to generate excel report
   createNewBodyForExcel() {
     let reportBody = []
     this.reports.forEach(item => {
@@ -798,7 +891,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
 
   // adding comment to reports
   public extract_comment() {
-    if (this.comment_text == "") {
+    if (!this.comment_text || this.comment_text == "") {
       this.errorModalMessageRequest = "Enter some comment";
       $('#errorModalRequest').modal('show');
     }
@@ -848,8 +941,11 @@ export class RequestStatusComponent implements OnInit, OnChanges {
         this.django.update_comment_flags({ report_id: report_id }).subscribe(() => {
           this.notification_list = [];
           this.dataProvider.currentNotifications.subscribe((response: Array<any>) => {
-            this.notification_list = response.filter(element => {
-              return (element.commentor != this.user_name) && (element.ddm_rmp_post_report != report_id)
+            this.notification_list = response
+            this.notification_list.map(element => {
+              if (element.ddm_rmp_post_report == report_id) {
+                element.comment_read_flag = true
+              }
             });
           })
           this.dataProvider.changeNotificationData(this.notification_list);
@@ -1095,7 +1191,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       $('#errorModalRequest').modal('show');
     }
     else {
-      localStorage.setItem('report_id',$(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
+      localStorage.setItem('report_id', $(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.router.navigate(["user/submit-request/select-report-criteria"]);
     }
@@ -1288,6 +1384,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
 
   // download browser data in pdf file
   public captureScreen() {
+    let fileName = `${this.summary.ddm_rmp_post_report_id}_Request_Summary.pdf`;
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
@@ -1304,7 +1401,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     doc.fromHTML(
       $('#print').html(), margins.left, margins.top,
       { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
-      function () { doc.save('sample-file.pdf'); }, margins
+      function () { doc.save(fileName); }, margins
     );
   }
 
@@ -1314,14 +1411,17 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     if (type == "create") {
       this.addUrlTitle = "ADD URL"
       document.querySelector("#add-url-input")["value"] = "";
+
     } else {
       this.addUrlTitle = "EDIT URL"
       document.querySelector("#add-url-input")["value"] = element.link_to_results;
+      this.validateLinkToUrl(element.link_to_results)
     }
   }
-
+  //  save link to url
   saveLinkURL() {
     let link = document.querySelector("#add-url-input")["value"]
+
     let data = { request_id: this.linkUrlId, link_to_results: link }
     Utils.showSpinner();
     this.django.add_link_to_url(data).subscribe(response => {
@@ -1337,25 +1437,25 @@ export class RequestStatusComponent implements OnInit, OnChanges {
         })
       }
     }, error => {
-      this.toastr.error("Failed To Add URL, Please Try Again")
+      this.toastr.error(error.error.error.link_to_results.join())
       Utils.hideSpinner()
     })
 
   }
-
+  // open link in a new window
   openNewWindow(url) {
     window.open(url)
   }
-
+  // setting report id inorder to edit
   openEditStatusModal(element) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     document.querySelector("#selectReportStatus")["value"] = "Active"
   }
-
+  // capturing report status from input
   setselectReportStatus() {
     this.selectReportStatus = document.querySelector("#selectReportStatus")["value"]
   }
-
+  // saving report status to server
   saveReportStatus() {
     let link = document.querySelector("#add-url-input")["value"]
     let data = { request_id: this.linkUrlId, status: "Completed", status_date: new Date() }
@@ -1377,13 +1477,19 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       Utils.hideSpinner()
     })
   }
-
+  // close modal
   closeLinkUrl() {
     $('#addUrl').modal('hide');
   }
-
+  // close modal
   closeStatusUrl() {
     $('#changeStatusModal').modal('hide');
+  }
+
+  // used to validate weather input is empty or not
+  validateLinkToUrl(data) {
+    if (data == "") this.linkToUrlFlag = true
+    else this.linkToUrlFlag = false;
   }
   public onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;

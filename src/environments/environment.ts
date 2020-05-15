@@ -10,11 +10,6 @@ export const environment = {
   version: require('../../package.json').version
 };
 
-// export var constants_value = {
-//   column_space_replace_value : '_dummy_'
-// }
-
-
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

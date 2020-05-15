@@ -1,12 +1,11 @@
+// Migrated by Ganesha
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { AuthenticationService } from "src/app/authentication.service";
 declare var $: any;
-import { FormControl, FormGroupDirective, NgForm, FormGroup} from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { DisplayNotesComponent } from '../admin-notes/display-notes/display-notes.component';
 import { NotesWrapperComponent } from '../admin-notes/notes-wrapper/notes-wrapper.component';
 
@@ -17,8 +16,8 @@ import { NotesWrapperComponent } from '../admin-notes/notes-wrapper/notes-wrappe
   styleUrls: ['./rmp-landing-page.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class RmpLandingPageComponent implements OnInit{
-  
+export class RmpLandingPageComponent implements OnInit {
+
   public info;
   public notes = [];
   public dateCheck: Date;
@@ -35,20 +34,12 @@ export class RmpLandingPageComponent implements OnInit{
   constructor(
     public django: DjangoService,
     private report_id_service: GeneratedReportService,
-    public dataProvider: DataProviderService, 
-    public  auth_service: AuthenticationService, 
+    public dataProvider: DataProviderService,
+    public auth_service: AuthenticationService,
     private dialog: MatDialog) {
   }
 
-  // checking date
-  public checkDates(group: FormGroup) {
-    if (group.controls.endDate.value < group.controls.startDate.value) {
-      return { endDateLessThanStartDate: true }
-    }
-    return null;
-  }
-  
-  public ngOnInit() { 
+  public ngOnInit() {
     this.getHeaderDetails();
     this.getCurrentLookUpTable();
     this.report_id_service.buttonStatus.subscribe(showButton => this.showButton = showButton);
@@ -73,12 +64,12 @@ export class RmpLandingPageComponent implements OnInit{
     let endDate = new Date(this.db_end_date);
 
     if (this.note_status) {
-      if(today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
-          this.dialog.open(DisplayNotesComponent,{
-            data : { notes : adminNotes.notes_content }
-          })
-    } else 
-    $('#display-notes-status').prop("checked", true);
+      if (today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
+        this.dialog.open(DisplayNotesComponent, {
+          data: { notes: adminNotes.notes_content }
+        })
+    } else
+      $('#display-notes-status').prop("checked", true);
   }
 
   // to get full data of rmp landing page
@@ -94,14 +85,14 @@ export class RmpLandingPageComponent implements OnInit{
     })
   }
 
-  openNotesModal(){
-    this.dialog.open(NotesWrapperComponent,{
-      data : this.info.data.admin_note
+  openNotesModal() {
+    this.dialog.open(NotesWrapperComponent, {
+      data: this.info.data.admin_note
     })
   }
-  
+
   // to get role and name user details
- public getHeaderDetails() {
+  public getHeaderDetails() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
@@ -118,19 +109,10 @@ export class RmpLandingPageComponent implements OnInit{
   // reset important parameters
   public closeNotes() {
     if (this.info.data.admin_note[0]) {
-        this.db_start_date = this.info.data.admin_note[0].notes_start_date;
-        this.db_end_date = this.info.data.admin_note[0].notes_end_date;
-        this.admin_notes = this.info.data.admin_note[0].notes_content;
-        this.note_status = this.info.data.admin_note[0].admin_note_status;
+      this.db_start_date = this.info.data.admin_note[0].notes_start_date;
+      this.db_end_date = this.info.data.admin_note[0].notes_end_date;
+      this.admin_notes = this.info.data.admin_note[0].notes_content;
+      this.note_status = this.info.data.admin_note[0].admin_note_status;
     }
-  }  
-}
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const invalidCtrl = !!(control && control.invalid);
-    const invalidParent = !!(control && control.parent && control.parent.invalid);
-
-    return (invalidCtrl || invalidParent);
   }
 }

@@ -26,7 +26,10 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { OverlayModule } from "@angular/cdk/overlay";
 import { DjangoService } from 'src/app/rmp/django.service';
 import { of } from 'rxjs';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+// Angular test cases written by Ganesha
 describe('MetricsComponent', () => {
   let component: MetricsComponent;
   let fixture: ComponentFixture<MetricsComponent>;
@@ -402,7 +405,8 @@ describe('MetricsComponent', () => {
       imports: [FormsModule, MatFormFieldModule,
         MatInputModule, NgbDatepickerModule, NgbTimepickerModule,
         AngularMultiSelectModule, QuillModule.forRoot(),
-        MatProgressSpinnerModule, HttpClientTestingModule, OverlayModule],
+        MatProgressSpinnerModule, HttpClientTestingModule,
+        OverlayModule,MatPaginatorModule,NoopAnimationsModule],
       declarations: [MetricsComponent, OrderByPipe, FilterTablePipe, NgToasterComponent],
       providers: [DatePipe, MatSnackBar]
     })

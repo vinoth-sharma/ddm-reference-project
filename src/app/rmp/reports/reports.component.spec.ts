@@ -16,11 +16,11 @@ import { ScheduleService } from 'src/app/schedule/schedule.service';
 import { of } from 'rxjs';
 import { DjangoService } from '../django.service';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
-import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { Component, Input, EventEmitter } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgCustomSpinnerComponent } from 'src/app/custom-directives/ng-custom-spinner/ng-custom-spinner.component';
+import Utils from 'src/utils';
 declare var $: any;
 
 describe('ReportsComponent', () => {
@@ -90,7 +90,7 @@ describe('ReportsComponent', () => {
       declarations: [ReportsComponent, OrderByPipe, NgCustomSpinnerComponent, FilterTablePipe, OndemandReportsComponent, OndemandConfigReportsComponent, NgToasterComponent],
       imports: [FormsModule, MaterialModule, BrowserAnimationsModule,
         HttpClientTestingModule, RouterTestingModule, QuillModule.forRoot({})],
-      providers: [DatePipe]
+      providers: [DatePipe,Utils]
     })
       .compileComponents();
   }));
@@ -118,7 +118,7 @@ describe('ReportsComponent', () => {
   });
 
   it("should return values", () => {
-    expect(component.getValues({ a: "a", "b": "b" })).toEqual(['a', 'b'])
+    expect(component.getValues({ a: "a", b: "b" })).toEqual(['a', 'b'])
   })
 
   it("should set semanticLayerId", () => {
@@ -128,13 +128,15 @@ describe('ReportsComponent', () => {
     expect(component.semanticLayerId).toEqual("2")
   })
 
-  it("should read scheduled from scheduled reports", () => {
+  it("should read scheduled from scheduled reports", fakeAsync(() => {
     let scheduleScrvice = TestBed.inject(ScheduleService);
     let data = { data: { key: "value" } }
+    component.semanticLayerId = 1
     spyOn(scheduleScrvice, "getScheduledReports").and.returnValue(of(data));
     component.getScheduledReports();
+    tick()
     expect(component.reportDataSource).toEqual(data.data)
-  })
+  }))
 
   it("getReportList", () => {
     let djangoService = TestBed.get(DjangoService);
@@ -189,6 +191,7 @@ describe('ReportsComponent', () => {
     component.description_texts = { description: "", module_name: "", ddm_rmp_desc_text_id: 6 }
     component.namings = "namings"
     component.content_edits();
+    
     expect(component.editModes).toBeFalsy();
     expect(component.readOnlyContentHelper).toBeTruthy();
     expect(component.description_texts.description).toEqual("namings");
@@ -215,15 +218,7 @@ describe('ReportsComponent', () => {
     expect(component.namings).toBe("original_contents");
   })
 
-  it('should set a few properties of component', () => {
-    spyOn(Utils, 'showSpinner');
-    spyOn(Utils, 'hideSpinner');
-    spyOn(component, "hideDemandScheduleConfigurableModal")
-    component.reports = reportData.data
-    component.reportContainer = [{ report_name: "report_name", title: "title" }]
-    component.goToReports("report_name", "title");
-    expect(component.reportTitle).toEqual("title")
-  })
+ 
 
   it("startOnDemandScheduling(), should set a few properties and call getScheduleReportData", fakeAsync(() => {
     let scheduleService = TestBed.inject(ScheduleService)
@@ -239,7 +234,7 @@ describe('ReportsComponent', () => {
     expect(scheduleServiceSpy).toHaveBeenCalled()
   }))
 
-  it(" should select and set frequency of component ", () => {
+  xit(" should select and set frequency of component ", () => {
     let data = [
       {
         ddm_rmp_lookup_report_frequency_id: 8,
@@ -331,6 +326,7 @@ describe('ReportsComponent', () => {
     let djangoService = TestBed.inject(DjangoService);
     spyOn(djangoService, "get_report_description").and.returnValue(of(serverData));
     spyOn(component, "showChangeFrequencyModal")
+    spyOn(component,"FrequencySelection")
     component.changeFreq(requestId, title, date, frequency);
     expect(component.changeFrequency).toEqual(frequency);
     expect(component.changeFreqId).toEqual(requestId);
@@ -381,15 +377,7 @@ describe('ReportsComponent', () => {
     expect(typeof (component.filters)).toEqual("object")
   })
 
-  it("should getlink from django service ", () => {
-    let djangoservice = TestBed.get(DjangoService);
-    let serverData = { data: { url: "url" } }
-    spyOn(djangoservice, "get_report_link").and.returnValue(of(serverData));
-    let spy = spyOn(window, "open")
-    component.getLink(1);
-    expect(spy).toHaveBeenCalledWith(serverData.data.url, "_blank")
-
-  })
+  
 
   it("should get data from get_report_description and assegin values to a few properties", () => {
     let djangoService = TestBed.inject(DjangoService)
@@ -447,6 +435,78 @@ describe('ReportsComponent', () => {
     expect(component.fan_desc).toEqual("a, b")
     expect(component.text_notification).toEqual(222)
   })
+  it('should check the setSelectedFrequency() methods value set process with OT', () => {
+    let testChoice = 'One Time'
+
+    component.setSelectedFrequency(testChoice);
+
+    expect(component.selectedNewFrequency).toEqual(testChoice);
+    expect(component.changeInFreq).toEqual(false);
+    expect(component.isRecurringFrequencyHidden).toEqual(true);
+  })
+
+  it('should check the setSelectedFrequency() methods value set process with OD', () => {
+    let testChoice = 'On Demand'
+
+    component.setSelectedFrequency(testChoice);
+
+    expect(component.selectedNewFrequency).toEqual(testChoice);
+    expect(component.changeInFreq).toEqual(false);
+    expect(component.isRecurringFrequencyHidden).toEqual(false);
+  })
+
+  it("should check the jsonFinal['select_frequency'] being set with One Time", () => {
+    let testJsonFinal = { select_frequency: [], frequency: 'One Time' };
+    let targetJsonFinalSelectFrequency = [{ "ddm_rmp_lookup_select_frequency_id": 39, "description": "" }]
+
+    component.jsonfinal = testJsonFinal;
+    component.setFrequency();
+
+    expect(component.jsonfinal.select_frequency).toEqual(targetJsonFinalSelectFrequency);
+  })
+
+  it("should check the jsonFinal['select_frequency'] being set with On Demand Configurable", () => {
+    let testJsonFinal = { select_frequency: [], frequency: 'On Demand Configurable' };
+    let targetJsonFinalSelectFrequency = [{ "ddm_rmp_lookup_select_frequency_id": 38, "description": "" }]
+
+    component.jsonfinal = testJsonFinal;
+    component.setFrequency();
+
+    expect(component.jsonfinal.select_frequency).toEqual(targetJsonFinalSelectFrequency);
+  })
+
+  it('should check isRecurringFrequencyHidden values inside the API call of changeFreq()', () => {
+    let testRequestId = 416;
+    spyOn(component, "ngOnInit")
+    spyOn(Utils, 'hideSpinner')
+    spyOn(Utils, 'showSpinner')
+
+    // One Time frequency case
+    fixture = TestBed.createComponent(ReportsComponent);
+    component = fixture.componentInstance;
+    let service = fixture.debugElement.injector.get(DjangoService);
+    fixture.detectChanges();
+    service.get_report_description(testRequestId).subscribe(res => {
+      res['frequency_of_report'] = 'One Time'
+      component.selectedNewFrequency = res['frequency_of_report']
+
+      expect(component.isRecurringFrequencyHidden).toEqual(true)
+    })
+
+    // On Demand frequency case
+    fixture = TestBed.createComponent(ReportsComponent);
+    component = fixture.componentInstance;
+    let serviceSecond = fixture.debugElement.injector.get(DjangoService);
+    fixture.detectChanges();
+    service.get_report_description(testRequestId).subscribe(res => {
+      res['frequency_of_report'] = 'On Demand'
+      component.selectedNewFrequency = res['frequency_of_report']
+
+      expect(component.isRecurringFrequencyHidden).toEqual(false)
+    })
+  });
+
+
 });
 @Component({
   selector: 'app-ondemand-reports',
@@ -469,6 +529,3 @@ class OndemandConfigReportsComponent {
   @Input() name
   odcScheduleConfirmation = new EventEmitter();
 }
-
-
-

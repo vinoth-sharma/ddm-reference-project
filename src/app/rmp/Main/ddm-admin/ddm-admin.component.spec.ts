@@ -171,8 +171,8 @@ describe('DdmAdminComponent', () => {
     fixture.detectChanges();
     let element = fixture.debugElement.nativeElement;
     let doc_data = { title: "title_rmp", url: "url", admin_flag: true };
-    element.querySelector("#document-name").value = "abc";
-    element.querySelector("#document-url").value = "abc";
+    element.querySelector("#document-name").value = "title_rmp";
+    element.querySelector("#document-url").value = "url";
     component.naming = [{ title: "xyz" }]
     component.editid = "id-one";
     component.document_details = doc_data;

@@ -8,7 +8,7 @@
 }
 
 .main-tool-body-content {
-    height: 80%;
+    height: 62.5vh;
     width: 95%;
     border: 1px solid rgb(175, 175, 175);
     margin-left: 2.5%;
@@ -70,7 +70,6 @@ b {
     padding: 1%;
     padding-left: 2%;
     padding-right: 5%;
-    overflow-y: auto;
     height: 500px;
 }
 

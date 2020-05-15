@@ -1,3 +1,21 @@
 table {
     width: 100%;
-  }
+}
+
+.mat-cell, .mat-header-cell {
+  font-size:12px;
+  font-family: Verdana,Sans-Serif;
+  display: table-cell;
+  height: 48px;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  border-left: 2px solid rgba(0, 0, 0, 0.12);
+  border-right: 2px solid rgba(0, 0, 0, 0.12);
+  padding: 1vw;
+}
+
+.header-looks {
+  background-color: lightgrey;
+  color: black;
+}

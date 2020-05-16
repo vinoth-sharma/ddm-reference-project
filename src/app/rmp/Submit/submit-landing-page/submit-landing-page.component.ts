@@ -211,10 +211,6 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public updateQuillTool() {
-    this.showTooltips();
-  }
-
   public notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)

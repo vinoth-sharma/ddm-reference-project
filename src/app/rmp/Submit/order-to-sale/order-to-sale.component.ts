@@ -1309,6 +1309,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   public onItemSelect(item: any) {
   }
 
+  //  disable or enable multiselect dropdown based on other value 
   public other_desc(event) {
     if(!this.selectedItemsOrderType.length && event.target.value !== '') {
       this.otsObj.otherDesc = event.target.value;

@@ -307,19 +307,19 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     'italic': 'Italic',
     'underline': 'Underline',
     'strike': 'Strikethrough',
-    'color' : 'Select a text color',
+    'color': 'Select a text color',
     'background': 'Select a background color',
     'script': {
-      'sub' : 'Subscript',
+      'sub': 'Subscript',
       'super': 'Superscript'
     },
     'list': {
-      'ordered':'Numbered list',
+      'ordered': 'Numbered list',
       'bullet': 'Bulleted list'
     },
     'indent': {
       '-1': 'Decrease indent',
-      '+1':  'Increase indent'
+      '+1': 'Increase indent'
     },
     'direction': {
       'rtl': 'Text direction (right to left | left to right)',
@@ -342,63 +342,54 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     public DatePipe: DatePipe, public dataProvider: DataProviderService, public toastr: NgToasterComponent,
     public reportDataService: ReportCriteriaDataService,
     private formBuilder: FormBuilder) {
-    // this.myForm = this.formBuilder.group({
-    //   'startDate': [''],
-    //   'endDate': ['']
-    // }, { validator: this.checkDates });
-
-    // this.myForm.setValue({
-    //   startDate: this.targetStart,
-    //   endDate: this.targetend
-    // });
   }
   // execute after html initialized
   public ngAfterViewInit() {
     this.showTooltips();
   }
 
-   // quill editor buttons tooltips display
-  public showTooltips(){
-    let showTooltip = (which,el) => {
-      var tool : any;
-      if (which=='button'){
+  // quill editor buttons tooltips display
+  public showTooltips() {
+    let showTooltip = (which, el) => {
+      var tool: any;
+      if (which == 'button') {
         tool = el.className.replace('ql-', '');
       }
-      else if (which=='span'){
-         tool = el.className.replace('ql-','');
-        tool=tool.substr(0,tool.indexOf(' '));
+      else if (which == 'span') {
+        tool = el.className.replace('ql-', '');
+        tool = tool.substr(0, tool.indexOf(' '));
       }
-      if (tool){
-        if(tool === 'blockquote') {
-          el.setAttribute('title','blockquote');
+      if (tool) {
+        if (tool === 'blockquote') {
+          el.setAttribute('title', 'blockquote');
         }
-        else if(tool === 'list' || tool === 'script') {
+        else if (tool === 'list' || tool === 'script') {
           if (this.toolbarTooltips[tool][el.value])
-          el.setAttribute('title',this.toolbarTooltips[tool][el.value]);
+            el.setAttribute('title', this.toolbarTooltips[tool][el.value]);
         }
-        else if (el.title ==''){
+        else if (el.title == '') {
           if (this.toolbarTooltips[tool])
-            el.setAttribute('title',this.toolbarTooltips[tool]);
+            el.setAttribute('title', this.toolbarTooltips[tool]);
         }
         //buttons with value
-        else if (typeof el.title !=='undefined'){
+        else if (typeof el.title !== 'undefined') {
           if (this.toolbarTooltips[tool][el.title])
-            el.setAttribute('title',this.toolbarTooltips[tool][el.title]);
+            el.setAttribute('title', this.toolbarTooltips[tool][el.title]);
         }
         //defaultlsdfm,nxcm,v vxcn
         else
-          el.setAttribute('title',this.toolbarTooltips[tool]);
+          el.setAttribute('title', this.toolbarTooltips[tool]);
       }
     };
 
     let toolbarElement = document.querySelector('.ql-toolbar');
     if (toolbarElement) {
       let matchesButtons = toolbarElement.querySelectorAll('button');
-      for ( let i =0 ; i< matchesButtons.length; i++) {
+      for (let i = 0; i < matchesButtons.length; i++) {
         showTooltip('button', matchesButtons[i]);
       }
       let matchesSpans = toolbarElement.querySelectorAll('.ql-toolbar > span > span');
-      for ( let i =0 ; i< matchesSpans.length; i++) {
+      for (let i = 0; i < matchesSpans.length; i++) {
         showTooltip('span', matchesSpans[i]);
       }
     }
@@ -495,48 +486,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
     this.getOrderToSaleContent();
   }
-
-  // // select from date
-  // public startDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-  //   this.targetStart = new Date(this.dateFormat(event.value)).toISOString();
-  //   this.finalData['tpd_start_date'] = this.dateFormat(event.value);
-  //   this.targetStartDate = new Date(event.value).getDate();
-  //   this.targetStartMonth = new Date(event.value).getMonth() + 1;
-  //   this.markDates();
-  // }
-
-  // // select to date
-  // public endDateEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-  //   this.targetEndDate = new Date(event.value).getDate();
-  //   this.targetend = new Date(this.dateFormat(event.value)).toISOString();
-  //   this.finalData['tpd_end_date'] = this.dateFormat(event.value);
-  //   this.targetEndMonth = new Date(event.value).getMonth() + 1;
-  //   this.markDates();
-  // }
-
-  // // heighligth background color dates from fromDate to endDate
-  // public markDates() {
-  //   if (this.targetStartMonth && this.targetEndMonth) {
-  //     this.dateClass = (d: Date): MatCalendarCellCssClasses => {
-  //       const date = d.getDate();
-  //       const m = d.getMonth() + 1;
-  //       if (m === this.targetStartMonth && m === this.targetEndMonth) {
-  //         if (date > this.targetStartDate && date < this.targetEndDate)
-  //           return 'custom-date-class';
-  //       } else if (m >= this.targetStartMonth && m <= this.targetEndMonth) {
-  //         if (m > this.targetStartMonth && m < this.targetEndMonth)
-  //           return 'custom-date-class';
-  //         else if (m === this.targetStartMonth) {
-  //           if (date > this.targetStartDate)
-  //             return 'custom-date-class';
-  //         } else if (m === this.targetEndMonth) {
-  //           if (date < this.targetEndDate)
-  //             return 'custom-date-class';
-  //         }
-  //       }
-  //     };
-  //   }
-  // }
 
   // formating date 
   public dateFormat(str: any) {
@@ -933,7 +882,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.otsObj.orderTypeRadio }
     if (this.selectedItemsOrderEvent.length > 0)
       this.finalData["order_event"] = { "dropdown": this.selectedItemsOrderEvent }
-    else if(this.otsObj.otherDesc !== '') {
+    else if (this.otsObj.otherDesc !== '') {
       let otherText = [{
         ddm_rmp_lookup_dropdown_order_event_id: 0,
         order_event: this.otsObj.otherDesc
@@ -1311,7 +1260,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
   //  disable or enable multiselect dropdown based on other value 
   public other_desc(event) {
-    if(!this.selectedItemsOrderType.length && event.target.value !== '') {
+    if (!this.selectedItemsOrderType.length && event.target.value !== '') {
       this.otsObj.otherDesc = event.target.value;
       this.dropdownSettingsOrderEvent = {
         singleSelection: false,
@@ -1323,7 +1272,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
         enableSearchFilter: true,
         disabled: true
       };
-    } else if(this.selectedItemsOrderType.length || event.target.value === '') {
+    } else if (this.selectedItemsOrderType.length || event.target.value === '') {
       this.dropdownSettingsOrderEvent = {
         singleSelection: false,
         primaryKey: 'ddm_rmp_lookup_dropdown_order_event_id',
@@ -1335,7 +1284,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
         disabled: false
       };
     }
-      
+
   }
 
   public onSelectAll(items: any) {

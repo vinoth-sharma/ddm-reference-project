@@ -183,7 +183,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public linkUrlId: number
   public addUrlTitle: String = "";
   public selectReportStatus = "";
-  public changeDoc:boolean = false;
+  public changeDoc: boolean = false;
   public linkToUrlFlag = true;
 
   // paginator params
@@ -201,19 +201,19 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     'italic': 'Italic',
     'underline': 'Underline',
     'strike': 'Strikethrough',
-    'color' : 'Select a text color',
+    'color': 'Select a text color',
     'background': 'Select a background color',
     'script': {
-      'sub' : 'Subscript',
+      'sub': 'Subscript',
       'super': 'Superscript'
     },
     'list': {
-      'ordered':'Numbered list',
+      'ordered': 'Numbered list',
       'bullet': 'Bulleted list'
     },
     'indent': {
       '-1': 'Decrease indent',
-      '+1':  'Increase indent'
+      '+1': 'Increase indent'
     },
     'direction': {
       'rtl': 'Text direction (right to left | left to right)',
@@ -347,13 +347,13 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.django.getLookupValues().subscribe(check_user_data => {
       check_user_data['data']['users_list'].forEach(ele => {
         this.fullName = ele.first_name + ' ' + ele.last_name;
-        this.usersList.push({ 'full_name': this.fullName, 'users_table_id': ele.users_table_id ,role:ele.role});
+        this.usersList.push({ 'full_name': this.fullName, 'users_table_id': ele.users_table_id, role: ele.role });
 
         if (ele['disclaimer_ack'] != null || ele['disclaimer_ack'] != undefined)
           this.ackList['data'].push(ele);
       });
-       this.tbddropdownListfinalAssigned = this.usersList.filter(item => item.role == 1);;
-       this.tbddropdownListfinal_report = this.usersList
+      this.tbddropdownListfinalAssigned = this.usersList.filter(item => item.role == 1);;
+      this.tbddropdownListfinal_report = this.usersList
       this.discList = check_user_data['data']['users_list'];
     });
 
@@ -381,53 +381,53 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     };
   }
 
-   // execute after html initialized
-   public ngAfterViewInit() {
+  // execute after html initialized
+  public ngAfterViewInit() {
     this.showTooltips();
   }
 
-   // quill editor buttons tooltips display
-  public showTooltips(){
-    let showTooltip = (which,el) => {
-      var tool : any;
-      if (which=='button'){
+  // quill editor buttons tooltips display
+  public showTooltips() {
+    let showTooltip = (which, el) => {
+      var tool: any;
+      if (which == 'button') {
         tool = el.className.replace('ql-', '');
       }
-      else if (which=='span'){
-         tool = el.className.replace('ql-','');
-        tool=tool.substr(0,tool.indexOf(' '));
+      else if (which == 'span') {
+        tool = el.className.replace('ql-', '');
+        tool = tool.substr(0, tool.indexOf(' '));
       }
-      if (tool){
-        if(tool === 'blockquote') {
-          el.setAttribute('title','blockquote');
+      if (tool) {
+        if (tool === 'blockquote') {
+          el.setAttribute('title', 'blockquote');
         }
-        else if(tool === 'list' || tool === 'script') {
+        else if (tool === 'list' || tool === 'script') {
           if (this.toolbarTooltips[tool][el.value])
-          el.setAttribute('title',this.toolbarTooltips[tool][el.value]);
+            el.setAttribute('title', this.toolbarTooltips[tool][el.value]);
         }
-        else if (el.title ==''){
+        else if (el.title == '') {
           if (this.toolbarTooltips[tool])
-            el.setAttribute('title',this.toolbarTooltips[tool]);
+            el.setAttribute('title', this.toolbarTooltips[tool]);
         }
         //buttons with value
-        else if (typeof el.title !=='undefined'){
+        else if (typeof el.title !== 'undefined') {
           if (this.toolbarTooltips[tool][el.title])
-            el.setAttribute('title',this.toolbarTooltips[tool][el.title]);
+            el.setAttribute('title', this.toolbarTooltips[tool][el.title]);
         }
         //defaultlsdfm,nxcm,v vxcn
         else
-          el.setAttribute('title',this.toolbarTooltips[tool]);
+          el.setAttribute('title', this.toolbarTooltips[tool]);
       }
     };
 
     let toolbarElement = document.querySelector('.ql-toolbar');
     if (toolbarElement) {
       let matchesButtons = toolbarElement.querySelectorAll('button');
-      for ( let i =0 ; i< matchesButtons.length; i++) {
+      for (let i = 0; i < matchesButtons.length; i++) {
         showTooltip('button', matchesButtons[i]);
       }
       let matchesSpans = toolbarElement.querySelectorAll('.ql-toolbar > span > span');
-      for ( let i =0 ; i< matchesSpans.length; i++) {
+      for (let i = 0; i < matchesSpans.length; i++) {
         showTooltip('span', matchesSpans[i]);
       }
     }
@@ -943,7 +943,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           this.dataProvider.currentNotifications.subscribe((response: Array<any>) => {
             this.notification_list = response
             this.notification_list.map(element => {
-              if(element.ddm_rmp_post_report == report_id){
+              if (element.ddm_rmp_post_report == report_id) {
                 element.comment_read_flag = true
               }
             });
@@ -1191,7 +1191,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       $('#errorModalRequest').modal('show');
     }
     else {
-      localStorage.setItem('report_id',$(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
+      localStorage.setItem('report_id', $(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.router.navigate(["user/submit-request/select-report-criteria"]);
     }
@@ -1411,14 +1411,14 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     if (type == "create") {
       this.addUrlTitle = "ADD URL"
       document.querySelector("#add-url-input")["value"] = "";
-     
+
     } else {
       this.addUrlTitle = "EDIT URL"
       document.querySelector("#add-url-input")["value"] = element.link_to_results;
       this.validateLinkToUrl(element.link_to_results)
     }
   }
-//  save link to url
+  //  save link to url
   saveLinkURL() {
     let link = document.querySelector("#add-url-input")["value"]
 
@@ -1442,20 +1442,20 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     })
 
   }
-// open link in a new window
+  // open link in a new window
   openNewWindow(url) {
     window.open(url)
   }
-// setting report id inorder to edit
+  // setting report id inorder to edit
   openEditStatusModal(element) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     document.querySelector("#selectReportStatus")["value"] = "Active"
   }
-// capturing report status from input
+  // capturing report status from input
   setselectReportStatus() {
     this.selectReportStatus = document.querySelector("#selectReportStatus")["value"]
   }
-// saving report status to server
+  // saving report status to server
   saveReportStatus() {
     let link = document.querySelector("#add-url-input")["value"]
     let data = { request_id: this.linkUrlId, status: "Completed", status_date: new Date() }
@@ -1477,19 +1477,19 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       Utils.hideSpinner()
     })
   }
-// close modal
+  // close modal
   closeLinkUrl() {
     $('#addUrl').modal('hide');
   }
-// close modal
+  // close modal
   closeStatusUrl() {
     $('#changeStatusModal').modal('hide');
   }
 
-// used to validate weather input is empty or not
-  validateLinkToUrl(data){
-   if(data == "") this.linkToUrlFlag = true
-   else this.linkToUrlFlag = false;
+  // used to validate weather input is empty or not
+  validateLinkToUrl(data) {
+    if (data == "") this.linkToUrlFlag = true
+    else this.linkToUrlFlag = false;
   }
   public onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;

@@ -58,19 +58,19 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
     'italic': 'Italic',
     'underline': 'Underline',
     'strike': 'Strikethrough',
-    'color' : 'Select a text color',
+    'color': 'Select a text color',
     'background': 'Select a background color',
     'script': {
-      'sub' : 'Subscript',
+      'sub': 'Subscript',
       'super': 'Superscript'
     },
     'list': {
-      'ordered':'Numbered list',
+      'ordered': 'Numbered list',
       'bullet': 'Bulleted list'
     },
     'indent': {
       '-1': 'Decrease indent',
-      '+1':  'Increase indent'
+      '+1': 'Increase indent'
     },
     'direction': {
       'rtl': 'Text direction (right to left | left to right)',
@@ -89,11 +89,11 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   };
 
   constructor(private django: DjangoService,
-              private auth_service: AuthenticationService,
-              private dataProvider: DataProviderService,
-              private fb: FormBuilder,
-              private router: Router,
-              private toastr: NgToasterComponent) {
+    private auth_service: AuthenticationService,
+    private dataProvider: DataProviderService,
+    private fb: FormBuilder,
+    private router: Router,
+    private toastr: NgToasterComponent) {
 
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
@@ -162,48 +162,48 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
     this.showTooltips();
   }
 
-   // quill editor buttons tooltips display
-  public showTooltips(){
-    let showTooltip = (which,el) => {
-      var tool : any;
-      if (which=='button'){
+  // quill editor buttons tooltips display
+  public showTooltips() {
+    let showTooltip = (which, el) => {
+      var tool: any;
+      if (which == 'button') {
         tool = el.className.replace('ql-', '');
       }
-      else if (which=='span'){
-         tool = el.className.replace('ql-','');
-        tool=tool.substr(0,tool.indexOf(' '));
+      else if (which == 'span') {
+        tool = el.className.replace('ql-', '');
+        tool = tool.substr(0, tool.indexOf(' '));
       }
-      if (tool){
-        if(tool === 'blockquote') {
-          el.setAttribute('title','blockquote');
+      if (tool) {
+        if (tool === 'blockquote') {
+          el.setAttribute('title', 'blockquote');
         }
-        else if(tool === 'list' || tool === 'script') {
+        else if (tool === 'list' || tool === 'script') {
           if (this.toolbarTooltips[tool][el.value])
-          el.setAttribute('title',this.toolbarTooltips[tool][el.value]);
+            el.setAttribute('title', this.toolbarTooltips[tool][el.value]);
         }
-        else if (el.title ==''){
+        else if (el.title == '') {
           if (this.toolbarTooltips[tool])
-            el.setAttribute('title',this.toolbarTooltips[tool]);
+            el.setAttribute('title', this.toolbarTooltips[tool]);
         }
         //buttons with value
-        else if (typeof el.title !=='undefined'){
+        else if (typeof el.title !== 'undefined') {
           if (this.toolbarTooltips[tool][el.title])
-            el.setAttribute('title',this.toolbarTooltips[tool][el.title]);
+            el.setAttribute('title', this.toolbarTooltips[tool][el.title]);
         }
         //defaultlsdfm,nxcm,v vxcn
         else
-          el.setAttribute('title',this.toolbarTooltips[tool]);
+          el.setAttribute('title', this.toolbarTooltips[tool]);
       }
     };
 
     let toolbarElement = document.querySelector('.ql-toolbar');
     if (toolbarElement) {
       let matchesButtons = toolbarElement.querySelectorAll('button');
-      for ( let i =0 ; i< matchesButtons.length; i++) {
+      for (let i = 0; i < matchesButtons.length; i++) {
         showTooltip('button', matchesButtons[i]);
       }
       let matchesSpans = toolbarElement.querySelectorAll('.ql-toolbar > span > span');
-      for ( let i =0 ; i< matchesSpans.length; i++) {
+      for (let i = 0; i < matchesSpans.length; i++) {
         showTooltip('span', matchesSpans[i]);
       }
     }
@@ -330,10 +330,10 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   // add new link based on validate previous link
   public addLinkTitleURL() {
     let urlList = this.auth_service.getListUrl();
-    for( let i = 0; i < this.LinkTitleURL.value.length; i++ ){
+    for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
       let b = urlList.find(url => url === this.LinkTitleURL.value[i].link);
-      let a = document.getElementById(i+'url');
-      if(b) {
+      let a = document.getElementById(i + 'url');
+      if (b) {
         a.setAttribute('style', 'display: none !important');
         this.LinkTitleURL.push(this.fb.group({
           title: ['', Validators.required],

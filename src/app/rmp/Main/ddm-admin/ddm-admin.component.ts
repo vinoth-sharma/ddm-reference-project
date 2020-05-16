@@ -78,19 +78,19 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     'italic': 'Italic',
     'underline': 'Underline',
     'strike': 'Strikethrough',
-    'color' : 'Select a text color',
+    'color': 'Select a text color',
     'background': 'Select a background color',
     'script': {
-      'sub' : 'Subscript',
+      'sub': 'Subscript',
       'super': 'Superscript'
     },
     'list': {
-      'ordered':'Numbered list',
+      'ordered': 'Numbered list',
       'bullet': 'Bulleted list'
     },
     'indent': {
       '-1': 'Decrease indent',
-      '+1':  'Increase indent'
+      '+1': 'Increase indent'
     },
     'direction': {
       'rtl': 'Text direction (right to left | left to right)',
@@ -133,47 +133,47 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   }
 
   // quill editor buttons tooltips display
-  public showTooltips(){
-    let showTooltip = (which,el) => {
-      var tool : any;
-      if (which=='button'){
+  public showTooltips() {
+    let showTooltip = (which, el) => {
+      var tool: any;
+      if (which == 'button') {
         tool = el.className.replace('ql-', '');
       }
-      else if (which=='span'){
-         tool = el.className.replace('ql-','');
-        tool=tool.substr(0,tool.indexOf(' '));
+      else if (which == 'span') {
+        tool = el.className.replace('ql-', '');
+        tool = tool.substr(0, tool.indexOf(' '));
       }
-      if (tool){
-        if(tool === 'blockquote') {
-          el.setAttribute('title','blockquote');
+      if (tool) {
+        if (tool === 'blockquote') {
+          el.setAttribute('title', 'blockquote');
         }
-        else if(tool === 'list' || tool === 'script') {
+        else if (tool === 'list' || tool === 'script') {
           if (this.toolbarTooltips[tool][el.value])
-          el.setAttribute('title',this.toolbarTooltips[tool][el.value]);
+            el.setAttribute('title', this.toolbarTooltips[tool][el.value]);
         }
-        else if (el.title ==''){
+        else if (el.title == '') {
           if (this.toolbarTooltips[tool])
-            el.setAttribute('title',this.toolbarTooltips[tool]);
+            el.setAttribute('title', this.toolbarTooltips[tool]);
         }
         //buttons with value
-        else if (typeof el.title !=='undefined'){
+        else if (typeof el.title !== 'undefined') {
           if (this.toolbarTooltips[tool][el.title])
-            el.setAttribute('title',this.toolbarTooltips[tool][el.title]);
+            el.setAttribute('title', this.toolbarTooltips[tool][el.title]);
         }
         //defaultlsdfm,nxcm,v vxcn
         else
-          el.setAttribute('title',this.toolbarTooltips[tool]);
+          el.setAttribute('title', this.toolbarTooltips[tool]);
       }
     };
 
     let toolbarElement = document.querySelector('.ql-toolbar');
     if (toolbarElement) {
       let matchesButtons = toolbarElement.querySelectorAll('button');
-      for ( let i =0 ; i< matchesButtons.length; i++) {
+      for (let i = 0; i < matchesButtons.length; i++) {
         showTooltip('button', matchesButtons[i]);
       }
       let matchesSpans = toolbarElement.querySelectorAll('.ql-toolbar > span > span');
-      for ( let i =0 ; i< matchesSpans.length; i++) {
+      for (let i = 0; i < matchesSpans.length; i++) {
         showTooltip('span', matchesSpans[i]);
       }
     }
@@ -225,7 +225,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       }
     })
   }
-// getting links from server
+  // getting links from server
   public getLink(index) {
     this.spinner.show();
     this.django.get_doc_link(index).subscribe(ele => {
@@ -237,13 +237,13 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.toastr.error("Server Error");
     })
   }
-// read data from quill editor
+  // read data from quill editor
   public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
-// save changes made in help modal
+  // save changes made in help modal
   public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       this.spinner.show();
@@ -280,27 +280,27 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     this.readOnlyContentHelper = true;
     this.namings = this.original_content;
   }
-// setting a few properties of component
+  // setting a few properties of component
   public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_content;
   }
-// setting a few properties of component
+  // setting a few properties of component
   public content_edit() {
     this.editMode = false;
   }
-// setting a few properties of component
+  // setting a few properties of component
   public editTrue() {
     this.editMode = !this.editMode;
   }
-// setting a few properties of component
+  // setting a few properties of component
   public NewDoc() {
     this.editid = undefined;
     (<HTMLInputElement>document.getElementById('document-name')).value = "";
     (<HTMLInputElement>document.getElementById('document-url')).value = "";
   }
-// used to disable/enable url input field
+  // used to disable/enable url input field
   public upload(isChecked) {
     if ($('#uploadCheckbox').is(':checked')) {
       $('#document-url').attr('disabled', 'disabled');
@@ -313,7 +313,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       $("#attach-file1").val('');
     }
   }
-// add document to server
+  // add document to server
   public addDocument() {
     this.document_details = {
       "title": "",
@@ -375,7 +375,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     }
 
   }
-// delete document from server
+  // delete document from server
   public deleteDocument(id: number, index: number) {
     this.spinner.show()
     this.django.ddm_rmp_admin_documents_delete(id).subscribe(response => {
@@ -387,7 +387,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.toastr.error("Server problem encountered")
     })
   }
-// delete file from server
+  // delete file from server
   public delete_upload_file(id, index) {
     this.spinner.show();
     this.django.delete_upload_doc(id).subscribe(res => {
@@ -448,7 +448,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       $('#uploadCheckbox').prop('checked', false);
     });
   }
-// setting a few properties of component
+  // setting a few properties of component
   public editDoc(id, val, url) {
     this.editid = id;
     this.changeDoc = true;

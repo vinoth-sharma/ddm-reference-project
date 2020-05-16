@@ -36,7 +36,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { FilterTablePipe } from '../filter-table.pipe';
 
 // Angular test cases written by Ganesha
-fdescribe('RequestStatusComponent', () => {
+describe('RequestStatusComponent', () => {
   let location: Location;
   let router: Router;
   let component: RequestStatusComponent;
@@ -863,12 +863,6 @@ fdescribe('RequestStatusComponent', () => {
     };
   }));
 
-  // it('should execute CheckCancel method', fakeAsync(() => {
-  //   component.reports = list.report_list;
-  //   fixture.detectChanges();
-  //   component.CheckCancel();
-  // }));
-
   it('should execute cancel method', fakeAsync(() => {
     component.finalData = [{
       ddm_rmp_post_report_id: 16
@@ -1022,196 +1016,12 @@ fdescribe('RequestStatusComponent', () => {
     expect(mySpy).toHaveBeenCalledTimes(1);
   }));
 
-  // it('should execute accept method', fakeAsync(() => {
-  //   component.finalData = [{
-  //     ddm_rmp_post_report_id: 16,
-  //     status: "Cancelled"
-  //   }];
-  //   const res = ['a', 'b', 'c', 'd'];
-  //   fixture.detectChanges();
-  //   spyOn(component, 'Accept').and.callThrough(); //callThrough()
-  //   component.Accept();
-  //   expect(component.finalData.length).toBeFalsy();
-  //   expect(component.errorModalMessageRequest).toEqual('status for the report 16 is already Cancelled and can not be accepted');
-  //   expect(component.Accept).toHaveBeenCalled();
-
-  //   component.finalData = [{
-  //     ddm_rmp_post_report_id: 16,
-  //     status: "Incomplete"
-  //   }];
-  //   fixture.detectChanges();
-  //   component.Accept();
-  //   expect(component.finalData.length).toBeFalsy();
-  //   expect(component.errorModalMessageRequest).toEqual('status for the report 16 is Incomplete and can not be accepted. Please complete the report');
-  //   expect(component.Accept).toHaveBeenCalled();
-
-  //   component.finalData = [{
-  //     ddm_rmp_post_report_id: 16,
-  //     status: ""
-  //   }];
-  //   fixture.detectChanges();
-  //   component.Accept();
-  // }));
-
-  // it('should execute post_link method', fakeAsync(() => {
-  //   component.checkbox_length = 0;
-  //   component.finalData = [{
-  //     status: "Incomplete"
-  //   }];
-  //   fixture.detectChanges();
-  //   spyOn(component, 'post_link').and.callThrough(); //callThrough()
-  //   component.post_link();
-  //   expect(component.errorModalMessageRequest).toEqual("Select a report to post link for it");
-
-  //   component.checkbox_length = 1;
-  //   fixture.detectChanges();
-  //   component.post_link();
-  //   expect(component.errorModalMessageRequest).toEqual("Request not Active yet. Can't post link to results.");
-  //   expect(component.post_link).toHaveBeenCalled();
-
-  //   component.checkbox_length = 6;
-  //   fixture.detectChanges();
-  //   component.post_link();
-  //   expect(component.errorModalMessageRequest).toEqual("You cannot post link on multiple reports at once");
-  //   expect(component.post_link).toHaveBeenCalled();
-  // }));
-
   it('should execute closePostLink method', fakeAsync(() => {
     spyOn(component, 'closePostLink').and.callThrough(); //callThrough()
     component.closePostLink();
     expect(component.hidVar).toBeTruthy();
     expect(component.closePostLink).toHaveBeenCalled();
   }));
-
-  // it('should execute addDocument method', fakeAsync(() => {
-  //   const result = {
-  //     'report_id': 16,
-  //     "link_title": 'xyz',
-  //     "link_to_results": 'https://xyz.com'
-  //   };
-  //   component.documentName = '';
-  //   component.documentUrl = '';
-  //   component.finalData = [{
-  //     ddm_rmp_post_report_id: 16
-  //   }];
-  //   component.hidVar = true;
-  //   fixture.detectChanges();
-  //   spyOn(component, 'addDocument').and.callThrough(); //callThrough()
-  //   component.addDocument();
-  //   expect(component.hidVar).toBeFalsy();
-  //   expect(component.addDocument).toHaveBeenCalled();
-
-  //   component.documentName = 'xyz';
-  //   component.documentUrl = 'https://xyz.com';
-  //   component.checkbox_length = 1;
-  //   fixture.detectChanges();
-  //   let djangoService = fixture.debugElement.injector.get(DjangoService);
-  //   let mySpy = spyOn(djangoService, 'post_link').and.
-  //     returnValues(of(result));
-  //   component.addDocument();
-  //   expect(component.add_response).toEqual(result);
-  //   expect(component.addDocument).toHaveBeenCalled();
-  //   expect(djangoService).toBeDefined();
-  //   expect(mySpy).toBeDefined();
-  //   expect(mySpy).toHaveBeenCalledTimes(1);
-
-  //   component.checkbox_length = 0;
-  //   fixture.detectChanges();
-  //   component.addDocument();
-  //   expect(component.errorModalMessageRequest).toEqual("Select a report to post a link");
-  //   expect(component.addDocument).toHaveBeenCalled();
-  // }));
-
-  // it('should execute checkbox_validation method', fakeAsync(() => {
-  //   component.checkbox_length = 0;
-  //   fixture.detectChanges();
-  //   spyOn(component, 'checkbox_validation').and.callThrough(); //callThrough()
-  //   component.checkbox_validation();
-  //   expect(component.errorModalMessageRequest).toEqual("Select a report to comment on it");
-  //   expect(component.checkbox_validation).toHaveBeenCalled();
-
-  //   component.checkbox_length = 2;
-  //   fixture.detectChanges();
-  //   component.checkbox_validation();
-  //   expect(component.errorModalMessageRequest).toEqual("You cannot comment on multiple reports at once");
-  //   expect(component.checkbox_validation).toHaveBeenCalled();
-
-  //   component.checkbox_length = 1;
-  //   fixture.detectChanges();
-  //   component.checkbox_validation();
-  //   expect(component.comment_text).toEqual('');
-  //   expect(component.checkbox_validation).toHaveBeenCalled();
-  // }));
-
-  // it('should execute extract_comment method', fakeAsync(() => {
-  //   component.comment_text = '';
-  //   fixture.detectChanges();
-  //   spyOn(component, 'extract_comment').and.callThrough(); //callThrough()
-  //   component.extract_comment();
-  //   expect(component.errorModalMessageRequest).toEqual("Enter some comment");
-  //   const result = {
-  //     'data': [{ message: 'message success' }]
-  //   };
-  //   component.user_name = 'xyz';
-  //   component.reports = list['reports'];
-  //   component.comment_text = 'hsfdd';
-  //   component.comment_list = [];
-  //   fixture.detectChanges();
-  //   let djangoService = fixture.debugElement.injector.get(DjangoService);
-  //   let mySpy = spyOn(djangoService, 'post_report_comments').and.
-  //     returnValues(of(result));
-  //   component.extract_comment();
-  //   expect(component.comment_list).toEqual(result['data']);
-  //   expect(component.comment_text).toEqual('');
-  //   expect(djangoService).toBeDefined();
-  //   expect(mySpy).toBeDefined();
-  //   expect(mySpy).toHaveBeenCalledTimes(1);
-  // }));
-
-  // it('should execute NewReportOnSelectedCriteria method', fakeAsync(() => {
-  //   component.checkbox_length = 0;
-  //   fixture.detectChanges();
-  //   spyOn(component, 'NewReportOnSelectedCriteria').and.callThrough(); //callThrough()
-  //   component.NewReportOnSelectedCriteria();
-  //   expect(component.errorModalMessageRequest).toEqual("Select at least one report");
-  //   expect(component.NewReportOnSelectedCriteria).toHaveBeenCalled();
-
-  //   component.checkbox_length = 2;
-  //   fixture.detectChanges();
-  //   component.NewReportOnSelectedCriteria();
-  //   expect(component.errorModalMessageRequest).toEqual("Can select only one report for generating new report with same criteria");
-  //   expect(component.NewReportOnSelectedCriteria).toHaveBeenCalled();
-  // }));
-
-  // it('should execute getRequestId method', fakeAsync(() => {
-  //   let element = {
-  //     ddm_rmp_post_report_id: 16,
-  //     requestor: ''
-  //   };
-  //   const result = {
-  //     frequency_data:
-  //       [
-  //         {
-  //           select_frequency_values: 'cheking'
-  //         }
-  //       ]
-  //   };
-  //   let djangoService = fixture.debugElement.injector.get(DjangoService);
-  //   let mySpy = spyOn(djangoService, 'get_report_description').and.
-  //     returnValues(of(result));
-  //   spyOn(component, 'getRequestId').and.callThrough(); //callThrough()            
-  //   component.getRequestId(element);
-  //   expect(component.getRequestId).toHaveBeenCalled();
-  //   expect(component.summary).toEqual(result);
-  //   expect(djangoService).toBeDefined();
-  //   expect(mySpy).toBeDefined();
-  //   expect(mySpy).toHaveBeenCalledTimes(1);
-
-  //   element.requestor = 'TBD';
-  //   component.getRequestId(element);
-  //   expect(component.errorModalMessageRequest).toEqual("Assign an owner first to create the report");
-  //   expect(component.getRequestId).toHaveBeenCalled();
-  // }));
 
   it('should execute getLink method', fakeAsync(() => {
     const result = {
@@ -1245,21 +1055,7 @@ fdescribe('RequestStatusComponent', () => {
     expect(component.dl_flag).toEqual(false);
     expect(component.model).toEqual('');
   }));
-
-  // it('should execute updateDL method', fakeAsync(() => {
-  //   const result = 'check';
-  //   spyOn(component, 'updateDL').and.callThrough(); //callThrough()
-  //   let djangoService = fixture.debugElement.injector.get(DjangoService);
-  //   let mySpy = spyOn(djangoService, 'report_distribution_list').and.
-  //     returnValues(of(result));
-  //   component.updateDL();
-  //   tick(1500);
-  //   expect(component.updateDL).toHaveBeenCalled();
-  //   expect(djangoService).toBeDefined();
-  //   expect(mySpy).toBeDefined();
-  //   expect(mySpy).toHaveBeenCalledTimes(1);
-  // }));
-
+  
   it('should execute filterData method', fakeAsync(() => {
     component.searchObj = '';
     component.statusFilter = [

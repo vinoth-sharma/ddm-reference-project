@@ -41,15 +41,15 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
   readOnlyContentHelper: boolean = true;
   config = {
     toolbar: [
-      ['bold','italic','underline','strike'],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
-      [{'list' : 'ordered'}, {'list' : 'bullet'}],
-      [{'script' : 'sub'},{'script' : 'super'}],
-      [{'size':['small',false, 'large','huge']}],
-      [{'header':[1,2,3,4,5,6,false]}],
-      [{'color': []},{'background':[]}],
-      [{'font': []}],
-      [{'align': []}],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
       ['clean'],
       ['image']
     ]
@@ -63,19 +63,19 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
     'italic': 'Italic',
     'underline': 'Underline',
     'strike': 'Strikethrough',
-    'color' : 'Select a text color',
+    'color': 'Select a text color',
     'background': 'Select a background color',
     'script': {
-      'sub' : 'Subscript',
+      'sub': 'Subscript',
       'super': 'Superscript'
     },
     'list': {
-      'ordered':'Numbered list',
+      'ordered': 'Numbered list',
       'bullet': 'Bulleted list'
     },
     'indent': {
       '-1': 'Decrease indent',
-      '+1':  'Increase indent'
+      '+1': 'Increase indent'
     },
     'direction': {
       'rtl': 'Text direction (right to left | left to right)',
@@ -93,8 +93,8 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
     'help': 'Show help'
   };
 
-  constructor(private django: DjangoService, private toastr: NgToasterComponent, 
-              private auth_service: AuthenticationService, private dataProvider: DataProviderService) {
+  constructor(private django: DjangoService, private toastr: NgToasterComponent,
+    private auth_service: AuthenticationService, private dataProvider: DataProviderService) {
     this.editMode = false;
     dataProvider.currentlookUpTableData.subscribe(element => {
       this.content = element;
@@ -142,48 +142,48 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
     this.showTooltips();
   }
 
-   // quill editor buttons tooltips display
-  public showTooltips(){
-    let showTooltip = (which,el) => {
-      var tool : any;
-      if (which=='button'){
+  // quill editor buttons tooltips display
+  public showTooltips() {
+    let showTooltip = (which, el) => {
+      var tool: any;
+      if (which == 'button') {
         tool = el.className.replace('ql-', '');
       }
-      else if (which=='span'){
-         tool = el.className.replace('ql-','');
-        tool=tool.substr(0,tool.indexOf(' '));
+      else if (which == 'span') {
+        tool = el.className.replace('ql-', '');
+        tool = tool.substr(0, tool.indexOf(' '));
       }
-      if (tool){
-        if(tool === 'blockquote') {
-          el.setAttribute('title','blockquote');
+      if (tool) {
+        if (tool === 'blockquote') {
+          el.setAttribute('title', 'blockquote');
         }
-        else if(tool === 'list' || tool === 'script') {
+        else if (tool === 'list' || tool === 'script') {
           if (this.toolbarTooltips[tool][el.value])
-          el.setAttribute('title',this.toolbarTooltips[tool][el.value]);
+            el.setAttribute('title', this.toolbarTooltips[tool][el.value]);
         }
-        else if (el.title ==''){
+        else if (el.title == '') {
           if (this.toolbarTooltips[tool])
-            el.setAttribute('title',this.toolbarTooltips[tool]);
+            el.setAttribute('title', this.toolbarTooltips[tool]);
         }
         //buttons with value
-        else if (typeof el.title !=='undefined'){
+        else if (typeof el.title !== 'undefined') {
           if (this.toolbarTooltips[tool][el.title])
-            el.setAttribute('title',this.toolbarTooltips[tool][el.title]);
+            el.setAttribute('title', this.toolbarTooltips[tool][el.title]);
         }
         //defaultlsdfm,nxcm,v vxcn
         else
-          el.setAttribute('title',this.toolbarTooltips[tool]);
+          el.setAttribute('title', this.toolbarTooltips[tool]);
       }
     };
 
     let toolbarElement = document.querySelector('.ql-toolbar');
     if (toolbarElement) {
       let matchesButtons = toolbarElement.querySelectorAll('button');
-      for ( let i =0 ; i< matchesButtons.length; i++) {
+      for (let i = 0; i < matchesButtons.length; i++) {
         showTooltip('button', matchesButtons[i]);
       }
       let matchesSpans = toolbarElement.querySelectorAll('.ql-toolbar > span > span');
-      for ( let i =0 ; i< matchesSpans.length; i++) {
+      for (let i = 0; i < matchesSpans.length; i++) {
         showTooltip('span', matchesSpans[i]);
       }
     }
@@ -193,12 +193,12 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
 
   textChanged(event) {
     this.textChange = true;
-    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   content_edits() {
-    if(!this.textChange || this.enableUpdateData) {
+    if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
       this.editModes = false;
       this.readOnlyContentHelper = true;
@@ -223,9 +223,9 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
         Utils.hideSpinner();
         this.toastr.error("Data not Updated")
       })
-    } else  {
+    } else {
       this.toastr.error("please enter the data");
-      }
+    }
   }
 
   edit_True() {
@@ -242,7 +242,7 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
 
 
   content_edit() {
-    if(!this.textChange || this.enableUpdateData) {
+    if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
       this.editMode = false;
       this.readOnlyContent = true;
@@ -265,8 +265,8 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
         Utils.hideSpinner();
         this.toastr.error("Server Error");
       })
-  } else  {
-    this.toastr.error("please enter the data");
+    } else {
+      this.toastr.error("please enter the data");
     }
 
   }
@@ -280,6 +280,6 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
     this.editMode = !this.editMode;
     this.naming = this.original_content;
   }
-  
+
 
 }

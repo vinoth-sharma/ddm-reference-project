@@ -350,3 +350,7 @@ svg {
     align-items: center;
     justify-content: flex-end;
 }
+
+.disabled {
+  cursor: not-allowed;
+}

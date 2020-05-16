@@ -1,5 +1,5 @@
 <div class="body-content" style="height:73%">
-  <div class="row" style="height: 45%;">
+  <div class="row" style="height: 50%;">
     <div class="col-4">
       <i>
         <b>
@@ -16,27 +16,28 @@
         {{ user_office_address }}
       </i>
     </div>
-    <div class="col-4">
+    <div class="col-5">
       <div class="text-notifications">
+        <div class="row">
           <strong>Text Notification(Available for U.S. only)</strong><br>
           <i>when requests are fulfilled?</i><br>
+        </div>
         <div class="row">
           <input id="notification_yes" type="radio" name="notification" (click)="enableNotificationBox()">
           <strong>Yes</strong> &nbsp;&nbsp;
           <input id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()">
           <strong>No</strong>
         </div>
-        <p>Enter a 10-digit valid phone number(For Ex: (555) 555-1234 should be 5555551234)</p>
-        <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
-          <input type="text" id="phone" 
-                style="margin-right: 10px;width: 35%;margin-left: 5px;-webkit-text-security: disc;" 
+        <div class="row input-group">
+            <p> Enter valid 10 digit phone number(For Ex: (555) 555-1234 should be 5555551234)</p>
+          <input type="text" id="phone"
                 name="phone" title="Phone No." (keypress)='numberOnly($event)' 
                 [value]="text_number" [maxLength]='10'>
-          <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click)="showPassword()">
+          <i class="material-icons" (click)="showPassword()">
             remove_red_eye
           </i>
         </div>
-        <div class="row" style="margin-bottom:4px;">
+        <div class="row" style="margin-top: 5px;">
           <select class="carrier" name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>
             <option value="">Select Carrier for text notification</option>
             <option *ngFor="let element of carriers_pair" value={{element.carrierValue}}>{{element.carrierName}}
@@ -45,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div class="col-2" style="padding-right:10px;">
+    <div>
       <div class="row">
         <div class="icons" style="margin-left: 74%;">
           <div class="press">
@@ -55,12 +56,10 @@
           </div>
         </div>
       </div>
-      <div class="row" style="height: 36%;">
-      </div>
     </div>
   </div>
 
-  <div class="row market-static">
+  <div class="row market-static" style="position: relative;">
     <div class="col-6">
       <h4 class="header">Market Selections</h4>
       <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p>

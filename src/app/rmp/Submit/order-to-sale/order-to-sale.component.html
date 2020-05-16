@@ -429,8 +429,10 @@
           <tr class="row order-event">
             <div class="col-sm-12">
               <td>Order Event:</td>
-              <angular4-multiselect class="dropdown keyData" [data]="orderEvent" [(ngModel)]="selectedItemsOrderEvent"
-                [settings]="dropdownSettingsOrderEvent" (onSelect)="onItemSelect($event)"
+              <angular4-multiselect class="dropdown keyData" [data]="orderEvent" 
+                [(ngModel)]="selectedItemsOrderEvent"
+                [settings]="dropdownSettingsOrderEvent" 
+                (onSelect)="onItemSelect($event)"
                 (onSelectAll)="onSelectAll($event)">
               </angular4-multiselect>
             </div>
@@ -442,7 +444,8 @@
           </tr>
           <tr class="d-flex">
             <td class="col-sm-12" style="padding-left:4%;">
-              <input class="other" id="otherText" type="text" [(ngModel)]="otsObj.otherDesc" (blur)="other_desc($event)"
+              <input class="other" id="otherText" type="text" [(ngModel)]="otsObj.otherDesc" 
+              (blur)="other_desc($event)" [disabled]='selectedItemsOrderEvent.length > 0'
                 value="">
             </td>
           </tr>

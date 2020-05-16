@@ -1,5 +1,5 @@
 // Migrated by Ganesha
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
@@ -24,7 +24,7 @@ declare var $: any;
   templateUrl: './request-status.component.html',
   styleUrls: ['./request-status.component.css']
 })
-export class RequestStatusComponent implements OnInit, OnChanges {
+export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit {
 
   public searchText: any = '';
   public p: any;
@@ -193,6 +193,45 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
 
+  public toolbarTooltips = {
+    'font': 'Select a font',
+    'size': 'Select a font size',
+    'header': 'Select the text style',
+    'bold': 'Bold',
+    'italic': 'Italic',
+    'underline': 'Underline',
+    'strike': 'Strikethrough',
+    'color' : 'Select a text color',
+    'background': 'Select a background color',
+    'script': {
+      'sub' : 'Subscript',
+      'super': 'Superscript'
+    },
+    'list': {
+      'ordered':'Numbered list',
+      'bullet': 'Bulleted list'
+    },
+    'indent': {
+      '-1': 'Decrease indent',
+      '+1':  'Increase indent'
+    },
+    'direction': {
+      'rtl': 'Text direction (right to left | left to right)',
+      'ltr': 'Text direction (left ro right | right to left)'
+    },
+    'align': 'Text alignment',
+    'link': 'Insert a link',
+    'image': 'Insert an image',
+    'formula': 'Insert a formula',
+    'clean': 'Clear format',
+    'add-table': 'Add a new table',
+    'table-row': 'Add a row to the selected table',
+    'table-column': 'Add a column to the selected table',
+    'remove-table': 'Remove selected table',
+    'help': 'Show help'
+  };
+
+
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
     private reportDataService: ReportCriteriaDataService,
@@ -340,6 +379,58 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       primaryKey: 'status_id',
       labelKey: 'status',
     };
+  }
+
+   // execute after html initialized
+   public ngAfterViewInit() {
+    this.showTooltips();
+  }
+
+   // quill editor buttons tooltips display
+  public showTooltips(){
+    let showTooltip = (which,el) => {
+      var tool : any;
+      if (which=='button'){
+        tool = el.className.replace('ql-', '');
+      }
+      else if (which=='span'){
+         tool = el.className.replace('ql-','');
+        tool=tool.substr(0,tool.indexOf(' '));
+      }
+      if (tool){
+        if(tool === 'blockquote') {
+          el.setAttribute('title','blockquote');
+        }
+        else if(tool === 'list' || tool === 'script') {
+          if (this.toolbarTooltips[tool][el.value])
+          el.setAttribute('title',this.toolbarTooltips[tool][el.value]);
+        }
+        else if (el.title ==''){
+          if (this.toolbarTooltips[tool])
+            el.setAttribute('title',this.toolbarTooltips[tool]);
+        }
+        //buttons with value
+        else if (typeof el.title !=='undefined'){
+          if (this.toolbarTooltips[tool][el.title])
+            el.setAttribute('title',this.toolbarTooltips[tool][el.title]);
+        }
+        //defaultlsdfm,nxcm,v vxcn
+        else
+          el.setAttribute('title',this.toolbarTooltips[tool]);
+      }
+    };
+
+    let toolbarElement = document.querySelector('.ql-toolbar');
+    if (toolbarElement) {
+      let matchesButtons = toolbarElement.querySelectorAll('button');
+      for ( let i =0 ; i< matchesButtons.length; i++) {
+        showTooltip('button', matchesButtons[i]);
+      }
+      let matchesSpans = toolbarElement.querySelectorAll('.ql-toolbar > span > span');
+      for ( let i =0 ; i< matchesSpans.length; i++) {
+        showTooltip('span', matchesSpans[i]);
+      }
+    }
   }
 
   // detect paramater changes in component
@@ -1293,6 +1384,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
 
   // download browser data in pdf file
   public captureScreen() {
+    let fileName = `${this.summary.ddm_rmp_post_report_id}_Request_Summary.pdf`;
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
@@ -1309,7 +1401,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
     doc.fromHTML(
       $('#print').html(), margins.left, margins.top,
       { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
-      function () { doc.save('sample-file.pdf'); }, margins
+      function () { doc.save(fileName); }, margins
     );
   }
 

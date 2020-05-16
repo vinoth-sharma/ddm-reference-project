@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
@@ -14,7 +14,7 @@ declare var $: any;
   templateUrl: './main-menu-landing-page.component.html',
   styleUrls: ['./main-menu-landing-page.component.css']
 })
-export class MainMenuLandingPageComponent implements OnInit {
+export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   public content;
   public enable_edit: boolean = false;
   public content_loaded: boolean = false;
@@ -35,7 +35,6 @@ export class MainMenuLandingPageComponent implements OnInit {
   public user_role: string = '';
   public readOnlyContentHelper: boolean = true;
   public enableUpdateData: boolean = false;
-
   public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
@@ -51,13 +50,50 @@ export class MainMenuLandingPageComponent implements OnInit {
       ['image']
     ]
   };
+  public toolbarTooltips = {
+    'font': 'Select a font',
+    'size': 'Select a font size',
+    'header': 'Select the text style',
+    'bold': 'Bold',
+    'italic': 'Italic',
+    'underline': 'Underline',
+    'strike': 'Strikethrough',
+    'color' : 'Select a text color',
+    'background': 'Select a background color',
+    'script': {
+      'sub' : 'Subscript',
+      'super': 'Superscript'
+    },
+    'list': {
+      'ordered':'Numbered list',
+      'bullet': 'Bulleted list'
+    },
+    'indent': {
+      '-1': 'Decrease indent',
+      '+1':  'Increase indent'
+    },
+    'direction': {
+      'rtl': 'Text direction (right to left | left to right)',
+      'ltr': 'Text direction (left ro right | right to left)'
+    },
+    'align': 'Text alignment',
+    'link': 'Insert a link',
+    'image': 'Insert an image',
+    'formula': 'Insert a formula',
+    'clean': 'Clear format',
+    'add-table': 'Add a new table',
+    'table-row': 'Add a row to the selected table',
+    'table-column': 'Add a column to the selected table',
+    'remove-table': 'Remove selected table',
+    'help': 'Show help'
+  };
 
   constructor(private django: DjangoService,
-    private auth_service: AuthenticationService,
-    private dataProvider: DataProviderService,
-    private fb: FormBuilder,
-    private router: Router,
-    private toastr: NgToasterComponent) {
+              private auth_service: AuthenticationService,
+              private dataProvider: DataProviderService,
+              private fb: FormBuilder,
+              private router: Router,
+              private toastr: NgToasterComponent) {
 
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
@@ -69,8 +105,7 @@ export class MainMenuLandingPageComponent implements OnInit {
         this.user_name = currentUser["first_name"] + " " + currentUser["last_name"]
         this.user_role = currentUser["role"]
       }
-    })
-
+    });
     this.data = this.dataProvider.loadLookUpTableData
     this.data2 = this.dataProvider.loadLookUpData
   }
@@ -78,6 +113,7 @@ export class MainMenuLandingPageComponent implements OnInit {
   public parentsSubject: Rx.Subject<any> = new Rx.Subject();
   public restorepage: any;
   public printcontent: any
+  public error_url: any = 'none';
 
   public description_text = {
     "ddm_rmp_desc_text_id": 4,
@@ -120,6 +156,57 @@ export class MainMenuLandingPageComponent implements OnInit {
         Utils.hideSpinner();
       }
     })
+  }
+
+  ngAfterViewInit() {
+    this.showTooltips();
+  }
+
+   // quill editor buttons tooltips display
+  public showTooltips(){
+    let showTooltip = (which,el) => {
+      var tool : any;
+      if (which=='button'){
+        tool = el.className.replace('ql-', '');
+      }
+      else if (which=='span'){
+         tool = el.className.replace('ql-','');
+        tool=tool.substr(0,tool.indexOf(' '));
+      }
+      if (tool){
+        if(tool === 'blockquote') {
+          el.setAttribute('title','blockquote');
+        }
+        else if(tool === 'list' || tool === 'script') {
+          if (this.toolbarTooltips[tool][el.value])
+          el.setAttribute('title',this.toolbarTooltips[tool][el.value]);
+        }
+        else if (el.title ==''){
+          if (this.toolbarTooltips[tool])
+            el.setAttribute('title',this.toolbarTooltips[tool]);
+        }
+        //buttons with value
+        else if (typeof el.title !=='undefined'){
+          if (this.toolbarTooltips[tool][el.title])
+            el.setAttribute('title',this.toolbarTooltips[tool][el.title]);
+        }
+        //defaultlsdfm,nxcm,v vxcn
+        else
+          el.setAttribute('title',this.toolbarTooltips[tool]);
+      }
+    };
+
+    let toolbarElement = document.querySelector('.ql-toolbar');
+    if (toolbarElement) {
+      let matchesButtons = toolbarElement.querySelectorAll('button');
+      for ( let i =0 ; i< matchesButtons.length; i++) {
+        showTooltip('button', matchesButtons[i]);
+      }
+      let matchesSpans = toolbarElement.querySelectorAll('.ql-toolbar > span > span');
+      for ( let i =0 ; i< matchesSpans.length; i++) {
+        showTooltip('span', matchesSpans[i]);
+      }
+    }
   }
 
   public content_edits() {
@@ -240,11 +327,23 @@ export class MainMenuLandingPageComponent implements OnInit {
     return this.contentForm.get('link_title_url') as FormArray;
   }
 
+  // add new link based on validate previous link
   public addLinkTitleURL() {
-    this.LinkTitleURL.push(this.fb.group({
-      title: ['', Validators.required],
-      link: ['', Validators.required]
-    }));
+    let urlList = this.auth_service.getListUrl();
+    for( let i = 0; i < this.LinkTitleURL.value.length; i++ ){
+      let b = urlList.find(url => url === this.LinkTitleURL.value[i].link);
+      let a = document.getElementById(i+'url');
+      if(b) {
+        a.setAttribute('style', 'display: none !important');
+        this.LinkTitleURL.push(this.fb.group({
+          title: ['', Validators.required],
+          link: ['', Validators.required]
+        }));
+      }
+      else {
+        a.setAttribute('style', 'display: block !important');
+      }
+    }
   }
 
   public deleteLinkTitleURL(index) {

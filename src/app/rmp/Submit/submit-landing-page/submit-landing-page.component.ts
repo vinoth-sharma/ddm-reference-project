@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 declare var $: any;
 import { Router } from "@angular/router";
 import { DjangoService } from 'src/app/rmp/django.service';
@@ -17,7 +17,7 @@ import Utils from '../../../../utils';
   templateUrl: './submit-landing-page.component.html',
   styleUrls: ['./submit-landing-page.component.css']
 })
-export class SubmitLandingPageComponent implements OnInit {
+export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
 
   public closeModal;
   public naming: string = "Loading";
@@ -106,6 +106,44 @@ export class SubmitLandingPageComponent implements OnInit {
     ]
   };
 
+  public toolbarTooltips = {
+    'font': 'Select a font',
+    'size': 'Select a font size',
+    'header': 'Select the text style',
+    'bold': 'Bold',
+    'italic': 'Italic',
+    'underline': 'Underline',
+    'strike': 'Strikethrough',
+    'color' : 'Select a text color',
+    'background': 'Select a background color',
+    'script': {
+      'sub' : 'Subscript',
+      'super': 'Superscript'
+    },
+    'list': {
+      'ordered':'Numbered list',
+      'bullet': 'Bulleted list'
+    },
+    'indent': {
+      '-1': 'Decrease indent',
+      '+1':  'Increase indent'
+    },
+    'direction': {
+      'rtl': 'Text direction (right to left | left to right)',
+      'ltr': 'Text direction (left ro right | right to left)'
+    },
+    'align': 'Text alignment',
+    'link': 'Insert a link',
+    'image': 'Insert an image',
+    'formula': 'Insert a formula',
+    'clean': 'Clear format',
+    'add-table': 'Add a new table',
+    'table-row': 'Add a row to the selected table',
+    'table-column': 'Add a column to the selected table',
+    'remove-table': 'Remove selected table',
+    'help': 'Show help'
+  };
+
   constructor(private router: Router, private django: DjangoService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService, private dataProvider: DataProviderService,
     private toaster: NgToasterComponent, private report_id_service: GeneratedReportService) {
@@ -119,6 +157,62 @@ export class SubmitLandingPageComponent implements OnInit {
     //   this.contentForm = new FormGroup({
     //     contentForm: new FormControl()
     //  });
+  }
+
+   // execute after html initialized
+   public ngAfterViewInit() {
+    this.showTooltips();
+  }
+
+   // quill editor buttons tooltips display
+  public showTooltips(){
+    let showTooltip = (which,el) => {
+      var tool : any;
+      if (which=='button'){
+        tool = el.className.replace('ql-', '');
+      }
+      else if (which=='span'){
+         tool = el.className.replace('ql-','');
+        tool=tool.substr(0,tool.indexOf(' '));
+      }
+      if (tool){
+        if(tool === 'blockquote') {
+          el.setAttribute('title','blockquote');
+        }
+        else if(tool === 'list' || tool === 'script') {
+          if (this.toolbarTooltips[tool][el.value])
+          el.setAttribute('title',this.toolbarTooltips[tool][el.value]);
+        }
+        else if (el.title ==''){
+          if (this.toolbarTooltips[tool])
+            el.setAttribute('title',this.toolbarTooltips[tool]);
+        }
+        //buttons with value
+        else if (typeof el.title !=='undefined'){
+          if (this.toolbarTooltips[tool][el.title])
+            el.setAttribute('title',this.toolbarTooltips[tool][el.title]);
+        }
+        //defaultlsdfm,nxcm,v vxcn
+        else
+          el.setAttribute('title',this.toolbarTooltips[tool]);
+      }
+    };
+
+    let toolbarElement = document.querySelector('.ql-toolbar');
+    if (toolbarElement) {
+      let matchesButtons = toolbarElement.querySelectorAll('button');
+      for ( let i =0 ; i< matchesButtons.length; i++) {
+        showTooltip('button', matchesButtons[i]);
+      }
+      let matchesSpans = toolbarElement.querySelectorAll('.ql-toolbar > span > span');
+      for ( let i =0 ; i< matchesSpans.length; i++) {
+        showTooltip('span', matchesSpans[i]);
+      }
+    }
+  }
+
+  public updateQuillTool() {
+    this.showTooltips();
   }
 
   public notify() {

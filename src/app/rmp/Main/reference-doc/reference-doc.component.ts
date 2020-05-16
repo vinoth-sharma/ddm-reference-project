@@ -276,7 +276,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     this.django.get_doc_link(index).subscribe(ele => {
       var url = ele['data']['url']
       Utils.hideSpinner();
-      window.open(url, '_blank');
+      window.location.href = url
     }, err => {
       Utils.hideSpinner();
       this.toastr.error("Server Error");

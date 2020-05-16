@@ -566,7 +566,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.original_contents = this.namings;
         this.toasterService.success("Updated Successfully");
         this.spinner.hide()
-        $('#helpModal').modal('hide');
+        $('.btn-secondary').click()
       }, err => {
         this.spinner.hide()
         this.toasterService.error("Data not Updated")
@@ -1234,19 +1234,19 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     let link = document.querySelector("#add-url-input")["value"]
     let data = { request_id: this.linkUrlId, link_to_results: link }
     Utils.showSpinner();
-    this.django.add_link_to_url(data).subscribe(response => {
-      if (response['message'] == "updated successfully") {
-        document.querySelector("#add-url-input")["value"] = "";
-        $('#addUrl').modal('hide');
-        this.toasterService.success("URL Updated Successfully !")
-        Utils.hideSpinner()
-        this.reports.map(item => {
-          if (item.ddm_rmp_post_report_id == this.linkUrlId) {
-            item.link_to_results = link
-          }
-        })
-      }
-    }, error => {
+    this.django.add_link_to_url(data).subscribe(response =>{
+     if(response['message'] == "updated successfully"){
+      document.querySelector("#add-url-input")["value"] = "";
+      $('#close_url_modal').click()
+      this.toasterService.success("URL Updated Successfully !")
+      Utils.hideSpinner()
+      this.reports.map(item =>{
+        if(item.ddm_rmp_post_report_id == this.linkUrlId){
+          item.link_to_results = link
+        }
+      })
+     }
+    },error =>{
       this.toasterService.error(error.error.error.link_to_results.join())
       Utils.hideSpinner()
     })
@@ -1259,8 +1259,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // close modal
-  closeTBD_Assigned() {
-    $('#addUrl').modal('hide');
+  closeTBD_Assigned(){
+    $('#close_url_modal').click();
   }
 
   // used to validate weather input is empty or not

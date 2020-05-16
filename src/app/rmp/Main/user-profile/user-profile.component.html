@@ -8,7 +8,7 @@
         {{ user_designation }} <br>
         {{ user_department }} <br>
         {{ user_email }} <br>
-        Disclaimer Acknowledge: {{ user_disc_ack | date: 'dd-MMM-yyyy'}}
+       <span *ngIf="user_role != 'Admin'">  Disclaimer Acknowledge: {{ user_disc_ack | date: 'dd-MMM-yyyy'}}</span>
       </i>
     </div>
     <div class="col-2">

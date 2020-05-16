@@ -230,7 +230,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     this.spinner.show();
     this.django.get_doc_link(index).subscribe(ele => {
       var url = ele['data']['url']
-      window.open(url, '_blank');
+      window.location.href = url 
       this.spinner.hide();
     }, err => {
       this.spinner.hide();

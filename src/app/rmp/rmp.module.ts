@@ -38,6 +38,7 @@ import { NotesWrapperComponent } from './admin-notes/notes-wrapper/notes-wrapper
 import { DisplayNotesComponent } from './admin-notes/display-notes/display-notes.component';
 import { ExistingNotesContainerComponent } from './admin-notes/existing-notes-container/existing-notes-container.component';
 import { ManageNotesComponent } from './admin-notes/manage-notes/manage-notes.component';
+import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { ManageNotesComponent } from './admin-notes/manage-notes/manage-notes.co
     NotesWrapperComponent,
     DisplayNotesComponent,
     ExistingNotesContainerComponent,
-    ManageNotesComponent
+    ManageNotesComponent,
+    BrandFormsComponent
   ],
   imports: [
     QuillModule.forRoot(),

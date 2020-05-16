@@ -3,14 +3,25 @@
     justify-content: center;
     align-items: center;
 }
-.padding20{
-    padding: 0px 20px;
-}
-
 .lineHeight{
     line-height: 1.5vw;
 }
-.mat-body, .mat-body-1, .mat-typography, .mat-chip{
+.lineHeightSmall{
+    line-height: 1vw;
+}
+.margBtmlight {
+    margin-bottom: 0.5vw;
+}
+
+.callout{
+    font-size: 0.7vw;
+    font-style: italic;
+    font-weight: normal;
+    position: relative;
+    top: -1vw;
+}
+
+:host ::ng-deep .mat-body, .mat-body-1, .mat-typography, .mat-chip{
     font-size: 0.8vw;
 }
 .width100{

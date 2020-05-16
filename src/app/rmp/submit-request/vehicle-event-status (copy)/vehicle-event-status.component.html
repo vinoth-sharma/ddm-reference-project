@@ -5,6 +5,8 @@
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
         <app-mat-multiselect [data]="filtered_MD.divisions" [settings]="division_settings"
         [(inputModel)]="selected.divisions" (selectionDone)="multiSelectChange('division')"></app-mat-multiselect>
+        <!-- <app-topfilter [userProfile]="divisionSltd" [filters]="division" [title]="'Division'">
+        </app-topfilter> -->
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
                 Model Years
@@ -12,6 +14,12 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="filtered_MD.model_years" [settings]="model_yr_settings"
                 [(inputModel)]="selected.model_years" (selectionDone)="multiSelectChange('model')"></app-mat-multiselect>
+                <!-- <mat-form-field>
+                    <mat-label>Models</mat-label>
+                    <mat-select [formControl]="modelYear" multiple>
+                        <mat-option *ngFor="let modelYear of modelYears" [value]="modelYear">{{modelYear}}</mat-option>
+                    </mat-select>
+                </mat-form-field> -->
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
@@ -21,6 +29,13 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="filtered_MD.vehicle" [settings]="vehicle_settings"
                 [(inputModel)]="selected.vehicle" (selectionDone)="multiSelectChange('vehicle')"></app-mat-multiselect>
+                <!-- <mat-form-field>
+                    <mat-label>Vehicle Line Brand</mat-label>
+                    <mat-select [formControl]="vehLineBrand" multiple>
+                        <mat-option *ngFor="let vehLineBrand of vehLineBrands" [value]="vehLineBrand">{{vehLineBrand}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
@@ -30,6 +45,13 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="filtered_MD.allocation" [settings]="allocation_settings"
                 [(inputModel)]="selected.allocation" (selectionDone)="multiSelectChange('allocation')"></app-mat-multiselect>
+                <!-- <mat-form-field>
+                    <mat-label>Allocation Groups</mat-label>
+                    <mat-select [formControl]="allocGrps" multiple>
+                        <mat-option *ngFor="let allocGrps of allocGrpss" [value]="allocGrps">{{allocGrps}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
@@ -39,35 +61,34 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="filtered_MD.merchandising" [settings]="merchandising_settings"
                 [(inputModel)]="selected.merchandising" (selectionDone)="multiSelectChange('merchandising')"></app-mat-multiselect>
+                <!-- <mat-form-field>
+                    <mat-label>Merchandising Model</mat-label>
+                    <mat-select [formControl]="merchModel" multiple>
+                        <mat-option *ngFor="let merchModel of merchModels" [value]="merchModel">{{merchModel}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter margBottom">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
-                Distribution Entity* (Selection Required)
+                Types of Data Distribution Entity*
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                     <app-mat-multiselect [data]="filtered_MD.distribution_entity" [settings]="distribution_settings"
                     [(inputModel)]="selected.distribution_entity" (selectionDone)="multiSelectChange('distribution')"></app-mat-multiselect>
+                    <!-- <mat-form-field>
+                        <mat-label>Data Distribution Entity</mat-label>
+                        <mat-select [formControl]="ddEntity" multiple>
+                            <mat-option *ngFor="let ddEntity of ddEntitys" [value]="ddEntity">{{ddEntity}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding ">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 lineHeight">
-                    Display or Summarize by Distribution Entities?
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <mat-radio-group aria-labelledby="example-radio-group-label" class="">
-                    <mat-radio-button class="radio-label" *ngFor="let bool of ['Display', 'Summary']"
-                        [value]="bool">
-                        {{bool}}
-                    </mat-radio-button>
-                </mat-radio-group>
-            </div>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter margBottom">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
                 Order Type (Optional)
             </div>
@@ -75,52 +96,48 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                     <app-mat-multiselect [data]="filtered_MD.order_type" [settings]="orderType_settings"
                     [(inputModel)]="selected.order_type" (selectionDone)="multiSelectChange('orderType')"></app-mat-multiselect>
+                    <!-- <mat-form-field style="width: 100%">
+                        <mat-label>Order Types</mat-label>
+                        <mat-select [formControl]="orderType" multiple>
+                            <mat-option *ngFor="let orderType of orderTypes" [value]="orderType">{{orderType}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding margBottom">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 lineHeight">
-                    Display or Summarize by Order Type?
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <mat-radio-group aria-labelledby="example-radio-group-label" class="">
-                    <mat-radio-button class="radio-label" *ngFor="let bool of ['Display', 'Summary']"
-                        [value]="bool">
-                        {{bool}}
-                    </mat-radio-button>
-                </mat-radio-group>
-            </div>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter ">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter margBottom">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding lineHeight">Commonly requested fields available for
                     display</div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding callout lineHeight">*Please list other items in the
+                    Additional Requirements Area</div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <app-mat-multiselect [data]="checkBxMD1.commonly_req_field" [settings]="commonly_req_field_settings"
-                [(inputModel)]="selected_checkbox.commonly_req_field" ></app-mat-multiselect>
+                <mat-form-field>
+                    <mat-label>Common fields</mat-label>
+                    <mat-select [formControl]="commonfield" multiple>
+                        <mat-option *ngFor="let commonfield of commonfields" [value]="commonfield">{{commonfield}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding callout lineHeight margBtmLight">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 lineHeightSmall">
-                *Should you need other type of fields, please clarify in the Additional Requirements area
-            </div>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter ">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter margBottom">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding lineHeight">Option content available for display
                 </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding callout lineHeight">*Please list other items in the
+                    Additional Requirements Area</div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <app-mat-multiselect [data]="checkBxMD1.opt_content_avail" [settings]="option_content_avail_settings"
-                [(inputModel)]="selected_checkbox.opt_content_avail" ></app-mat-multiselect>
-            </div>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding callout lineHeight margBtmLight">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 lineHeightSmall">
-                *When choosing "Other Production Options" or "Family of Options", please list these requirements in the Additional Requirements area
+                <mat-form-field>
+                    <mat-label>Option Content</mat-label>
+                    <mat-select [formControl]="optionCont" multiple>
+                        <mat-option *ngFor="let optionCont of optionConts" [value]="optionCont">{{optionCont}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter margBottom">
@@ -128,8 +145,13 @@
                 Order Events available for display
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <app-mat-multiselect [data]="checkBxMD1.order_event_avail_ds" [settings]="order_event_avail_settings"
-                [(inputModel)]="selected_checkbox.order_event_avail_ds" ></app-mat-multiselect>
+                <mat-form-field>
+                    <mat-label>Order Events</mat-label>
+                    <mat-select [formControl]="orderEvent" multiple>
+                        <mat-option *ngFor="let orderEvent of orderEvents" [value]="orderEvent">{{orderEvent}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
@@ -145,9 +167,6 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignLeft">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">OR</div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
@@ -195,15 +214,40 @@
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    Sales and Availability (Event Progression)
+                    Sales and Availabilty (Event Progression)
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <ng-container *ngFor="let sales of checkboxMD2.sales_avail"> 
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-                            <mat-checkbox [(ngModel)]="sales['checked']"> {{ sales.field_values }}  </mat-checkbox>
+                            <mat-checkbox>Number Ordered (Evt1000/1100)</mat-checkbox>
                         </div>
-                    </ng-container>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <mat-checkbox>Number Placed (Evt2000)</mat-checkbox>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <mat-checkbox>Number Insystem (Evt2500-3800)</mat-checkbox>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <mat-checkbox>Number InTransit (Evt4000-4850)</mat-checkbox>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <mat-checkbox>Number In Inventory (Evt5000)</mat-checkbox>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <mat-checkbox>Number Sold by MY (Evt6000/6200)</mat-checkbox>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <mat-checkbox>Number Sold past 30 days</mat-checkbox>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <mat-checkbox>Number Sold past 90 days</mat-checkbox>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <mat-checkbox>Total Available (Evt2500-5000)</mat-checkbox>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <mat-checkbox>Total Available Placed (Evt2000-5000)</mat-checkbox>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -213,14 +257,62 @@
                         Days Supply
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding" *ngFor="let daysSupply of checkboxMD2.days_supply">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-                                <mat-checkbox [(ngModel)]="daysSupply['checked']"> {{ daysSupply.field_values }} </mat-checkbox>
+                                <mat-checkbox>Net (Inventory) using Sales of</mat-checkbox>
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                                     <mat-radio-group aria-labelledby="example-radio-group-label"
-                                        class="example-radio-group" style="width: 100%;" [(ngModel)]="daysSupply['desc']">
+                                        class="example-radio-group" style="width: 100%;">
+                                        <mat-radio-button class="example-radio-button radio-label"
+                                            *ngFor="let splId of ['30 days', '90 days']" [value]="splId">
+                                            {{splId}}
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                <mat-checkbox>Gross (Total Availability) using Sales of</mat-checkbox>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                                    <mat-radio-group aria-labelledby="example-radio-group-label"
+                                        class="example-radio-group" style="width: 100%;">
+                                        <mat-radio-button class="example-radio-button radio-label"
+                                            *ngFor="let splId of ['30 days', '90 days']" [value]="splId">
+                                            {{splId}}
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                <mat-checkbox>Gross + (Total Avail/Placed) using Sales of</mat-checkbox>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                                    <mat-radio-group aria-labelledby="example-radio-group-label"
+                                        class="example-radio-group" style="width: 100%;">
+                                        <mat-radio-button class="example-radio-button radio-label"
+                                            *ngFor="let splId of ['30 days', '90 days']" [value]="splId">
+                                            {{splId}}
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                <mat-checkbox>Hybrid (InTrans+Inv) using Sales of</mat-checkbox>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                                    <mat-radio-group aria-labelledby="example-radio-group-label"
+                                        class="example-radio-group" style="width: 100%;">
                                         <mat-radio-button class="example-radio-button radio-label"
                                             *ngFor="let splId of ['30 days', '90 days']" [value]="splId">
                                             {{splId}}
@@ -237,9 +329,19 @@
                     Penetration
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding" *ngFor="let penetration of checkboxMD2.penetration">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <mat-checkbox [(ngModel)]="penetration['checked']"> {{ penetration.field_values }} </mat-checkbox>
+                            <mat-checkbox>Nbr Ordered compared to Nbr Sold</mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <mat-checkbox>Nbr Produced compared to Nbr Sold</mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <mat-checkbox>Nbr Sold compared by option content</mat-checkbox>
                         </div>
                     </div>
                 </div>
@@ -250,8 +352,11 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"  *ngFor="let time2turn of checkboxMD2.time_to_turn">
-                            <mat-checkbox [(ngModel)]="time2turn['checked']"> {{ time2turn.field_values }} </mat-checkbox>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <mat-checkbox>Average between Evt 6000 & Evt 5000</mat-checkbox>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <mat-checkbox>Adjusted Time to Turn</mat-checkbox>
                         </div>
                     </div>
                 </div>
@@ -261,15 +366,14 @@
                     Turn Rate
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngFor="let turnRate of checkboxMD2.turn_rate">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-                            <mat-checkbox [(ngModel)]="turnRate['checked']"> {{ turnRate.field_values }} </mat-checkbox>
-
+                            <mat-checkbox>Using Sales of</mat-checkbox>
                         </div>
                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                                 <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-                                    style="width: 100%;" [(ngModel)]="turnRate['desc']">
+                                    style="width: 100%;">
                                     <mat-radio-button class="example-radio-button radio-label"
                                         *ngFor="let splId of ['30 days', '90 days']" [value]="splId">
                                         {{splId}}
@@ -305,9 +409,6 @@
                     </mat-form-field>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter" style="min-height: 15vh;">
-            <span style="background: yellow; color: black; padding: 0.5vw 1vw;">Additional Requirements Area will appear once you click 'Continue'</span>
         </div>
     </div>
 </div>

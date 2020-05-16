@@ -200,6 +200,7 @@ export class SelectReportCriteriaComp implements OnInit {
     }
     this.filtered_master_data.zone = this.l_lookup_MD.market.zones_data.filter(regionCBFunc)
     this.selected.zone = this.selected.zone.filter(regionCBFunc);
+    this.zoneDependencies();
   }
 
   zoneDependencies() {

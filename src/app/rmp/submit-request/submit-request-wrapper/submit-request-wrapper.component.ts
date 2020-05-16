@@ -15,13 +15,26 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 export class SubmitRequestWrapperComponent implements OnInit {
 
   user_details = {
-    name : "",
-    role : "",
-    self_email : ""
+    name: "",
+    role: "",
+    self_email: ""
   }
 
   lookupMasterData = {};
   lookupTableMasterData = {};
+
+  division_data = [{
+    ddm_rmp_lookup_division_id: 1,
+    ddm_rmp_lookup_market: 1,
+    division_desc: "004 - Buick(US)"
+  }, {
+    ddm_rmp_lookup_division_id: 4,
+    ddm_rmp_lookup_market: 1,
+    division_desc: "012 - GMC(US)"
+  },{
+  ddm_rmp_lookup_division_id: 3,
+  ddm_rmp_lookup_market: 1,
+  division_desc: "001 - Chevrolet(US)"}]
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService, private auth_service: AuthenticationService,
@@ -42,12 +55,12 @@ export class SubmitRequestWrapperComponent implements OnInit {
       this.lookupMasterData = element;
     })
 
-    dataProvider.currentlookUpTableData.subscribe((tableDate:any)=>{
+    dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
       console.log(tableDate);
-      this.lookupTableMasterData = tableDate?tableDate.data:{};
+      this.lookupTableMasterData = tableDate ? tableDate.data : {};
     })
   }
 
-  ngOnInit(){}
+  ngOnInit() { }
 
 }

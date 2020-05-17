@@ -24,17 +24,13 @@ export class SubmitRequestWrapperComponent implements OnInit {
   lookupTableMasterData = {};
 
   division_data = [{
-    ddm_rmp_lookup_division_id: 1,
+    ddm_rmp_lookup_division: 1,
     ddm_rmp_lookup_market: 1,
     division_desc: "004 - Buick(US)"
   }, {
-    ddm_rmp_lookup_division_id: 4,
-    ddm_rmp_lookup_market: 1,
-    division_desc: "012 - GMC(US)"
-  },{
-  ddm_rmp_lookup_division_id: 3,
-  ddm_rmp_lookup_market: 1,
-  division_desc: "001 - Chevrolet(US)"}]
+    ddm_rmp_lookup_division : 11,
+    ddm_rmp_lookup_market: 3,
+    division_desc: "004 - Buick(Export)"}]
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService, private auth_service: AuthenticationService,

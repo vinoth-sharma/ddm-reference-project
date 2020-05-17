@@ -296,7 +296,7 @@
                       <mat-form-field style="width: 95%; margin-left: 0.5vw;">
                         <mat-label>End Date</mat-label>
                         <input matInput [matDatepicker]="toDpDOSP" [formControl]="toDateDOSP" [disabled]="!fromDateDOSP.value"
-                          [min]="minDateDosp" textEditable="false" (dateChange)="onOrderEventdateSelection()">
+                          [min]="minDateDosp" textEditable="false" (dateChange)="onDOSPDateSelection()">
                         <mat-datepicker-toggle matSuffix [for]="toDpDOSP"></mat-datepicker-toggle>
                         <mat-datepicker #toDpDOSP></mat-datepicker>
                       </mat-form-field>

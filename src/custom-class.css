@@ -96,6 +96,9 @@ mat-form-field{
     width: 1vw!important;
     margin-right: 0.5vw!important;
 }
+/* .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate{
+    background: #ff4081;
+} */
 mat-icon{
     display: flex;
     align-items: center;

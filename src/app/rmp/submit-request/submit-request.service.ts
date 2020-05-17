@@ -34,6 +34,13 @@ export class SubmitRequestService {
     }),catchError(this.handleError.bind(this)));
   }
 
+
+  submitVehicelEventStatus(req){
+    return this.djangoService.ddm_rmp_order_to_sales_post(req).pipe(map((res:any) => {
+      return res;
+    }),catchError(this.handleError.bind(this)));
+  }
+
   public handleError(error: any): any {
     let errObj: any = {
       status: error.status,

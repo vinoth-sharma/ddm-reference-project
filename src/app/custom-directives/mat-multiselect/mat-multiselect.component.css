@@ -32,13 +32,17 @@
     width: 90%;
 }
 
-::ng-deep .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element{
-    background: #3f51b5;
+/* ::ng-deep .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element{
+    background: #ff4081;
 }
 ::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
 ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
-    background-color: #3f51b5 !important;
-}
+    background-color: #ff4081 ;
+} */
+
+/* ::ng-deep .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate{
+    background-color: #ff4081;
+} */
 
 .topFilterTitle{
     padding: 1vh 0;

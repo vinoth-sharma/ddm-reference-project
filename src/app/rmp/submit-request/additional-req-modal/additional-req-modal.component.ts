@@ -15,6 +15,7 @@ export class AdditionalReqModalComponent implements OnInit {
 
   private descIds1 = [5,54]
   private descIds2 = [8,15]
+  // l_CB_data = [];
   public l_data1 = [];
   public l_data2 = [];
   public responseData:any = {}
@@ -26,6 +27,7 @@ export class AdditionalReqModalComponent implements OnInit {
 
     ngOnInit(): void {
       // console.log(this.data);
+      // this.l_CB_data = this.data.checkboxData;
       this.l_data1 = this.data.checkboxData.filter(cb=>{
         if(this.descIds1.includes(cb.ddm_rmp_lookup_ots_checkbox_values_id))
           return cb
@@ -39,6 +41,7 @@ export class AdditionalReqModalComponent implements OnInit {
     reviewRequest(): void {
       this.responseData = {
         cb : [...this.l_data1,...this.l_data2],
+        cbComplete : this.data.checkboxData,
         reportTitle : this.report_title.trim(),
         addReq : this.additional_req.trim()
       }

@@ -5,6 +5,10 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import * as _moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { AdditionalReqModalComponent } from '../additional-req-modal/additional-req-modal.component';
+import { AuthenticationService } from 'src/app/authentication.service';
+import Utils from 'src/utils';
+import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import { SubmitRequestService } from "../submit-request.service";
 
 const moment = _moment;
 const MY_FORMATS = {
@@ -38,7 +42,10 @@ export class VehicleEventStatusComponent implements OnInit {
   @Input() lookupTableMD = {};
   @Input() divisionData = [];
 
-  constructor( public matDialog : MatDialog) { }
+  constructor(public matDialog: MatDialog,
+    public ngToaster: NgToasterComponent,
+    public submitService: SubmitRequestService,
+    public auth_service: AuthenticationService) { }
 
   disabled = false;
   // ---------------------------------------------------------
@@ -61,8 +68,8 @@ export class VehicleEventStatusComponent implements OnInit {
     distribution_entity: [],
     order_type: []
   }
-  public distibutionEntityRadio = ""
-  public orderTypeRadio = ""
+  public distibutionEntityRadio = "Summary"
+  public orderTypeRadio = "Summary"
 
   checkBxMD1 = {
     commonly_req_field: [],
@@ -88,45 +95,63 @@ export class VehicleEventStatusComponent implements OnInit {
 
   // public orderEvtToDate: any = new FormControl();
   public minOrderEventDate: Date = null;
-  
- public keyDataEle = {
-   masterData : [],
-   selected : [],
-   others : {
-    ddm_rmp_lookup_dropdown_order_event_id: 0,
-    order_event: "",
-    checked : false
-   },
-   orderEvtFromDate : new FormControl(),
-   orderEvtToDate : new FormControl()
+
+  public keyDataEle = {
+    masterData: [],
+    selected: [],
+    others: {
+      ddm_rmp_lookup_dropdown_order_event_id: 0,
+      order_event: "",
+      checked: false
+    },
+    orderEvtFromDate: new FormControl(),
+    orderEvtToDate: new FormControl()
   }
 
   l_lookupTableMD: any = {};
 
+  private othersDescIds = [5, 8, 15, 54];
   public req_body = {
-    dosp_start_date : null,
-    dosp_end_date: null,
-    checkbox_data : [],
-    distribution_data : [],
-    data_date_range : { StartDate : null, EndDate : null },
-    report_detail : {
-      title : "",
-      status : "",
-      created_on : "",
-      assigned_to : "",
-      additional_req : "",
-      report_type : "",
-      status_date : "",
-      on_behalf_of : "",
-      link_to_results : "",
-      link_title : "",
-      requestor : "",
-      query_criteria : ""
-    }
+    dosp_start_date: "",
+    dosp_end_date: "",
+    checkbox_data: [],
+    division_selected : { dropdown: [], radio_button: "Display" },
+    model_year: { dropdown: [], radio_button: "Display" },
+    vehicle_line: { dropdown: [], radio_button: "Display" },
+    allocation_group: { dropdown: [], radio_button: "Display" },
+    merchandizing_model: { dropdown: [], radio_button: "Display" },
+    order_event : { dropdown: [] },
+    distribution_data: [],
+    order_type: { dropdown: [], radio_button: "" },
+    data_date_range: { StartDate: "", EndDate: "" },
+    report_detail: {
+      title: "",
+      status: "",
+      created_on: null,
+      assigned_to: "",
+      additional_req: "",
+      report_type: "ots",
+      status_date: null,
+      on_behalf_of: "",
+      link_to_results: "",
+      link_title: "",
+      requestor: "",
+      query_criteria: ""
+    },
+    report_id : null,
+    other_desc : ""
   }
 
-  ngOnInit() {
+  user_name = "";
+  user_role = "";
 
+  ngOnInit() {
+    this.auth_service.myMethod$.subscribe(role => {
+      if (role) {
+        this.user_name = role["first_name"] + " " + role["last_name"]
+        this.user_role = role["role"]
+      }
+    })
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
@@ -242,17 +267,22 @@ export class VehicleEventStatusComponent implements OnInit {
         this.toDateDOSP = +to >= +from ? this.toDateDOSP : new FormControl();
       }
     }
-
+    let startDateDOSP = "",endDateDOSP = ""
     if (from && to) {
-      // this.startDateDOSP = from.year() + "-" + (from.month() + 1) + "-" + from.date();
-      // this.endDateDOSP = to.year() + "-" + (to.month() + 1) + "-" + to.date();
-      // this.finalData['dosp_start_date'] = this.startDateDOSP;
-      // this.finalData['dosp_end_date'] = this.endDateDOSP;
+      startDateDOSP = from.year() + "-" + (from.month() + 1) + "-" + from.date();
+      endDateDOSP = to.year() + "-" + (to.month() + 1) + "-" + to.date();
+      this.req_body.dosp_start_date = startDateDOSP;
+      this.req_body.dosp_end_date = endDateDOSP;
     }
     else {
-      // this.finalData['dosp_start_date'] = "";
-      // this.finalData['dosp_end_date'] = "";
+      console.log("else");
+      
+      this.req_body.dosp_start_date = "";
+      this.req_body.dosp_end_date = "";
     }
+    console.log(this.req_body.dosp_start_date);
+    
+
   }
 
   public onOrderEventdateSelection() {
@@ -267,11 +297,21 @@ export class VehicleEventStatusComponent implements OnInit {
         this.keyDataEle.orderEvtToDate = +to >= +from ? this.keyDataEle.orderEvtToDate : new FormControl();
       }
     }
+    let startDate = null;
+    let endDate = null;
+    if (from && to) {
+      startDate = from.year() + "-" + (from.month() + 1) + "-" + from.date();
+      endDate = to.year() + "-" + (to.month() + 1) + "-" + to.date();
+      this.req_body.data_date_range = { StartDate : startDate, EndDate : endDate };
+    }
+    else {
+      this.req_body.data_date_range = { StartDate : "", EndDate : "" };
+    }
   }
 
-  openAdditionalReqModal(){
+  openAdditionalReqModal() {
     let obj = {
-      checkboxData : this.getSelectedCheckboxData()
+      checkboxData: this.getSelectedCheckboxData()
     }
     const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
       data: obj
@@ -280,30 +320,97 @@ export class VehicleEventStatusComponent implements OnInit {
       // this.dialogClosed();
       console.log(result);
       if (result) {
-
+        this.openReviewModal(result);
       }
     })
 
 
   }
 
-  getSelectedCheckboxData(){
-    console.log(this.selected_checkbox);
-    console.log(this.checkboxMD2);
-    
+  openReviewModal(result) {
+    console.log(result);
+
+    console.log(this.selected);
+    console.log(this.fromDateDOSP);
+    // console.log(this.fromDateDOSP.toISOString());
+
+    // this.req_body.dosp_start_date = this.fromDateDOSP.value?.toISOString();
+    // this.req_body.dosp_end_date = this.toDateDOSP.value?.toISOString();
+    // this.req_body.data_date_range.StartDate = this.keyDataEle.orderEvtFromDate.value?.toISOString();
+    // this.req_body.data_date_range.EndDate = this.keyDataEle.orderEvtToDate.value?.toISOString();
+
+    this.req_body.model_year.dropdown = this.selected.model_years;
+    this.req_body.vehicle_line.dropdown = this.selected.vehicle;
+    this.req_body.allocation_group.dropdown = this.selected.allocation;
+    this.req_body.merchandizing_model.dropdown = this.selected.merchandising;
+    this.req_body.order_event.dropdown = this.keyDataEle.selected;
+
+    this.req_body.distribution_data = this.selected.distribution_entity.map(de => {
+      let obj = {
+        value: de.type_data_desc,
+        id: de.ddm_rmp_lookup_ots_type_data_id,
+        radio: this.distibutionEntityRadio
+      }
+      return obj
+    })
+    this.req_body.order_type.dropdown = this.selected.order_type;
+    this.req_body.order_type.radio_button = this.orderTypeRadio;
+
+    let cbWithDesc = result.data.cb;
+    this.req_body.checkbox_data = result.data.cbComplete.map(cbEle => {
+      if (this.othersDescIds.includes(cbEle.ddm_rmp_lookup_ots_checkbox_values_id)) {
+        let obj = cbWithDesc.find(ele => ele.ddm_rmp_lookup_ots_checkbox_values_id === cbEle.ddm_rmp_lookup_ots_checkbox_values_id)
+        return {
+          value: obj.field_values,
+          id: obj.ddm_rmp_lookup_ots_checkbox_values_id,
+          desc: obj.desc
+        }
+      }
+      else {
+        return {
+          value: cbEle.field_values,
+          id: cbEle.ddm_rmp_lookup_ots_checkbox_values_id,
+          desc: cbEle.desc ? cbEle.desc : ""
+        }
+      }
+    })
+
+    this.req_body.report_detail.title = result.data.reportTitle;
+    this.req_body.report_detail.additional_req = result.data.addReq;
+    this.req_body.report_detail.requestor = this.user_name;
+    this.req_body.report_detail.status_date = new Date();
+    this.req_body.report_detail.created_on = new Date();
+    this.req_body.report_detail.status = "Pending";
+    this.req_body.report_id = 10;
+    // this.req_body.division_selected.dropdown = this.selected.divisions;
+    console.log(this.req_body);
+
+    Utils.showSpinner();
+    this.submitService.submitVehicelEventStatus(this.req_body).subscribe(response => {
+      console.log(response);
+      Utils.hideSpinner();
+      this.ngToaster.success("Vehicle Event status upadated successfully")
+    }, err => {
+      Utils.hideSpinner();
+      console.log(err);
+    });
+  }
+
+
+
+  getSelectedCheckboxData() {
     let l_checkbox_data = [];
-    l_checkbox_data.push(...this.selected_checkbox.commonly_req_field,...this.selected_checkbox.opt_content_avail,...this.selected_checkbox.order_event_avail_ds)
+    l_checkbox_data.push(...this.selected_checkbox.commonly_req_field, ...this.selected_checkbox.opt_content_avail, ...this.selected_checkbox.order_event_avail_ds)
 
     for (const key in this.checkboxMD2) {
       if (this.checkboxMD2.hasOwnProperty(key)) {
         const element = this.checkboxMD2[key];
         element.forEach(ele => {
-          if(ele['checked'])
+          if (ele['checked'])
             l_checkbox_data.push(ele)
         });
       }
     }
-    console.log(l_checkbox_data);
     return l_checkbox_data
   }
 

@@ -49,6 +49,8 @@ import { ReportFrequencyComponent } from './submit-request/sub-components/report
 import { TopfilterComponent } from "./submit-request/sub-components/topfilter/topfilter.component";
 import { DealerAllocationComp } from "./submit-request/dealer-allocation/dealer-allocation.component";
 import { NgCipsEmailComponent } from './submit-request/sub-components/ng-cips-email/ng-cips-email.component';
+import { AdditionalReqModalComponent } from './submit-request/additional-req-modal/additional-req-modal.component';
+import { ReviewReqModalComponent } from './submit-request/review-req-modal/review-req-modal.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +86,9 @@ import { NgCipsEmailComponent } from './submit-request/sub-components/ng-cips-em
     ReportFrequencyComponent,
     TopfilterComponent,
     DealerAllocationComp,
-    NgCipsEmailComponent
+    NgCipsEmailComponent,
+    AdditionalReqModalComponent,
+    ReviewReqModalComponent
   ],
   imports: [
     QuillModule.forRoot(),
@@ -109,6 +113,7 @@ import { NgCipsEmailComponent } from './submit-request/sub-components/ng-cips-em
     DatePipe,
     DataProviderService
   ],
-  entryComponents: [DisplayNotesComponent, NotesWrapperComponent,DisclaimerModalComponent,DisclaimerHelpModalComponent]
+  entryComponents: [DisplayNotesComponent, NotesWrapperComponent,DisclaimerModalComponent,
+    DisclaimerHelpModalComponent,AdditionalReqModalComponent,ReviewReqModalComponent]
 })
 export class RMPModule { }

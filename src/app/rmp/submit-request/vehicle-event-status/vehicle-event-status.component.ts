@@ -1,72 +1,46 @@
 import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import * as _moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { AdditionalReqModalComponent } from '../additional-req-modal/additional-req-modal.component';
+
+const moment = _moment;
+const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD-MMM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MMM-YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 
 @Component({
   selector: 'app-vehicle-event-status',
   templateUrl: './vehicle-event-status.component.html',
-  styleUrls: ['./vehicle-event-status.component.css']
+  styleUrls: ['./vehicle-event-status.component.css'],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ]
 })
 export class VehicleEventStatusComponent implements OnInit {
   @Input() lookupTableMD = {};
   @Input() divisionData = [];
 
-  constructor() { }
+  constructor( public matDialog : MatDialog) { }
 
   disabled = false;
-
-  division = [{ name: '001-Chevorlet (US)' }, { name: '004-Buick (US)' }, { name: '006-Cadillac (US)' }, { name: '012-GMC (US)' }];
-  divisionSltd = [{ name: '001-Chevorlet (US)' }, { name: '004-Buick (US)' }];
-
-  ddEntity = new FormControl();
-  ddEntitys: string[] = ['Retail Only', 'Non-Retail (Includes Fleet)', 'Fleet Only']
-
-  modelYear = new FormControl();
-  modelYears: string[] = ['2020', '2019', '2018', '2017'];
-
-  vehLineBrand = new FormControl();
-  vehLineBrands: string[] = ['ATS', 'AV', 'Acadia', 'Blazer', 'Bolt', 'CT5', 'CT6', 'CTS', 'Camaro', 'Canyon'];
-
-  orderType = new FormControl();
-  orderTypes: string[] = ['FBC', 'FBN', 'FCN', 'FDD', 'FDR', 'FDS', 'FEF'];
-
-  allocGrps = new FormControl();
-  allocGrpss: string[] = ['ATS', 'AV', 'BLAZER', 'BOLTEV', 'CAM', 'CAMALL', 'CAMCON'];
-
-  merchModel = new FormControl();
-  merchModels: string[] = ['15560', '15760', '1AG37', '1AG67', '1AH37', '1AJ67', '1AK67'];
-
-  commonfield = new FormControl();
-  commonfields: string[] = ['Order Number', 'Vehicle Information Number (VIN)', 'Plant Code', 'Delivery Type', 'Target Production Date',
-    'Manufacturer\'s Suggested Retail Price (MSRP)'];
-
-  optionCont = new FormControl();
-  optionConts: string[] = ['Full Option String', 'Preferred Equipment Group (Trim Level Package)', 'Engine', 'Transmission', 'Exterior Color',
-    'Interior Color', 'Other Production Options', 'Family of Options'];
-
-  orderEvent = new FormControl();
-  orderEvents: string[] = ['1000 Order Request accepted by GM (Non Retail)', '1100 Preliminary Order Added (Retail)',
-    '2000 [Placed Order]Accepted by GM', '2500 Order sent to POMS', '3000 Order Accepted', '3800 Produced', '4000 Available to Ship',
-    '4150 Original Invoice', '4B10 Available for Export Shipping', '4200 Shipped', '4250 Ocean Dispatched'];
-
-  turnaround = new FormControl();
-  turnarounds: string[] = ['Penetration by Number: Ordered', 'Penetration by Number: Sold', 'Penetration by umber: Produced', 'Turn Rate',
-    'Gross Days Supply using: 90 days Sales', 'Net Days Supply using: 90 dayssale', 'Days Supply using: 90 dayssale', 'Adjusted Time to Turn'];
-
-  saleAvl = new FormControl();
-  saleAvls: string[] = ['Total Sales (Event 6000)', 'Inventory (Event 5000)', 'Total 30 day sales', 'Total 90 day sales', 'Total Model year sales',
-    'In system (Events 2500-3800)', 'In transit (Events 4000-4800)', 'Total Available (Events 2500-5000)', 'Aged Inventory'];
-
-  keyElem = new FormControl();
-  keyElems: string[] = ['1000 Order Request Accepted by GM (Non Retail)', '1100 Preliminary Order Added (Retail)', '2000 (Placed Order) Accepted by GM',
-    '2500 Order sent to POMS', '3000 Order Accepted', '3800 Produced', '4000 Available to Ship'];
-
-  startDate = new FormControl(new Date())
-
-  endDate = new FormControl(new Date())
-
-  startPicker = new FormControl(new Date())
-
-  endPicker = new FormControl(new Date())
   // ---------------------------------------------------------
 
   filtered_MD = {
@@ -87,6 +61,8 @@ export class VehicleEventStatusComponent implements OnInit {
     distribution_entity: [],
     order_type: []
   }
+  public distibutionEntityRadio = ""
+  public orderTypeRadio = ""
 
   checkBxMD1 = {
     commonly_req_field: [],
@@ -106,8 +82,48 @@ export class VehicleEventStatusComponent implements OnInit {
     time_to_turn: [],
     turn_rate: []
   }
+  public fromDateDOSP: any = new FormControl();
+  public toDateDOSP: any = new FormControl();
+  public minDateDosp: Date = null;
+
+  // public orderEvtToDate: any = new FormControl();
+  public minOrderEventDate: Date = null;
+  
+ public keyDataEle = {
+   masterData : [],
+   selected : [],
+   others : {
+    ddm_rmp_lookup_dropdown_order_event_id: 0,
+    order_event: "",
+    checked : false
+   },
+   orderEvtFromDate : new FormControl(),
+   orderEvtToDate : new FormControl()
+  }
 
   l_lookupTableMD: any = {};
+
+  public req_body = {
+    dosp_start_date : null,
+    dosp_end_date: null,
+    checkbox_data : [],
+    distribution_data : [],
+    data_date_range : { StartDate : null, EndDate : null },
+    report_detail : {
+      title : "",
+      status : "",
+      created_on : "",
+      assigned_to : "",
+      additional_req : "",
+      report_type : "",
+      status_date : "",
+      on_behalf_of : "",
+      link_to_results : "",
+      link_title : "",
+      requestor : "",
+      query_criteria : ""
+    }
+  }
 
   ngOnInit() {
 
@@ -132,6 +148,8 @@ export class VehicleEventStatusComponent implements OnInit {
 
     this.filtered_MD.distribution_entity = this.l_lookupTableMD.type_data;
     this.filtered_MD.order_type = this.l_lookupTableMD.order_type;
+
+    this.keyDataEle.masterData = this.l_lookupTableMD.order_event;
 
     //refilling checkbox master data
     this.resetCheckboxData();
@@ -210,11 +228,90 @@ export class VehicleEventStatusComponent implements OnInit {
     this.selected.merchandising = this.selected.merchandising.filter(allocationCBFunc);
   }
 
-  keyElemChecked() {
-    if (this.disabled === true) {
-      this.keyElem = new FormControl();
+  public onDOSPDateSelection() {
+    let from = this.fromDateDOSP.value;
+    let to = this.toDateDOSP.value;
+    console.log(from);
+    console.log(from.toISOString());
+
+    //conditions to manage minDateDosp when from,to selected 
+    if (from) {
+      this.minDateDosp = new Date(from.year(), from.month(), from.date());
+      if (to) {
+        to = +to >= +from ? to : "";
+        this.toDateDOSP = +to >= +from ? this.toDateDOSP : new FormControl();
+      }
+    }
+
+    if (from && to) {
+      // this.startDateDOSP = from.year() + "-" + (from.month() + 1) + "-" + from.date();
+      // this.endDateDOSP = to.year() + "-" + (to.month() + 1) + "-" + to.date();
+      // this.finalData['dosp_start_date'] = this.startDateDOSP;
+      // this.finalData['dosp_end_date'] = this.endDateDOSP;
+    }
+    else {
+      // this.finalData['dosp_start_date'] = "";
+      // this.finalData['dosp_end_date'] = "";
     }
   }
+
+  public onOrderEventdateSelection() {
+    let from = this.keyDataEle.orderEvtFromDate.value;
+    let to = this.keyDataEle.orderEvtToDate.value;
+
+    //conditions to manage minDate when from,to selected 
+    if (from) {
+      this.minOrderEventDate = new Date(from.year(), from.month(), from.date());
+      if (to) {
+        to = +to >= +from ? to : "";
+        this.keyDataEle.orderEvtToDate = +to >= +from ? this.keyDataEle.orderEvtToDate : new FormControl();
+      }
+    }
+  }
+
+  openAdditionalReqModal(){
+    let obj = {
+      checkboxData : this.getSelectedCheckboxData()
+    }
+    const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
+      data: obj
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      // this.dialogClosed();
+      console.log(result);
+      if (result) {
+
+      }
+    })
+
+
+  }
+
+  getSelectedCheckboxData(){
+    console.log(this.selected_checkbox);
+    console.log(this.checkboxMD2);
+    
+    let l_checkbox_data = [];
+    l_checkbox_data.push(...this.selected_checkbox.commonly_req_field,...this.selected_checkbox.opt_content_avail,...this.selected_checkbox.order_event_avail_ds)
+
+    for (const key in this.checkboxMD2) {
+      if (this.checkboxMD2.hasOwnProperty(key)) {
+        const element = this.checkboxMD2[key];
+        element.forEach(ele => {
+          if(ele['checked'])
+            l_checkbox_data.push(ele)
+        });
+      }
+    }
+    console.log(l_checkbox_data);
+    return l_checkbox_data
+  }
+
+  // keyElemChecked() {
+  //   if (this.disabled === true) {
+  //     this.keyElem = new FormControl();
+  //   }
+  // }
 
   resetCheckboxData() {
     for (const key in this.checkBxMD1) {
@@ -306,5 +403,12 @@ export class VehicleEventStatusComponent implements OnInit {
     label_key: 'field_values',
     title: ""
   };
+
+  public keyDataEle_settings = {
+    label: "Key Data Elements",
+    primary_key: 'ddm_rmp_lookup_dropdown_order_event_id',
+    label_key: 'order_event',
+    title: ""
+  }
 }
 

@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MainMenuComponent } from './main-menu.component';
 import { DebugElement } from "@angular/core";
-import { SharedDataService } from 'src/app/create-report/shared-data.service';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { RouterTestingModule } from "@angular/router/testing";
 import { Router } from "@angular/router";
@@ -34,15 +33,6 @@ describe('MainMenuComponent', () => {
     // fixture.detectChanges();
     router = TestBed.get(Router);
   });
-
-  it("Calling role() should set isButton true", fakeAsync(() => {
-    let component = fixture.componentInstance;
-    let sharedService = TestBed.inject(SharedDataService);
-    spyOn(router, 'navigate');
-    component.role();
-    expect(component.isButton).toBeFalsy;
-    expect(sharedService.getRequestId()).toEqual(0);
-  }));
 
   it('Calling role() should navigate to semantic', async(() => {
     let component = fixture.componentInstance;

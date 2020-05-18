@@ -20,6 +20,7 @@ import Utils from '../../../utils';
 import { MaterialModule } from "../../material.module";
 import { MatNativeDateModule } from '@angular/material/core';
 
+// Angular test cases written by Ganesha
 describe('RmpLandingPageComponent', () => {
   let component: RmpLandingPageComponent;
   let fixture: ComponentFixture<RmpLandingPageComponent>;
@@ -63,10 +64,6 @@ describe('RmpLandingPageComponent', () => {
     spyOn(Utils, 'showSpinner');
     spyOn(Utils, 'hideSpinner');
     fixture.detectChanges();
-  });
-
-  xit('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('should execute getHeaderDetails method', fakeAsync(() => {

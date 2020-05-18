@@ -68,7 +68,7 @@ td.col-9 {
 }
 
 .market-sel {
-    height: 73%;
+    height: 67%;
     width: 102%;
     overflow-y: scroll;
 }
@@ -107,4 +107,22 @@ td.col-9 {
 }
 .market-static{
     margin-top:15px;
+}
+
+.input-group p {
+    margin-bottom: 0px;
+}
+
+.input-group input{
+    margin-right: 10px;
+    width: 35%;
+    margin-left: 5px;
+    -webkit-text-security: disc;
+    display: inline-block;
+}
+
+.input-group i {
+    cursor: pointer;
+    font-size: 2.5rem;
+    display: inline-block;
 }

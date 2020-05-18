@@ -1,3 +1,4 @@
+// Migrated by Ganesha
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";

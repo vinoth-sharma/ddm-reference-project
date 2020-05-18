@@ -110,7 +110,7 @@ export class VehicleEventStatusComponent implements OnInit {
 
   l_lookupTableMD: any = {};
 
-  private othersDescIds = [5, 8, 15, 54];
+  // private othersDescIds = [5, 8, 15, 54];
   public req_body = {
     dosp_start_date: "",
     dosp_end_date: "",
@@ -356,24 +356,31 @@ export class VehicleEventStatusComponent implements OnInit {
     this.req_body.order_type.dropdown = this.selected.order_type;
     this.req_body.order_type.radio_button = this.orderTypeRadio;
 
-    let cbWithDesc = result.data.cb;
-    this.req_body.checkbox_data = result.data.cbComplete.map(cbEle => {
-      if (this.othersDescIds.includes(cbEle.ddm_rmp_lookup_ots_checkbox_values_id)) {
-        let obj = cbWithDesc.find(ele => ele.ddm_rmp_lookup_ots_checkbox_values_id === cbEle.ddm_rmp_lookup_ots_checkbox_values_id)
-        return {
-          value: obj.field_values,
-          id: obj.ddm_rmp_lookup_ots_checkbox_values_id,
-          desc: obj.desc
-        }
+    this.req_body.checkbox_data = result.data.cb.map(cbEle => {
+      return {
+        value: cbEle.field_values,
+        id: cbEle.ddm_rmp_lookup_ots_checkbox_values_id,
+        desc: cbEle.desc ? cbEle.desc : ""
       }
-      else {
-        return {
-          value: cbEle.field_values,
-          id: cbEle.ddm_rmp_lookup_ots_checkbox_values_id,
-          desc: cbEle.desc ? cbEle.desc : ""
-        }
-      }
-    })
+    });
+
+    // this.req_body.checkbox_data = result.data.cbComplete.map(cbEle => {
+    //   if (this.othersDescIds.includes(cbEle.ddm_rmp_lookup_ots_checkbox_values_id)) {
+    //     let obj = cbWithDesc.find(ele => ele.ddm_rmp_lookup_ots_checkbox_values_id === cbEle.ddm_rmp_lookup_ots_checkbox_values_id)
+    //     return {
+    //       value: obj.field_values,
+    //       id: obj.ddm_rmp_lookup_ots_checkbox_values_id,
+    //       desc: obj.desc
+    //     }
+    //   }
+    //   else {
+    //     return {
+    //       value: cbEle.field_values,
+    //       id: cbEle.ddm_rmp_lookup_ots_checkbox_values_id,
+    //       desc: cbEle.desc ? cbEle.desc : ""
+    //     }
+    //   }
+    // })
 
     this.req_body.report_detail.title = result.data.reportTitle;
     this.req_body.report_detail.additional_req = result.data.addReq;

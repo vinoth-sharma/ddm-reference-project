@@ -3,7 +3,7 @@
     <h3><b>Reference Data Management</b></h3>
   </div>
   <div>
-    <mat-card class="col-xs-6 card-alignment pointer" (click)="getReportList()">
+    <mat-card class="col-xs-6 card-alignment pointer" (click)="getBrandFormList()">
       <mat-card-title>Go To Brand-Forms</mat-card-title>
       <mat-card-subtitle>Click here to edit the Brand-Forms</mat-card-subtitle>
     </mat-card>
@@ -27,11 +27,11 @@
           class="material-icons pointer">arrow_back</i></a>
     </div>
   </div>
-  <div class="col-xs-12 complete-table">
+  <div class="col-xs-12 complete-table" *ngIf="isDataLoaded">
     <div class="col-xs-12 pl-0 search-width">
       <div class="col-xs-6 pl-0">
-        <input placeholder="Search ALLOC_GROUP_CD" class="form-control" (input)="filterData()"
-          [(ngModel)]="filters.ALLOC_GROUP_CD" name="filters.ALLOC_GROUP_CD">
+        <input placeholder="Search ALLOC_GRP_CD" class="form-control" (input)="filterData()"
+          [(ngModel)]="filters.ALLOC_GRP_CD" name="filters.ALLOC_GRP_CD">
       </div>
       <div class="col-xs-6 pl-0">
         <input placeholder="Search BRAND" class="form-control" (input)="filterData()" [(ngModel)]="filters.BRAND"
@@ -42,14 +42,18 @@
       <thead class="thead">
         <tr class="col-xs-12 p-0">
           <div class="col-xs-12 p-0">
-            <div class="col-xs-6 p-0">
-              <th class="table-header">
-                <b>ALLOC_GROUP_CD</b>
+            <div class="col-xs-6 p-0" (click)="sort('ALLOC_GRP_CD')">
+              <th class="table-header pointer">
+                <div class="col-xs-8 p-0"><b>ALLOC_GROUP_CD</b></div>
+                <div class="col-xs-2 p-0" *ngIf="!reports['ALLOC_GRP_CD']">&#8593;</div>
+                <div class="col-xs-2 p-0" *ngIf="reports['ALLOC_GRP_CD']">&#8595;</div>
               </th>
             </div>
-            <div class="col-xs-6 p-0">
-              <th class="table-header">
-                <b>BRAND</b>
+            <div class="col-xs-6 p-0" (click)="sort('BRAND')">
+              <th class="table-header pointer">
+                <div class="col-xs-8 p-0"><b>BRAND</b></div>
+                <div class="col-xs-2 p-0" *ngIf="!reports['BRAND']">&#8593;</div>
+                <div class="col-xs-2 p-0" *ngIf="reports['BRAND']">&#8595;</div>
               </th>
             </div>
           </div>
@@ -81,11 +85,11 @@
               <!-- Second part -->
               <div class="report-name-edit" *ngIf="element.clicked ">
                 <div class="col-xs-6">
-                  <input class="input-width" maxlength="50" placeholder="Name max 50 characters"
-                    [(ngModel)]="element.BRAND" [value]="element.BRAND?element.BRAND:''">
+                  <input class="input-width" id="editedField" maxlength="50" placeholder="Max 50 characters"
+                    [(ngModel)]="newBrandName" [value]="element.BRAND?element.BRAND:''">
                 </div>
                 <div class="col-xs-2">
-                  <a data-toggle="tooltip" title="Save record" (click)="changeReportName(element)"><i id="ic"
+                  <a data-toggle="tooltip" title="Save record" (click)="changeReportName(newBrandName)"><i id="ic"
                       class="material-icons pointer">save</i></a>
                 </div>
                 <div class="col-xs-2" aria-disabled="true">

@@ -7,6 +7,8 @@ import { SubmitRequestService } from "../submit-request.service";
 import Utils from 'src/utils';
 import { NgToasterComponent } from '../../../custom-directives/ng-toaster/ng-toaster.component';
 import { AuthenticationService } from 'src/app/authentication.service';
+import { MatDialog } from '@angular/material/dialog';
+import { RequestOnbehalfComp } from '../request-onbehalf/request-onbehalf.component';
 
 
 @Component({
@@ -91,6 +93,7 @@ export class SelectReportCriteriaComp implements OnInit {
 
   constructor(public djangoService: DjangoService,
       public ngToaster: NgToasterComponent ,
+      public dialog : MatDialog,
       public submitService : SubmitRequestService,
       public authService : AuthenticationService) {
         this.authService.myMethod$.subscribe(role => {
@@ -273,6 +276,12 @@ export class SelectReportCriteriaComp implements OnInit {
       console.log(err);
     });
 
+  }
+
+  openRequestOnBehalf(){
+    this.dialog.open(RequestOnbehalfComp,{
+      data:{}
+    })
   }
 
   public market_settings = {

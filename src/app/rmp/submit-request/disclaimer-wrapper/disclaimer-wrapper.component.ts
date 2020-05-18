@@ -45,7 +45,7 @@ export class DisclaimerWrapperComponent implements OnInit {
 
   ngOnInit(): void {
     Utils.showSpinner();
-    this.subReqService.loadLookUpTableData().subscribe(res=>{
+    this.subReqService.getHttpLookUpTableData().subscribe(res=>{
       this.l_lookupTableData = res.data;
       console.log(this.l_lookupTableData);
       this.l_lookupTableData.desc_text.forEach(element => {

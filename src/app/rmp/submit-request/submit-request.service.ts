@@ -12,12 +12,12 @@ export class SubmitRequestService {
 
   constructor(public djangoService: DjangoService,
    public ngToaster: NgToasterComponent) {
-    console.log("jkl");
-    
    }
-  public lookUpTableData = [] ;
 
-  loadLookUpTableData(){
+   public lookUpTableData = [] ;
+   public requestOnBehalf = {} ;
+
+  getHttpLookUpTableData(){
     return this.djangoService.getLookupValues().pipe(map((res:any) => {
       this.lookUpTableData = res.data;
       return res;
@@ -39,6 +39,14 @@ export class SubmitRequestService {
     return this.djangoService.ddm_rmp_order_to_sales_post(req).pipe(map((res:any) => {
       return res;
     }),catchError(this.handleError.bind(this)));
+  }
+
+  setSubmitOnBehalf(user){
+    this.requestOnBehalf = user;
+  }
+
+  getSubmitOnBehalf(){
+    return this.requestOnBehalf
   }
 
   public handleError(error: any): any {

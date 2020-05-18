@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private dataProvider: DataProviderService) {
     this.subscribeToService()
+    dataProvider.loadNotifications()
   }
 // subscribe to observables in authenticationservice and dataProvider service 
 // to get user info and notification details
@@ -89,29 +90,27 @@ export class HeaderComponent implements OnInit {
   this.redTraker = [];
   this.unreadTraker = [];
   notificationList.forEach(item =>{
-    if(item.comment_read_flag && !this.redTraker.includes(item.ddm_rmp_post_report)){
-      this.redTraker.push(item.ddm_rmp_post_report);
-      this.redNotificationList.push({reportNo:item.ddm_rmp_post_report,count:0,comment_read_flag:true})
-    }
-    if(!item.comment_read_flag && !this.unreadTraker.includes(item.ddm_rmp_post_report)){
-      this.unreadTraker.push(item.ddm_rmp_post_report);
-      this.unreadNotificationList.push({reportNo:item.ddm_rmp_post_report,count:0,comment_read_flag:false})
-    }
-  })
-  this.sortCommentsBasedOnRequest()
-  }
-// updating consolidated data sets 
-  sortCommentsBasedOnRequest(){
-    this.notification_list.forEach(item =>{
-      if(this.redTraker.indexOf(item.ddm_rmp_post_report) >= 0 && item.comment_read_flag){
-      this.redNotificationList[this.redTraker.indexOf(item.ddm_rmp_post_report)].count++
+    if(item.comment_read_flag){
+      if(!this.redTraker.includes(item.ddm_rmp_post_report)){
+        this.redTraker.push(item.ddm_rmp_post_report);
+        this.redNotificationList.push({reportNo:item.ddm_rmp_post_report,count:1,comment_read_flag:true})
+      } else{
+        this.redNotificationList[this.redTraker.indexOf(item.ddm_rmp_post_report)].count++
       }
-      if(this.unreadTraker.indexOf(item.ddm_rmp_post_report) >= 0 && !item.comment_read_flag){
+    }
+    else{
+      if(!this.unreadTraker.includes(item.ddm_rmp_post_report)){
+        this.unreadTraker.push(item.ddm_rmp_post_report);
+        this.unreadNotificationList.push({reportNo:item.ddm_rmp_post_report,count:1,comment_read_flag:false})
+      }else{
         this.unreadNotificationList[this.unreadTraker.indexOf(item.ddm_rmp_post_report)].count++
       }
-    })
-    this.notification_number = this.unreadNotificationList.length
-    this.unreadNotificationList = this.unreadNotificationList.concat(this.redNotificationList)
+    }
+  })
+  this.notification_number = this.unreadNotificationList.length
+  this.unreadNotificationList = this.unreadNotificationList.concat(this.redNotificationList)
   }
+// updating consolidated data sets 
+  
 }
 

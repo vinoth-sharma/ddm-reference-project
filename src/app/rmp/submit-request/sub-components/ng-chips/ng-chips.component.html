@@ -13,5 +13,6 @@
              (matChipInputTokenEnd)="add($event)">
 
     </mat-chip-list>
+    <mat-hint *ngIf="type==='fan'">*Only Applicable for Vehicle Event Status Requests</mat-hint>
     <mat-hint *ngIf="!isTextValid" style="color: red;">Your items should be strictly Alphanumericals and should be of either 6 or 11 characters</mat-hint>
   </mat-form-field>

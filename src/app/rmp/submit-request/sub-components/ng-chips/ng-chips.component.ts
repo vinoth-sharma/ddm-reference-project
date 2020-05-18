@@ -18,6 +18,7 @@ export class NgChipsComponent {
 
 @Input() custom_placeholder:String = "";
 @Output() chipSelectedEmittor = new EventEmitter();
+@Input() type:String = "";
 
 @Input() inputModel: Array<String> = [];
 @Output() inputModelChange = new EventEmitter();

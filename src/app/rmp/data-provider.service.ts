@@ -24,7 +24,6 @@ export class DataProviderService {
   public filesList: any;
 
   constructor(private django: DjangoService) {
-    // this.loadNotifications();
     this.loadLookUpData();
     this.loadLookUpTableData();
     this.getFiles();

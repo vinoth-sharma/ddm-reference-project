@@ -24,7 +24,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
 @NgModule({
   declarations: [
     AppComponent,
-    InputValidatorDirective,
+    InputValidatorDirective
   ],
   imports: [
     BrowserModule,

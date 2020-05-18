@@ -78,17 +78,17 @@ export class ManageNotesComponent implements OnInit {
   }
 
   dateSelectionDone(event:any){
-    // CHANGED FOR PROD
-    // console.log("EVENT details",event);
   }
 
-  checkNoteFormValid(){
-    if(this.admin_note_obj.noteData && this.admin_note_obj.displayFromDate.value 
-        && this.admin_note_obj.displayToDate.value){
-        this.submitNote();          
-        }
+  checkNoteFormValid() {
+    if (this.admin_note_obj.noteData && this.admin_note_obj.displayFromDate.value
+      && this.admin_note_obj.displayToDate.value) {
+      this.submitNote();
+    }
     else
-      return false
+      this.toastr.error("Please fill in all the mandatory fields");
+    return false
+
   }
 
   timeSelected(event,type){
@@ -107,13 +107,12 @@ export class ManageNotesComponent implements OnInit {
       admin_note_status : this.admin_note_obj.noteVisible,
       admin_flag : false
     };
-    // console.log(notes_details);
     this.django.ddm_rmp_admin_notes(notes_details).subscribe(response => {
       Utils.hideSpinner();
       this.toastr.success("Admin Notes updated successfully");
     }, err => {
       Utils.hideSpinner();
-      this.toastr.error("Admin note update unsuccessfull")
+      this.toastr.error("Admin note not updated");
       });
   }
 

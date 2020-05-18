@@ -47,19 +47,19 @@ export class RmpLandingPageComponent implements OnInit {
   // to get the important notes of admin
   public getAdminNotes() {
     if (this.info.data.admin_note[0])
-      this.updateAdminNotesParams(this.info.data.admin_note[0]);
+      this.updateAdminNotesParams(this.info.data.admin_note[0]);      
   }
 
   // update admin notes parameter
   public updateAdminNotesParams(adminNotes) {
 
-    this.db_start_date = adminNotes.notes_start_date;
+    this.db_start_date = adminNotes.notes_start_date;  
     this.db_end_date = adminNotes.notes_end_date;
     this.admin_notes = adminNotes.notes_content;
     this.note_status = adminNotes.admin_note_status;
 
     let today = new Date();
-    let startDate = new Date(this.db_start_date);
+    let startDate = new Date(this.db_start_date);  
     let endDate = new Date(this.db_end_date);
 
     if (this.note_status) {
@@ -103,15 +103,5 @@ export class RmpLandingPageComponent implements OnInit {
         })
       }
     })
-  }
-
-  // reset important parameters
-  public closeNotes() {
-    if (this.info.data.admin_note[0]) {
-      this.db_start_date = this.info.data.admin_note[0].notes_start_date;
-      this.db_end_date = this.info.data.admin_note[0].notes_end_date;
-      this.admin_notes = this.info.data.admin_note[0].notes_content;
-      this.note_status = this.info.data.admin_note[0].admin_note_status;
-    }
   }
 }

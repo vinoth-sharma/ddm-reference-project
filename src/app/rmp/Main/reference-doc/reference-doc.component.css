@@ -57,7 +57,7 @@
 }
 
 .buffer {
-    height: 20%;
+    height: auto;
     width: 100%;
 }
 
@@ -128,8 +128,9 @@ a:active {
 }
 
 .ref-styling {
-    padding: none;
-    height: 4vh;
+    height: auto;
+    min-height: 2vh;
+    margin-bottom: 10px;
 }
 
 .modal-title {

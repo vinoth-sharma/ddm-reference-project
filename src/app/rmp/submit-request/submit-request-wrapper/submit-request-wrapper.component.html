@@ -16,7 +16,8 @@
                     <!-- <app-vehicleevent-status></app-vehicleevent-status> -->
                 </mat-tab>
                 <mat-tab label="Dealer Allocation">
-                    <!-- <dealer-allocation></dealer-allocation> -->
+                    <dealer-allocation  [lookupTableMD]="lookupTableMasterData"
+                    [divisionData]="division_data"></dealer-allocation >>
                 </mat-tab>
                 <mat-tab disabled>
                     <ng-template mat-tab-label>

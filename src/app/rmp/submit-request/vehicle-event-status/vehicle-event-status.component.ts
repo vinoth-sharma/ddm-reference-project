@@ -324,7 +324,6 @@ export class VehicleEventStatusComponent implements OnInit {
       }
     })
 
-
   }
 
   openReviewModal(result) {

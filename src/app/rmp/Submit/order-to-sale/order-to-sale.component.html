@@ -232,7 +232,7 @@
               </select>
             </div>
             <!-- <div style="display: flex;" *ngIf="!targetProd"> -->
-              <!-- <form [formGroup]="myForm" class="target-date">
+            <!-- <form [formGroup]="myForm" class="target-date">
                 <mat-form-field>
                   <mat-label>Choose a start date</mat-label>
                   <input matInput [matDatepicker]="startDatepicker" (dateInput)="startDateEvent('input', $event)"
@@ -462,14 +462,13 @@
           </tr>
           <tr class="d-flex" *ngIf="selectedItemsOrderEvent.length>0 || otsObj.otherDesc !== ''">
             <td class="col-sm-6">
-                <mat-form-field >
-                  <mat-label>Start Date:</mat-label>
-                  <input matInput [matDatepicker]="fromOrderEvent" [formControl]="fromDate" 
-                          textEditable="false"
-                         (dateChange)="onOrderEventdateSelection()">
-                  <mat-datepicker-toggle matSuffix [for]="fromOrderEvent"></mat-datepicker-toggle>
-                  <mat-datepicker #fromOrderEvent></mat-datepicker>
-                </mat-form-field>
+              <mat-form-field>
+                <mat-label>Start Date:</mat-label>
+                <input matInput [matDatepicker]="fromOrderEvent" [formControl]="fromDate" textEditable="false"
+                  (dateChange)="onOrderEventdateSelection()">
+                <mat-datepicker-toggle matSuffix [for]="fromOrderEvent"></mat-datepicker-toggle>
+                <mat-datepicker #fromOrderEvent></mat-datepicker>
+              </mat-form-field>
             </td>
             <td class="col-sm-6">
               <mat-form-field>
@@ -512,11 +511,12 @@
             Maximum 60 characters allowed
           </span>
         </div>
-        <div style="width:50%;float:left;padding: 20px">
+        <div title="Please upload a file of CSV/WORD/EXCEL format!" style="width:50%;float:left;padding: 20px">
           <label for="attach-file">Attach files from computer:</label>
           <input id="attach-file1" type="file">
         </div>
-        <div style="float: right;margin-right: 147px;width: 20%;">
+        <div title="Please upload a file of CSV/WORD/EXCEL format!"
+          style="float: right;margin-right: 147px;width: 20%;">
           <button class="btn btn-success" (click)=files() class="width:20%; margin-left:16px;">Upload</button>
         </div>
         <div class="form-group" style="width:100%;float:left;">

@@ -427,14 +427,19 @@ export class DealerAllocationComponent implements OnInit {
 
   public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    var formData = new FormData();
-    formData.append('file_upload', this.file);
-    Utils.showSpinner();
-    this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      Utils.hideSpinner();
-    }, err => {
-      Utils.hideSpinner();
-    });
+    if (this.file['type'] == '.csv' || this.file['type'] == '.doc' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
+      var formData = new FormData();
+      formData.append('file_upload', this.file);
+      Utils.showSpinner();
+      this.django.ddm_rmp_file_data(formData).subscribe(response => {
+        Utils.hideSpinner();
+      }, err => {
+        Utils.hideSpinner();
+      });
+    }
+    else {
+      this.toastr.error(this.django.defaultUploadMessage)
+    }
   }
 
   public dateRangeData() {

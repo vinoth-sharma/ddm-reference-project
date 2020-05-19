@@ -252,6 +252,7 @@ export class ReferenceDocComponent implements OnInit {
       this.document_details["url"] = document_url;
       this.django.ddm_rmp_reference_documents_post(this.document_details).subscribe(response => {
         Utils.showSpinner();
+        $("#close_modal:button").click()
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_reference_documents;
           if (this.editid) this.toastr.success("Document updated");
@@ -272,7 +273,6 @@ export class ReferenceDocComponent implements OnInit {
       this.naming.push(this.document_details);
     }
     else if (link_title != "" && upload_doc != undefined && link_url == "") {
-      $("#close_modal:button").click()
       this.files()
     }
     else if (link_title != "" && upload_doc != null && link_url != "") {
@@ -320,36 +320,42 @@ export class ReferenceDocComponent implements OnInit {
 
   public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-    var formData = new FormData();
-    formData.append('file_upload', this.file);
-    formData.append('uploaded_file_name', document_title);
-    formData.append('flag', "is_ref");
-    formData.append('type', 'rmp');
 
-    Utils.showSpinner();
-    this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      this.django.get_files().subscribe(ele => {
-        this.filesList = ele['list'];
-        if (this.filesList) {
-          this.dataProvider.changeFiles(ele)
-        }
-      })
-      Utils.hideSpinner();
-      $("#document-url").removeAttr('disabled');
-      $('#uploadCheckbox').prop('checked', false);
-      $("#attach-file1").val('');
-      this.toastr.success("Uploaded Successfully");
-    }, err => {
-      Utils.hideSpinner();
-      $("#document-url").removeAttr('disabled');
-      $("#attach-file1").val('');
-      if (err && err['status'] === 400)
-        this.toastr.error("Submitted file is empty");
-      else
-        this.toastr.error("Server Error");
-      $('#uploadCheckbox').prop('checked', false);
-    });
+    if (this.file['type'] == '.csv' || this.file['type'] == '.doc' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
+      let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+      var formData = new FormData();
+      formData.append('file_upload', this.file);
+      formData.append('uploaded_file_name', document_title);
+      formData.append('flag', "is_ref");
+      formData.append('type', 'rmp');
+
+      Utils.showSpinner();
+      this.django.ddm_rmp_file_data(formData).subscribe(response => {
+        this.django.get_files().subscribe(ele => {
+          this.filesList = ele['list'];
+          if (this.filesList) {
+            this.dataProvider.changeFiles(ele)
+          }
+        })
+        Utils.hideSpinner();
+        $("#document-url").removeAttr('disabled');
+        $('#uploadCheckbox').prop('checked', false);
+        $("#attach-file1").val('');
+        this.toastr.success("Uploaded Successfully");
+      }, err => {
+        Utils.hideSpinner();
+        $("#document-url").removeAttr('disabled');
+        $("#attach-file1").val('');
+        if (err && err['status'] === 400)
+          this.toastr.error("Submitted file is empty");
+        else
+          this.toastr.error("Server Error");
+        $('#uploadCheckbox').prop('checked', false);
+      });
+    }
+    else {
+      this.toastr.error(this.django.defaultUploadMessage)
+    }
   }
 
   public editDocument() {

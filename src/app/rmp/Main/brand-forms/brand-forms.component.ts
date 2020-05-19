@@ -15,16 +15,19 @@ export class BrandFormsComponent implements OnInit {
 
   public reports: any = []
   public searchObj: any = [];
-  public filters = {
-    BRAND: '',
-    ALLOC_GRP_CD: ''
-  };
   public param: any;
   public orderType: any;
   public isHomePage: boolean = true;
   public isDataLoaded: boolean = false;
   public editDataRecord: any = {};
   public newBrandName: string = '';
+  public reportDataColumns = {
+    immutable: '',
+    mutable: ''
+  }
+  public brandFormName: string = '';
+  public filters: any = {}
+  public statusFilter: any = [];
 
   constructor(private django: DjangoService,
     private brandFormsService: BrandFormsService,
@@ -36,6 +39,7 @@ export class BrandFormsComponent implements OnInit {
     this.editDataRecord = {};
   }
 
+  // obtaining the brand-form-data
   public getBrandFormList(msgFlag?: boolean) {
     if (this.isHomePage) {
       this.isHomePage = !this.isHomePage;
@@ -43,10 +47,12 @@ export class BrandFormsComponent implements OnInit {
     Utils.showSpinner();
     this.brandFormsService.getBrandFormsData().subscribe(result => {
       if (result) {
-        console.log("INCOMING GTRD results : ", result);
+        this.brandFormName = result['table_name']
+        this.reportDataColumns['mutable'] = result['col_names'][0]
+        this.reportDataColumns['immutable'] = result['col_names'][1]
         this.reports = result['data'];
         this.reports.forEach(element => {
-          if (element['ALLOC_GRP_CD']) {
+          if (element[this.reportDataColumns['immutable']]) {
             element['clicked'] = false;
           }
         });
@@ -54,10 +60,9 @@ export class BrandFormsComponent implements OnInit {
         if (msgFlag) {
           this.toasterService.success('Data updated successfully!');
         }
-        console.log('Checking REPORTS DATA:', this.reports)
-        let nullBrands = this.reports.filter(i => { return (i['BRAND'] == null) })
-        let nonNullBrands = this.reports.filter(i => { return (i['BRAND'] != null) })
-        nonNullBrands.sort((a, b) => (a['BRAND'] > b['BRAND']) ? 1 : ((b['BRAND'] > a['BRAND']) ? -1 : 0));
+        let nullBrands = this.reports.filter(i => { return (i[this.reportDataColumns['mutable']] == null) })
+        let nonNullBrands = this.reports.filter(i => { return (i[this.reportDataColumns['mutable']] != null) })
+        nonNullBrands.sort((a, b) => (a[this.reportDataColumns['mutable']] > b[this.reportDataColumns['mutable']]) ? 1 : ((b[this.reportDataColumns['mutable']] > a[this.reportDataColumns['mutable']]) ? -1 : 0));
         Array.prototype.push.apply(nullBrands, nonNullBrands);
         this.reports = nullBrands;
         this.isDataLoaded = true;
@@ -70,16 +75,13 @@ export class BrandFormsComponent implements OnInit {
     })
   }
 
-
+  // toggling the divs and capturing backup/original values
   public toggleShowInput(element) {
-    console.log('element details', element);
-    console.log('element data type', typeof (element));
     let skipClickCalculation = false;
-
     if (element == "element") {
       let newBrandValueProcured = (<HTMLInputElement>document.getElementById('editedField')).value
       this.reports.map(i => {
-        if (i['BRAND'] == newBrandValueProcured && i['ALLOC_GRP_CD'] == this.editDataRecord['alloc_grp_cd_val_old']) {
+        if (i[this.reportDataColumns['mutable']] == newBrandValueProcured && i[this.reportDataColumns['immutable']] == this.editDataRecord['alloc_grp_cd_val_old']) {
           i['clicked'] = false;
           skipClickCalculation = true;
         }
@@ -87,47 +89,41 @@ export class BrandFormsComponent implements OnInit {
       this.newBrandName = '';
     }
     else {
-      this.editDataRecord['brand_value_old'] = element['BRAND'];
-      this.editDataRecord['alloc_grp_cd_val_old'] = element['ALLOC_GRP_CD'];
-      this.newBrandName = element['BRAND'];
+      this.editDataRecord['brand_value_old'] = element[this.reportDataColumns['mutable']];
+      this.editDataRecord['alloc_grp_cd_val_old'] = element[this.reportDataColumns['immutable']];
+      this.newBrandName = element[this.reportDataColumns['mutable']];
     }
 
     if (!skipClickCalculation) {
       var i = 0;
       for (i = 0; i <= this.reports.length; i++) {
-        if (this.reports[i]['BRAND'] == element['BRAND'] && this.reports[i]['ALLOC_GRP_CD'] == element['ALLOC_GRP_CD']) {
+        if (this.reports[i][this.reportDataColumns['mutable']] == element[this.reportDataColumns['mutable']] && this.reports[i][this.reportDataColumns['immutable']] == element[this.reportDataColumns['immutable']]) {
           this.reports[i]['clicked'] = true;
         } else {
           this.reports[i]['clicked'] = false;
         }
       }
     }
-    console.log('Checking REPORTS DATA after clicking:', this.reports)
   }
 
   // updating the data record
-  public changeReportName(newRecordDataObject: any) {
+  public changeBrandName(newRecordDataObject: any) {
     Utils.showSpinner();
-
     this.editDataRecord['brand_value_new'] = newRecordDataObject;
     this.editDataRecord['alloc_grp_cd_val_new'] = this.editDataRecord['alloc_grp_cd_val_old'];
-    console.log("NEW OBJ to be pushed : ", this.editDataRecord);
-
     if (this.editDataRecord['brand_value_new'].length == 0) {
       this.editDataRecord['brand_value_new'] = null;
     }
-
     if (this.editDataRecord['brand_value_new'] != this.editDataRecord['brand_value_old']) {
       this.brandFormsService.updateBrandFormsDataRecord(this.editDataRecord).subscribe(res => {
         if (res) {
           this.getBrandFormList(true);
           this.editDataRecord = {};
         }
-      },
-        err => {
-          this.toasterService.error('Data updated failed!');
-          Utils.hideSpinner();
-        })
+      }, err => {
+        this.toasterService.error('Data updated failed!');
+        Utils.hideSpinner();
+      })
     }
     else {
       this.toasterService.error('Please enter a new/different name!');
@@ -139,8 +135,8 @@ export class BrandFormsComponent implements OnInit {
   public deleteRecord(element: any) {
     Utils.showSpinner();
     let deleteRecord = {}
-    deleteRecord['brand_value'] = element['BRAND'];
-    deleteRecord['alloc_grp_cd_val'] = element['ALLOC_GRP_CD'];
+    deleteRecord['brand_value'] = element[this.reportDataColumns['mutable']];
+    deleteRecord['alloc_grp_cd_val'] = element[this.reportDataColumns['immutable']];
     if (deleteRecord['brand_value'] == '' && deleteRecord['brand_value'].length == 0) {
       delete deleteRecord['brand_value'];
     }
@@ -151,7 +147,7 @@ export class BrandFormsComponent implements OnInit {
         Utils.hideSpinner();
       }
     }, err => {
-      this.toasterService.success('Data deleted failed!');
+      this.toasterService.error('Data deletion failed!');
       Utils.hideSpinner();
     })
   }
@@ -161,18 +157,19 @@ export class BrandFormsComponent implements OnInit {
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
+  // sorting the columns
   public sort(typeVal) {
     this.param = typeVal;
-    if (typeVal == 'BRAND') {
-      if (this.reports['ALLOC_GRP_CD']) {
-        delete this.reports['ALLOC_GRP_CD']
+    if (typeVal == this.reportDataColumns['mutable']) {
+      if (this.reports[this.reportDataColumns['immutable']]) {
+        delete this.reports[this.reportDataColumns['immutable']]
       }
       this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
       this.orderType = this.reports[typeVal];
     }
-    else if (typeVal == 'ALLOC_GRP_CD') {
-      if (this.reports['BRAND']) {
-        delete this.reports['BRAND']
+    else if (typeVal == this.reportDataColumns['immutable']) {
+      if (this.reports[this.reportDataColumns['mutable']]) {
+        delete this.reports[this.reportDataColumns['mutable']]
       }
       this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
       this.orderType = this.reports[typeVal];

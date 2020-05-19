@@ -87,7 +87,7 @@ describe('ReportsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ReportsComponent, OrderByPipe, NgCustomSpinnerComponent, FilterTablePipe, OndemandReportsComponent, OndemandConfigReportsComponent, NgToasterComponent],
+      declarations: [ReportsComponent, OrderByPipe, NgCustomSpinnerComponent, FilterTablePipe, NgToasterComponent],
       imports: [FormsModule, MaterialModule, BrowserAnimationsModule,
         HttpClientTestingModule, RouterTestingModule, QuillModule.forRoot({})],
       providers: [DatePipe, Utils]
@@ -214,22 +214,6 @@ describe('ReportsComponent', () => {
   //   expect(component.readOnlyContentHelper).toBeFalsy();
   //   expect(component.namings).toBe("original_contents");
   // })
-
- 
-
-  // it("startOnDemandScheduling(), should set a few properties and call getScheduleReportData", fakeAsync(() => {
-  //   let scheduleService = TestBed.inject(ScheduleService)
-  //   let data = { scheduleId: [1] }
-  //   let serverData = { data: { key: "res", schedule_for_date: "", schedule_for_time: "", request_id: "", created_by: "", modified_by: "", confirmation: true, type: "On Demand" } };
-  //   let toster = TestBed.inject(NgToasterComponent);
-  //   component.userId = 1;
-  //   let scheduleServiceSpy = spyOn(scheduleService, "getScheduleReportData").and.returnValue(of(serverData))
-  //   component.reports = reportData.data;
-  //   component.startOnDemandScheduling(data);
-  //   tick();
-  //   expect(component.onDemandScheduleData).toEqual(serverData.data)
-  //   expect(scheduleServiceSpy).toHaveBeenCalled()
-  // }))
 
   // it(" should select and set frequency of component ", () => {
   //   let data = [
@@ -359,7 +343,7 @@ describe('ReportsComponent', () => {
   //   expect(typeof (component.filters)).toEqual("object")
   // })
 
-  
+
 
   // it("should get data from get_report_description and assegin values to a few properties", () => {
   //   let djangoService = TestBed.inject(DjangoService)
@@ -475,40 +459,7 @@ describe('ReportsComponent', () => {
 
       expect(component.isRecurringFrequencyHidden).toEqual(true)
     })
-
-    // On Demand frequency case
-    fixture = TestBed.createComponent(ReportsComponent);
-    component = fixture.componentInstance;
-    let serviceSecond = fixture.debugElement.injector.get(DjangoService);
-    fixture.detectChanges();
-    service.get_report_description(testRequestId).subscribe(res => {
-      res['frequency_of_report'] = 'On Demand'
-      component.selectedNewFrequency = res['frequency_of_report']
-
-      expect(component.isRecurringFrequencyHidden).toEqual(false)
-    })
   });
 
 
 });
-@Component({
-  selector: 'app-ondemand-reports',
-  template: "<div></div>"
-})
-class OndemandReportsComponent {
-  @Input() requestNumber
-  @Input() reportId
-  odScheduleConfirmation = new EventEmitter()
-}
-
-@Component({
-  selector: 'app-ondemand-config-reports',
-  template: "<div></div>"
-})
-class OndemandConfigReportsComponent {
-  @Input() requestNumber
-  @Input() reportId
-  @Input() title
-  @Input() name
-  odcScheduleConfirmation = new EventEmitter();
-}

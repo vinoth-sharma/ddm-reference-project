@@ -125,3 +125,11 @@ mat-icon{
         width: 40vw;
     }
 }
+
+button:focus{
+    outline: none !important;
+}
+a:hover, a:focus{
+    outline: none !important;
+    text-decoration: none !important;
+}

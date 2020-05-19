@@ -19,7 +19,7 @@
 }
 .header-title{
     color: white;
-    font-size: 1.4em;
+    /* font-size: 1.4em; */
     font-weight: 800;
     margin-left: 20px;
 }
@@ -31,7 +31,7 @@
 .user-details{
     margin-left: 35px;
     color: white;
-    font-size: 15px;
+    /* font-size: 15px; */
 }
 .notification-icon{
     font-size: 30px;
@@ -47,7 +47,7 @@
     max-width: 350px !important;
 }
 .menu-container{
-    width: 50%;
+    width: 45%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,3 +63,22 @@
     background-color: linear-gradient(rgb(27, 116, 206), rgb(133, 187, 241));
     background-image: linear-gradient(rgb(38, 61, 79), rgb(63, 100, 131));
 } */
+
+mat-button-toggle{
+    background: transparent; 
+    color: white; 
+    font-weight: 700;
+    outline: none !important;
+    padding: 0px 5px;
+    transition: ease-in 0.1S;
+}
+mat-button-toggle:hover{
+    transform: scale(1.2);
+}
+
+
+::ng-deep .mat-button-toggle-checked.mat-button-toggle-appearance-standard{
+    color: white;
+    font-weight: 700;
+    transform: scale(1.2);
+}

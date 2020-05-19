@@ -1,19 +1,36 @@
 <div class="header-container">
-  <div class="header-cont-part">
+  <div class="header-cont-part" style="width: 40%;">
     <img id="DDM_logo" src="/assets/OFT_Logo.jpg" (click)="role()">
     <div class="header-title">
       Order Fulfillment Distribution Data Mart
     </div>
   </div>
   <div style="" class="menu-container">
-    <a routerLink="main" routerLinkActive="active"><button mat-button>Main
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+      <mat-button-toggle value="menu">
+        <a routerLink="main" routerLinkActive="active">Menu</a>
+      </mat-button-toggle>
+      <mat-button-toggle value="submit">
+        <a routerLink="disclaimer" routerLinkActive="active">Submit Request</a>
+      </mat-button-toggle>
+      <mat-button-toggle value="request">
+        <a routerLink="request-status" routerLinkActive="active">Request Status</a>
+      </mat-button-toggle>
+      <mat-button-toggle value="report">
+        <a routerLink="reports" routerLinkActive="active">Reports</a>
+      </mat-button-toggle>
+      <mat-button-toggle value="metrics" *ngIf="user_role=='Admin'">
+        <a routerLink="metrics" routerLinkActive="active">Metrics</a>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <!-- <a routerLink="main" routerLinkActive="active"><button mat-button>Main
         Menu</button></a>
     <a routerLink="disclaimer" routerLinkActive="active"><button mat-button>Submit
         Request</button></a>
     <a routerLink="request-status" routerLinkActive="active"><button mat-button>Request
         Status</button></a>
     <a routerLink="reports" routerLinkActive="active"><button mat-button>Reports</button></a>
-    <a *ngIf="user_role=='Admin'" routerLink="metrics" routerLinkActive="active"><button mat-button>Metrics</button></a>
+    <a *ngIf="user_role=='Admin'" routerLink="metrics" routerLinkActive="active"><button mat-button>Metrics</button></a> -->
   </div>
   <div class="header-cont-part" style="justify-content: flex-end; width: 25%;">
     <button mat-icon-button style="margin-right: 15px;" [matMenuTriggerFor]="notifcations">

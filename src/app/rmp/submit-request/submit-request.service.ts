@@ -3,6 +3,7 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { catchError, map } from 'rxjs/operators';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { json } from 'd3';
+import { Subject } from 'rxjs';
 
 
 @Injectable({
@@ -15,7 +16,8 @@ export class SubmitRequestService {
    }
 
    public lookUpTableData = [] ;
-   public requestOnBehalf = {} ;
+   public requestOnBehalf:any = {} ;
+   public emitReqOnBehalfEmail = new Subject();
 
   getHttpLookUpTableData(){
     return this.djangoService.getLookupValues().pipe(map((res:any) => {
@@ -41,7 +43,15 @@ export class SubmitRequestService {
     }),catchError(this.handleError.bind(this)));
   }
 
+  submitDealerAllocation(req){
+    return this.djangoService.ddm_rmp_dealer_allocation_post(req).pipe(map((res:any) => {
+      return res;
+    }),catchError(this.handleError.bind(this)));
+  }
+
   setSubmitOnBehalf(user){
+    if(user['emailId'])
+      this.emitReqOnBehalfEmail.next(user.emailId)
     this.requestOnBehalf = user;
   }
 

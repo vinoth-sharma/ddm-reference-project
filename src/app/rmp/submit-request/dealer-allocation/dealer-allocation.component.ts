@@ -12,6 +12,7 @@ import { SubmitRequestService } from "../submit-request.service";
 import { default as _rollupMoment, Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { AdditionalReqModalComponent } from '../additional-req-modal/additional-req-modal.component';
+import { DataProviderService } from '../../data-provider.service';
 
 const moment = _rollupMoment || _moment;
 
@@ -44,31 +45,10 @@ export const MY_FORMATS = {
   ]
 })
 export class DealerAllocationComp implements OnInit {
-  @Input() lookupTableMD = {};
-  @Input() divisionData = [];
+  // @Input() lookupTableMD = {};
+  // @Input() divisionData = [];
+  @Input() requestDetails:any;
 
-  constructor(public matDialog: MatDialog,
-    public ngToaster: NgToasterComponent,
-    public submitService: SubmitRequestService,
-    public auth_service: AuthenticationService) { }
-
-  months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-  years = ['2016', '2017', '2018', '2019', '2020'];
-
-  division = [{ name: '001-Chevorlet (US)' }, { name: '004-Buick (US)' }, { name: '006-Cadillac (US)' }, { name: '012-GMC (US)' }];
-  divisionSltd = [{ name: '001-Chevorlet (US)' }, { name: '004-Buick (US)' }];
-
-  modelYear = new FormControl();
-  modelYears: string[] = ['2020', '2019', '2018', '2017'];
-
-  allocGrp = new FormControl();
-  allocGrps: string[] = ['BLAZER', 'BOLTEV', 'CAM', 'CAMCON', 'CAPTIM', 'CAPTIV', 'CCRUHD'];
-
-  conData = new FormControl();
-  conDatas: string[] = ['Estimated Shipments ', 'Final Allocation', 'Production Consensus (Approved Qty)', 'Monthly Demand', 'Unfufilled Demand', 'Dealer Declined Units']
-
-  startDate = new FormControl();
-  endDate = new FormControl();
   // --------------------------------------------------------
   l_lookupTableMD: any = {}
   user_name = "";
@@ -94,7 +74,7 @@ export class DealerAllocationComp implements OnInit {
   startCycle = "Cycle 1";
   endCycle = "Cycle 2";
 
-  req_body = {
+  public req_body = {
       concensus_time_date : {
           startM : "",
           startY : "",
@@ -111,10 +91,10 @@ export class DealerAllocationComp implements OnInit {
         title: "",
         assigned_to: "",
         additional_req: "",
-        created_on: "",
+        created_on: null,
         report_type: "da",
         status: "Pending",
-        status_date: "",
+        status_date: null,
         on_behalf_of: "",
         link_to_results: "",
         query_criteria: "",
@@ -124,6 +104,21 @@ export class DealerAllocationComp implements OnInit {
     report_id : null
   }
 
+  request_details = {
+    division_selected : [],
+    report_id : null,
+    on_behalf_of : "",
+    status : "",
+  }
+
+
+
+  constructor(public matDialog: MatDialog,
+    public ngToaster: NgToasterComponent,
+    public submitService: SubmitRequestService,
+    private dataProvider: DataProviderService,
+    public auth_service: AuthenticationService) { }
+
   ngOnInit(): void {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -131,21 +126,30 @@ export class DealerAllocationComp implements OnInit {
         this.user_role = role["role"]
       }
     })
+    this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
+      this.l_lookupTableMD = tableDate ? tableDate.data : {};
+      this.refillMasterDatatoOptions();
+    })
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
-    console.log(simpleChanges);
-    console.log(this.lookupTableMD);
-    if (this.divisionData.length && this.lookupTableMD) {
-      this.l_lookupTableMD = this.lookupTableMD;
-      this.refillMasterDatatoOptions();
+    // console.log(simpleChanges);
+    if (simpleChanges.requestDetails && this.requestDetails['division_selected']) {
+      // this.request_details.division_selected = this.requestDetails.division_selected;
+      this.refillDivisionMD(this.requestDetails.division_selected);
+      this.req_body.report_detail.status = this.requestDetails.status;
+      this.req_body.report_detail.on_behalf_of = this.requestDetails.on_behalf_of;
+      this.req_body.report_id = this.requestDetails.report_id;
     }
   }
 
-  refillMasterDatatoOptions() {
-    this.selected.divisions = this.divisionData;
-    this.filtered_MD.divisions = this.divisionData;
+  refillDivisionMD(divisions){
+    this.selected.divisions = divisions;
+    this.filtered_MD.divisions = divisions;
     this.divisionDependencies();
+  }
+
+  refillMasterDatatoOptions() {
     this.filtered_MD.consensus = this.l_lookupTableMD.concensus_data_da;
     this.filtered_MD.model_years = this.l_lookupTableMD.model_year;
     this.filtered_MD.model_years = this.l_lookupTableMD.model_year;
@@ -163,28 +167,63 @@ export class DealerAllocationComp implements OnInit {
   }
 
   openAdditionalReqModal() {
-    console.log(this.consensusEndDate);
-    console.log(this.consensusStartDate);
-
-    let obj = {
-      checkboxData: []
-    }
-    const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
-      data: obj
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      // this.dialogClosed();
-      console.log(result);
-      if (result) {
-        this.openReviewModal(result);
+    if(!this.selected.model_years.length)  
+      this.ngToaster.error("Please select Model year")
+    else if(!this.selected.allocation_groups.length)
+      this.ngToaster.error("Please select allocation group")
+    else if(!this.selected.consensus.length)
+      this.ngToaster.error("Please select Consensus data")
+    else{
+      let obj = {
+        checkboxData: []
       }
-    })
+      const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
+        data: obj
+      })
+      dialogRef.afterClosed().subscribe(result => {
+        // this.dialogClosed();
+        console.log(result);
+        if (result) {
+          this.openReviewModal(result);
+        }
+      })
+    }
+
   }
 
   openReviewModal(result) {
-    console.log(result);
-    console.log(this.selected);
+    // console.log(this.selected);
+    this.req_body.allocation_group.dropdown = this.selected.allocation_groups;
+    this.req_body.model_year.dropdown = this.selected.model_years;
+  
+    this.req_body.report_detail.title = result.data.reportTitle;
+    this.req_body.report_detail.additional_req = result.data.addReq;
+    this.req_body.report_detail.requestor = this.user_name;
+    this.req_body.report_detail.status_date = new Date();
+    this.req_body.report_detail.created_on = new Date();
+    this.req_body.report_detail.status = "Pending";
     
+    this.req_body.concensus_time_date.startCycle = this.startCycle;
+    this.req_body.concensus_time_date.endCycle = this.endCycle;
+    let from = this.consensusStartDate.value;
+    let to = this.consensusStartDate.value;
+    this.req_body.concensus_time_date.startM = from.format("MMMM");
+    this.req_body.concensus_time_date.startY = from.year();
+    this.req_body.concensus_time_date.endM = to.format("MMMM");
+    this.req_body.concensus_time_date.endY = to.year();
+
+    // console.log(this.req_body);
+    
+    Utils.showSpinner();
+    this.submitService.submitDealerAllocation(this.req_body).subscribe(response => {
+      // console.log(response);
+      Utils.hideSpinner();
+      this.ngToaster.success("Dealer Allocation successfully")
+    }, err => {
+      Utils.hideSpinner();
+      console.log(err);
+    });
+
   }
 
   chosenYearHandler(normalizedYear: Moment) {
@@ -198,7 +237,6 @@ export class DealerAllocationComp implements OnInit {
     let to = this.consensusEndDate.value;
     from.month(normalizedMonth.month());
     this.consensusStartDate.setValue(from);
-    console.log(this.minDate);
     if (from) {
       this.minDate = new Date(from.toISOString());
       // this.minOrderEventDate = new Date(ctrlValue.year(), ctrlValue.month(), ctrlValue.date());
@@ -238,7 +276,7 @@ export class DealerAllocationComp implements OnInit {
 
   public allocation_settings = {
     label: "Allocation Groups(s)",
-    primary_key: 'ddm_rmp_lookup_dropdown_allocation_group_id',
+    primary_key: 'ddm_rmp_lookup_dropdown_allocation_group_da_id',
     label_key: 'allocation_group',
     title: ""
   };

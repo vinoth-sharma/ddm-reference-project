@@ -1,5 +1,5 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" [ngClass]="{'noPadding': settings.title?false:true }">
-    <div class="topFilterTitle" *ngIf="settings.title">{{ settings.title }}</div>
+    <div class="topFilterTitle" *ngIf="settings.title" [innerHTML]="settings.title"></div>
 
 <mat-form-field>
     <mat-label>{{ l_db.length?settings.label:"" }}</mat-label>

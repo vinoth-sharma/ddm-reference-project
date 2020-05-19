@@ -20,24 +20,21 @@ export class SubmitRequestWrapperComponent implements OnInit {
     self_email: ""
   }
 
-  lookupMasterData = {};
-  lookupTableMasterData = {};
+  // lookupMasterData = {};
+  // lookupTableMasterData = {};
 
-  division_data = [{
-    ddm_rmp_lookup_division: 1,
-    ddm_rmp_lookup_market: 1,
-    division_desc: "004 - Buick(US)"
-  }, {
-    ddm_rmp_lookup_division : 11,
-    ddm_rmp_lookup_market: 3,
-    division_desc: "004 - Buick(Export)"}]
+
+  request_details:any = {};
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
-    private dataProvider: DataProviderService, private auth_service: AuthenticationService,
+    private dataProvider: DataProviderService,
+    private auth_service: AuthenticationService,
     private report_id_service: GeneratedReportService,
     public toastr: NgToasterComponent,
     private reportDataService: ReportCriteriaDataService) {
     // this.model = "";
+    console.log("asdsd");
+    
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_details.name = role["first_name"] + " " + role["last_name"]
@@ -46,17 +43,21 @@ export class SubmitRequestWrapperComponent implements OnInit {
       }
     })
 
-    dataProvider.currentlookupData.subscribe(element => {
-      console.log(element);
-      this.lookupMasterData = element;
-    })
+    // dataProvider.currentlookupData.subscribe(element => {
+    //   console.log(element);
+    //   this.lookupMasterData = element;
+    // })
 
-    dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
-      console.log(tableDate);
-      this.lookupTableMasterData = tableDate ? tableDate.data : {};
-    })
+    // dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
+    //   console.log(tableDate);
+    //   this.lookupTableMasterData = tableDate ? tableDate.data : {};
+    // })
   }
 
   ngOnInit() { }
+
+  requestCreated(event){
+    this.request_details = event;
+  }
 
 }

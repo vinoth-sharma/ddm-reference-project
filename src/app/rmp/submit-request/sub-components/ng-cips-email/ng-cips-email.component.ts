@@ -1,11 +1,12 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Component, ElementRef, ViewChild, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, ElementRef, ViewChild, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith, debounceTime, distinctUntilChanged, mergeMap} from 'rxjs/operators';
 import { DjangoService } from "../../../django.service";
+import { SubmitRequestService } from '../../submit-request.service';
 
 @Component({
   selector: 'app-ng-cips-email',
@@ -14,6 +15,7 @@ import { DjangoService } from "../../../django.service";
 })
 export class NgCipsEmailComponent implements OnInit {
 
+  @Input() selectedemails = [];
   @Output() emailSelectionEmitter = new EventEmitter()
 
   visible = true;
@@ -30,8 +32,8 @@ export class NgCipsEmailComponent implements OnInit {
 
 
   // this.django.getDistributionList();
-
-  constructor(public djangoService: DjangoService){
+  constructor(public djangoService: DjangoService,
+    public subReqService : SubmitRequestService){
     this.filteredChips = this.chipCtrl.valueChanges.pipe(
         debounceTime(1000),
         distinctUntilChanged(),
@@ -42,6 +44,14 @@ export class NgCipsEmailComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.subReqService.emitReqOnBehalfEmail.subscribe((email:string)=>{
+      this.selectedChips.push(email)
+    })
+  }
+
+  ngOnChanges(){
+  console.log(this.selectedemails);
+    // this.selectedChips.push(...this.selectedemails)
   }
   
   add(event: MatChipInputEvent): void {

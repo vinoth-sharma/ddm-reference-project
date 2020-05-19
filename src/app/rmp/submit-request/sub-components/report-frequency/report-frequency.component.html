@@ -9,19 +9,8 @@
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 emailHolder">
-                    <!-- <mat-form-field class="example-chip-list">
-                        <mat-chip-list #chipList aria-label="Add Emails">
-                            <mat-chip *ngFor="let dl of dls" [selectable]="selectable" [removable]="removable"
-                                (removed)="remove(dl)">
-                                {{dl.mail}}
-                                <mat-icon matChipRemove *ngIf="removable">x</mat-icon>
-                            </mat-chip>
-                            <input placeholder="Email IDs" [matChipInputFor]="chipList"
-                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
-                                (matChipInputTokenEnd)="add($event)">
-                        </mat-chip-list>
-                    </mat-form-field> -->
-                    <app-ng-cips-email (emailSelectionEmitter)="emailSelectionDone($event)"></app-ng-cips-email>
+                    <app-ng-cips-email (emailSelectionEmitter)="emailSelectionDone($event)"
+                    [selectedemails]="selected.dl_list"></app-ng-cips-email>
                 </div>
             </div>
         </div>
@@ -59,7 +48,7 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <mat-form-field>
                     <mat-label>Frequency</mat-label>
-                    <mat-select [formControl]="dayFreq" multiple [(ngModel)]="selected.daily_weekly" [disabled]="!selected.reportFreq_regBasis">
+                    <mat-select multiple [(ngModel)]="selected.daily_weekly" [disabled]="!selected.reportFreq_regBasis">
                         <mat-option *ngFor="let dayFreq of l_lookupData.daily_weekly" [value]="dayFreq">
                             {{ dayFreq.select_frequency_values }}
                         </mat-option>
@@ -74,16 +63,14 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <mat-form-field>
                     <mat-label>Frequency</mat-label>
-                    <mat-select [formControl]="biMonFreq" multiple [(ngModel)]="selected.monthly_bimonthly" [disabled]="!selected.reportFreq_regBasis">
+                    <mat-select multiple [(ngModel)]="selected.monthly_bimonthly" 
+                    [disabled]="!selected.reportFreq_regBasis" (selectionChange)="monthBimonChanges($event)">
                         <mat-option *ngFor="let biMonFreq of l_lookupData.monthly_bimonthly" [value]="biMonFreq">
                             {{ biMonFreq.select_frequency_values }}
                         </mat-option>
-                        <!-- <input placeholder="others.." style="margin: 7px 18px;" [(ngModel)]="selected.monthly_others_decs"
-                            /> -->
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" *ngIf="selected.monthly_others">
-                <!-- [ngIf]="selected.monthly_bimonthly.some(ele=>ele.ddm_rmp_lookup_select_frequency_id === 26)"> -->
                     <mat-label>Other</mat-label>
                     <input matInput placeholder="others..." [(ngModel)]="selected.monthly_others_decs"
                     [disabled]="!selected.reportFreq_regBasis">
@@ -97,7 +84,7 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <mat-form-field>
                     <mat-label>Frequency</mat-label>
-                    <mat-select [formControl]="quarFreq" multiple  [(ngModel)]="selected.quaterly" [disabled]="!selected.reportFreq_regBasis">
+                    <mat-select  multiple  [(ngModel)]="selected.quaterly" [disabled]="!selected.reportFreq_regBasis">
                         <mat-option *ngFor="let quarFreq of l_lookupData.quaterly" [value]="quarFreq">
                             {{ quarFreq.select_frequency_values }}
                         </mat-option>
@@ -114,9 +101,7 @@
                 <ng-container *ngFor="let freqDA of l_lookupData.freq_dealer_allo">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
                     <div style="padding:0px" [ngClass]="{'col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding':!freqDA.select_frequency_description ,
-                                'col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding' : freqDA.select_frequency_description }" 
-                    >
-                    <!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding" *ngIf="freqDA.select_frequency_description"> -->
+                                'col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding' : freqDA.select_frequency_description }">
                        <mat-checkbox [(ngModel)]="freqDA['checked']" [disabled]="!selected.reportFreq_regBasis"> 
                            {{ freqDA.select_frequency_values }} </mat-checkbox>
                     </div>
@@ -133,6 +118,6 @@
         </div>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
-        <button type="button" class="btn btn-success savenProceed" (click)="submitFrequencyData()">Save and Proceed</button>
+        <button type="button" class="btn btn-success savenProceed" (click)="validateNdSubmit()">Save and Proceed</button>
     </div>
 </div>

@@ -1,5 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { FormControl } from '@angular/forms';
 import { DjangoService } from "../../django.service";
@@ -9,6 +9,7 @@ import { NgToasterComponent } from '../../../custom-directives/ng-toaster/ng-toa
 import { AuthenticationService } from 'src/app/authentication.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RequestOnbehalfComp } from '../request-onbehalf/request-onbehalf.component';
+import { DataProviderService } from '../../data-provider.service';
 
 
 @Component({
@@ -19,6 +20,7 @@ import { RequestOnbehalfComp } from '../request-onbehalf/request-onbehalf.compon
 export class SelectReportCriteriaComp implements OnInit {
   @Input() lookupMasterData = {};
   @Input() lookupTableMD = {};
+  @Output() requestCreated = new EventEmitter();
 
   l_lookup_MD: any = {
     market: {},
@@ -71,7 +73,7 @@ export class SelectReportCriteriaComp implements OnInit {
     dl_list: [],
     report_detail: {
       requestor: "",
-      status: "",
+      status: "Incomplete",
       status_date: null,
       report_type: "",
       title: "",
@@ -91,9 +93,18 @@ export class SelectReportCriteriaComp implements OnInit {
     email : ""
   }
 
+  response_body = {
+    division_selected : [],
+    report_id : null,
+    on_behalf_of : "",
+    status : "",
+
+  }
+
   constructor(public djangoService: DjangoService,
       public ngToaster: NgToasterComponent ,
       public dialog : MatDialog,
+      private dataProvider: DataProviderService,
       public submitService : SubmitRequestService,
       public authService : AuthenticationService) {
         this.authService.myMethod$.subscribe(role => {
@@ -106,23 +117,41 @@ export class SelectReportCriteriaComp implements OnInit {
       }
 
   ngOnInit() {
+    this.dataProvider.currentlookupData.subscribe(element => {
+      console.log(element);
+      // this.lookupMasterData = element;
+      this.l_lookup_MD.market = element;
+      if (this.l_lookup_MD.market) {
+        this.filtered_master_data.market = this.l_lookup_MD.market.market_data;
+      }
+    })
 
+    this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
+      console.log(tableDate);
+      // this.lookupTableMasterData = tableDate ? tableDate.data : {};
+      this.l_lookup_MD.other = tableDate ? tableDate.data : {};
+      if (this.l_lookup_MD.other) {
+        this.special_identifiers_obj.bac = []
+        this.special_identifiers_obj.fan = []
+        this.refillLookupTableData();
+      }
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.l_lookup_MD.market = this.lookupMasterData;
-    this.l_lookup_MD.other = this.lookupTableMD;
-    if (this.l_lookup_MD.market) {
-      this.filtered_master_data.market = this.l_lookup_MD.market.market_data;
-    }
-    if (this.l_lookup_MD.other) {
-      console.log(this.l_lookup_MD.other);
-      this.special_identifiers_obj.bac = []
-      this.special_identifiers_obj.fan = []
-      this.refillLookupTableData();
+    // this.l_lookup_MD.market = this.lookupMasterData;
+    // this.l_lookup_MD.other = this.lookupTableMD;
+    // if (this.l_lookup_MD.market) {
+    //   this.filtered_master_data.market = this.l_lookup_MD.market.market_data;
+    // }
+    // if (this.l_lookup_MD.other) {
+    //   console.log(this.l_lookup_MD.other);
+    //   this.special_identifiers_obj.bac = []
+    //   this.special_identifiers_obj.fan = []
+    //   this.refillLookupTableData();
 
-    }
-    console.log(this.special_identifiers_obj);
+    // }
+    // console.log(this.special_identifiers_obj);
 
 
   }
@@ -220,9 +249,10 @@ export class SelectReportCriteriaComp implements OnInit {
 
   repFreqChange(req){
     console.log(req);
-    
-
-    this.submitReportCriteria(req);
+    if(!this.selected.market.length)  
+      this.ngToaster.error("Market selection is mandatory")
+    else
+      this.submitReportCriteria(req);
   }
 
   submitReportCriteria(freqReq) {
@@ -259,18 +289,27 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.frequency = freqReq.freq
     
     this.req_body.report_detail.requestor = this.userData.fullName;
-    this.req_body.report_detail.status = "Incomplete"
     this.req_body.report_detail.created_on = new Date();
     this.req_body.report_detail.status_date = new Date();
-
+    this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf()['fullName']?this.submitService.getSubmitOnBehalf()['fullName']:"";
 
     console.log(this.req_body);
     
     Utils.showSpinner();
     this.submitService.submitUserMarketSelection(this.req_body).subscribe(response => {
       console.log(response);
+      // this.submitService.setSubmitOnBehalf({});
       Utils.hideSpinner();
       this.ngToaster.success("Report created successfully")
+      this.response_body.division_selected = response.division_data;
+      this.response_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
+      this.response_body.status = response['report_data']['status'];
+      this.response_body.on_behalf_of = response['report_data']['on_behalf_of'];
+      
+      this.req_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
+      this.req_body.report_detail.status = response['report_data']['status'];
+
+      this.requestCreated.emit(this.response_body)
     },err=>{
       Utils.hideSpinner();
       console.log(err);
@@ -288,7 +327,7 @@ export class SelectReportCriteriaComp implements OnInit {
     label: "Market",
     primary_key: 'ddm_rmp_lookup_market_id',
     label_key: 'market',
-    title: "Market Selection*"
+    title: "Market Selection<span class='red'>*</span>"
   };
 
   public region_settings = {

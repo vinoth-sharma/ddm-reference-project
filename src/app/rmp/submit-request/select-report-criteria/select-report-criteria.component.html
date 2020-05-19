@@ -13,6 +13,10 @@
         </div>
     </div>
     <div class="row topFiltersWrapper margBottom">
+        <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15" *ngIf="response_body.report_id"  style="margin : 0px 20px 4px">
+            <div class="green"> Report #{{ response_body.report_id }} generated. </div>
+            <div class="red"> Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</div>
+        </div>
         <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15">
             <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15">
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">

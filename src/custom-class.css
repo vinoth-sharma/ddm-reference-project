@@ -62,6 +62,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background:
 .red{
     color: red;
 }
+.green{
+    color: green;
+}
 mat-form-field{
     width: 100%;
 }

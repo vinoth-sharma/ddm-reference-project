@@ -330,20 +330,28 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   // add new link based on validate previous link
   public addLinkTitleURL() {
     let urlList = this.auth_service.getListUrl();
-    for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
-      let b = urlList.find(url => url === this.LinkTitleURL.value[i].link);
-      let a = document.getElementById(i + 'url');
-      if (b) {
-        a.setAttribute('style', 'display: none !important');
-        this.LinkTitleURL.push(this.fb.group({
-          title: ['', Validators.required],
-          link: ['', Validators.required]
-        }));
+    if(this.LinkTitleURL.value.length > 0) {
+      for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
+        let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
+        let urlElement = document.getElementById(i + 'url');
+        if (validUrl) {
+          urlElement.setAttribute('style', 'display: none !important');
+          this.LinkTitleURL.push(this.fb.group({
+            title: ['', Validators.required],
+            link: ['', Validators.required]
+          }));
+        }
+        else {
+          urlElement.setAttribute('style', 'display: block !important');
+        }
       }
-      else {
-        a.setAttribute('style', 'display: block !important');
-      }
+    } else {
+      this.LinkTitleURL.push(this.fb.group({
+        title: ['', Validators.required],
+        link: ['', Validators.required]
+      }));
     }
+    
   }
 
   public deleteLinkTitleURL(index) {
@@ -355,6 +363,16 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   }
 
   public saveChanges() {
+    if(this.LinkTitleURL.value.length > 0) {
+      let urlList = this.auth_service.getListUrl();
+      for (let i = 0; i < this.LinkTitleURL.value.length; i++) { 
+        let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
+        let urlElement = document.getElementById(i + 'url');
+        if (!validUrl) {
+         return urlElement.setAttribute('style', 'display: block !important');
+        }
+      }
+    }
     if (!this.newContent) {
       Utils.showSpinner();
       let response_json = {

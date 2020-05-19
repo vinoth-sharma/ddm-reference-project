@@ -983,7 +983,10 @@
   </div>
 </div>
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 <!-- edit Status Modal -->
 <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -998,17 +1001,16 @@
           </div>
         </div>
       </div>
-      <div class="modal-body">
-        <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%"
-          id="selectReportStatus">
-          <option value="Active"> Active </option>
-          <option value="Completed"> Completed </option>
-        </select>
+      <div class="modal-body" >
+       <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%" id="selectReportStatus"> 
+         <option value="Active" > Active </option>
+         <option value="Completed"> Completed </option>
+       </select>
+            <!-- <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span> -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'"
-          (click)="saveReportStatus()">Save Changes</button>
-        <button type="button" class="btn btn-secondary"  data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
+        <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'" (click)="saveReportStatus()">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
       </div>
     </div>
   </div>

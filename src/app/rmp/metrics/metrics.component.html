@@ -153,7 +153,7 @@
             </thead>
             <tbody>
               <tr
-                *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue">
+                *ngFor="let element of tableData  | filterTable: searchObj | orderBy: param:orderType ">
                 <td scope="col">
                   {{element.ddm_rmp_post_report_id}}
                 </td>
@@ -200,9 +200,7 @@
           <div style="margin-top: 10px;">
             <mat-paginator [length]="paginatorlength" [pageSize]="paginatorpageSize"
               [pageSizeOptions]="paginatorOptions" (page)="onPaginationChange($event)">
-            </mat-paginator>
-          </div>
-        </div>
+            </mat-paginator> 
       </div>
     </div>
   </div>

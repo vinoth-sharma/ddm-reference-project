@@ -5,14 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { BrandFormsComponent } from './brand-forms.component';
-// import { DjangoService } from 'src/app/rmp/django.service';
 import { BrandFormsService } from './brand-forms.service'
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { OrderByPipe } from "../../../custom-directives/filters/order-by.pipe";
 import { FilterTablePipe } from '../../filter-table.pipe';
 
-// declarations: [ReportsComponent, OrderByPipe, NgCustomSpinnerComponent, FilterTablePipe, OndemandReportsComponent, OndemandConfigReportsComponent, NgToasterComponent],
 fdescribe('BrandFormsComponent', () => {
   let component: BrandFormsComponent;
   let fixture: ComponentFixture<BrandFormsComponent>;
@@ -21,7 +19,6 @@ fdescribe('BrandFormsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [BrandFormsComponent, OrderByPipe, FilterTablePipe, NgToasterComponent],
       imports: [MaterialModule, FormsModule, HttpClientModule, ReactiveFormsModule, BrowserAnimationsModule]
-      // providers : [ { provide: BrandFormsService, useClass: MockBrandFormsService }]
     })
       .compileComponents();
   }));
@@ -32,16 +29,17 @@ fdescribe('BrandFormsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => { //1
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('should test ngOnInit()', () => {
+    component.ngOnInit();
     expect(component.isHomePage).toEqual(true);
     expect(component.editDataRecord).toEqual({})
   })
 
-  it('should test the changeBrandName method', () => { //2
+  it('should test the changeBrandName method', () => {
     spyOn(Utils, 'showSpinner')
     spyOn(Utils, 'hideSpinner')
     let testNewRecordDataObject = 'newRecordData'
@@ -52,7 +50,7 @@ fdescribe('BrandFormsComponent', () => {
     expect(component.editDataRecord['alloc_grp_cd_val_new']).toEqual(component.editDataRecord['alloc_grp_cd_val_old'])
   })
 
-  it('should test toggleShowInput()', () => { //3
+  it('should test toggleShowInput()', () => {
     let testElement = { mutable: 'testMutable', immutable: 'testImmutable' }
     component.reports = { mutable: 'testMutable', immutable: 'testImmutable' }
     component.reportDataColumns = { mutable: '', immutable: '' }
@@ -69,7 +67,7 @@ fdescribe('BrandFormsComponent', () => {
     expect(component.newBrandName).toEqual(testElement[component.reportDataColumns['mutable']])
   })
 
-  it('should test the sort()', () => { //4
+  it('should test the sort()', () => {
     let testTypeValue = 'testValue';
     component.reportDataColumns = { mutable: 'testValue', immutable: '' }
     component.reports = { mutable: 'testMutable', immutable: 'testImmutable' }
@@ -90,7 +88,7 @@ fdescribe('BrandFormsComponent', () => {
     expect(component.orderType).toEqual(component.reports[testTypeValue])
   })
 
-  it('should test the filterData()', () => { //5
+  it('should test the filterData()', () => {
     component.filters = {}
 
     component.filterData();
@@ -98,7 +96,7 @@ fdescribe('BrandFormsComponent', () => {
     expect(component.searchObj).toEqual(JSON.parse(JSON.stringify(component.filters)))
   })
 
-  it('should test the getBrandFormList API call and respective variables', () => { //6
+  it('should test the getBrandFormList API call and respective variables', () => {
     let testBrandFormsService = TestBed.inject(BrandFormsService);
     let testDataResult = { key: 'key', value: 'value' }
     spyOn(Utils, 'hideSpinner');

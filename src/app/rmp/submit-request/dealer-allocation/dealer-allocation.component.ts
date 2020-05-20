@@ -130,6 +130,9 @@ export class DealerAllocationComp implements OnInit {
       this.l_lookupTableMD = tableDate ? tableDate.data : {};
       this.refillMasterDatatoOptions();
     })
+
+    console.log("dealer done");
+
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {

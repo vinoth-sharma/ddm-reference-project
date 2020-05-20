@@ -45,7 +45,8 @@ export class NgCipsEmailComponent implements OnInit {
 
   ngOnInit(){
     this.subReqService.emitReqOnBehalfEmail.subscribe((email:string)=>{
-      this.selectedChips.push(email)
+      this.selectedChips.push(email);
+      this.emailSelectionEmitter.emit(this.selectedChips)
     })
   }
 

@@ -57,8 +57,11 @@ export class RequestOnbehalfComp implements OnInit {
       this.toaster.error("Please select the user")
     }
     else if (this.myControl.value) {
-      let selected = this.myControl.value.fullName === "None" ? {} : this.myControl.value;
-      this.subReqService.setSubmitOnBehalf(selected);
+      let selected = this.myControl.value.fullName === "None" ? null : this.myControl.value;
+      if(selected)
+        this.subReqService.setSubmitOnBehalf(selected.fullName,selected.emailId);
+      else
+        this.subReqService.setSubmitOnBehalf("","");
       let msg = this.myControl.value.fullName === "None" ? "User selected on behalf of has been removed" : `Proceed to create report on Behalf of ${selected.fullName}`;
       this.toaster.success(msg)
       this.closeDailog();

@@ -136,6 +136,9 @@ export class SelectReportCriteriaComp implements OnInit {
         this.refillLookupTableData();
       }
     })
+
+    console.log("src done");
+    
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -251,6 +254,8 @@ export class SelectReportCriteriaComp implements OnInit {
     console.log(req);
     if(!this.selected.market.length)  
       this.ngToaster.error("Market selection is mandatory")
+    else if(!this.selected.division.length)  
+      this.ngToaster.error("Division selection is mandatory")
     else
       this.submitReportCriteria(req);
   }
@@ -291,7 +296,7 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.requestor = this.userData.fullName;
     this.req_body.report_detail.created_on = new Date();
     this.req_body.report_detail.status_date = new Date();
-    this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf()['fullName']?this.submitService.getSubmitOnBehalf()['fullName']:"";
+    this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
 
     console.log(this.req_body);
     
@@ -362,7 +367,7 @@ export class SelectReportCriteriaComp implements OnInit {
     label: "Division",
     primary_key: 'ddm_rmp_lookup_division_id',
     label_key: 'division_desc',
-    title: "Division Selection"
+    title: "Division Selection<span class='red'>*</span>"
   };
 
   public lma_settings = {

@@ -19,6 +19,10 @@ export class SubmitRequestService {
    public requestOnBehalf:any = {} ;
    public emitReqOnBehalfEmail = new Subject();
 
+
+   public onBehalfEmail = ""
+   public onBehalfUser = ""
+
   getHttpLookUpTableData(){
     return this.djangoService.getLookupValues().pipe(map((res:any) => {
       this.lookUpTableData = res.data;
@@ -49,14 +53,15 @@ export class SubmitRequestService {
     }),catchError(this.handleError.bind(this)));
   }
 
-  setSubmitOnBehalf(user){
-    if(user['emailId'])
-      this.emitReqOnBehalfEmail.next(user.emailId)
-    this.requestOnBehalf = user;
+  setSubmitOnBehalf(user,mail){
+    if(mail)
+      this.emitReqOnBehalfEmail.next(mail)
+    this.onBehalfEmail = user;
+    this.onBehalfUser = mail;
   }
 
   getSubmitOnBehalf(){
-    return this.requestOnBehalf
+    return this.onBehalfUser
   }
 
   public handleError(error: any): any {

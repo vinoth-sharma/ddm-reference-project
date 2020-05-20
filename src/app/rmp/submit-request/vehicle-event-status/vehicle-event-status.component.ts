@@ -172,6 +172,9 @@ export class VehicleEventStatusComponent implements OnInit {
       this.l_lookupTableMD = tableDate ? tableDate.data : {};
       this.refillMasterDatatoOptions();
     })
+
+    console.log("vh done");
+
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {

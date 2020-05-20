@@ -322,7 +322,8 @@ export class SelectReportCriteriaComp implements OnInit {
       this.req_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
       this.req_body.report_detail.status = response['report_data']['status'];
 
-      this.requestCreated.emit(this.response_body)
+      if(this.response_body.status === "Incomplete")
+        this.requestCreated.emit(this.response_body)
     }, err => {
       Utils.hideSpinner();
       console.log(err);

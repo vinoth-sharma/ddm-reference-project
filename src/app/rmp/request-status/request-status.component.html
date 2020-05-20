@@ -370,17 +370,16 @@
       </div>
       <div class="modal-body">
         <div><i>
-            <h6>*Max character limit is 255</h6>
+            <h6>*Max character limit is 255;Please do not try to submit empty comments</h6>
           </i></div>
         <div class="form-group">
           <textarea class="form-control" [(ngModel)]="comment_text" maxlength="255" rows="5" id="comment"></textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button style="color:transparent;border:none" data-dismiss="modal" (click)="extract_comment()">
+        <button style="color:transparent;border:none" data-dismiss="modal" *ngIf="comment_text" (click)="extract_comment()">
           <i fa class="fa fa-paper-plane"></i>
         </button>
-
       </div>
     </div>
 

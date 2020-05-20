@@ -829,6 +829,7 @@ export class RequestStatusComponent implements OnInit, OnChanges {
           this.django.post_report_comments(report_comment).subscribe(response => {
             this.comment_list.push(response['data']);
             this.comment_text = "";
+            this.toastr.success('Comments for request-id :'+report_comment.ddm_rmp_post_report+' saved successfully!')
             Utils.hideSpinner();
           }, err => {
             this.errorModalMessageRequest = "Please post the comment again";

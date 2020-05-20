@@ -82,7 +82,6 @@ export class DisclaimerWrapperComponent implements OnInit {
   }
   
 
-  textChanged(){
-
+  textChanged(event){
   }
 }

@@ -8,6 +8,7 @@ import { AuthenticationService } from 'src/app/authentication.service';
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { SubmitRequestService } from "../submit-request.service";
+import { Router } from '@angular/router';
 
 import { default as _rollupMoment, Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -117,6 +118,7 @@ export class DealerAllocationComp implements OnInit {
     public ngToaster: NgToasterComponent,
     public submitService: SubmitRequestService,
     private dataProvider: DataProviderService,
+    private  router : Router,
     public auth_service: AuthenticationService) { }
 
   ngOnInit(): void {
@@ -223,7 +225,8 @@ export class DealerAllocationComp implements OnInit {
     this.submitService.submitDealerAllocation(this.req_body).subscribe(response => {
       // console.log(response);
       Utils.hideSpinner();
-      this.ngToaster.success("Dealer Allocation successfully")
+      this.ngToaster.success("Request Updated successfully");
+      this.router.navigate(["user/request-status"]);
     }, err => {
       Utils.hideSpinner();
       console.log(err);

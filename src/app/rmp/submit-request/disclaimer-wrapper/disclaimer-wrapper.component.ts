@@ -47,7 +47,6 @@ export class DisclaimerWrapperComponent implements OnInit {
     Utils.showSpinner();
     this.subReqService.getHttpLookUpTableData().subscribe(res=>{
       this.l_lookupTableData = res.data;
-      console.log(this.l_lookupTableData);
       this.l_lookupTableData.desc_text.forEach(element => {
         if(element.ddm_rmp_desc_text_id === 3)
          this.submitReqDescObj.description = element.description

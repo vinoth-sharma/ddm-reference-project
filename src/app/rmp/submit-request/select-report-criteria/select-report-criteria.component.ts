@@ -121,7 +121,7 @@ export class SelectReportCriteriaComp implements OnInit {
 
   ngOnInit() {
     this.dataProvider.currentlookupData.subscribe(element => {
-      console.log(element);
+      // console.log(element);
       // this.lookupMasterData = element;
       this.l_lookup_MD.market = element;
       if (this.l_lookup_MD.market) {
@@ -130,7 +130,7 @@ export class SelectReportCriteriaComp implements OnInit {
     })
 
     this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
-      console.log(tableDate);
+      // console.log(tableDate);
       // this.lookupTableMasterData = tableDate ? tableDate.data : {};
       this.l_lookup_MD.other = tableDate ? tableDate.data : {};
       if (this.l_lookup_MD.other) {
@@ -139,8 +139,7 @@ export class SelectReportCriteriaComp implements OnInit {
         this.refillLookupTableData();
       }
     })
-
-    console.log("src done");
+    // console.log("src done");
     this.submitService.updateLoadingStatus({ status: true, comp: "src" })
   }
 
@@ -160,7 +159,7 @@ export class SelectReportCriteriaComp implements OnInit {
     // console.log(this.special_identifiers_obj);
 
     if (this.selectedReqData) {
-      console.log(this.selectedReqData);
+      // console.log(this.selectedReqData);
       this.refillSelectedRequestData(this.selectedReqData);
     }
 
@@ -182,7 +181,6 @@ export class SelectReportCriteriaComp implements OnInit {
     console.log(this.filtered_master_data);
     console.log(this.selected);
     console.log(this.special_identifiers_obj);
-
   }
 
 
@@ -191,8 +189,6 @@ export class SelectReportCriteriaComp implements OnInit {
   }
 
   multiSelectChange(event, type) {
-    console.log(this.selected);
-
     switch (type) {
       case 'market':
         this.MarketDependencies();
@@ -223,7 +219,6 @@ export class SelectReportCriteriaComp implements OnInit {
     this.resolveSelectedMarketDependencies(marketCBFunc)
     this.regionDependencies();
     this.zoneDependencies();
-    console.log(this.selected);
   }
 
   resolveSelectedMarketDependencies(callback) {
@@ -258,7 +253,7 @@ export class SelectReportCriteriaComp implements OnInit {
 
 
   repFreqChange(req) {
-    console.log(req);
+    // console.log(req);
     if (!this.selected.market.length)
       this.ngToaster.error("Market selection is mandatory")
     else if (!this.selected.division.length)
@@ -268,7 +263,6 @@ export class SelectReportCriteriaComp implements OnInit {
   }
 
   submitReportCriteria(freqReq) {
-    console.log(this.selected);
 
     this.req_body.market_selection = this.selected.market;
     this.req_body.division_selection = this.selected.division;
@@ -305,7 +299,7 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.status_date = new Date();
     this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
 
-    console.log(this.req_body);
+    // console.log(this.req_body);
 
     Utils.showSpinner();
     this.submitService.submitUserMarketSelection(this.req_body).subscribe(response => {
@@ -383,15 +377,12 @@ export class SelectReportCriteriaComp implements OnInit {
       if (lmaIds.includes(lma.ddm_rmp_lookup_lma_id))
         return lma
     });
-    console.log(this.selected);
-    console.log(reqData.fan_data);
     reqData.special_identifier_data.forEach(si => {
       this.special_identifiers_obj.bac.forEach(bac => { if (bac.ddm_rmp_lookup_special_identifiers === si.ddm_rmp_lookup_special_identifiers) bac['checked'] = "Yes" })
       this.special_identifiers_obj.fan.forEach(fan => { if (fan.ddm_rmp_lookup_special_identifiers === si.ddm_rmp_lookup_special_identifiers) fan['checked'] = "Yes" })
     });
     this.selected.bac = reqData.bac_data[0].bac_desc;
     this.selected.fan = reqData.fan_data[0].fan_data;
-    console.log(this.special_identifiers_obj);
 
     this.req_body.report_detail.additional_req = reqData.report_data.additional_req;
     this.req_body.report_detail.assigned_to = reqData.report_data.assigned_to;
@@ -406,6 +397,7 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.title = reqData.report_data.title;
     this.req_body.report_id = reqData.ddm_rmp_post_report_id;
 
+    this.submitService.setSubmitOnBehalf(this.req_body.report_detail.on_behalf_of,"");
     this.response_body.report_id = this.req_body.report_id;
     this.response_body.status = this.req_body.report_detail.status;
     if (this.req_body.report_detail.status === "Incomplete")

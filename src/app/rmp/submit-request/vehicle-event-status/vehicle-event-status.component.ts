@@ -10,6 +10,7 @@ import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { SubmitRequestService } from "../submit-request.service";
 import { DataProviderService } from '../../data-provider.service';
+import { Router } from '@angular/router';
 
 const moment = _moment;
 const MY_FORMATS = {
@@ -128,8 +129,8 @@ export class VehicleEventStatusComponent implements OnInit {
     data_date_range: { StartDate: null, EndDate: null },
     report_detail: {
       title: "",
-      status: "",
-      created_on: null,
+      status: "Pending",
+      created_on: new Date(),
       assigned_to: "",
       additional_req: "",
       report_type: "ots",
@@ -158,6 +159,7 @@ export class VehicleEventStatusComponent implements OnInit {
   constructor(public matDialog: MatDialog,
     private dataProvider: DataProviderService,
     public ngToaster: NgToasterComponent,
+    private  router : Router,
     public submitService: SubmitRequestService,
     public auth_service: AuthenticationService) { }
 
@@ -173,7 +175,6 @@ export class VehicleEventStatusComponent implements OnInit {
       this.refillMasterDatatoOptions();
     })
 
-    console.log("vh done");
     this.submitService.updateLoadingStatus({status: true, comp : "ves"})
   }
 
@@ -183,7 +184,7 @@ export class VehicleEventStatusComponent implements OnInit {
       // this.request_details.division_selected = this.requestDetails.division_selected;
       this.refillDivisionsMD(this.requestDetails.division_selected);
       this.req_body.report_detail.status = this.requestDetails.status;
-      this.req_body.report_detail.on_behalf_of = this.requestDetails.on_behalf_of;
+      // this.req_body.report_detail.on_behalf_of = this.requestDetails.on_behalf_of;
       this.req_body.report_id = this.requestDetails.report_id;
 
       // this.request_details.report_id = this.requestDetails.report_id;
@@ -405,13 +406,14 @@ export class VehicleEventStatusComponent implements OnInit {
         desc: cbEle.desc ? cbEle.desc : ""
       }
     });
-
+    this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
+    this.req_body.report_detail.title = result.data.reportTitle;
     this.req_body.report_detail.title = result.data.reportTitle;
     this.req_body.report_detail.additional_req = result.data.addReq;
     this.req_body.report_detail.requestor = this.user_name;
     this.req_body.report_detail.status_date = new Date();
-    this.req_body.report_detail.created_on = new Date();
-    this.req_body.report_detail.status = "Pending";
+    // this.req_body.report_detail.created_on = new Date();
+    // this.req_body.report_detail.status = "Pending";
     // this.req_body.report_id = 10;
     // this.req_body.division_selected.dropdown = this.selected.divisions;
     // console.log(this.req_body);
@@ -420,7 +422,8 @@ export class VehicleEventStatusComponent implements OnInit {
     this.submitService.submitVehicelEventStatus(this.req_body).subscribe(response => {
       // console.log(response);
       Utils.hideSpinner();
-      this.ngToaster.success("Vehicle Event status updated successfully")
+      this.ngToaster.success("Request Updated successfully")
+      this.router.navigate(["user/request-status"]);
     }, err => {
       Utils.hideSpinner();
       console.log(err);

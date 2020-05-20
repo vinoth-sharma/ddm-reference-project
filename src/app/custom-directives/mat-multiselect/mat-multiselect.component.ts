@@ -51,8 +51,7 @@ export class MatMultiselect implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data || changes.inputModel) {
-    console.log(changes);
-      
+    // console.log(changes);
       if (this.data.length) {
         this.l_data = JSON.parse(JSON.stringify(this.data));
         this.l_db = this.inputModel ? this.inputModel.map(ele => ele[this.settings.primary_key]) : [];

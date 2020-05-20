@@ -28,7 +28,7 @@ export class AdditionalReqModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
     ngOnInit(): void {
-      console.log(this.data);
+      // console.log(this.data);
       this.l_CB_data = this.data.checkboxData;
       // this.l_data1 = this.data.checkboxData.filter(cb=>{
       //   if(this.descIds1.includes(cb.ddm_rmp_lookup_ots_checkbox_values_id))

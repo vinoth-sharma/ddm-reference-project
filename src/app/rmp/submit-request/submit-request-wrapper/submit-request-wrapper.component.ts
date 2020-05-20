@@ -36,17 +36,14 @@ export class SubmitRequestWrapperComponent implements OnInit {
     private report_id_service: GeneratedReportService,
     private submitReqService: SubmitRequestService,
     public toastr: NgToasterComponent) {
-    // this.model = "";
-    console.log("asdsd");
 
     submitReqService.loadingStatus.subscribe((status: any) => {
-      console.log(status);
       if (status.comp === "da" && status.status) {
         let requestId = localStorage.getItem("report_id")
         if (requestId){
           Utils.showSpinner();
           submitReqService.getReportDescription(requestId).subscribe(res => {
-            console.log(res);
+            // console.log(res);
             this.selectedReportData = res;
             Utils.hideSpinner();
           }, err => {
@@ -84,4 +81,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
     this.request_details = event;
   }
 
+  ngOnDestroy(){
+    localStorage.removeItem('report_id');
+  }
 }

@@ -1,22 +1,9 @@
-  <!-- <div class="modal-container">
-    <div class="modal-header" style="font-size: 22px;">
-      Important Notes
-      <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
-    </div>
-    <div class="modal-body">
-      <p>{{ data.notes }}</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="closeDailog();">Close</button>
-    </div>
-  </div> -->
-
-  <div class="modal-container">
-    <mat-icon style="" class="close-dialog" (click)="closeDailog();">cancel</mat-icon>
-    <div class="inner-container">
-      <div class="arrow-down"></div>
-      <div class="note-container">
-        {{ data.notes }}
-      </div> 
+<div class="modal-container">
+  <mat-icon class="close-dialog" (click)="closeDailog();">cancel</mat-icon>
+  <div class="inner-container">
+    <div class="arrow-down"></div>
+    <div class="note-container">
+      {{ data.notes }}
     </div>
   </div>
+</div>

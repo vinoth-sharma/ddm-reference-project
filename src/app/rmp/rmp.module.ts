@@ -52,6 +52,7 @@ import { NgCipsEmailComponent } from './submit-request/sub-components/ng-cips-em
 import { AdditionalReqModalComponent } from './submit-request/additional-req-modal/additional-req-modal.component';
 import { ReviewReqModalComponent } from './submit-request/review-req-modal/review-req-modal.component';
 import { RequestOnbehalfComp } from './submit-request/request-onbehalf/request-onbehalf.component';
+import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { RequestOnbehalfComp } from './submit-request/request-onbehalf/request-o
     NgCipsEmailComponent,
     AdditionalReqModalComponent,
     ReviewReqModalComponent,
-    RequestOnbehalfComp
+    RequestOnbehalfComp,
+    BrandFormsComponent
   ],
   imports: [
     QuillModule.forRoot(),

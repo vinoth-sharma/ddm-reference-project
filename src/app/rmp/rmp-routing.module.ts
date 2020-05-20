@@ -8,6 +8,7 @@ import { DdmTeamComponent } from './Main/ddm-team/ddm-team.component';
 import { ReferenceDocComponent } from './Main/reference-doc/reference-doc.component';
 import { MainMenuComponent } from './Main/main-menu/main-menu.component';
 import { DdmAdminComponent } from './Main/ddm-admin/ddm-admin.component';
+import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
 import { SubmitRequestComponent } from './Submit/submit-request/submit-request.component';
 import { RequestStatusComponent } from './request-status/request-status.component';
 import { ReportsComponent } from './reports/reports.component';
@@ -31,12 +32,13 @@ export const RMP_Routes = [
           { path: 'ddm-team', component: DdmTeamComponent },
           { path: 'reference-documents', component: ReferenceDocComponent },
           { path: 'ddm-admin', component: DdmAdminComponent },
+          { path: 'ddm-brand-forms', component: BrandFormsComponent },
           { path: '', redirectTo: '/user/main/home' }
         ]
       },
       {
         path: 'disclaimer', component: DisclaimerWrapperComponent
-      },{
+      }, {
         path: 'submit-request', component: SubmitRequestWrapperComponent,
         children: [
           { path: 'select-report-criteria', component: SelectReportCriteriaComponent },

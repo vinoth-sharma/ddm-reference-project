@@ -1,5 +1,5 @@
 // Migrated by bharath
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common';
@@ -20,7 +20,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
-export class ReportsComponent implements OnInit {
+export class ReportsComponent implements OnInit, AfterViewInit {
 
   public namings: any;
   public enableUpdateData = false;
@@ -168,6 +168,44 @@ export class ReportsComponent implements OnInit {
   public selectedNewFrequency: string = "";
   public isRecurringFrequencyHidden: boolean = false;
 
+  public toolbarTooltips = {
+    'font': 'Select a font',
+    'size': 'Select a font size',
+    'header': 'Select the text style',
+    'bold': 'Bold',
+    'italic': 'Italic',
+    'underline': 'Underline',
+    'strike': 'Strikethrough',
+    'color': 'Select a text color',
+    'background': 'Select a background color',
+    'script': {
+      'sub': 'Subscript',
+      'super': 'Superscript'
+    },
+    'list': {
+      'ordered': 'Numbered list',
+      'bullet': 'Bulleted list'
+    },
+    'indent': {
+      '-1': 'Decrease indent',
+      '+1': 'Increase indent'
+    },
+    'direction': {
+      'rtl': 'Text direction (right to left | left to right)',
+      'ltr': 'Text direction (left ro right | right to left)'
+    },
+    'align': 'Text alignment',
+    'link': 'Insert a link',
+    'image': 'Insert an image',
+    'formula': 'Insert a formula',
+    'clean': 'Clear format',
+    'add-table': 'Add a new table',
+    'table-row': 'Add a row to the selected table',
+    'table-column': 'Add a column to the selected table',
+    'remove-table': 'Remove selected table',
+    'help': 'Show help'
+  };
+
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service: AuthenticationService,
     private django: DjangoService,
@@ -183,6 +221,57 @@ export class ReportsComponent implements OnInit {
     this.editModes = false;
 
   }
+  // execute after html initialized
+  public ngAfterViewInit() {
+    this.showTooltips();
+  }
+
+  // quill editor buttons tooltips display
+  public showTooltips() {
+    let showTooltip = (which, el) => {
+      var tool: any;
+      if (which == 'button') {
+        tool = el.className.replace('ql-', '');
+      }
+      else if (which == 'span') {
+        tool = el.className.replace('ql-', '');
+        tool = tool.substr(0, tool.indexOf(' '));
+      }
+      if (tool) {
+        if (tool === 'blockquote') {
+          el.setAttribute('title', 'blockquote');
+        }
+        else if (tool === 'list' || tool === 'script') {
+          if (this.toolbarTooltips[tool][el.value])
+            el.setAttribute('title', this.toolbarTooltips[tool][el.value]);
+        }
+        else if (el.title == '') {
+          if (this.toolbarTooltips[tool])
+            el.setAttribute('title', this.toolbarTooltips[tool]);
+        }
+        //buttons with value
+        else if (typeof el.title !== 'undefined') {
+          if (this.toolbarTooltips[tool][el.title])
+            el.setAttribute('title', this.toolbarTooltips[tool][el.title]);
+        }
+        //defaultlsdfm,nxcm,v vxcn
+        else
+          el.setAttribute('title', this.toolbarTooltips[tool]);
+      }
+    };
+
+    let toolbarElement = document.querySelector('.ql-toolbar');
+    if (toolbarElement) {
+      let matchesButtons = toolbarElement.querySelectorAll('button');
+      for (let i = 0; i < matchesButtons.length; i++) {
+        showTooltip('button', matchesButtons[i]);
+      }
+      let matchesSpans = toolbarElement.querySelectorAll('.ql-toolbar > span > span');
+      for (let i = 0; i < matchesSpans.length; i++) {
+        showTooltip('span', matchesSpans[i]);
+      }
+    }
+  }
 
   /**
    * @function to change the DDM name report name in the reports table 
@@ -192,7 +281,7 @@ export class ReportsComponent implements OnInit {
   changeReportName(event: any, reportObject) {
 
     const changedReport = {};
-    changedReport['request_id']= reportObject.ddm_rmp_post_report_id;
+    changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
     changedReport['report_name'] = reportObject.report_name;
     this.django.update_rmpReports_DDMName(changedReport)
       .subscribe(
@@ -203,7 +292,7 @@ export class ReportsComponent implements OnInit {
         ,
         () => {
         },
-      );
+    );
   }
 
   /**
@@ -221,7 +310,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-// read user role from an observable
+  // read user role from an observable
   readUserRole() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -230,7 +319,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-//  get lookup table data from the server
+  //  get lookup table data from the server
   getLookUptableData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
@@ -250,7 +339,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-// get valuse from obj
+  // get valuse from obj
   getValues(obj: Object) {
     return Object.values(obj);
   }
@@ -265,7 +354,7 @@ export class ReportsComponent implements OnInit {
     this.getReportList();
   }
 
-// set semanticlayer id
+  // set semanticlayer id
   getSemanticLayerID() {
     this.changeInFreq = true;
     this.router.config.forEach(element => {
@@ -275,7 +364,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-// get scheduled reports from server
+  // get scheduled reports from server
   public getScheduledReports() {
     if (this.semanticLayerId != undefined && this.semanticLayerId != null) {
       this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res => {
@@ -288,7 +377,7 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-// get reports list from server
+  // get reports list from server
   getReportList() {
     this.django.get_report_list().subscribe(list => {
       if (list) {
@@ -362,7 +451,7 @@ export class ReportsComponent implements OnInit {
 
   }
 
-// to mark a report as favourites
+  // to mark a report as favourites
   checked(id, event) {
     this.spinner.show()
     this.favourite = event.target.checked;
@@ -377,14 +466,14 @@ export class ReportsComponent implements OnInit {
     })
   }
 
-// used to set typeval property of reports
+  // used to set typeval property of reports
   sort(typeVal) {
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
   }
 
-// generates excel report
+  // generates excel report
   xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
@@ -422,7 +511,7 @@ export class ReportsComponent implements OnInit {
   }
 
   // creating a body to generate excel report
-  createNewBodyForExcel(){
+  createNewBodyForExcel() {
     let reportBody = []
     this.reports.forEach(item => {
       let obj = {
@@ -438,8 +527,8 @@ export class ReportsComponent implements OnInit {
     })
     return reportBody
   }
-  
-// used ti toggle reverse property
+
+  // used ti toggle reverse property
   setOrder(value: any) {
     if (this.order === value) {
       this.reverse = !this.reverse;
@@ -447,14 +536,14 @@ export class ReportsComponent implements OnInit {
     this.order = value;
   }
 
-// used to set a few properties when content get changed in quill editor
+  // used to set a few properties when content get changed in quill editor
   textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
-// save changes made to help
+  // save changes made to help
   content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       this.spinner.show()
@@ -477,7 +566,7 @@ export class ReportsComponent implements OnInit {
         this.original_contents = this.namings;
         this.toasterService.success("Updated Successfully");
         this.spinner.hide()
-        $('#helpModal').modal('hide');
+        $('.btn-secondary').click()
       }, err => {
         this.spinner.hide()
         this.toasterService.error("Data not Updated")
@@ -487,14 +576,14 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-// used to set a few properties of component
+  // used to set a few properties of component
   edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
 
-// used to set a few properties of component
+  // used to set a few properties of component
 
   editEnable() {
     this.editModes = true;
@@ -502,7 +591,7 @@ export class ReportsComponent implements OnInit {
     this.namings = this.original_contents;
   }
 
-// used to update schedule report data
+  // used to update schedule report data
   public startOnDemandScheduling(data) {
     let dateDetails = new Date();
     let todaysDate = (dateDetails.getMonth() + 1) + '/' + (dateDetails.getDate()) + '/' + (dateDetails.getFullYear())
@@ -577,7 +666,7 @@ export class ReportsComponent implements OnInit {
     });
   }
 
- 
+
 
   /*-------------------Freq Selections------------------------------------- */
   FrequencySelection() {
@@ -649,7 +738,7 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-// setting final json value based on the selection made in check boxes
+  // setting final json value based on the selection made in check boxes
   setFrequency() {
     var temp = this.jsonfinal;
     temp.select_frequency = [];
@@ -681,8 +770,8 @@ export class ReportsComponent implements OnInit {
       this.jsonfinal['select_frequency'] = [{ "ddm_rmp_lookup_select_frequency_id": 38, "description": "" }];
     }
   }
-  
-// update frequency to the server
+
+  // update frequency to the server
   updateFreq(request_id) {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
@@ -766,8 +855,8 @@ export class ReportsComponent implements OnInit {
     });
     this.showChangeFrequencyModal()
   }
-  
-// open change-frequency modal
+
+  // open change-frequency modal
   showChangeFrequencyModal() {
     $('#change-Frequency').modal('show');
   }
@@ -804,7 +893,7 @@ export class ReportsComponent implements OnInit {
 
   }
 
-// freuency selected through checkbox
+  // freuency selected through checkbox
   frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
@@ -826,7 +915,7 @@ export class ReportsComponent implements OnInit {
 
   searchObj;
 
-// parsing filters into obj
+  // parsing filters into obj
   filterData() {
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
@@ -1097,8 +1186,9 @@ export class ReportsComponent implements OnInit {
     })
   }
 
-   // download browser data in pdf file
-   public captureScreen() {
+  // download browser data in pdf file
+  public captureScreen() {
+    let fileName = `${this.summary.ddm_rmp_post_report_id}_Report_Summary.pdf`;
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
@@ -1107,27 +1197,27 @@ export class ReportsComponent implements OnInit {
     var doc = new jsPDF();
     doc.setFont("arial");
     let margins = {
-                    top: 15,
-                    bottom: 0,
-                    left: 18,
-                    width: 170
-                  };
+      top: 15,
+      bottom: 0,
+      left: 18,
+      width: 170
+    };
     doc.fromHTML(
-      $('#print').html(), margins.left,margins.top,
+      $('#print').html(), margins.left, margins.top,
       { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
-      function () { doc.save('sample-file.pdf'); },margins
+      function () { doc.save(fileName); }, margins
     );
   }
 
 
-// filter data based on pagination data
+  // filter data based on pagination data
   onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   }
 
   // setting report id to edit link to url and also change the title of modal to edit or create respectively
-  addLinkUrl(element,type){
+  addLinkUrl(element, type) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     if (type == "create") {
       this.addUrlTitle = "ADD URL"
@@ -1138,16 +1228,16 @@ export class ReportsComponent implements OnInit {
       this.validateLinkToUrl(element.link_to_results)
     }
   }
-  
+
   // save link to url
-  saveLinkURL(){
+  saveLinkURL() {
     let link = document.querySelector("#add-url-input")["value"]
     let data = { request_id: this.linkUrlId, link_to_results: link }
     Utils.showSpinner();
     this.django.add_link_to_url(data).subscribe(response =>{
      if(response['message'] == "updated successfully"){
       document.querySelector("#add-url-input")["value"] = "";
-      $('#addUrl').modal('hide');
+      $('#close_url_modal').click()
       this.toasterService.success("URL Updated Successfully !")
       Utils.hideSpinner()
       this.reports.map(item =>{
@@ -1164,18 +1254,18 @@ export class ReportsComponent implements OnInit {
   }
 
   // open links in an new window
-  openNewWindow(url){
+  openNewWindow(url) {
     window.open(url)
   }
 
   // close modal
   closeTBD_Assigned(){
-    $('#addUrl').modal('hide');
+    $('#close_url_modal').click();
   }
 
-// used to validate weather input is empty or not
-  validateLinkToUrl(data){
-   if(data == "") this.linkToUrlFlag = true
-   else this.linkToUrlFlag = false;
+  // used to validate weather input is empty or not
+  validateLinkToUrl(data) {
+    if (data == "") this.linkToUrlFlag = true
+    else this.linkToUrlFlag = false;
   }
 }

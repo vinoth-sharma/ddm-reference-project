@@ -31,6 +31,7 @@
 .user-details{
     margin-left: 35px;
     color: white;
+    width: max-content;
     /* font-size: 15px; */
 }
 .notification-icon{
@@ -40,7 +41,7 @@
 .user-data-container{
     display: flex;
     align-items: center;
-    margin-right: 34px;
+    margin-right: 5px;
 }
 ::ng-deep .notification-list{
     max-height: 296px !important;
@@ -56,29 +57,13 @@
     color: white;
 }
 .menu-container a button{
-    font-weight: 700;
+    font-weight: 500;
 }
-
-/* #tp{
-    background-color: linear-gradient(rgb(27, 116, 206), rgb(133, 187, 241));
-    background-image: linear-gradient(rgb(38, 61, 79), rgb(63, 100, 131));
-} */
-
-mat-button-toggle{
-    background: transparent; 
-    color: white; 
-    font-weight: 700;
-    outline: none !important;
-    padding: 0px 5px;
-    transition: ease-in 0.1S;
-}
-mat-button-toggle:hover{
+.menu-container a button:hover{
+    /* font-weight: 800; */
     transform: scale(1.2);
 }
-
-
-::ng-deep .mat-button-toggle-checked.mat-button-toggle-appearance-standard{
-    color: white;
-    font-weight: 700;
+.menu-container a button.active{
     transform: scale(1.2);
+    font-weight: 800;
 }

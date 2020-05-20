@@ -1,0 +1,13 @@
+.modal-container{
+    width: 60vw;
+    /* height: 70vh; */
+    overflow: hidden;
+}
+.modal-body{
+    max-height: 390px;
+    overflow: auto;
+    font-size: 1.4vh;
+}
+.header-opt{
+    font-weight: 700;
+}

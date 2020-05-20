@@ -5,7 +5,7 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { AuthenticationService } from "src/app/authentication.service";
 declare var $: any;
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DisplayNotesComponent } from '../admin-notes/display-notes/display-notes.component';
 import { NotesWrapperComponent } from '../admin-notes/notes-wrapper/notes-wrapper.component';
 
@@ -48,19 +48,19 @@ export class RmpLandingPageComponent implements OnInit {
   // to get the important notes of admin
   public getAdminNotes() {
     if (this.info.data.admin_note[0])
-      this.updateAdminNotesParams(this.info.data.admin_note[0]);      
+      this.updateAdminNotesParams(this.info.data.admin_note[0]);
   }
 
   // update admin notes parameter
   public updateAdminNotesParams(adminNotes) {
 
-    this.db_start_date = adminNotes.notes_start_date;  
+    this.db_start_date = adminNotes.notes_start_date;
     this.db_end_date = adminNotes.notes_end_date;
     this.admin_notes = adminNotes.notes_content;
     this.note_status = adminNotes.admin_note_status;
 
     let today = new Date();
-    let startDate = new Date(this.db_start_date);  
+    let startDate = new Date(this.db_start_date);
     let endDate = new Date(this.db_end_date);
 
     if (this.note_status) {

@@ -7,16 +7,9 @@
     <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
       <mat-tab label="Manage Notes">
         <app-manage-notes [existingNote]="data"></app-manage-notes>
-        <!-- <app-create-condition *ngIf="conditionCreating" [data]="data" [isEdit]="false" (createDone)="creatingDone($event)"></app-create-condition>
-        <div class="loader" *ngIf="!conditionCreating">
-          <div>Loading......</div>
-        </div> -->
       </mat-tab>
       <mat-tab label="Existing Notes">
         <app-existing-notes-container *ngIf="selected.value === 1"></app-existing-notes-container>
-        <!-- <div class="loader" *ngIf="!dataInject">
-          <div >Loading......</div>
-        </div> -->
       </mat-tab>
     </mat-tab-group>
   </div>

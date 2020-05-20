@@ -23,7 +23,7 @@ import { FilterTablePipe } from './filter-table.pipe';
 import { OrderModule } from 'ngx-order-pipe';
 import { RequestOnBehalfComponent } from './request-on-behalf/request-on-behalf.component';
 import { MainMenuLandingPageComponent } from './Main/main-menu-landing-page/main-menu-landing-page.component';
-// import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
+import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
 import { DatePipe } from '@angular/common';
 import { DataProviderService } from "./data-provider.service";
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -105,7 +105,7 @@ import { RequestOnbehalfComp } from './submit-request/request-onbehalf/request-o
     NgbModule,
     HttpClientModule,
     CustomPipeModules,
-    // AngularMultiSelectModule,
+    AngularMultiSelectModule,
     Angular2FontawesomeModule,
     CustomPipeModules.forRoot(),
     CommonModuleDdmRmp.forRoot(),

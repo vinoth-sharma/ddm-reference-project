@@ -6,6 +6,8 @@ import { DataProviderService } from '../../data-provider.service';
 import { GeneratedReportService } from '../../generated-report.service';
 import { ReportCriteriaDataService } from '../../services/report-criteria-data.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import { SubmitRequestService } from '../submit-request.service';
+import Utils from 'src/utils';
 
 @Component({
   selector: 'app-submit-request-wrapper',
@@ -24,17 +26,39 @@ export class SubmitRequestWrapperComponent implements OnInit {
   // lookupTableMasterData = {};
 
 
-  request_details:any = {};
+  request_details: any = {};
+
+  selectedReportData = null;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
     private auth_service: AuthenticationService,
     private report_id_service: GeneratedReportService,
-    public toastr: NgToasterComponent,
-    private reportDataService: ReportCriteriaDataService) {
+    private submitReqService: SubmitRequestService,
+    public toastr: NgToasterComponent) {
     // this.model = "";
     console.log("asdsd");
-    
+
+    submitReqService.loadingStatus.subscribe((status: any) => {
+      console.log(status);
+      if (status.comp === "da" && status.status) {
+        let requestId = localStorage.getItem("report_id")
+        if (requestId){
+          Utils.showSpinner();
+          submitReqService.getReportDescription(requestId).subscribe(res => {
+            console.log(res);
+            this.selectedReportData = res;
+            Utils.hideSpinner();
+          }, err => {
+            Utils.hideSpinner();
+          })
+
+        }
+
+      }
+    })
+
+
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_details.name = role["first_name"] + " " + role["last_name"]
@@ -56,7 +80,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
 
   ngOnInit() { }
 
-  requestCreated(event){
+  requestCreated(event) {
     this.request_details = event;
   }
 

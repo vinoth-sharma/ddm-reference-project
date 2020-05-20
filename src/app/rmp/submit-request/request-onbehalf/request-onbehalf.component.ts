@@ -6,6 +6,7 @@ import { DjangoService } from '../../django.service';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
+import { DataProviderService } from '../../data-provider.service';
 
 @Component({
   selector: 'app-request-onbehalf',
@@ -17,6 +18,7 @@ export class RequestOnbehalfComp implements OnInit {
   constructor(public dialogRef: MatDialogRef<RequestOnbehalfComp>,
     private subReqService: SubmitRequestService,
     private toaster: NgToasterComponent,
+    private dataProvider : DataProviderService,
     private django: DjangoService) { }
 
   dl_list = [];
@@ -39,8 +41,10 @@ export class RequestOnbehalfComp implements OnInit {
       );
 
     let lookTableData = this.subReqService.getLookUpTableData();
-
-    let l_dl_list = lookTableData['users_list'];
+    this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
+      console.log(tableDate);
+      
+    let l_dl_list = tableDate['data']['users_list'];
     this.dl_list = l_dl_list.map(ele => {
       return {
         fullName: ele.first_name + ' ' + ele.last_name,
@@ -49,7 +53,9 @@ export class RequestOnbehalfComp implements OnInit {
         users_table_id: ele.users_table_id
       }
     })
-    this.myControl.setValue(this.subReqService.getSubmitOnBehalf())
+
+    // this.myControl.setValue(this.subReqService.getSubmitOnBehalf())
+  });
   }
 
   confirmUser() {

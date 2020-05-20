@@ -21,7 +21,7 @@
             <div class="selFreqTitle">Select frequency of ongoing routine reports</div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding margBottom">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 splIdTitle">Report Frequency</div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 splIdTitle">Report Frequency<span class="red">*</span></div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding ">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 lineHeight">
@@ -29,7 +29,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <mat-radio-group aria-labelledby="example-radio-group-label" class="" [(ngModel)]="selected.reportFreq_regBasis">
+                    <mat-radio-group aria-labelledby="example-radio-group-label" class=""
+                     [(ngModel)]="selected.reportFreq_regBasis">
                         <mat-radio-button class="radio-label" *ngFor="let freqOpt of reportFreq"
                             [value]="freqOpt.id">
                             {{ freqOpt.label }}
@@ -48,7 +49,8 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <mat-form-field>
                     <mat-label>Frequency</mat-label>
-                    <mat-select multiple [(ngModel)]="selected.daily_weekly" [disabled]="!selected.reportFreq_regBasis">
+                    <mat-select multiple [(ngModel)]="selected.daily_weekly" 
+                    [disabled]="!selected.reportFreq_regBasis"  [compareWith]="compareFn"> 
                         <mat-option *ngFor="let dayFreq of l_lookupData.daily_weekly" [value]="dayFreq">
                             {{ dayFreq.select_frequency_values }}
                         </mat-option>
@@ -63,7 +65,7 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <mat-form-field>
                     <mat-label>Frequency</mat-label>
-                    <mat-select multiple [(ngModel)]="selected.monthly_bimonthly" 
+                    <mat-select multiple [(ngModel)]="selected.monthly_bimonthly" [compareWith]="compareFn"
                     [disabled]="!selected.reportFreq_regBasis" (selectionChange)="monthBimonChanges($event)">
                         <mat-option *ngFor="let biMonFreq of l_lookupData.monthly_bimonthly" [value]="biMonFreq">
                             {{ biMonFreq.select_frequency_values }}
@@ -84,7 +86,8 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <mat-form-field>
                     <mat-label>Frequency</mat-label>
-                    <mat-select  multiple  [(ngModel)]="selected.quaterly" [disabled]="!selected.reportFreq_regBasis">
+                    <mat-select  multiple  [(ngModel)]="selected.quaterly" [compareWith]="compareFn"
+                    [disabled]="!selected.reportFreq_regBasis">
                         <mat-option *ngFor="let quarFreq of l_lookupData.quaterly" [value]="quarFreq">
                             {{ quarFreq.select_frequency_values }}
                         </mat-option>

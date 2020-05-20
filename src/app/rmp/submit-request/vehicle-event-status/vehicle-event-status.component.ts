@@ -174,7 +174,7 @@ export class VehicleEventStatusComponent implements OnInit {
     })
 
     console.log("vh done");
-
+    this.submitService.updateLoadingStatus({status: true, comp : "ves"})
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {

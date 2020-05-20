@@ -133,3 +133,19 @@ a:hover, a:focus{
     outline: none !important;
     text-decoration: none !important;
 }
+.mat-chip{
+    font-size: inherit;
+}
+::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: unset;
+}
+
+::ng-deep .mat-option-pseudo-checkbox.mat-pseudo-checkbox-checked {
+    background-color: #ff4081 !important;
+}
+.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-disabled, .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-disabled{
+    background: #b0b0b0 !important;
+}
+.mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate{
+    background: #ff4081;
+}

@@ -53,6 +53,9 @@ export class NgCipsEmailComponent implements OnInit {
   ngOnChanges(){
   console.log(this.selectedemails);
     // this.selectedChips.push(...this.selectedemails)
+    if(this.selectedemails.length){
+      this.selectedChips = this.selectedemails;
+    }
   }
   
   add(event: MatChipInputEvent): void {

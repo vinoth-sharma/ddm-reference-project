@@ -132,7 +132,9 @@ export class DealerAllocationComp implements OnInit {
     })
 
     console.log("dealer done");
+    this.submitService.updateLoadingStatus({status: true, comp : "da"})
 
+    
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {

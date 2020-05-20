@@ -10,6 +10,7 @@ import { AuthenticationService } from 'src/app/authentication.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RequestOnbehalfComp } from '../request-onbehalf/request-onbehalf.component';
 import { DataProviderService } from '../../data-provider.service';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -18,8 +19,10 @@ import { DataProviderService } from '../../data-provider.service';
   styleUrls: ['./select-report-criteria.component.css']
 })
 export class SelectReportCriteriaComp implements OnInit {
-  @Input() lookupMasterData = {};
-  @Input() lookupTableMD = {};
+  // @Input() lookupMasterData = {};
+  // @Input() lookupTableMD = {};
+
+  @Input() selectedReqData: any;
   @Output() requestCreated = new EventEmitter();
 
   l_lookup_MD: any = {
@@ -78,7 +81,7 @@ export class SelectReportCriteriaComp implements OnInit {
       report_type: "",
       title: "",
       additional_req: "",
-      created_on: null,
+      created_on: new Date(),
       on_behalf_of: "",
       assigned_to: "",
       link_to_results: "",
@@ -89,32 +92,32 @@ export class SelectReportCriteriaComp implements OnInit {
 
   public userData = {
     fullName: "",
-    userRole : "",
-    email : ""
+    userRole: "",
+    email: ""
   }
 
   response_body = {
-    division_selected : [],
-    report_id : null,
-    on_behalf_of : "",
-    status : "",
-
+    division_selected: [],
+    report_id: null,
+    on_behalf_of: "",
+    status: "",
+    message: ""
   }
 
   constructor(public djangoService: DjangoService,
-      public ngToaster: NgToasterComponent ,
-      public dialog : MatDialog,
-      private dataProvider: DataProviderService,
-      public submitService : SubmitRequestService,
-      public authService : AuthenticationService) {
-        this.authService.myMethod$.subscribe(role => {
-          if (role) {
-            this.userData.fullName = role['first_name'] + ' ' + role['last_name']
-            this.userData.userRole = role['role']
-            this.userData.email = role['email']
-          }
-        })
+    public ngToaster: NgToasterComponent,
+    public dialog: MatDialog,
+    private dataProvider: DataProviderService,
+    public submitService: SubmitRequestService,
+    public authService: AuthenticationService) {
+    this.authService.myMethod$.subscribe(role => {
+      if (role) {
+        this.userData.fullName = role['first_name'] + ' ' + role['last_name']
+        this.userData.userRole = role['role']
+        this.userData.email = role['email']
       }
+    })
+  }
 
   ngOnInit() {
     this.dataProvider.currentlookupData.subscribe(element => {
@@ -138,7 +141,7 @@ export class SelectReportCriteriaComp implements OnInit {
     })
 
     console.log("src done");
-    
+    this.submitService.updateLoadingStatus({ status: true, comp: "src" })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -156,6 +159,10 @@ export class SelectReportCriteriaComp implements OnInit {
     // }
     // console.log(this.special_identifiers_obj);
 
+    if (this.selectedReqData) {
+      console.log(this.selectedReqData);
+      this.refillSelectedRequestData(this.selectedReqData);
+    }
 
   }
 
@@ -250,11 +257,11 @@ export class SelectReportCriteriaComp implements OnInit {
   }
 
 
-  repFreqChange(req){
+  repFreqChange(req) {
     console.log(req);
-    if(!this.selected.market.length)  
+    if (!this.selected.market.length)
       this.ngToaster.error("Market selection is mandatory")
-    else if(!this.selected.division.length)  
+    else if (!this.selected.division.length)
       this.ngToaster.error("Division selection is mandatory")
     else
       this.submitReportCriteria(req);
@@ -262,7 +269,7 @@ export class SelectReportCriteriaComp implements OnInit {
 
   submitReportCriteria(freqReq) {
     console.log(this.selected);
-    
+
     this.req_body.market_selection = this.selected.market;
     this.req_body.division_selection = this.selected.division;
     this.req_body.gmma_selection = this.selected.gmma;
@@ -279,7 +286,7 @@ export class SelectReportCriteriaComp implements OnInit {
       if (this.special_identifiers_obj.hasOwnProperty(key)) {
         const obj_ele = this.special_identifiers_obj[key];
         obj_ele.forEach(element => {
-          if(element['checked'] === "Yes"){
+          if (element['checked'] === "Yes") {
             delete element['checked'];
             specl_identfrs.push(element)
           }
@@ -292,14 +299,14 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.dl_list = freqReq.dl_list;
     this.req_body.select_frequency = freqReq.report_freq;
     this.req_body.frequency = freqReq.freq
-    
+
     this.req_body.report_detail.requestor = this.userData.fullName;
-    this.req_body.report_detail.created_on = new Date();
+    // this.req_body.report_detail.created_on = new Date();
     this.req_body.report_detail.status_date = new Date();
     this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
 
     console.log(this.req_body);
-    
+
     Utils.showSpinner();
     this.submitService.submitUserMarketSelection(this.req_body).subscribe(response => {
       console.log(response);
@@ -310,21 +317,109 @@ export class SelectReportCriteriaComp implements OnInit {
       this.response_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
       this.response_body.status = response['report_data']['status'];
       this.response_body.on_behalf_of = response['report_data']['on_behalf_of'];
-      
+
+      if (response['report_data']['status'] === "Incomplete")
+        this.response_body.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
+      else if (response['report_data']['status'] === "Pending")
+        this.response_body.message = `<span> Request status - ${this.response_body.status} </span>`
+      else
+        this.response_body.message = ""
+
       this.req_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
       this.req_body.report_detail.status = response['report_data']['status'];
 
       this.requestCreated.emit(this.response_body)
-    },err=>{
+    }, err => {
       Utils.hideSpinner();
       console.log(err);
     });
 
   }
 
-  openRequestOnBehalf(){
-    this.dialog.open(RequestOnbehalfComp,{
-      data:{}
+  refillSelectedRequestData(reqData) {
+    let marketIds = reqData.market_data.map(ele => ele.ddm_rmp_lookup_market);
+    this.selected.market = this.l_lookup_MD.market.market_data.filter(market => {
+      if (marketIds.includes(market.ddm_rmp_lookup_market_id))
+        return market
+    });
+    this.multiSelectChange({}, "market");
+
+    let divisionIds = reqData.division_dropdown.map(ele => ele.ddm_rmp_lookup_division);
+    this.selected.division = this.l_lookup_MD.market.division_data.filter(division => {
+      if (divisionIds.includes(division.ddm_rmp_lookup_division_id))
+        return division
+    });
+
+    let regionIds = reqData.country_region_data.map(ele => ele.ddm_rmp_lookup_country_region);
+    this.selected.region = this.l_lookup_MD.market.region_data.filter(region => {
+      if (regionIds.includes(region.ddm_rmp_lookup_country_region_id))
+        return region
+    });
+    this.multiSelectChange({}, "region");
+
+
+    let zoneIds = reqData.region_zone_data.map(ele => ele.ddm_rmp_lookup_region_zone);
+    this.selected.zone = this.l_lookup_MD.market.zones_data.filter(zone => {
+      if (zoneIds.includes(zone.ddm_rmp_lookup_region_zone_id))
+        return zone
+    });
+    this.multiSelectChange({}, "zone");
+
+
+    let areaIds = reqData.zone_area_data.map(ele => ele.ddm_rmp_lookup_zone_area);
+    this.selected.area = this.l_lookup_MD.market.area_data.filter(area => {
+      if (areaIds.includes(area.ddm_rmp_lookup_zone_area_id))
+        return area
+    });
+
+    let gmmaIds = reqData.gmma_data.map(ele => ele.ddm_rmp_lookup_gmma);
+    this.selected.gmma = this.l_lookup_MD.market.gmma_data.filter(gmma => {
+      if (gmmaIds.includes(gmma.ddm_rmp_lookup_gmma_id))
+        return gmma
+    });
+
+    let lmaIds = reqData.lma_data.map(ele => ele.ddm_rmp_lookup_lma);
+    this.selected.lma = this.l_lookup_MD.market.lma_data.filter(lma => {
+      if (lmaIds.includes(lma.ddm_rmp_lookup_lma_id))
+        return lma
+    });
+    console.log(this.selected);
+    console.log(reqData.fan_data);
+    reqData.special_identifier_data.forEach(si => {
+      this.special_identifiers_obj.bac.forEach(bac => { if (bac.ddm_rmp_lookup_special_identifiers === si.ddm_rmp_lookup_special_identifiers) bac['checked'] = "Yes" })
+      this.special_identifiers_obj.fan.forEach(fan => { if (fan.ddm_rmp_lookup_special_identifiers === si.ddm_rmp_lookup_special_identifiers) fan['checked'] = "Yes" })
+    });
+    this.selected.bac = reqData.bac_data[0].bac_desc;
+    this.selected.fan = reqData.fan_data[0].fan_data;
+    console.log(this.special_identifiers_obj);
+
+    this.req_body.report_detail.additional_req = reqData.report_data.additional_req;
+    this.req_body.report_detail.assigned_to = reqData.report_data.assigned_to;
+    this.req_body.report_detail.created_on = reqData.report_data.created_on;
+    this.req_body.report_detail.on_behalf_of = reqData.report_data.on_behalf_of;
+    //  this.req_body.report_detail. = reqData.report_data.organization
+    this.req_body.report_detail.query_criteria = reqData.report_data.query_criteria;
+    //  this.req_body.report_detail. = reqData.report_data.report_name
+    this.req_body.report_detail.report_type = reqData.report_data.report_type;
+    this.req_body.report_detail.requestor = reqData.report_data.requestor;
+    this.req_body.report_detail.status = reqData.report_data.status;
+    this.req_body.report_detail.title = reqData.report_data.title;
+    this.req_body.report_id = reqData.ddm_rmp_post_report_id;
+
+    this.response_body.report_id = this.req_body.report_id;
+    this.response_body.status = this.req_body.report_detail.status;
+    if (this.req_body.report_detail.status === "Incomplete")
+      this.response_body.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
+    else if (this.req_body.report_detail.status === "Pending")
+      this.response_body.message = `<span> Request status - ${this.response_body.status}</span>`
+    else
+      this.response_body.message = ""
+
+  }
+
+  openRequestOnBehalf() {
+    this.dialog.open(RequestOnbehalfComp, {
+      data: {}
     })
   }
 

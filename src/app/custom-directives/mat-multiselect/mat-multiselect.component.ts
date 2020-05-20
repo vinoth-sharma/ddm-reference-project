@@ -50,9 +50,10 @@ export class MatMultiselect implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // console.log(changes);
-    if (changes.data) {
-      if (changes.data.currentValue.length) {
+    if (changes.data || changes.inputModel) {
+    console.log(changes);
+      
+      if (this.data.length) {
         this.l_data = JSON.parse(JSON.stringify(this.data));
         this.l_db = this.inputModel ? this.inputModel.map(ele => ele[this.settings.primary_key]) : [];
         //remove selcted items which is not in data

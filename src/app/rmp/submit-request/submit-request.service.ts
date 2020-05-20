@@ -16,12 +16,12 @@ export class SubmitRequestService {
    }
 
    public lookUpTableData = [] ;
-   public requestOnBehalf:any = {} ;
+
    public emitReqOnBehalfEmail = new Subject();
+   public onBehalfEmail = "";
+   public onBehalfUser = "";
 
-
-   public onBehalfEmail = ""
-   public onBehalfUser = ""
+   public loadingStatus = new Subject();
 
   getHttpLookUpTableData(){
     return this.djangoService.getLookupValues().pipe(map((res:any) => {
@@ -53,15 +53,25 @@ export class SubmitRequestService {
     }),catchError(this.handleError.bind(this)));
   }
 
+  getReportDescription(report_id){
+    return this.djangoService.get_report_description(report_id).pipe(map((res:any) => {
+      return res;
+    }),catchError(this.handleError.bind(this)));
+  }
+
   setSubmitOnBehalf(user,mail){
     if(mail)
       this.emitReqOnBehalfEmail.next(mail)
-    this.onBehalfEmail = user;
-    this.onBehalfUser = mail;
+    this.onBehalfEmail = mail;
+    this.onBehalfUser = user;
   }
 
   getSubmitOnBehalf(){
     return this.onBehalfUser
+  }
+
+  updateLoadingStatus(res){
+    this.loadingStatus.next(res)
   }
 
   public handleError(error: any): any {

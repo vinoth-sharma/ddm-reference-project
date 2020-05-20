@@ -181,7 +181,7 @@ console.log( );
       if (!req_body.report_freq.length) {
         this.toaster.error("Please select atleast one frequency")
       }
-      else if (req_body.report_freq.every(freq => freq['description']?.length))
+      else if (req_body.report_freq.every(freq => freq['description'].length))
         this.reportFreqEmitter.emit(req_body)
       else
         this.toaster.error("Please specify the value if selected others")

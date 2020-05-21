@@ -171,15 +171,15 @@ describe('DdmAdminComponent', () => {
     fixture.detectChanges();
     let element = fixture.debugElement.nativeElement;
     let doc_data = { title: "title_rmp", url: "url", admin_flag: true };
-    element.querySelector("#document-name").value = "abc";
-    element.querySelector("#document-url").value = "abc";
+    element.querySelector("#document-name").value = "title_rmp";
+    element.querySelector("#document-url").value = "url";
     component.naming = [{ title: "xyz" }]
     component.editid = "id-one";
     component.document_details = doc_data;
 
     component.addDocument();
-    // expect(component.document_details.title).toEqual(doc_data.title);
-    // expect(component.document_details.url).toEqual(doc_data.url);
+    expect(component.document_details.title).toEqual(doc_data.title);
+    expect(component.document_details.url).toEqual(doc_data.url);
     expect(component.naming).toEqual(lookUpValuesData.data.desc_text_admin_documents)
     expect(element.querySelector("#document-name").value).toEqual("");
     expect(element.querySelector("#document-url").value).toEqual("");

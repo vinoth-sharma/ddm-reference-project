@@ -29,20 +29,23 @@ body {
 }
 
 .tool-body {
-    height: 88%;
+    height: 100%;
+    width: 100%;
     /* background: black; */
 }
 
 .main-tool-body {
-    width: 80%;
-    border: 0.125px solid black;
-    background: white
+    width: 85%;
+    background: white;
+    height: calc(100% - 50px);
+    margin: 25px;
+    box-shadow: 3px 3px 8px 2px #c3c3c3;
 }
 
 .left-tabs {
-    width: 14.15%;
+    width: 15%;
     height: 100%;
-    background-color: rgb(202, 206, 209);
+    /* background-color: rgb(202, 206, 209); */
     /* background: white; */
 }
 
@@ -54,67 +57,46 @@ body {
 /* -----------------------------------------------------------------------------------------------------------------*/
 
 .active > button.btn.btn-primary{
-    background-color: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
-    background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
+    /* background-color: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173)); */
+    background-image: linear-gradient(rgb(12, 55, 98), #6290C8);
     color: white;
+    font-weight: 700;
 }
 
-.tab {
-    overflow: hidden;
-    background-color: transparent;
-    height: 100%;
-}
-
-.tab button {
-    background-color: rgb(221, 221, 221);
-    float: left;
-    border: 0.5px solid rgb(104, 103, 103);
-    outline: none;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 95%;
-    height: 100%;
-    width: 17.649%;
-    color: black;
-    border-radius: 0;
-    white-space: normal;
-    text-overflow: ellipsis;
-    padding: 0px;
-}
-
-/* .tab button:hover, .tabs button:hover {
-    background-color: rgb(247, 246, 246);
-}
-
-.tab button.active, .tabs button.active {
-    background-color: rgb(247, 246, 246);
-} */
-
-.tabs {
+.tabs-list-container {
     /* float: left; */
     background-color: transparent;
     width: 100%;
     height: 65vh;
 }
 
-.tabs button {
+.tabs-list-container button {
     display: block;
-    border: 0.5px solid rgb(104, 103, 103);
-    background-color: rgb(221, 221, 221);
-    background-image: linear-gradient(rgb(237, 237, 237), rgb(254, 254, 252));
     color: black;
     width: 100%;
     outline: none;
     text-align: center;
-    font-size: 95%;
+    font-size: 1em;
     cursor: pointer;
-    transition: 0.3s;
     white-space: normal;
     text-overflow: ellipsis;
     height: 15%;
     border-radius: 0;
     overflow: hidden;
     padding: 0px;
+    background-color: white;
+    border: unset;
+    border: 0.5px solid #283f52;
+    /* border-bottom: 0.5px solid #283f52; */
+    transition: transform .2s;
+}
+.tabs-list-container button:hover{
+    transform: scale(1.05);
+}
+
+.tabs-list-container button:disabled{
+    background-color: #c3c3c3;
+    color: black;
 }
 
 .main-tool-body-header {
@@ -166,19 +148,3 @@ a {
     color: black;
 }
 
-a:hover {
-    color: rgb(2, 136, 173);
-}
-
-a:active {
-    color: rgb(2, 136, 173);
-}
-
-.active, .btn:hover {
-    background-color: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
-    /* color: black; */
-}
-
-/* button:hover {
-    background-color: blue;
-} */

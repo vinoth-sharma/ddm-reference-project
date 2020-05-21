@@ -9,29 +9,29 @@
                 0px 1px 18px 0px rgba(0,0,0,0.72)
 }
 #DDM_logo{
-    width: 85px;
+    width: 64px;
     height: 100%;
     cursor: pointer;
 }
 #DDM_logo img{
-    /* width: 100%; */
     height: 100%;
 }
 .header-title{
     color: white;
-    font-size: 24px;
+    /* font-size: 1.4em; */
     font-weight: 800;
     margin-left: 20px;
 }
 .header-cont-part{
-    width: 50%;
+    /* width: 50%; */
     display: flex;
     align-items: center;
 }
 .user-details{
     margin-left: 35px;
     color: white;
-    font-size: 15px;
+    width: max-content;
+    /* font-size: 15px; */
 }
 .notification-icon{
     font-size: 30px;
@@ -40,15 +40,29 @@
 .user-data-container{
     display: flex;
     align-items: center;
-    margin-right: 34px;
+    margin-right: 5px;
 }
 ::ng-deep .notification-list{
     max-height: 296px !important;
     max-width: 350px !important;
 }
-
-
-/* #tp{
-    background-color: linear-gradient(rgb(27, 116, 206), rgb(133, 187, 241));
-    background-image: linear-gradient(rgb(38, 61, 79), rgb(63, 100, 131));
-} */
+.menu-container{
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.menu-container a{
+    color: white;
+}
+.menu-container a button{
+    font-weight: 500;
+}
+.menu-container a button:hover{
+    /* font-weight: 800; */
+    transform: scale(1.2);
+}
+.menu-container a button.active{
+    transform: scale(1.2);
+    font-weight: 800;
+}

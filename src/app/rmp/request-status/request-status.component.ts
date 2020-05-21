@@ -753,8 +753,18 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     }
   }
 
+  // formating date 
+  public dateFormat(str: any) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("");
+  }
+
+
   // download list of reports into excel sheet
   public xlsxJson() {
+    let fileName = "Request_" + this.dateFormat(new Date()); // changes done by Ganesh
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
@@ -770,7 +780,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       workbook.outputAsync().then(function (blob) {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           window.navigator.msSaveOrOpenBlob(blob,
-            "Reports" + new Date().getTime() + EXCEL_EXTENSION
+            fileName + EXCEL_EXTENSION
           );
         }
         else {
@@ -778,7 +788,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           var a = document.createElement("a");
           document.body.appendChild(a);
           a.href = url;
-          a.download = "Reports" + new Date().getTime() + EXCEL_EXTENSION;
+          a.download = fileName + EXCEL_EXTENSION;
           a.click();
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a)
@@ -961,67 +971,67 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     }
   }
 
+  // changes done by Ganesh
   // displaying details of pop-up of selected report
   public query_criteria_click(query_report_id) {
     Utils.showSpinner();
     this.django.get_report_description(query_report_id).subscribe(response => {
-      this.summary = response;
-      if (this.summary["market_data"].length) {
+      if (response["market_data"].length) {
         let tempArray = [];
-        this.summary["market_data"].map(element => tempArray.push(element.market));
+        response["market_data"].map(element => tempArray.push(element.market));
         this.market_description = tempArray.join(", ");
       } else {
         this.market_description = [];
       }
-      if (this.summary["country_region_data"].length) {
+      if (response["country_region_data"].length) {
         let tempArray = [];
-        this.summary["country_region_data"].
+        response["country_region_data"].
           map(element => tempArray.push(element.region_desc));
         this.region_description = tempArray.join(", ");
       } else {
         this.region_description = [];
       }
 
-      if (this.summary["region_zone_data"].length) {
+      if (response["region_zone_data"].length) {
         let tempArray = [];
-        this.summary["region_zone_data"].map(element =>
+        response["region_zone_data"].map(element =>
           tempArray.push(element.zone_desc))
         this.zone_description = tempArray.join(", ");
       } else {
         this.zone_description = [];
       }
 
-      if (this.summary["zone_area_data"].length) {
+      if (response["zone_area_data"].length) {
         let tempArray = [];
-        this.summary["zone_area_data"].map(element =>
+        response["zone_area_data"].map(element =>
           tempArray.push(element.area_desc))
         this.area_description = tempArray.join(", ");
       } else {
         this.area_description = [];
       }
 
-      if (this.summary["lma_data"].length) {
+      if (response["lma_data"].length) {
         let tempArray = [];
-        this.summary["lma_data"].map(element =>
+        response["lma_data"].map(element =>
           tempArray.push(element.lmg_desc));
         this.lma_description = tempArray.join(", ");
       } else {
         this.lma_description = [];
       }
 
-      if (this.summary["gmma_data"].length) {
+      if (response["gmma_data"].length) {
         let tempArray = [];
-        this.summary["gmma_data"].map(element =>
+        response["gmma_data"].map(element =>
           tempArray.push(element.gmma_desc));
         this.gmma_description = tempArray.join(", ");
       } else {
         this.gmma_description = [];
       }
 
-      if (this.summary["frequency_data"].length) {
+      if (response["frequency_data"].length) {
         let tempArray = [];
         this.frequency_flag = true;
-        this.summary["frequency_data"].map(element => {
+        response["frequency_data"].map(element => {
           if (element.description != '')
             tempArray.push(element.select_frequency_values + "-" + element.description);
           else
@@ -1033,82 +1043,82 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         this.frequency_flag = false;
       }
 
-      if (!this.summary["division_dropdown"].length)
+      if (!response["division_dropdown"].length)
         this.division_dropdown = []
       else {
         let tempArray = [];
-        this.summary["division_dropdown"].map(element =>
+        response["division_dropdown"].map(element =>
           tempArray.push(element.division_desc));
         this.division_dropdown = tempArray.join(", ");
       }
 
-      if (this.summary["special_identifier_data"].length) {
+      if (response["special_identifier_data"].length) {
         let tempArray = [];
-        this.summary["special_identifier_data"].map(element =>
+        response["special_identifier_data"].map(element =>
           tempArray.push(element.spl_desc));
         this.special_identifier = tempArray.join(", ");
       } else {
         this.special_identifier = [];
       }
 
-      if (this.summary["ost_data"]) {
-        if (this.summary["ost_data"]["allocation_group"].length) {
+      if (response["ost_data"]) {
+        if (response["ost_data"]["allocation_group"].length) {
           let tempArray = [];
-          this.summary["ost_data"]["allocation_group"].map(element => {
+          response["ost_data"]["allocation_group"].map(element => {
             tempArray.push(element.allocation_group)
           })
           this.allocation_group = tempArray.join(", ");
         } else {
           this.allocation_group = [];
         }
-        if (this.summary["ost_data"]["model_year"].length) {
+        if (response["ost_data"]["model_year"].length) {
           let tempArray = [];
-          this.summary["ost_data"]["model_year"].map(element =>
+          response["ost_data"]["model_year"].map(element =>
             tempArray.push(element.model_year));
           this.model_year = tempArray.join(", ");
         } else {
           this.model_year = [];
         }
 
-        if (this.summary["ost_data"]["vehicle_line"].length) {
+        if (response["ost_data"]["vehicle_line"].length) {
           let tempArray = [];
-          this.summary["ost_data"]["vehicle_line"].map(element =>
+          response["ost_data"]["vehicle_line"].map(element =>
             tempArray.push(element.vehicle_line_brand));
           this.vehicle_line_brand = tempArray.join(", ");
         } else {
           this.vehicle_line_brand = [];
         }
 
-        if (this.summary["ost_data"]["merchandizing_model"].length) {
+        if (response["ost_data"]["merchandizing_model"].length) {
           let tempArray = [];
-          this.summary["ost_data"]["merchandizing_model"].map(element =>
+          response["ost_data"]["merchandizing_model"].map(element =>
             tempArray.push(element.merchandising_model));
           this.merchandising_model = tempArray.join(", ");
         } else {
           this.merchandising_model = [];
         }
 
-        if (this.summary["ost_data"]["order_event"].length) {
+        if (response["ost_data"]["order_event"].length) {
           let tempArray = [];
-          this.summary["ost_data"]["order_event"].map(element =>
+          response["ost_data"]["order_event"].map(element =>
             tempArray.push(element.order_event));
           this.order_event = tempArray.join(", ");
         } else {
           this.order_event = [];
         }
 
-        if (this.summary["ost_data"]["order_type"].length) {
+        if (response["ost_data"]["order_type"].length) {
           let tempArray = [];
-          this.summary["ost_data"]["order_type"].map(element =>
+          response["ost_data"]["order_type"].map(element =>
             tempArray.push(element.order_type))
           this.order_type = tempArray.join(", ");
         } else {
           this.order_type = [];
         }
 
-        if (this.summary["ost_data"]["checkbox_data"].length) {
+        if (response["ost_data"]["checkbox_data"].length) {
           let tempArray = [];
-          this.summary["ost_data"]["checkbox_data"].map(element => {
+          response["ost_data"]["checkbox_data"].map(element => {
             if (element.description_text != '') {
               tempArray.push(element.checkbox_description + "-" + element.description_text)
             } else {
@@ -1122,28 +1132,28 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       }
 
       //-----DA-----//
-      if (this.summary["da_data"]) {
-        if (this.summary["da_data"]["allocation_grp"].length) {
+      if (response["da_data"]) {
+        if (response["da_data"]["allocation_grp"].length) {
           let tempArray = [];
-          this.summary["da_data"]["allocation_grp"].map(element =>
+          response["da_data"]["allocation_grp"].map(element =>
             tempArray.push(element.allocation_group));
           this.allocation_group = tempArray.join(", ");
         } else {
           this.allocation_group = [];
         }
 
-        if (this.summary["da_data"]["model_year"].length) {
+        if (response["da_data"]["model_year"].length) {
           let tempArray = [];
-          this.summary["da_data"]["model_year"].map(element =>
+          response["da_data"]["model_year"].map(element =>
             tempArray.push(element.model_year));
           this.model_year = tempArray.join(", ");
         } else {
           this.model_year = [];
         }
 
-        if (this.summary["da_data"]["concensus_data"].length) {
+        if (response["da_data"]["concensus_data"].length) {
           let tempArray = [];
-          this.summary["da_data"]["concensus_data"].map(element =>
+          response["da_data"]["concensus_data"].map(element =>
             tempArray.push(element.cd_values));
           this.concensus_data = tempArray.join(", ");
         } else {
@@ -1151,25 +1161,26 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         }
       }
 
-      if (this.summary["bac_data"].length) {
-        if (this.summary["bac_data"][0]["bac_desc"] == null)
+      if (response["bac_data"].length) {
+        if (response["bac_data"][0]["bac_desc"] == null)
           this.bac_description = []
         else
-          this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
+          this.bac_description = (response["bac_data"][0].bac_desc).join(", ");
       }
       else {
         this.bac_description = []
       }
 
-      if (this.summary["fan_data"].length) {
-        if (this.summary["fan_data"][0]["fan_data"] == null)
+      if (response["fan_data"].length) {
+        if (response["fan_data"][0]["fan_data"] == null)
           this.fan_desc = []
         else
-          this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
+          this.fan_desc = response["fan_data"][0].fan_data.join(", ");
       } else {
         this.fan_desc = []
       }
-      this.text_notification = this.summary["user_data"][0]['alternate_number'];
+      this.text_notification = response["user_data"][0]['alternate_number'];
+      this.summary = response;
       Utils.hideSpinner();
     }, err => {
       Utils.hideSpinner();

@@ -13,33 +13,31 @@ import { utils } from 'protractor';
   styleUrls: ['./ddm-intro.component.css']
 })
 export class DdmIntroComponent implements OnInit, AfterViewInit {
-  naming: string = "Loading";
-  editMode: Boolean;
-  textChange = false;
-  enable_edits = false
-  editModes = false;
-  original_content;
-  original_contents;
-  enableUpdateData = false;
-  description_text = {
+  public naming: string = "Loading";
+  public editMode: Boolean;
+  public textChange = false;
+  public enable_edits = false
+  public editModes = false;
+  public original_content;
+  public original_contents;
+  public enableUpdateData = false;
+  public description_text = {
     "ddm_rmp_desc_text_id": 1,
     "module_name": "What is DDM",
     "description": ""
-  }
-
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  description_texts = {
+  };
+  public parentsSubject: Rx.Subject<any> = new Rx.Subject();
+  public description_texts = {
     "ddm_rmp_desc_text_id": 5,
     "module_name": "Help_WhatIsDDM",
     "description": ""
-  }
-  namings: string = "Loading";
-  content;
-  restorepage: any;
-  printcontent: any;
-  readOnlyContent = true;
-  readOnlyContentHelper = true;
-
+  };
+  public namings: string = "Loading";
+  public content;
+  public restorepage: any;
+  public printcontent: any;
+  public readOnlyContent = true;
+  public readOnlyContentHelper = true;
   public toolbarTooltips = {
     'font': 'Select a font',
     'size': 'Select a font size',
@@ -78,7 +76,7 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
     'help': 'Show help'
   };
 
-  config = {
+  public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
@@ -94,11 +92,12 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
     ]
   };
 
-  user_role: string;
-  public toaster: NgToasterComponent
+  public user_role: string;
 
 
-  constructor(private django: DjangoService, private auth_service: AuthenticationService, private dataProvider: DataProviderService) {
+  constructor(private django: DjangoService, private auth_service: AuthenticationService,
+    private dataProvider: DataProviderService,
+    public toaster: NgToasterComponent) {
     dataProvider.currentlookUpTableData.subscribe(element => {
       this.content = element
     })
@@ -109,14 +108,8 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
     })
   }
 
-  notify() {
-    this.enable_edits = !this.enable_edits
-    this.parentsSubject.next(this.enable_edits)
-    this.editModes = true
-    $('#edit_button').hide()
-  }
-
-  ngOnInit() {
+  // initialization of component
+  public ngOnInit() {
     let ref = this.content['data']['desc_text']
     let temp = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 1;
@@ -139,7 +132,8 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
     this.namings = this.original_contents;
   }
 
-  ngAfterViewInit() {
+  // initialize after html initialize
+  public ngAfterViewInit() {
     this.showTooltips();
   }
 
@@ -190,14 +184,15 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
     }
   }
 
-
-  textChanged(event) {
+  // detecting text change
+  public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
-  content_edits() {
+  // saving content change in help model
+  public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner()
       this.editModes = false;
@@ -226,23 +221,26 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
         this.toaster.error("error")
       })
     } else {
-      this.toaster.error("error")
+      this.toaster.error("please enter the data");
     }
   }
 
-  edit_True() {
+  // resetting help model
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
 
-  editEnable() {
+  // enable edit mode of help model
+  public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_contents;
   }
 
-  content_edit() {
+  // saving content of what is ddm? description
+  public content_edit() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner()
       this.editMode = false;
@@ -271,7 +269,8 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
     }
   }
 
-  editTrue() {
+  // enable edit mode of What is ddm? description
+  public editTrue() {
     if (this.editMode) {
       this.readOnlyContent = true;
     }
@@ -280,16 +279,6 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
     }
     this.editMode = !this.editMode;
     this.naming = this.original_content;
-  }
-
-
-  printDiv() {
-    this.restorepage = document.body.innerHTML;
-    this.printcontent = this.naming;
-    document.body.innerHTML = this.printcontent;
-    window.print();
-    document.body.innerHTML = this.restorepage;
-    location.reload(true);
   }
 
 }

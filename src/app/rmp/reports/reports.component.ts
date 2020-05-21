@@ -473,8 +473,17 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.orderType = this.reports[typeVal];
   }
 
+  // formating date 
+  public dateFormat(str: any) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("");
+  }
+
   // generates excel report
   xlsxJson() {
+    let fileName = "Reports_" + this.dateFormat(new Date());  // changes done by Ganesh
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
@@ -492,7 +501,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       workbook.outputAsync().then(function (blob) {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           window.navigator.msSaveOrOpenBlob(blob,
-            "Reports" + new Date().getTime() + EXCEL_EXTENSION
+            fileName + EXCEL_EXTENSION
           );
         }
         else {
@@ -500,7 +509,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           var a = document.createElement("a");
           document.body.appendChild(a);
           a.href = url;
-          a.download = "Reports" + new Date().getTime() + EXCEL_EXTENSION;
+          a.download = fileName + EXCEL_EXTENSION;
           a.click();
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a)
@@ -926,26 +935,24 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.spinner.show();
     this.summary = [];
     this.django.get_report_description(query_report_id).subscribe(response => {
-      this.summary = response;
       this.spinner.hide();
-
       let tempArray = []
-      if (this.summary["market_data"].length != 0) {
-        if (this.summary["market_data"] == []) {
+      if (response["market_data"].length != 0) {
+        if (response["market_data"] == []) {
           this.market_description = []
         } else {
-          this.summary["market_data"].map(element => {
+          response["market_data"].map(element => {
             tempArray.push(element.market)
           })
         }
         this.market_description = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["country_region_data"].length != 0) {
-        if (this.summary["country_region_data"] == []) {
+      if (response["country_region_data"].length != 0) {
+        if (response["country_region_data"] == []) {
           this.region_description = []
         } else {
-          this.summary["country_region_data"].map(element => {
+          response["country_region_data"].map(element => {
             tempArray.push(element.region_desc)
           })
         }
@@ -953,55 +960,55 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       }
 
       tempArray = []
-      if (this.summary["region_zone_data"].length != 0) {
-        if (this.summary["region_zone_data"] == []) {
+      if (response["region_zone_data"].length != 0) {
+        if (response["region_zone_data"] == []) {
           this.zone_description = []
         } else {
-          this.summary["region_zone_data"].map(element => {
+          response["region_zone_data"].map(element => {
             tempArray.push(element.zone_desc)
           })
         }
         this.zone_description = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["zone_area_data"].length != 0) {
-        if (this.summary["zone_area_data"] == []) {
+      if (response["zone_area_data"].length != 0) {
+        if (response["zone_area_data"] == []) {
           this.area_description = []
         } else {
-          this.summary["zone_area_data"].map(element => {
+          response["zone_area_data"].map(element => {
             tempArray.push(element.area_desc)
           })
         }
         this.area_description = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["lma_data"].length != 0) {
-        if (this.summary["lma_data"] == []) {
+      if (response["lma_data"].length != 0) {
+        if (response["lma_data"] == []) {
           this.lma_description = []
         } else {
-          this.summary["lma_data"].map(element => {
+          response["lma_data"].map(element => {
             tempArray.push(element.lmg_desc)
           })
         }
         this.lma_description = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["gmma_data"].length != 0) {
-        if (this.summary["gmma_data"] == []) {
+      if (response["gmma_data"].length != 0) {
+        if (response["gmma_data"] == []) {
           this.gmma_description = []
         } else {
-          this.summary["gmma_data"].map(element => {
+          response["gmma_data"].map(element => {
             tempArray.push(element.gmma_desc)
           })
         }
         this.gmma_description = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["frequency_data"].length != 0) {
-        if (this.summary["frequency_data"] == []) {
+      if (response["frequency_data"].length != 0) {
+        if (response["frequency_data"] == []) {
           this.report_frequency = []
         } else {
-          this.summary["frequency_data"].map(element => {
+          response["frequency_data"].map(element => {
             if (element.description != '') {
               tempArray.push(element.select_frequency_values + "-" + element.description)
             }
@@ -1013,101 +1020,101 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.report_frequency = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["division_dropdown"].length != 0) {
-        if (this.summary["division_dropdown"] == []) {
+      if (response["division_dropdown"].length != 0) {
+        if (response["division_dropdown"] == []) {
           this.division_dropdown = []
         } else {
-          this.summary["division_dropdown"].map(element => {
+          response["division_dropdown"].map(element => {
             tempArray.push(element.division_desc)
           })
         }
         this.division_dropdown = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["special_identifier_data"].length != 0) {
-        if (this.summary["special_identifier_data"] == []) {
+      if (response["special_identifier_data"].length != 0) {
+        if (response["special_identifier_data"] == []) {
           this.special_identifier = []
         } else {
-          this.summary["special_identifier_data"].map(element => {
+          response["special_identifier_data"].map(element => {
             tempArray.push(element.spl_desc)
           })
         }
         this.special_identifier = tempArray.join(", ");
       }
-      if (this.summary["ost_data"] != undefined) {
+      if (response["ost_data"] != undefined) {
 
         tempArray = []
-        if (this.summary["ost_data"]["allocation_group"].length != 0) {
-          if (this.summary["ost_data"]["allocation_group"] == []) {
+        if (response["ost_data"]["allocation_group"].length != 0) {
+          if (response["ost_data"]["allocation_group"] == []) {
             this.allocation_group = []
           } else {
-            this.summary["ost_data"]["allocation_group"].map(element => {
+            response["ost_data"]["allocation_group"].map(element => {
               tempArray.push(element.allocation_group)
             })
           }
           this.allocation_group = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["model_year"].length != 0) {
-          if (this.summary["ost_data"]["model_year"] == []) {
+        if (response["ost_data"]["model_year"].length != 0) {
+          if (response["ost_data"]["model_year"] == []) {
             this.model_year = []
           } else {
-            this.summary["ost_data"]["model_year"].map(element => {
+            response["ost_data"]["model_year"].map(element => {
               tempArray.push(element.model_year)
             })
           }
           this.model_year = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["vehicle_line"].length != 0) {
-          if (this.summary["ost_data"]["vehicle_line"] == []) {
+        if (response["ost_data"]["vehicle_line"].length != 0) {
+          if (response["ost_data"]["vehicle_line"] == []) {
             this.vehicle_line_brand = []
           } else {
-            this.summary["ost_data"]["vehicle_line"].map(element => {
+            response["ost_data"]["vehicle_line"].map(element => {
               tempArray.push(element.vehicle_line_brand)
             })
           }
           this.vehicle_line_brand = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["merchandizing_model"].length != 0) {
-          if (this.summary["ost_data"]["merchandizing_model"] == []) {
+        if (response["ost_data"]["merchandizing_model"].length != 0) {
+          if (response["ost_data"]["merchandizing_model"] == []) {
             this.merchandising_model = []
           } else {
-            this.summary["ost_data"]["merchandizing_model"].map(element => {
+            response["ost_data"]["merchandizing_model"].map(element => {
               tempArray.push(element.merchandising_model)
             })
           }
           this.merchandising_model = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["order_event"].length != 0) {
-          if (this.summary["ost_data"]["order_event"] == []) {
+        if (response["ost_data"]["order_event"].length != 0) {
+          if (response["ost_data"]["order_event"] == []) {
             this.order_event = []
           } else {
-            this.summary["ost_data"]["order_event"].map(element => {
+            response["ost_data"]["order_event"].map(element => {
               tempArray.push(element.order_event)
             })
           }
           this.order_event = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["order_type"].length != 0) {
-          if (this.summary["ost_data"]["order_type"] == []) {
+        if (response["ost_data"]["order_type"].length != 0) {
+          if (response["ost_data"]["order_type"] == []) {
             this.order_type = []
           } else {
-            this.summary["ost_data"]["order_type"].map(element => {
+            response["ost_data"]["order_type"].map(element => {
               tempArray.push(element.order_type)
             })
           }
           this.order_type = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["checkbox_data"].length != 0) {
-          if (this.summary["ost_data"]["checkbox_data"] == []) {
+        if (response["ost_data"]["checkbox_data"].length != 0) {
+          if (response["ost_data"]["checkbox_data"] == []) {
             this.checkbox_data = []
           } else {
-            this.summary["ost_data"]["checkbox_data"].map(element => {
+            response["ost_data"]["checkbox_data"].map(element => {
               if (element.description_text != '') {
                 tempArray.push(element.checkbox_description + "-" + element.description_text)
               }
@@ -1121,35 +1128,35 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       }
 
       // //-----DA-----//
-      if (this.summary["da_data"] != undefined) {
+      if (response["da_data"] != undefined) {
         tempArray = []
-        if (this.summary["da_data"]["allocation_grp"].length != 0) {
-          if (this.summary["da_data"]["allocation_grp"] == []) {
+        if (response["da_data"]["allocation_grp"].length != 0) {
+          if (response["da_data"]["allocation_grp"] == []) {
             this.allocation_group = []
           } else {
-            this.summary["da_data"]["allocation_grp"].map(element => {
+            response["da_data"]["allocation_grp"].map(element => {
               tempArray.push(element.allocation_group)
             })
           }
           this.allocation_group = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["da_data"]["model_year"].length != 0) {
-          if (this.summary["da_data"]["model_year"] == []) {
+        if (response["da_data"]["model_year"].length != 0) {
+          if (response["da_data"]["model_year"] == []) {
             this.model_year = []
           } else {
-            this.summary["da_data"]["model_year"].map(element => {
+            response["da_data"]["model_year"].map(element => {
               tempArray.push(element.model_year)
             })
           }
           this.model_year = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["da_data"]["concensus_data"].length != 0) {
-          if (this.summary["da_data"]["concensus_data"] == []) {
+        if (response["da_data"]["concensus_data"].length != 0) {
+          if (response["da_data"]["concensus_data"] == []) {
             this.concensus_data = []
           } else {
-            this.summary["da_data"]["concensus_data"].map(element => {
+            response["da_data"]["concensus_data"].map(element => {
               tempArray.push(element.cd_values)
             })
           }
@@ -1158,28 +1165,29 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
       }
 
-      if (this.summary["bac_data"].length != 0) {
-        if (this.summary["bac_data"][0]["bac_desc"] == null) {
+      if (response["bac_data"].length != 0) {
+        if (response["bac_data"][0]["bac_desc"] == null) {
           this.bac_description = []
         } else {
-          this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
+          this.bac_description = (response["bac_data"][0].bac_desc).join(", ");
         }
       }
       else {
         this.bac_description = []
       }
 
-      if (this.summary["fan_data"].length != 0) {
-        if (this.summary["fan_data"][0]["fan_data"] == null) {
+      if (response["fan_data"].length != 0) {
+        if (response["fan_data"][0]["fan_data"] == null) {
           this.fan_desc = []
         } else {
-          this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
+          this.fan_desc = response["fan_data"][0].fan_data.join(", ");
         }
       }
       else {
         this.fan_desc = []
       }
-      this.text_notification = this.summary["user_data"][0]['alternate_number'];
+      this.text_notification = response["user_data"][0]['alternate_number'];
+      this.summary = response;
 
     }, err => {
       this.spinner.hide()
@@ -1234,19 +1242,19 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     let link = document.querySelector("#add-url-input")["value"]
     let data = { request_id: this.linkUrlId, link_to_results: link }
     Utils.showSpinner();
-    this.django.add_link_to_url(data).subscribe(response =>{
-     if(response['message'] == "updated successfully"){
-      document.querySelector("#add-url-input")["value"] = "";
-      $('#close_url_modal').click()
-      this.toasterService.success("URL Updated Successfully !")
-      Utils.hideSpinner()
-      this.reports.map(item =>{
-        if(item.ddm_rmp_post_report_id == this.linkUrlId){
-          item.link_to_results = link
-        }
-      })
-     }
-    },error =>{
+    this.django.add_link_to_url(data).subscribe(response => {
+      if (response['message'] == "updated successfully") {
+        document.querySelector("#add-url-input")["value"] = "";
+        $('#close_url_modal').click()
+        this.toasterService.success("URL Updated Successfully !")
+        Utils.hideSpinner()
+        this.reports.map(item => {
+          if (item.ddm_rmp_post_report_id == this.linkUrlId) {
+            item.link_to_results = link
+          }
+        })
+      }
+    }, error => {
       this.toasterService.error(error.error.error.link_to_results.join())
       Utils.hideSpinner()
     })
@@ -1259,7 +1267,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // close modal
-  closeTBD_Assigned(){
+  closeTBD_Assigned() {
     $('#close_url_modal').click();
   }
 

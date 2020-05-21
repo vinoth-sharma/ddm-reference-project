@@ -1232,7 +1232,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
 
   }
 
-  reportCriteriaCheckbox(report_id) {
+  public reportCriteriaCheckbox(report_id) {
     if (report_id = localStorage.getItem('report_id') != null) {
       report_id = localStorage.getItem('report_id')
     }
@@ -1241,12 +1241,12 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
       if (element['status'] == "Incomplete" || element['status'] == "Active" ||
         element['status'] == "Pending" || element['status'] == "Cancelled") {
         this.report_id_service.changeUpdate(true)
-      }
-      else if (element['status'] == 'Completed') {
-        if (element['frequency_data'].length > 1) {
+      } else if (element['status'] == 'Completed') { // changes done by Ganesh
+        if (element['frequency'] == 'Recurring') {
+          this.report_id_service.changeUpdate(false)
+        } else if (element['frequency_data'].length > 1) {
           this.report_id_service.changeUpdate(true)
-        }
-        else {
+        } else {
           this.report_id_service.changeUpdate(false)
         }
       }

@@ -123,6 +123,8 @@ class DataProviderMockMockService {
   changeNotificationData(notification: object) {
     this.notifications.next(notification)
   }
+  loadNotifications(){}
+
 }
 
 class TestRouteHandling {

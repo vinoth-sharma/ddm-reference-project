@@ -3,7 +3,7 @@
         <h5 class="bold">Order Criteria</h5>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="req_body.report_id">
-        <div class="red">Request #{{ req_body.report_id }} Incomplete</div>
+        <div [innerHTML]="display_message"></div>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="!req_body.report_id">
         <div class="red">Create Request to proceed with vehicle event status</div>

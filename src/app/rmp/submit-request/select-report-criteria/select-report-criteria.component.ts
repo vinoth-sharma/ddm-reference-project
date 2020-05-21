@@ -22,8 +22,8 @@ export class SelectReportCriteriaComp implements OnInit {
   // @Input() lookupMasterData = {};
   // @Input() lookupTableMD = {};
 
-  @Input() selectedReqData: any;
-  @Output() requestCreated = new EventEmitter();
+  // @Input() selectedReqData: any;
+  // @Output() requestCreated = new EventEmitter();
 
   l_lookup_MD: any = {
     market: {},
@@ -101,7 +101,8 @@ export class SelectReportCriteriaComp implements OnInit {
     report_id: null,
     on_behalf_of: "",
     status: "",
-    message: ""
+    message: "",
+    type : "src"
   }
 
   constructor(public djangoService: DjangoService,
@@ -139,7 +140,13 @@ export class SelectReportCriteriaComp implements OnInit {
         this.refillLookupTableData();
       }
     })
-    // console.log("src done");
+
+    this.submitService.requestStatusEmitter.subscribe((request:any)=>{
+      if(request.type === "srw"){
+        this.refillSelectedRequestData(request.data);
+      }
+    })
+    console.log("src done");
     this.submitService.updateLoadingStatus({ status: true, comp: "src" })
   }
 
@@ -158,10 +165,10 @@ export class SelectReportCriteriaComp implements OnInit {
     // }
     // console.log(this.special_identifiers_obj);
 
-    if (this.selectedReqData) {
+    // if (this.selectedReqData) {
       // console.log(this.selectedReqData);
-      this.refillSelectedRequestData(this.selectedReqData);
-    }
+      // this.refillSelectedRequestData(this.selectedReqData);
+    // }
 
   }
 
@@ -322,8 +329,9 @@ export class SelectReportCriteriaComp implements OnInit {
       this.req_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
       this.req_body.report_detail.status = response['report_data']['status'];
 
+      // this.requestCreated.emit(this.response_body)
       if(this.response_body.status === "Incomplete")
-        this.requestCreated.emit(this.response_body)
+         this.submitService.updateRequestStatus({type:"src",data:this.response_body})
     }, err => {
       Utils.hideSpinner();
       console.log(err);

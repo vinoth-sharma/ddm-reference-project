@@ -48,7 +48,7 @@ export const MY_FORMATS = {
 export class DealerAllocationComp implements OnInit {
   // @Input() lookupTableMD = {};
   // @Input() divisionData = [];
-  @Input() requestDetails:any;
+  // @Input() requestDetails:any;
 
   // --------------------------------------------------------
   l_lookupTableMD: any = {}
@@ -92,7 +92,7 @@ export class DealerAllocationComp implements OnInit {
         title: "",
         assigned_to: "",
         additional_req: "",
-        created_on: null,
+        created_on: new Date(),
         report_type: "da",
         status: "Pending",
         status_date: null,
@@ -105,12 +105,13 @@ export class DealerAllocationComp implements OnInit {
     report_id : null
   }
 
-  request_details = {
-    division_selected : [],
-    report_id : null,
-    on_behalf_of : "",
-    status : "",
-  }
+  display_message = "";
+  // request_details = {
+  //   division_selected : [],
+  //   report_id : null,
+  //   on_behalf_of : "",
+  //   status : "",
+  // }
 
 
 
@@ -133,21 +134,25 @@ export class DealerAllocationComp implements OnInit {
       this.refillMasterDatatoOptions();
     })
 
-    console.log("dealer done");
-    this.submitService.updateLoadingStatus({status: true, comp : "da"})
+    this.submitService.requestStatusEmitter.subscribe((res:any)=>{
+      if(res.type === "src"){
+        this.refillDivisionMD(res.data.division_selected);
+        this.req_body.report_id = res.data.report_id;
+        this.display_message = `<span class="red">Request #${this.req_body.report_id} - Incomplete</span>`
+      }
+    })
 
-    
+    this.submitService.updateLoadingStatus({status: true, comp : "da"})
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
     // console.log(simpleChanges);
-    if (simpleChanges.requestDetails && this.requestDetails['division_selected']) {
-      // this.request_details.division_selected = this.requestDetails.division_selected;
-      this.refillDivisionMD(this.requestDetails.division_selected);
-      this.req_body.report_detail.status = this.requestDetails.status;
-      this.req_body.report_detail.on_behalf_of = this.requestDetails.on_behalf_of;
-      this.req_body.report_id = this.requestDetails.report_id;
-    }
+    // if (simpleChanges.requestDetails && this.requestDetails['division_selected']) {
+    //   this.refillDivisionMD(this.requestDetails.division_selected);
+    //   this.req_body.report_detail.status = this.requestDetails.status;
+    //   this.req_body.report_detail.on_behalf_of = this.requestDetails.on_behalf_of;
+    //   this.req_body.report_id = this.requestDetails.report_id;
+    // }
   }
 
   refillDivisionMD(divisions){
@@ -207,8 +212,9 @@ export class DealerAllocationComp implements OnInit {
     this.req_body.report_detail.additional_req = result.data.addReq;
     this.req_body.report_detail.requestor = this.user_name;
     this.req_body.report_detail.status_date = new Date();
-    this.req_body.report_detail.created_on = new Date();
-    this.req_body.report_detail.status = "Pending";
+    this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
+    // this.req_body.report_detail.created_on = new Date();
+    // this.req_body.report_detail.status = "Pending";
     
     this.req_body.concensus_time_date.startCycle = this.startCycle;
     this.req_body.concensus_time_date.endCycle = this.endCycle;

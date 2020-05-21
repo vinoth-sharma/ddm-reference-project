@@ -15,7 +15,7 @@ export interface Dl {
 })
 export class ReportFrequencyComponent implements OnInit {
   @Input() lookupTableData: any = {}
-  @Input() existingData: any;
+  // @Input() existingData: any;
   @Output() reportFreqEmitter = new EventEmitter();
   reportFreq: {}[] = [{ label: 'Yes', id: true }, { label: 'No', id: false }];
 
@@ -42,6 +42,12 @@ export class ReportFrequencyComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.subReqService.requestStatusEmitter.subscribe((res:any)=>{
+      if(res.type === "srw"){
+        this.refillSelectedRequestData(res.data);
+      }
+    })
   }
 
   ngOnChanges(simpleChange: SimpleChanges) {
@@ -49,9 +55,9 @@ export class ReportFrequencyComponent implements OnInit {
       this.refillMasterData();
     }
     // console.log(this.existingData);
-    if (this.existingData) {
-      this.refillSelectedRequestData(this.existingData);
-    }
+    // if (this.existingData) {
+      // this.refillSelectedRequestData(this.existingData);
+    // }
   }
 
   refillSelectedRequestData(reqData) {
@@ -97,10 +103,7 @@ export class ReportFrequencyComponent implements OnInit {
       });
 
     }
-console.log(this.selected);
-console.log( );
-
-
+// console.log(this.selected);
 
   }
 

@@ -38,6 +38,20 @@ import { NotesWrapperComponent } from './admin-notes/notes-wrapper/notes-wrapper
 import { DisplayNotesComponent } from './admin-notes/display-notes/display-notes.component';
 import { ExistingNotesContainerComponent } from './admin-notes/existing-notes-container/existing-notes-container.component';
 import { ManageNotesComponent } from './admin-notes/manage-notes/manage-notes.component';
+import { DisclaimerModalComponent } from "./submit-request/disclaimer-modal/disclaimer-modal.component";
+import { DisclaimerWrapperComponent } from "./submit-request/disclaimer-wrapper/disclaimer-wrapper.component";
+import { SubmitRequestWrapperComponent } from "./submit-request/submit-request-wrapper/submit-request-wrapper.component";
+import { DisclaimerHelpModalComponent } from './submit-request/disclaimer-help-modal/disclaimer-help-modal.component';
+import { VehicleEventStatusComponent } from './submit-request/vehicle-event-status/vehicle-event-status.component';
+import { SelectReportCriteriaComp } from "./submit-request/select-report-criteria/select-report-criteria.component";
+import { NgChipsComponent } from './submit-request/sub-components/ng-chips/ng-chips.component';
+import { ReportFrequencyComponent } from './submit-request/sub-components/report-frequency/report-frequency.component';
+import { TopfilterComponent } from "./submit-request/sub-components/topfilter/topfilter.component";
+import { DealerAllocationComp } from "./submit-request/dealer-allocation/dealer-allocation.component";
+import { NgCipsEmailComponent } from './submit-request/sub-components/ng-cips-email/ng-cips-email.component';
+import { AdditionalReqModalComponent } from './submit-request/additional-req-modal/additional-req-modal.component';
+import { ReviewReqModalComponent } from './submit-request/review-req-modal/review-req-modal.component';
+import { RequestOnbehalfComp } from './submit-request/request-onbehalf/request-onbehalf.component';
 import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
 
 @NgModule({
@@ -64,6 +78,20 @@ import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
     DisplayNotesComponent,
     ExistingNotesContainerComponent,
     ManageNotesComponent,
+    DisclaimerModalComponent,
+    DisclaimerWrapperComponent,
+    SubmitRequestWrapperComponent,
+    DisclaimerHelpModalComponent,
+    VehicleEventStatusComponent,
+    SelectReportCriteriaComp,
+    NgChipsComponent,
+    ReportFrequencyComponent,
+    TopfilterComponent,
+    DealerAllocationComp,
+    NgCipsEmailComponent,
+    AdditionalReqModalComponent,
+    ReviewReqModalComponent,
+    RequestOnbehalfComp,
     BrandFormsComponent
   ],
   imports: [
@@ -89,6 +117,8 @@ import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
     DatePipe,
     DataProviderService
   ],
-  entryComponents: [DisplayNotesComponent, NotesWrapperComponent]
+  entryComponents: [DisplayNotesComponent, NotesWrapperComponent, DisclaimerModalComponent,
+    DisclaimerHelpModalComponent, AdditionalReqModalComponent, ReviewReqModalComponent,
+    RequestOnbehalfComp]
 })
 export class RMPModule { }

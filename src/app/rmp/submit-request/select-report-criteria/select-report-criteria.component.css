@@ -1,0 +1,102 @@
+.bodyWrapper{
+    height: 92vh;
+    background: #fafafa;
+    padding: 5rem 10rem;
+    margin-top: 8vh;
+    font-size: 0.8vw;
+}
+.reportCriteria{
+    background: white;
+    box-shadow: 0px 0px 4px lightgrey;
+    padding: 1.5vw;
+}
+.rcHeadWrapper{
+    height: 10vh;
+}
+.clearBtn{
+    background: none;
+    color: #71bcfc;
+    border: 2px solid #71bcfc;
+    font-size: 0.6vw;
+    padding: 1.5vh 2vw;
+}
+.rcTitle{
+    font-size: 1.7em;
+    margin-bottom: 1.5vh;
+}
+.rcCallout{
+    font-size: 0.8vw;
+}
+.bacDealers{
+    margin-bottom: 1.5vh;
+    font-size: 0.8vw;
+}
+:host ::ng-deep .mat-radio-label-content{
+    font-weight: normal;
+    padding-left: 0.1vw;
+}
+:host ::ng-deep .mat-body, .mat-body-1, .mat-typography, .mat-chip{
+    font-size: 0.8vw;
+}
+
+
+.col-xs-15,
+.col-sm-15,
+.col-md-15,
+.col-lg-15 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.col-xs-3 {
+    width: 20%;
+    float: left;
+}
+@media (min-width: 768px) {
+.col-sm-3 {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 992px) {
+    .col-md-3 {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 1200px) {
+    .col-lg-3 {
+        width: 20%;
+        float: left;
+    }
+}
+.col-xs-9 {
+    width: 60%;
+    float: left;
+}
+@media (min-width: 768px) {
+.col-sm-9 {
+        width: 60%;
+        float: left;
+    }
+}
+@media (min-width: 992px) {
+    .col-md-9 {
+        width: 60%;
+        float: left;
+    }
+}
+@media (min-width: 1200px) {
+    .col-lg-9 {
+        width: 60%;
+        float: left;
+    }
+}
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+.savenProceed{
+    margin-top: 2vh;
+}

@@ -5,7 +5,7 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { AuthenticationService } from "src/app/authentication.service";
 declare var $: any;
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DisplayNotesComponent } from '../admin-notes/display-notes/display-notes.component';
 import { NotesWrapperComponent } from '../admin-notes/notes-wrapper/notes-wrapper.component';
 
@@ -104,15 +104,5 @@ export class RmpLandingPageComponent implements OnInit {
         })
       }
     })
-  }
-
-  // reset important parameters
-  public closeNotes() {
-    if (this.info.data.admin_note[0]) {
-      this.db_start_date = this.info.data.admin_note[0].notes_start_date;
-      this.db_end_date = this.info.data.admin_note[0].notes_end_date;
-      this.admin_notes = this.info.data.admin_note[0].notes_content;
-      this.note_status = this.info.data.admin_note[0].admin_note_status;
-    }
   }
 }

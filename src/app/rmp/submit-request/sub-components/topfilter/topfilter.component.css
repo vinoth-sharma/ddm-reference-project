@@ -1,0 +1,16 @@
+
+.topFilterwrapper{
+    border-radius: 5px;
+    border: 1px solid lightgray;
+    padding: 1vh 0.3vw;
+    height: 15vh;
+    overflow-y: auto;
+}
+.topFilterTitle{
+    padding: 1vh 0;
+    font-weight: bold;
+}
+.topFilterwrapper>button{
+    margin: 0.6vh 0.5vw;
+    font-size: 0.6vw;
+}

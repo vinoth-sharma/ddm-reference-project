@@ -1,0 +1,23 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" [ngClass]="{'noPadding': settings.title?false:true }">
+    <div class="topFilterTitle" *ngIf="settings.title" [innerHTML]="settings.title"></div>
+
+<mat-form-field>
+    <mat-label>{{ l_db.length?settings.label:"" }}</mat-label>
+    <mat-select multiple [(ngModel)]="selectAll" [formControl]="toppings" [matTooltip]="l_db.length?getTitle():''">
+        <mat-select-trigger>
+            {{ selectAll.length === 2 ? getTitle() : getTitle() }}
+        </mat-select-trigger>
+        <mat-option #allSelected (click)="toggleAllSelection($event)" [value]="0" [disabled]="!searched_data.length">
+            Select all</mat-option>
+        <mat-option [value]="2" style="display: none;">dummy</mat-option>
+        <input matInput (keyup)="onKey($event.target.value)" placeholder="search..." id="multiInput">
+        <div *ngFor="let item of searched_data" class="custom-checkbox-opt">
+            <mat-checkbox [ngModel]="item['checked']" [value]="item[settings.primary_key]"
+                (change)="checkedBox($event)"> {{ item[settings.label_key] }} </mat-checkbox>
+        </div>
+
+        <div *ngIf="!searched_data.length" class="custom-checkbox-opt" style="padding: 0px 4%;"> No data found </div>
+    </mat-select>
+</mat-form-field>
+
+</div>

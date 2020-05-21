@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, } from '@angular/router';
+import { Router, NavigationEnd, } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import Utils from '../../utils';
@@ -25,14 +25,56 @@ export class HeaderComponent implements OnInit {
   public redTraker = [];
   public unreadTraker = [];
 
+  public routerObj = [{
+    label: "Main Menu",
+    routerVal: "main",
+    isVisible: true,
+    isActive: true
+  }, {
+    label: "Submit Request",
+    routerVal: "disclaimer",
+    isVisible: true,
+    isActive: false
+  }, {
+    label: "Request Status",
+    routerVal: "request-status",
+    isVisible: true,
+    isActive: false
+  }, {
+    label: "Reports",
+    routerVal: "reports",
+    isVisible: true,
+    isActive: false
+  }, {
+    label: "Metrics",
+    routerVal: "metrics",
+    isVisible: false,
+    isActive: false
+  }]
+
   constructor(private route: Router,
     private authenticationService: AuthenticationService,
     private dataProvider: DataProviderService) {
     this.subscribeToService()
     dataProvider.loadNotifications()
+    // this.subscribeToService();
+    route.events.subscribe((val) => {
+      // console.log(val);
+      if (val instanceof NavigationEnd) {
+        // Hide loading indicator
+        this.routerObj.forEach(ele => {
+          if (val.urlAfterRedirects.includes(ele.routerVal))
+            ele.isActive = true;
+          else if (ele.routerVal === "disclaimer" && val.urlAfterRedirects.includes("submit-request"))
+            ele.isActive = true;
+          else
+            ele.isActive = false;
+        })
+      }
+    });
   }
-// subscribe to observables in authenticationservice and dataProvider service 
-// to get user info and notification details
+  // subscribe to observables in authenticationservice and dataProvider service 
+  // to get user info and notification details
   public subscribeToService() {
     this.authenticationService.myMethod$.subscribe((arr) => {
       this.arr = arr;
@@ -45,7 +87,13 @@ export class HeaderComponent implements OnInit {
         this.dataProvider.currentNotifications.subscribe((element: Array<any>) => {
           if (element) {
             this.user_name = role["first_name"] + " " + role["last_name"]
-            this.user_role = role["role"]
+            this.user_role = role["role"];
+            if (this.user_role === "Admin")
+              this.routerObj[4].isVisible = true;
+            // this.notification_list = element.filter(element => {
+            //   return element.commentor != this.user_name
+            // })
+            // this.user_role = role["role"]
             this.notification_list = element;
             let unread = [];
             let red = [];
@@ -73,7 +121,7 @@ export class HeaderComponent implements OnInit {
   public modulePageRoute() {
     this.route.navigate(['user'])
   }
-// open downloaded pdf in a new window
+  // open downloaded pdf in a new window
   public redirect(value: string) {
     Utils.showSpinner();
     this.authenticationService.getHelpRedirection(value).subscribe(res => {

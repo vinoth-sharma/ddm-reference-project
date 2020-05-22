@@ -41,14 +41,6 @@ const MY_FORMATS = {
   ]
 })
 export class VehicleEventStatusComponent implements OnInit {
-  // @Input() lookupTableMD = {};
-  // @Input() divisionData = [];
-  // @Input() requestDetails: any;
-
-
-
-  // disabled = false;
-  // ---------------------------------------------------------
 
   filtered_MD = {
     model_years: [],
@@ -146,12 +138,6 @@ export class VehicleEventStatusComponent implements OnInit {
   }
 
   display_message = "";
-  // request_details = {
-  // division_selected: []
-  // report_id : null,
-  // on_behalf_of : "",
-  // status : "",
-  // }
 
   user_name = "";
   user_role = "";
@@ -194,6 +180,7 @@ export class VehicleEventStatusComponent implements OnInit {
         this.req_body.report_detail.requestor = res.data.report_data.requestor;
         this.display_message = `<span class="red">Request #${this.req_body.report_id} - Incomplete</span>`
         // this.refillSelectedRequestData(request.data);
+        this.fillReportDetails(res.data)
       }
       else if (res.type === "srw" && res.data.status != "Incomplete") {
         console.log(res.data);
@@ -210,9 +197,8 @@ export class VehicleEventStatusComponent implements OnInit {
         else{
           this.display_message = `<span class="green">Request #${this.req_body.report_id} - ${this.req_body.report_detail.status}</span>`
           this.refillSelectedRequestData(res.data);
-
         }
-
+        this.fillReportDetails(res.data);
       }
     })
 
@@ -220,19 +206,6 @@ export class VehicleEventStatusComponent implements OnInit {
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
-    // console.log(simpleChanges);
-    // if (simpleChanges.requestDetails && this.requestDetails['division_selected']) {
-    //   this.refillDivisionsMD(this.requestDetails.division_selected);
-    //   this.req_body.report_detail.status = this.requestDetails.status;
-    //   this.req_body.report_id = this.requestDetails.report_id;
-    // }
-
-    // this.request_details.division_selected = this.requestDetails.division_selected;
-    // this.req_body.report_detail.on_behalf_of = this.requestDetails.on_behalf_of;
-
-    // this.request_details.report_id = this.requestDetails.report_id;
-    // this.request_details.status = this.requestDetails.status;
-    // this.request_details.on_behalf_of = this.requestDetails.on_behalf_of;
   }
 
   refillMasterDatatoOptions() {
@@ -453,19 +426,15 @@ export class VehicleEventStatusComponent implements OnInit {
     this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
     this.req_body.report_detail.title = result.data.reportTitle;
     this.req_body.report_detail.additional_req = result.data.addReq;
-    // this.req_body.report_detail.requestor = this.user_name;
     this.req_body.report_detail.status_date = new Date();
-    // this.req_body.report_detail.created_on = new Date();
-    // this.req_body.report_detail.status = "Pending";
-    // this.req_body.report_id = 10;
-    // this.req_body.division_selected.dropdown = this.selected.divisions;
-    // console.log(this.req_body);
+
 
     Utils.showSpinner();
     this.submitService.submitVehicelEventStatus(this.req_body).subscribe(response => {
       // console.log(response);
       Utils.hideSpinner();
-      this.ngToaster.success(`Request #${this.req_body.report_id} Updated successfully`)
+      this.ngToaster.success(`Request #${this.req_body.report_id} Updated successfully`);
+      this.submitService.setSubmitOnBehalf("","");
       this.router.navigate(["user/request-status"]);
     }, err => {
       Utils.hideSpinner();
@@ -579,7 +548,14 @@ export class VehicleEventStatusComponent implements OnInit {
           return oe
       })
     }
-    //refill the existing report details 
+  }
+
+  formatedDateToMoment(str){
+    return moment(new Date(str))
+  }
+
+  //refill the existing report details 
+  fillReportDetails(data){
     this.req_body.report_detail.title = data.title;
     this.req_body.report_detail.additional_req = data.additional_req;
     this.req_body.report_detail.created_on = data.report_data.created_on;
@@ -588,10 +564,6 @@ export class VehicleEventStatusComponent implements OnInit {
     this.req_body.report_detail.link_title = data.report_data.link_title;
     this.req_body.report_detail.link_to_results  = data.report_data.link_to_results;
     this.req_body.report_detail.query_criteria = data.report_data.query_criteria;
-  }
-
-  formatedDateToMoment(str){
-    return moment(new Date(str))
   }
 
   getSelectedCheckboxData() {
@@ -609,12 +581,6 @@ export class VehicleEventStatusComponent implements OnInit {
     }
     return l_checkbox_data
   }
-
-  // keyElemChecked() {
-  //   if (this.disabled === true) {
-  //     this.keyElem = new FormControl();
-  //   }
-  // }
 
   resetCheckboxData() {
     for (const key in this.checkBxMD1) {

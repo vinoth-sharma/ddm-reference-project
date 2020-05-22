@@ -5,6 +5,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 import { DjangoService } from '../../django.service';
 import Utils from 'src/utils';
 import { ConfirmationDialogComponent } from 'src/app/custom-directives/confirmation-dialog/confirmation-dialog.component';
+import { AuthenticationService } from 'src/app/authentication.service';
 declare var jsPDF: any;
 
 @Component({
@@ -30,68 +31,72 @@ export class DisclaimerModalComponent implements OnInit {
     ]
   };
 
-  l_lookupTableData:any = {};
-  public showEditOption:boolean = true;
-
+  l_lookupTableData: any = {};
+  public showEditOption: boolean = true;
   public submitReqDisclaimerObj = {
-    ddm_rmp_desc_text_id : 15,
-    module_name : "Disclaimer",
-    description : ""
+    ddm_rmp_desc_text_id: 15,
+    module_name: "Disclaimer",
+    description: ""
   }
-
-  disclaimerAckObj = {
-    disclaimer_ack : undefined
+  public disclaimerAckObj = {
+    disclaimer_ack: undefined
   }
+  public user_role = "";
 
   constructor(public dialogRef: MatDialogRef<DisclaimerModalComponent>,
     public subReqService: SubmitRequestService,
     private toaster: NgToasterComponent,
+    private auth_service: AuthenticationService,
     private django: DjangoService,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
-    // console.log(this.data);
+    this.auth_service.myMethod$.subscribe(role => {
+      if (role) {
+        this.user_role = role["role"]
+      }
+    })
     this.l_lookupTableData = this.subReqService.getLookUpTableData();
     this.l_lookupTableData.desc_text.forEach(element => {
-     if(element.ddm_rmp_desc_text_id === 15)
-      this.submitReqDisclaimerObj.description = element.description
-   });
+      if (element.ddm_rmp_desc_text_id === 15)
+        this.submitReqDisclaimerObj.description = element.description
+    });
   }
 
-  acknowledgeDisclaimer(){
+  acknowledgeDisclaimer() {
     this.disclaimerAckObj.disclaimer_ack = new Date();
     Utils.showSpinner();
     this.django.user_info_disclaimer(this.disclaimerAckObj).subscribe(response => {
-    
+
       Utils.hideSpinner()
       this.toaster.success("Acknowledge Disclaimers successfull");
-    },err=>{
+    }, err => {
       Utils.hideSpinner()
       this.toaster.success("server error");
     })
   }
 
-  confirmDisclaimerSubmit(){
+  confirmDisclaimerSubmit() {
     let obj = {
       confirmation: false,
       modalTitle: 'Confirmation for changes in Disclaimer',
       modalBody: 'Are you sure you want to change the disclaimer as it affects numerous users?',
       modalBtn: 'Yes'
     }
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent,{
-      data : obj
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: obj
     })
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-      if(result.confirmation)
+      if (result.confirmation)
         this.submitReqDisclaimerDesc();
     });
   }
 
-  submitReqDisclaimerDesc(){
+  submitReqDisclaimerDesc() {
     Utils.showSpinner();
-    this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDisclaimerObj).subscribe((response:any) => {
+    this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDisclaimerObj).subscribe((response: any) => {
       Utils.hideSpinner()
       this.toaster.success(response.message);
     }, err => {
@@ -100,7 +105,7 @@ export class DisclaimerModalComponent implements OnInit {
     })
   }
 
-  downloadDisclaimer(){
+  downloadDisclaimer() {
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
@@ -121,10 +126,6 @@ export class DisclaimerModalComponent implements OnInit {
     )
   }
 
-  textChanged(event){
-    // console.log(event);
-  }
-  
   closeDailog(): void {
     this.dialogRef.close();
   }

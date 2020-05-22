@@ -40,10 +40,8 @@ export class RequestOnbehalfComp implements OnInit {
         map(name => name ? this._filter(name) : this.dl_list.slice())
       );
 
-    let lookTableData = this.subReqService.getLookUpTableData();
+    // let lookTableData = this.subReqService.getLookUpTableData();
     this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
-      console.log(tableDate);
-      
     let l_dl_list = tableDate['data']['users_list'];
     this.dl_list = l_dl_list.map(ele => {
       return {
@@ -53,8 +51,12 @@ export class RequestOnbehalfComp implements OnInit {
         users_table_id: ele.users_table_id
       }
     })
-
-    // this.myControl.setValue(this.subReqService.getSubmitOnBehalf())
+    let userSaved = this.subReqService.getSubmitOnBehalf();
+    if(userSaved.length){
+      let user = this.dl_list.find(dl=>dl.fullName.trim() === userSaved.trim())
+      if(user)
+        this.myControl.setValue(user)
+    }
   });
   }
 

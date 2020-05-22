@@ -2,22 +2,24 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h5 class="bold">Order Criteria</h5>
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="req_body.report_id">
-        <div class="red">Request #{{ req_body.report_id }} Incomplete</div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="req_body.report_id"
+        style="margin: 0px 0px 15px;font-size: 1.3em;font-weight: 600;">
+        <div [innerHTML]="display_message"></div>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="!req_body.report_id">
         <div class="red">Create Request to proceed with vehicle event status</div>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
         <app-mat-multiselect [data]="filtered_MD.divisions" [settings]="division_settings"
-        [(inputModel)]="selected.divisions" (selectionDone)="multiSelectChange('division')"></app-mat-multiselect>
+            [(inputModel)]="selected.divisions" (selectionDone)="multiSelectChange('division')"></app-mat-multiselect>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
                 Model Years
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="filtered_MD.model_years" [settings]="model_yr_settings"
-                [(inputModel)]="selected.model_years" (selectionDone)="multiSelectChange('model')"></app-mat-multiselect>
+                    [(inputModel)]="selected.model_years" (selectionDone)="multiSelectChange('model')">
+                </app-mat-multiselect>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
@@ -26,7 +28,8 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="filtered_MD.vehicle" [settings]="vehicle_settings"
-                [(inputModel)]="selected.vehicle" (selectionDone)="multiSelectChange('vehicle')"></app-mat-multiselect>
+                    [(inputModel)]="selected.vehicle" (selectionDone)="multiSelectChange('vehicle')">
+                </app-mat-multiselect>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
@@ -35,7 +38,8 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="filtered_MD.allocation" [settings]="allocation_settings"
-                [(inputModel)]="selected.allocation" (selectionDone)="multiSelectChange('allocation')"></app-mat-multiselect>
+                    [(inputModel)]="selected.allocation" (selectionDone)="multiSelectChange('allocation')">
+                </app-mat-multiselect>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
@@ -44,7 +48,8 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="filtered_MD.merchandising" [settings]="merchandising_settings"
-                [(inputModel)]="selected.merchandising" (selectionDone)="multiSelectChange('merchandising')"></app-mat-multiselect>
+                    [(inputModel)]="selected.merchandising" (selectionDone)="multiSelectChange('merchandising')">
+                </app-mat-multiselect>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
@@ -54,7 +59,8 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                     <app-mat-multiselect [data]="filtered_MD.distribution_entity" [settings]="distribution_settings"
-                    [(inputModel)]="selected.distribution_entity" (selectionDone)="multiSelectChange('distribution')"></app-mat-multiselect>
+                        [(inputModel)]="selected.distribution_entity"
+                        (selectionDone)="multiSelectChange('distribution')"></app-mat-multiselect>
                 </div>
             </div>
         </div>
@@ -65,9 +71,9 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <mat-radio-group aria-labelledby="example-radio-group-label" class="" [(ngModel)]="distibutionEntityRadio">
-                    <mat-radio-button class="radio-label" *ngFor="let bool of ['Display', 'Summary']"
-                        [value]="bool">
+                <mat-radio-group aria-labelledby="example-radio-group-label" class=""
+                    [(ngModel)]="distibutionEntityRadio">
+                    <mat-radio-button class="radio-label" *ngFor="let bool of ['Display', 'Summary']" [value]="bool">
                         {{bool}}
                     </mat-radio-button>
                 </mat-radio-group>
@@ -80,7 +86,8 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                     <app-mat-multiselect [data]="filtered_MD.order_type" [settings]="orderType_settings"
-                    [(inputModel)]="selected.order_type" (selectionDone)="multiSelectChange('orderType')"></app-mat-multiselect>
+                        [(inputModel)]="selected.order_type" (selectionDone)="multiSelectChange('orderType')">
+                    </app-mat-multiselect>
                 </div>
             </div>
         </div>
@@ -92,8 +99,7 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <mat-radio-group aria-labelledby="example-radio-group-label" class="" [(ngModel)]="orderTypeRadio">
-                    <mat-radio-button class="radio-label" *ngFor="let bool of ['Display', 'Summary']"
-                        [value]="bool">
+                    <mat-radio-button class="radio-label" *ngFor="let bool of ['Display', 'Summary']" [value]="bool">
                         {{bool}}
                     </mat-radio-button>
                 </mat-radio-group>
@@ -101,12 +107,13 @@
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter ">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding lineHeight">Commonly requested fields available for
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding lineHeight">Commonly requested fields
+                    available for
                     display</div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="checkBxMD1.commonly_req_field" [settings]="commonly_req_field_settings"
-                [(inputModel)]="selected_checkbox.commonly_req_field" ></app-mat-multiselect>
+                    [(inputModel)]="selected_checkbox.commonly_req_field"></app-mat-multiselect>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding callout lineHeight margBtmLight">
@@ -116,17 +123,19 @@
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter ">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding lineHeight">Option content available for display
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding lineHeight">Option content available for
+                    display
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="checkBxMD1.opt_content_avail" [settings]="option_content_avail_settings"
-                [(inputModel)]="selected_checkbox.opt_content_avail" ></app-mat-multiselect>
+                    [(inputModel)]="selected_checkbox.opt_content_avail"></app-mat-multiselect>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding callout lineHeight margBtmLight">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 lineHeightSmall">
-                *When choosing "Other Production Options" or "Family of Options", please list these requirements in the Additional Requirements area
+                *When choosing "Other Production Options" or "Family of Options", please list these requirements in the
+                Additional Requirements area
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter margBottom">
@@ -135,7 +144,7 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="checkBxMD1.order_event_avail_ds" [settings]="order_event_avail_settings"
-                [(inputModel)]="selected_checkbox.order_event_avail_ds" ></app-mat-multiselect>
+                    [(inputModel)]="selected_checkbox.order_event_avail_ds"></app-mat-multiselect>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
@@ -144,7 +153,7 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="keyDataEle.masterData" [settings]="keyDataEle_settings"
-                [(inputModel)]="keyDataEle.selected" ></app-mat-multiselect>
+                    [(inputModel)]="keyDataEle.selected"></app-mat-multiselect>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignLeft">
@@ -158,8 +167,8 @@
                 <mat-checkbox [(ngModel)]="keyDataEle.others.checked"></mat-checkbox>
                 <mat-form-field style="width: 100%">
                     <mat-label>Please enter other Key Data Elements</mat-label>
-                    <input matInput placeholder="Please enter other Key Data Elements" value="" 
-                    [disabled]="!keyDataEle.others.checked" [(ngModel)]="keyDataEle.others.order_event">
+                    <input matInput placeholder="Please enter other Key Data Elements" value=""
+                        [disabled]="!keyDataEle.others.checked" [(ngModel)]="keyDataEle.others.order_event">
                 </mat-form-field>
             </div>
         </div>
@@ -171,21 +180,21 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
                     <mat-form-field style="width: 95%; margin-left: 0.5vw;">
                         <mat-label>Start Date</mat-label>
-                        <input matInput [matDatepicker]="fromOrderEvent" [formControl]="keyDataEle.orderEvtFromDate" 
-                                textEditable="false"
-                               (dateChange)="onOrderEventdateSelection()">
+                        <input matInput [matDatepicker]="fromOrderEvent" [formControl]="keyDataEle.orderEvtFromDate"
+                            textEditable="false" (dateChange)="onOrderEventdateSelection()">
                         <mat-datepicker-toggle matSuffix [for]="fromOrderEvent"></mat-datepicker-toggle>
                         <mat-datepicker #fromOrderEvent></mat-datepicker>
-                      </mat-form-field>
+                    </mat-form-field>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
                     <mat-form-field style="width: 95%; margin-left: 0.5vw;">
                         <mat-label>End Date</mat-label>
-                        <input matInput [matDatepicker]="toOrderEvent" [formControl]="keyDataEle.orderEvtToDate" [disabled]="!keyDataEle.orderEvtFromDate.value"
-                          [min]="minOrderEventDate" textEditable="false" (dateChange)="onOrderEventdateSelection()">
+                        <input matInput [matDatepicker]="toOrderEvent" [formControl]="keyDataEle.orderEvtToDate"
+                            [disabled]="!keyDataEle.orderEvtFromDate.value" [min]="minOrderEventDate"
+                            textEditable="false" (dateChange)="onOrderEventdateSelection()">
                         <mat-datepicker-toggle matSuffix [for]="toOrderEvent"></mat-datepicker-toggle>
                         <mat-datepicker #toOrderEvent></mat-datepicker>
-                      </mat-form-field>
+                    </mat-form-field>
                 </div>
             </div>
         </div>
@@ -202,11 +211,11 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <ng-container *ngFor="let sales of checkboxMD2.sales_avail"> 
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-                            <mat-checkbox [(ngModel)]="sales['checked']"> {{ sales.field_values }}  </mat-checkbox>
-                        </div>
-                    </ng-container>
+                        <ng-container *ngFor="let sales of checkboxMD2.sales_avail">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                                <mat-checkbox [(ngModel)]="sales['checked']"> {{ sales.field_values }} </mat-checkbox>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
             </div>
@@ -216,51 +225,55 @@
                         Days Supply
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding" >
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                                 <div> Net (Inventory) using Sales of </div>
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-                                    <mat-checkbox  *ngFor="let daysSupply of checkboxMD2.days_supply1"
-                                    [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;"> {{ daysSupply.label }}  </mat-checkbox>
+                                    <mat-checkbox *ngFor="let daysSupply of checkboxMD2.days_supply1"
+                                        [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;">
+                                        {{ daysSupply.label }} </mat-checkbox>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding" >
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                                 <div> Gross (Total Availability) using Sales of</div>
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-                                    <mat-checkbox  *ngFor="let daysSupply of checkboxMD2.days_supply2"
-                                    [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;"> {{ daysSupply.label }}  </mat-checkbox>
+                                    <mat-checkbox *ngFor="let daysSupply of checkboxMD2.days_supply2"
+                                        [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;">
+                                        {{ daysSupply.label }} </mat-checkbox>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding" >
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                                 <div> Gross + (Total Avail/Placed) using Sales of</div>
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-                                    <mat-checkbox  *ngFor="let daysSupply of checkboxMD2.days_supply3"
-                                    [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;"> {{ daysSupply.label }}  </mat-checkbox>
+                                    <mat-checkbox *ngFor="let daysSupply of checkboxMD2.days_supply3"
+                                        [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;">
+                                        {{ daysSupply.label }} </mat-checkbox>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding" >
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                                 <div> Hybrid (InTrans+Inv) using Sales of</div>
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-                                    <mat-checkbox  *ngFor="let daysSupply of checkboxMD2.days_supply4"
-                                    [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;"> {{ daysSupply.label }}  </mat-checkbox>
+                                    <mat-checkbox *ngFor="let daysSupply of checkboxMD2.days_supply4"
+                                        [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;">
+                                        {{ daysSupply.label }} </mat-checkbox>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -269,9 +282,11 @@
                     Penetration
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding" *ngFor="let penetration of checkboxMD2.penetration">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding"
+                        *ngFor="let penetration of checkboxMD2.penetration">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <mat-checkbox [(ngModel)]="penetration['checked']"> {{ penetration.field_values }} </mat-checkbox>
+                            <mat-checkbox [(ngModel)]="penetration['checked']"> {{ penetration.field_values }}
+                            </mat-checkbox>
                         </div>
                     </div>
                 </div>
@@ -282,8 +297,10 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"  *ngFor="let time2turn of checkboxMD2.time_to_turn">
-                            <mat-checkbox [(ngModel)]="time2turn['checked']"> {{ time2turn.field_values }} </mat-checkbox>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            *ngFor="let time2turn of checkboxMD2.time_to_turn">
+                            <mat-checkbox [(ngModel)]="time2turn['checked']"> {{ time2turn.field_values }}
+                            </mat-checkbox>
                         </div>
                     </div>
                 </div>
@@ -292,14 +309,15 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     Turn Rate
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding" >
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                     <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                         <div>Using Sales of</div>
                     </div>
                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-                            <mat-checkbox  *ngFor="let daysSupply of checkboxMD2.turn_rate"
-                            [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;"> {{ daysSupply.label }}  </mat-checkbox>
+                            <mat-checkbox *ngFor="let daysSupply of checkboxMD2.turn_rate"
+                                [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;"> {{ daysSupply.label }}
+                            </mat-checkbox>
                         </div>
                     </div>
                 </div>
@@ -307,38 +325,39 @@
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter" style="margin-top: 0.8vh;">
             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 bold">
-                DOSP - Orders Processed 
+                DOSP - Orders Processed
             </div>
             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
                     <mat-form-field style="width: 95%; margin-left: 0.5vw;">
                         <mat-label>Start Date</mat-label>
                         <input matInput [matDatepicker]="fromDpDOSP" [formControl]="fromDateDOSP"
-                          (dateChange)="onDOSPDateSelection()" textEditable="false">
+                            (dateChange)="onDOSPDateSelection()" textEditable="false">
                         <mat-datepicker-toggle matSuffix [for]="fromDpDOSP"></mat-datepicker-toggle>
                         <mat-datepicker #fromDpDOSP></mat-datepicker>
-                      </mat-form-field>
+                    </mat-form-field>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
-                      <mat-form-field style="width: 95%; margin-left: 0.5vw;">
+                    <mat-form-field style="width: 95%; margin-left: 0.5vw;">
                         <mat-label>End Date</mat-label>
-                        <input matInput [matDatepicker]="toDpDOSP" [formControl]="toDateDOSP" [disabled]="!fromDateDOSP.value"
-                          [min]="minDateDosp" textEditable="false" (dateChange)="onDOSPDateSelection()">
+                        <input matInput [matDatepicker]="toDpDOSP" [formControl]="toDateDOSP"
+                            [disabled]="!fromDateDOSP.value" [min]="minDateDosp" textEditable="false"
+                            (dateChange)="onDOSPDateSelection()">
                         <mat-datepicker-toggle matSuffix [for]="toDpDOSP"></mat-datepicker-toggle>
                         <mat-datepicker #toDpDOSP></mat-datepicker>
-                      </mat-form-field>
+                    </mat-form-field>
                 </div>
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter" style="min-height: 15vh;">
-            <span style="background: yellow; color: black; padding: 0.5vw 1vw;">Additional Requirements Area will appear once you click 'Continue'</span>
+            <span style="background: yellow; color: black; padding: 0.5vw 1vw;">Additional Requirements Area will appear
+                once you click 'Continue'</span>
         </div>
     </div>
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
-        <button [cssBtn]="'ok'" mat-raised-button (click)="openAdditionalReqModal();"
-        [disabled]="!req_body.report_id"
-        [paramFlag]="!req_body.report_id?true:false">Continue</button>
-        
+        <button [cssBtn]="'ok'" mat-raised-button (click)="openAdditionalReqModal();" [disabled]="!req_body.report_id"
+            [paramFlag]="!req_body.report_id?true:false">Continue</button>
+
     </div>
 </div>

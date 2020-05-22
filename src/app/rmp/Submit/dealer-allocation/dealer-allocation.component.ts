@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -19,7 +19,6 @@ import Utils from 'src/utils';
   styleUrls: ['./dealer-allocation.component.css']
 })
 export class DealerAllocationComponent implements OnInit, AfterViewInit {
-  // @ViewChild("consensusDataRef") consensusCheckBox : HTMLElement;
   public generated_report_status: string;
   public division_index = [];
   public dealer_allocation_selection: object;
@@ -901,10 +900,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     ele.forEach((row: any) => {
       temp.concensus_data.push({ id: row.value, value: row.value })
     })
-    // $.each($("input[class='events']:checked"), function () {
-    //   this.concencusDataCheckbox = { "id": $(this).val(), "value": $(this).val() };
-    //   temp.concensus_data.push(this.concencusDataCheckbox);
-    // });
 
     this.finalData = temp;
     var SMonth = $('#Smonth').val();

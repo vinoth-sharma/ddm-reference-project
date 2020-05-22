@@ -7,16 +7,14 @@
     <!-- <p>Selections can be used to generate Vehicle Event Status or Dealer Allocation Requests</p> -->
 
     <div class="submit-req-body">
-        <select-report-criteria (requestCreated)="requestCreated($event)"
-        [selectedReqData]="selectedReportData"></select-report-criteria>
+        <select-report-criteria></select-report-criteria>
         <div class="row" style="width: 100%;">
             <mat-tab-group>
                 <mat-tab label="Vehicle Event Status">
-                    <app-vehicle-event-status [requestDetails]="request_details"></app-vehicle-event-status>
-                    <!-- <app-vehicleevent-status></app-vehicleevent-status> -->
+                    <app-vehicle-event-status></app-vehicle-event-status>
                 </mat-tab>
                 <mat-tab label="Dealer Allocation">
-                    <dealer-allocation [requestDetails]="request_details"></dealer-allocation>
+                    <dealer-allocation></dealer-allocation>
                 </mat-tab>
                 <mat-tab disabled>
                     <ng-template mat-tab-label>

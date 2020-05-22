@@ -2,7 +2,7 @@
     <div class="disclaimer-header" style="height: 80px;padding: 0px 35px;">
         <span class="">Steps to Submit a Request and View Results</span>
         <div>
-            <button mat-icon-button style="margin-right: 15px;" matTooltip="edit" *ngIf="showEditOption"
+            <button mat-icon-button style="margin-right: 15px;" matTooltip="edit" *ngIf="showEditOption && user_role==='Admin'"
                 (click)="showEditOption=!showEditOption">
                 <mat-icon class="notification-icon">edit</mat-icon>
             </button>

@@ -10,7 +10,7 @@
       <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre">
         <ng-container *ngIf="showEditOption">
         <button mat-icon-button style="margin-right: 15px;" matTooltip="edit" 
-          (click)="showEditOption=!showEditOption">
+          (click)="showEditOption=!showEditOption" *ngIf="user_role==='Admin'">
           <mat-icon class="notification-icon">edit</mat-icon>
         </button>
         <button mat-icon-button style="margin-right: 15px;" matTooltip="Download Disclaimers"

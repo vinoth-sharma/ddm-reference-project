@@ -6,6 +6,7 @@ import Utils from '../../../../utils';
 import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
 import { DjangoService } from '../../django.service';
 import { SubmitRequestService } from "../submit-request.service";
+import { AuthenticationService } from 'src/app/authentication.service';
 
 @Component({
   selector: 'app-disclaimer-wrapper',
@@ -37,14 +38,22 @@ export class DisclaimerWrapperComponent implements OnInit {
     description : ""
   };
   public l_lookupTableData:any = {};
+  user_role = "";
 
   constructor( private toaster: NgToasterComponent,
     private django: DjangoService,
     private subReqService: SubmitRequestService,
+    private auth_service: AuthenticationService,
     private dialog: MatDialog) {}
 
   ngOnInit(): void {
     Utils.showSpinner();
+    this.auth_service.myMethod$.subscribe(role => {
+      if (role) {
+        this.user_role = role["role"]
+      }
+    })
+
     this.subReqService.getHttpLookUpTableData().subscribe(res=>{
       this.l_lookupTableData = res.data;
       this.l_lookupTableData.desc_text.forEach(element => {

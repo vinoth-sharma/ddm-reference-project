@@ -26,9 +26,9 @@ export class SubmitRequestWrapperComponent implements OnInit {
   // lookupTableMasterData = {};
 
 
-  request_details: any = {};
+  // request_details: any = {};
 
-  selectedReportData = null;
+  // selectedReportData = null;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
@@ -37,23 +37,6 @@ export class SubmitRequestWrapperComponent implements OnInit {
     private submitReqService: SubmitRequestService,
     public toastr: NgToasterComponent) {
 
-    submitReqService.loadingStatus.subscribe((status: any) => {
-      if (status.comp === "da" && status.status) {
-        let requestId = localStorage.getItem("report_id")
-        if (requestId){
-          Utils.showSpinner();
-          submitReqService.getReportDescription(requestId).subscribe(res => {
-            // console.log(res);
-            this.selectedReportData = res;
-            Utils.hideSpinner();
-          }, err => {
-            Utils.hideSpinner();
-          })
-
-        }
-
-      }
-    })
 
 
     this.auth_service.myMethod$.subscribe(role => {
@@ -75,13 +58,29 @@ export class SubmitRequestWrapperComponent implements OnInit {
     // })
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  this.submitReqService.loadingStatus.subscribe((status: any) => {
+    // console.log(status);
+    if (status.comp === "da" && status.status) {
+      let requestId = localStorage.getItem("report_id")
+      if (requestId){
+        Utils.showSpinner();
+        this.submitReqService.getReportDescription(requestId).subscribe(res => {
+          // console.log(res);
+          this.submitReqService.updateRequestStatus({type:"srw",data:res});
+          // this.selectedReportData = res;
+          Utils.hideSpinner();
+        }, err => {
+          Utils.hideSpinner();
+        })
 
-  requestCreated(event) {
-    this.request_details = event;
-  }
+      }
+
+    }
+  }) }
 
   ngOnDestroy(){
     localStorage.removeItem('report_id');
+    // this.submitReqService.loadingStatus.unsubscribe();
   }
 }

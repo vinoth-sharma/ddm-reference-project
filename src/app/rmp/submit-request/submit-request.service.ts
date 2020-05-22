@@ -3,7 +3,7 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { catchError, map } from 'rxjs/operators';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { json } from 'd3';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -21,7 +21,11 @@ export class SubmitRequestService {
    public onBehalfEmail = "";
    public onBehalfUser = "";
 
-   public loadingStatus = new Subject();
+  //  public loadingStatus = new Subject();
+
+   public loadingStatus = new Subject<any>();
+  //  public subLoadingStatus = this.loadingStatus.asObservable();
+   public requestStatusEmitter = new Subject();
 
   getHttpLookUpTableData(){
     return this.djangoService.getLookupValues().pipe(map((res:any) => {
@@ -72,6 +76,10 @@ export class SubmitRequestService {
 
   updateLoadingStatus(res){
     this.loadingStatus.next(res)
+  }
+
+  updateRequestStatus(res){
+    this.requestStatusEmitter.next(res)
   }
 
   public handleError(error: any): any {

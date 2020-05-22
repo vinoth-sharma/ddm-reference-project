@@ -30,6 +30,8 @@ export class AdditionalReqModalComponent implements OnInit {
     ngOnInit(): void {
       // console.log(this.data);
       this.l_CB_data = this.data.checkboxData;
+      this.report_title = this.data.l_title;
+      this.additional_req = this.data.l_addReq;
       // this.l_data1 = this.data.checkboxData.filter(cb=>{
       //   if(this.descIds1.includes(cb.ddm_rmp_lookup_ots_checkbox_values_id))
       //     return cb

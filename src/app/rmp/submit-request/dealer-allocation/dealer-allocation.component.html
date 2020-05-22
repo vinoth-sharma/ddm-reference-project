@@ -2,8 +2,9 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h5 class="bold">Consensus Process</h5>
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="req_body.report_id">
-        <div class="red">Request #{{ req_body.report_id }} Incomplete</div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="req_body.report_id"
+    style="margin: 0px 0px 15px;font-size: 1.3em;font-weight: 600;">
+        <div [innerHTML]="display_message"></div>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="!req_body.report_id" >
         <div class="red">Create Request to proceed with Dealer Allocation</div>

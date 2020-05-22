@@ -14,7 +14,7 @@
     </div>
     <div class="row topFiltersWrapper margBottom">
         <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15" *ngIf="response_body.report_id" 
-         style="margin : 0px 20px 4px;font-size: 1.3em; font-weight: 600;">
+         style="margin : 0px 20px 10px;font-size: 1.3em; font-weight: 600;">
             <div class="green"> Report #{{ req_body.report_id }} generated. </div>
             <div [innerHTML]="response_body.message"></div>
         </div>
@@ -104,7 +104,7 @@
         </div>
     </div>
     <app-report-frequency [lookupTableData]="l_lookup_MD.other" (reportFreqEmitter)="repFreqChange($event)"
-    [existingData]="selectedReqData"></app-report-frequency>
+    ></app-report-frequency>
     <!-- <app-morefilters></app-morefilters> -->
     <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
         <button type="button" class="btn btn-success savenProceed">Save and Proceed</button>

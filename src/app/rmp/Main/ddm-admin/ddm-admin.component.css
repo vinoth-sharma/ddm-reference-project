@@ -104,8 +104,9 @@ a:active {
 }
 
 .ref-styling {
-    padding: none;
-    height: 4vh;
+    height: auto;
+    min-height: 2vh;
+    margin-bottom: 10px;
 }
 
 .editButton {

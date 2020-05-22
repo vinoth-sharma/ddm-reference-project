@@ -299,6 +299,8 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     this.editid = undefined;
     (<HTMLInputElement>document.getElementById('document-name')).value = "";
     (<HTMLInputElement>document.getElementById('document-url')).value = "";
+    (<HTMLInputElement>document.getElementById('uploadCheckbox')).checked = false;
+    this.upload("")
   }
   // used to disable/enable url input field
   public upload(isChecked) {
@@ -324,7 +326,9 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let duplicateName = this.naming.find(ele => (ele['title'] == link_title));
-    if (!this.editid && duplicateName) {
+    let dupeFileName = this.isAdmin.docs.find(item => item.uploaded_file_name == link_title)
+    
+    if (!this.editid && (duplicateName || dupeFileName)) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
       document.getElementById("errorTrigger").click()
     } else if (link_title == "") {

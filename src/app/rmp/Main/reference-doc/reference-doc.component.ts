@@ -319,7 +319,9 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let duplicateName = this.naming.find(ele => (ele['title'] == link_title));
-    if (!this.editid && duplicateName) {
+    let dupeFileName = this.isRef.docs.find(item => item.uploaded_file_name == link_title)
+    
+    if (!this.editid && (duplicateName || dupeFileName)) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
       document.getElementById("errorTrigger").click()
     } else if (link_title == "") {
@@ -405,6 +407,8 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     this.editid = undefined;
     (<HTMLInputElement>document.getElementById('document-name')).value = "";
     (<HTMLInputElement>document.getElementById('document-url')).value = "";
+    (<HTMLInputElement>document.getElementById('uploadCheckbox')).checked = false;
+    this.upload("")
   }
 
   public files() {

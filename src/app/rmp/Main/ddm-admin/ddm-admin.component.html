@@ -80,14 +80,14 @@
         </div>
 
         <div class="ref-styling row" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
-          <div class="col-4">
+          <div class="col-5">
             <a [id]="'ref_doc'+element.ddm_rmp_desc_text_admin_documents_id" data-toggle="tooltip" title="{{element.url}}"
               target="_blank" href="{{element.url}}">
               {{element.title}}
             </a>
           </div>
 
-          <div class="col-1" style="padding-bottom: 6px;">
+          <div class="col-2" style="padding-bottom: 6px;">
             <a [id]="'delete'+element.ddm_rmp_desc_text_admin_documents_id" (click)="deleteDocument(element.ddm_rmp_desc_text_admin_documents_id,i)"
               *ngIf="editMode">
               <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
@@ -99,14 +99,14 @@
         </div>
 
         <div class="ref-styling row" [id]="'upload_doc'+i" *ngFor='let element of isAdmin.docs;let i = index'>
-          <div class="col-4">
+          <div class="col-5">
             <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle="tooltip" title="{{element.uploaded_file_name}}"
               (click)="getLink(element.file_id)" style="color: blue;cursor:pointer;">
-              <u>{{element.uploaded_file_name}}</u>
+              <u>{{element.uploaded_file_name}}</u> 
             </a>
           </div>
 
-          <div class="col-1" style="padding-bottom: 6px;">
+          <div class="col-2" style="padding-bottom: 6px;">
             <a [id]="'delete'+element.file_id" (click)="delete_upload_file(element.file_id,i)" *ngIf="editMode">
               <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
             </a>

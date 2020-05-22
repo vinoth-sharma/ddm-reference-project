@@ -4,6 +4,7 @@ import { SubmitRequestService } from "../submit-request.service";
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { DjangoService } from '../../django.service';
 import Utils from '../../../../utils';
+import { AuthenticationService } from 'src/app/authentication.service';
 
 @Component({
   selector: 'app-disclaimer-help-modal',
@@ -36,13 +37,21 @@ export class DisclaimerHelpModalComponent implements OnInit {
     description : ""
   }
 
+  user_role = "";
+  
   constructor(public dialogRef: MatDialogRef<DisclaimerHelpModalComponent>,
     public subReqService: SubmitRequestService,
     private toaster: NgToasterComponent,
     private django: DjangoService,
+    private auth_service: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+    this.auth_service.myMethod$.subscribe(role => {
+      if (role) {
+        this.user_role = role["role"]
+      }
+    })
     // console.log(this.data);
    this.l_lookupTableData = this.subReqService.getLookUpTableData();
    this.l_lookupTableData.desc_text.forEach(element => {

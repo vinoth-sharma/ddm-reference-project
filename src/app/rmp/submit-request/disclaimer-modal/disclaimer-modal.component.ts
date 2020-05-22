@@ -5,6 +5,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 import { DjangoService } from '../../django.service';
 import Utils from 'src/utils';
 import { ConfirmationDialogComponent } from 'src/app/custom-directives/confirmation-dialog/confirmation-dialog.component';
+import { AuthenticationService } from 'src/app/authentication.service';
 declare var jsPDF: any;
 
 @Component({
@@ -43,14 +44,22 @@ export class DisclaimerModalComponent implements OnInit {
     disclaimer_ack : undefined
   }
 
+  user_role="";
+
   constructor(public dialogRef: MatDialogRef<DisclaimerModalComponent>,
     public subReqService: SubmitRequestService,
     private toaster: NgToasterComponent,
+    private auth_service: AuthenticationService,
     private django: DjangoService,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+    this.auth_service.myMethod$.subscribe(role => {
+      if (role) {
+        this.user_role = role["role"]
+      }
+    })
     // console.log(this.data);
     this.l_lookupTableData = this.subReqService.getLookUpTableData();
     this.l_lookupTableData.desc_text.forEach(element => {

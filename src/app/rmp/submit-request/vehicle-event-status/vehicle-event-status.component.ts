@@ -172,7 +172,6 @@ export class VehicleEventStatusComponent implements OnInit {
         this.display_message = `<span class="red">Request #${this.req_body.report_id} - Incomplete</span>`
       }
       else if (res.type === "srw" && res.data.status === "Incomplete") {
-        console.log(res.data);
         this.division_settings.primary_key = "ddm_rmp_lookup_division"
         this.refillDivisionsMD(res.data.division_dropdown);
         this.req_body.report_id = res.data.ddm_rmp_post_report_id;
@@ -183,7 +182,6 @@ export class VehicleEventStatusComponent implements OnInit {
         this.fillReportDetails(res.data)
       }
       else if (res.type === "srw" && res.data.status != "Incomplete") {
-        console.log(res.data);
         this.division_settings.primary_key = "ddm_rmp_lookup_division"
         this.refillDivisionsMD(res.data.division_dropdown);
 

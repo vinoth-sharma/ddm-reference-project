@@ -133,7 +133,7 @@ export class SelectReportCriteriaComp implements OnInit {
     this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
       // console.log(tableDate);
       // this.lookupTableMasterData = tableDate ? tableDate.data : {};
-      this.l_lookup_MD.other = tableDate ? tableDate.data : {};
+      this.l_lookup_MD.other = tableDate ? JSON.parse(JSON.stringify(tableDate.data)) : {};
       if (this.l_lookup_MD.other) {
         this.special_identifiers_obj.bac = []
         this.special_identifiers_obj.fan = []

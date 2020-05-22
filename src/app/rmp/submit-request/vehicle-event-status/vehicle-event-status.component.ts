@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
+import { Component, OnInit, SimpleChanges, Input, ChangeDetectorRef, NgZone } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -92,8 +92,8 @@ export class VehicleEventStatusComponent implements OnInit {
     time_to_turn: [],
     turn_rate: []
   }
-  public fromDateDOSP: any = new FormControl();
-  public toDateDOSP: any = new FormControl();
+  public fromDateDOSP = new FormControl();
+  public toDateDOSP = new FormControl();
   public minDateDosp: Date = null;
 
   // public orderEvtToDate: any = new FormControl();
@@ -161,7 +161,9 @@ export class VehicleEventStatusComponent implements OnInit {
     public ngToaster: NgToasterComponent,
     private router: Router,
     public submitService: SubmitRequestService,
-    public auth_service: AuthenticationService) { }
+    public auth_service: AuthenticationService,
+    public ngZone : NgZone,
+    public changeDetRef : ChangeDetectorRef) { }
 
   ngOnInit() {
     this.auth_service.myMethod$.subscribe(role => {
@@ -172,7 +174,7 @@ export class VehicleEventStatusComponent implements OnInit {
       }
     })
     this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
-      this.l_lookupTableMD = tableDate ? tableDate.data : {};
+      this.l_lookupTableMD = tableDate ? JSON.parse(JSON.stringify(tableDate.data)) : {};
       this.refillMasterDatatoOptions();
     })
 
@@ -402,7 +404,9 @@ export class VehicleEventStatusComponent implements OnInit {
     }
     else {
       let obj = {
-        checkboxData: this.getSelectedCheckboxData()
+        checkboxData: this.getSelectedCheckboxData(),
+        l_title : this.req_body.report_detail.title,
+        l_addReq : this.req_body.report_detail.additional_req
       }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
         data: obj
@@ -461,7 +465,7 @@ export class VehicleEventStatusComponent implements OnInit {
     this.submitService.submitVehicelEventStatus(this.req_body).subscribe(response => {
       // console.log(response);
       Utils.hideSpinner();
-      this.ngToaster.success("Request Updated successfully")
+      this.ngToaster.success(`Request #${this.req_body.report_id} Updated successfully`)
       this.router.navigate(["user/request-status"]);
     }, err => {
       Utils.hideSpinner();
@@ -471,7 +475,7 @@ export class VehicleEventStatusComponent implements OnInit {
 
   refillSelectedRequestData(data){
     let l_data = data.ost_data;
-    console.log(this.selected);
+
     let vehicleIds = l_data.vehicle_line.map(ele=> ele.ddm_rmp_lookup_dropdown_vehicle_line_brand);
     this.selected.vehicle = this.l_lookupTableMD.vehicle_data.filter(vehicle=>{
       if (vehicleIds.includes(vehicle.ddm_rmp_lookup_dropdown_vehicle_line_brand_id))
@@ -515,24 +519,80 @@ export class VehicleEventStatusComponent implements OnInit {
      let f_dataEle = l_data.data_date_range[0].start_date
     let t_dataEle = l_data.data_date_range[0].end_date
 
-    
-    this.fromDateDOSP.value = this.formatedDateToMoment(f_dosp)
-    this.toDateDOSP.value = this.formatedDateToMoment(t_dsop)
-    this.minDateDosp = new Date(f_dosp);
+    if(f_dosp){
+      this.fromDateDOSP.setValue(this.formatedDateToMoment(f_dosp));
+      this.toDateDOSP.setValue(this.formatedDateToMoment(t_dsop))
+      this.minDateDosp = new Date(f_dosp);
+    }
+    if(f_dataEle){
+    this.keyDataEle.orderEvtFromDate.setValue(this.formatedDateToMoment(f_dataEle))
+    this.keyDataEle.orderEvtToDate.setValue(this.formatedDateToMoment(t_dataEle))
+    }
 
-    this.keyDataEle.orderEvtFromDate.value = this.formatedDateToMoment(f_dataEle);   
-    this.keyDataEle.orderEvtToDate.value = this.formatedDateToMoment(t_dataEle);   
+    //reset selected array
+    for (const key in this.selected_checkbox) {
+      if (this.selected_checkbox.hasOwnProperty(key)) {
+        this.selected_checkbox[key] = [];
+      }
+    }
 
-// --------to be continue
+    let len = l_data.checkbox_data.length;
+    for (let index = 0; index < len; index++) {
+      const element = l_data.checkbox_data[index];
+      for (const attr in this.checkBxMD1) {
+        if (this.checkBxMD1.hasOwnProperty(attr)) {
+          const objEle = this.checkBxMD1[attr];
+          let foundEle = objEle.find(ele=>ele.ddm_rmp_lookup_ots_checkbox_values_id === element.ddm_rmp_lookup_ots_checkbox_values)
+          if(foundEle){
+            if(foundEle.description)
+                foundEle['desc'] = element.description_text;
+            this.selected_checkbox[attr].push(foundEle);
+            break;
+          }
+        }
+      }
 
+      for (const attr in this.checkboxMD2) {
+        if (this.checkboxMD2.hasOwnProperty(attr)) {
+          const objEle = this.checkboxMD2[attr];
+          objEle.forEach(cb => {
+            if(cb.ddm_rmp_lookup_ots_checkbox_values_id === element.ddm_rmp_lookup_ots_checkbox_values)            
+              cb['checked'] = true;
+          });
+        }
+      }
+    }
+    // to trigger change detection
+    this.selected_checkbox.commonly_req_field = [...this.selected_checkbox.commonly_req_field]
+    this.selected_checkbox.opt_content_avail = [...this.selected_checkbox.opt_content_avail]
+    this.selected_checkbox.order_event_avail_ds = [...this.selected_checkbox.order_event_avail_ds]
 
-
+    // updating Key Data Elements for Date Range
+    if(l_data.order_event.length === 1 && !l_data.order_event[0].ddm_rmp_lookup_dropdown_order_event){
+      this.keyDataEle.others.order_event = l_data.order_event[0].order_event;
+      this.keyDataEle.others.checked = true;
+    }
+    else{
+      let keyEleIds = l_data.order_event.map(oe=>oe.ddm_rmp_lookup_dropdown_order_event)
+      this.keyDataEle.selected = this.keyDataEle.masterData.filter(oe=>{
+        if(keyEleIds.includes(oe.ddm_rmp_lookup_dropdown_order_event_id))
+          return oe
+      })
+    }
+    //refill the existing report details 
+    this.req_body.report_detail.title = data.title;
+    this.req_body.report_detail.additional_req = data.additional_req;
+    this.req_body.report_detail.created_on = data.report_data.created_on;
+    this.req_body.report_detail.assigned_to = data.report_data.assigned_to;
+    this.req_body.report_detail.requestor = data.report_data.requestor;
+    this.req_body.report_detail.link_title = data.report_data.link_title;
+    this.req_body.report_detail.link_to_results  = data.report_data.link_to_results;
+    this.req_body.report_detail.query_criteria = data.report_data.query_criteria;
   }
 
   formatedDateToMoment(str){
     return moment(new Date(str))
   }
-
 
   getSelectedCheckboxData() {
     let l_checkbox_data = [];

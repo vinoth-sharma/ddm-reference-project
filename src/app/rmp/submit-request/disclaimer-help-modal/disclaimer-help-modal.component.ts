@@ -28,17 +28,15 @@ export class DisclaimerHelpModalComponent implements OnInit {
     ]
   };
 
-  l_lookupTableData:any = {};
-  public showEditOption:boolean = true;
-
+  public l_lookupTableData: any = {};
+  public showEditOption: boolean = true;
   public submitReqHelpDescObj = {
-    ddm_rmp_desc_text_id : 14,
-    module_name : "Help_SubmitRequest",
-    description : ""
+    ddm_rmp_desc_text_id: 14,
+    module_name: "Help_SubmitRequest",
+    description: ""
   }
+  public user_role = "";
 
-  user_role = "";
-  
   constructor(public dialogRef: MatDialogRef<DisclaimerHelpModalComponent>,
     public subReqService: SubmitRequestService,
     private toaster: NgToasterComponent,
@@ -52,27 +50,22 @@ export class DisclaimerHelpModalComponent implements OnInit {
         this.user_role = role["role"]
       }
     })
-    // console.log(this.data);
-   this.l_lookupTableData = this.subReqService.getLookUpTableData();
-   this.l_lookupTableData.desc_text.forEach(element => {
-    if(element.ddm_rmp_desc_text_id === 14)
-     this.submitReqHelpDescObj.description = element.description
-  });
+    this.l_lookupTableData = this.subReqService.getLookUpTableData();
+    this.l_lookupTableData.desc_text.forEach(element => {
+      if (element.ddm_rmp_desc_text_id === 14)
+        this.submitReqHelpDescObj.description = element.description
+    });
   }
 
-  submitReqHelpDesc(){
+  submitReqHelpDesc() {
     Utils.showSpinner();
-    this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqHelpDescObj).subscribe((response:any) => {
+    this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqHelpDescObj).subscribe((response: any) => {
       Utils.hideSpinner()
       this.toaster.success(response.message);
     }, err => {
       Utils.hideSpinner()
       this.toaster.error("Server Error");
     })
-  }
-
-  textChanged(event){
-    // console.log(event);
   }
 
   closeDailog(): void {

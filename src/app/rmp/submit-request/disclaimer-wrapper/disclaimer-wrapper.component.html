@@ -2,11 +2,11 @@
     <div class="disclaimer-header" style="height: 80px;padding: 0px 35px;">
         <span class="">Steps to Submit a Request and View Results</span>
         <div>
-            <button mat-icon-button style="margin-right: 15px;" matTooltip="edit" *ngIf="showEditOption && user_role==='Admin'"
-                (click)="showEditOption=!showEditOption">
+            <button mat-icon-button style="margin-right: 15px;" matTooltip="edit"
+                *ngIf="showEditOption && user_role==='Admin'" (click)="showEditOption=!showEditOption">
                 <mat-icon class="notification-icon">edit</mat-icon>
             </button>
-            <button mat-icon-button style="" (click)='openDisclaimerHelpModal()' matTooltip="help">
+            <button mat-icon-button (click)='openDisclaimerHelpModal()' matTooltip="help">
                 <mat-icon class="notification-icon">help</mat-icon>
             </button>
         </div>
@@ -17,19 +17,19 @@
             and click the Acknowledge button when complete</p>
 
         <div class="quillEditorSubmit">
-            <quill-editor class="quill" [(ngModel)]="submitReqDescObj.description" [modules]="config" [readOnly]="showEditOption"
-                (onContentChanged)="textChanged($event)"></quill-editor>
+            <quill-editor class="quill" [(ngModel)]="submitReqDescObj.description" [modules]="config"
+                [readOnly]="showEditOption"></quill-editor>
             <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre" *ngIf="!showEditOption">
-                <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;" (click)="saveSubmitReqDesc()">Save</button>
+                <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;"
+                    (click)="saveSubmitReqDesc()">Save</button>
                 <button mat-raised-button [cssBtn]="'cancel'" (click)="showEditOption=true">Cancel</button>
             </div>
         </div>
 
     </div>
     <div class="disclaimer-footer ds-flex-centre" style="height: 70px;">
-        <!-- <button  mat-raised-button color="primary">Proceed to select report criteria</button> -->
         <button mat-raised-button style="background-color: #144214 !important;color: white"
-        routerLink="../submit-request" routerLinkActive="active">
+            routerLink="../submit-request" routerLinkActive="active">
             Proceed to select report criteria
         </button>
     </div>

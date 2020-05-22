@@ -316,7 +316,7 @@
               </td>
 
               </tr>
-              <tr [hidden]="isCommentsHidden">
+              <tr>
                 <td class="col-sm-12" colspan="12" style="padding: 0;">
                   <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse" style="width: 73vw">
                     <div class="row comment_row">
@@ -377,7 +377,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button style="color:transparent;border:none" data-dismiss="modal" *ngIf="comment_text" (click)="extract_comment()">
+        <button style="color:transparent;border:none" data-dismiss="modal" *ngIf="comment_text"
+          (click)="extract_comment()">
           <i fa class="fa fa-paper-plane"></i>
         </button>
       </div>
@@ -1008,7 +1009,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'"
           (click)="saveReportStatus()">Save Changes</button>
-        <button type="button" class="btn btn-secondary"  data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
       </div>
     </div>
   </div>

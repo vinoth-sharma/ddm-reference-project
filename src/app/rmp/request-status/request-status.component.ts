@@ -191,7 +191,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
-  public isCommentsHidden: boolean = true;
 
   public toolbarTooltips = {
     'font': 'Select a font',
@@ -919,7 +918,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           this.django.post_report_comments(report_comment).subscribe(response => {
             this.comment_list.push(response['data']);
             this.comment_text = "";
-            this.toastr.success('Comments for request-id :'+report_comment.ddm_rmp_post_report+' saved successfully!')
+            this.toastr.success('Comments for request-id :' + report_comment.ddm_rmp_post_report + ' saved successfully!')
             Utils.hideSpinner();
           }, err => {
             this.errorModalMessageRequest = "Please post the comment again";
@@ -934,7 +933,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
   public set_report_comments(report_id) {
     Utils.showSpinner();
-    this.isCommentsHidden = !this.isCommentsHidden;
     let accordion_id = "#accordion" + report_id;
     if ($(accordion_id).hasClass('collapse')) {
       this.django.get_report_comments(report_id).subscribe(response => {

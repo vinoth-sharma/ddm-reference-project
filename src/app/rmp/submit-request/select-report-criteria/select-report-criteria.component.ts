@@ -307,6 +307,8 @@ export class SelectReportCriteriaComp implements OnInit {
       // this.requestCreated.emit(this.response_body)
       if(this.response_body.status === "Incomplete")
          this.submitService.updateRequestStatus({type:"src",data:this.response_body})
+      else
+        this.submitService.updateLoadingStatus({ status: true, comp: "da" })
     }, err => {
       Utils.hideSpinner();
       console.log(err);

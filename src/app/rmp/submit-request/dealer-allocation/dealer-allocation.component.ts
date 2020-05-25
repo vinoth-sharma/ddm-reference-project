@@ -267,7 +267,8 @@ export class DealerAllocationComp implements OnInit {
       if (allocationIds.includes(allo.ddm_rmp_lookup_dropdown_allocation_group_da_id))
       return allo
     })
-
+    this.divisionDependencies();
+    
     let consensusIds = l_data.concensus_data.map(ele=> ele.ddm_rmp_lookup_da_consensus_data_id);
     this.selected.consensus = this.l_lookupTableMD.concensus_data_da.filter(cons=>{
       if (consensusIds.includes(cons.ddm_rmp_lookup_da_consensus_data_id))

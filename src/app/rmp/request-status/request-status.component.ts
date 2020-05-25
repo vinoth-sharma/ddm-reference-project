@@ -1191,7 +1191,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     else {
       localStorage.setItem('report_id', $(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-      this.router.navigate(["user/submit-request/select-report-criteria"]);
+      this.router.navigate(["user/submit-request"]);
     }
   }
 

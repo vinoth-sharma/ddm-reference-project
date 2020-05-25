@@ -1,0 +1,30 @@
+<div class="modal-container">
+  <div class="modal-header" style="font-size: 22px;">
+    Request on behalf
+    <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
+  </div>
+  <div class="modal-body">
+
+    <div> Need to submit a request for someone else? <br>
+      Search using GMIN, email address or first, last or full name with middle initials.
+      <br> <br>
+      Search the user and click Confirm. <br> <br>
+    </div>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Assignee</mat-label>
+      <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option [value]="noneOpt">{{ noneOpt.nameLabel }}</mat-option>
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{ option.nameLabel }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+  </div>
+  <div class="modal-footer">
+    <button [cssBtn]="'cancel'" mat-raised-button (click)="closeDailog();" style="margin-right: 15px;">Close</button>
+    <button [cssBtn]="'ok'" mat-raised-button (click)="confirmUser();">Confirm</button>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<mat-form-field class="" style="width: 100%;">
+    <mat-chip-list #chipList aria-label="Fruit selection">
+      <mat-chip *ngFor="let chip of chipsEntered" [selectable]="selectable"
+               [removable]="removable" (removed)="remove(chip)">
+        {{ chip }}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input [placeholder]="custom_placeholder"
+             [matChipInputFor]="chipList"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="addOnBlur"
+             (input)="textEntered($event)"
+             (matChipInputTokenEnd)="add($event)">
+
+    </mat-chip-list>
+    <mat-hint *ngIf="type==='fan'">*Only Applicable for Vehicle Event Status Requests</mat-hint>
+    <mat-hint *ngIf="!isTextValid" style="color: red;">Your items should be strictly Alphanumericals and should be of either 6 or 11 characters</mat-hint>
+  </mat-form-field>

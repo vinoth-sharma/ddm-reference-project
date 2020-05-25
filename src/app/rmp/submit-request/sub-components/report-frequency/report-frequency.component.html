@@ -1,0 +1,126 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignCenter">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 morefilterSeparator"></div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 leftSection">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 splIdTitle">Add Email<span class="red">*</span></div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 emailHolder">
+                    <app-ng-cips-email (emailSelectionEmitter)="emailSelectionDone($event)"
+                    [selectedemails]="selected.dl_list"></app-ng-cips-email>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 rightSection">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+            <div class="selFreqTitle">Select frequency of ongoing routine reports</div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding margBottom">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 splIdTitle">Report Frequency<span class="red">*</span></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding ">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 lineHeight">
+                        Is this report required on a regular basis?
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <mat-radio-group aria-labelledby="example-radio-group-label" class=""
+                     [(ngModel)]="selected.reportFreq_regBasis">
+                        <mat-radio-button class="radio-label" *ngFor="let freqOpt of reportFreq"
+                            [value]="freqOpt.id">
+                            {{ freqOpt.label }}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 selFreqSubHead">
+            Frequency of Vehicle Events Status Requests
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignCenter ">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                Daily / Weekly (Monday to Friday only)
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <mat-form-field>
+                    <mat-label>Frequency</mat-label>
+                    <mat-select multiple [(ngModel)]="selected.daily_weekly" 
+                    [disabled]="!selected.reportFreq_regBasis"  [compareWith]="compareFn"> 
+                        <mat-option *ngFor="let dayFreq of l_lookupData.daily_weekly" [value]="dayFreq">
+                            {{ dayFreq.select_frequency_values }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignCenter" style="align-items: baseline;">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                Monthly / Bi-Monthly
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <mat-form-field>
+                    <mat-label>Frequency</mat-label>
+                    <mat-select multiple [(ngModel)]="selected.monthly_bimonthly" [compareWith]="compareFn"
+                    [disabled]="!selected.reportFreq_regBasis" (selectionChange)="monthBimonChanges($event)">
+                        <mat-option *ngFor="let biMonFreq of l_lookupData.monthly_bimonthly" [value]="biMonFreq">
+                            {{ biMonFreq.select_frequency_values }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" *ngIf="selected.monthly_others">
+                    <mat-label>Other</mat-label>
+                    <input matInput placeholder="others..." [(ngModel)]="selected.monthly_others_decs"
+                    [disabled]="!selected.reportFreq_regBasis">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignCenter margBottom">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                Quarterly
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <mat-form-field>
+                    <mat-label>Frequency</mat-label>
+                    <mat-select  multiple  [(ngModel)]="selected.quaterly" [compareWith]="compareFn"
+                    [disabled]="!selected.reportFreq_regBasis">
+                        <mat-option *ngFor="let quarFreq of l_lookupData.quaterly" [value]="quarFreq">
+                            {{ quarFreq.select_frequency_values }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="font-weight: normal;">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding selFreqSubHead">
+                Frequency of Dealer Allocation Requests
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <ng-container *ngFor="let freqDA of l_lookupData.freq_dealer_allo">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
+                    <div style="padding:0px" [ngClass]="{'col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding':!freqDA.select_frequency_description ,
+                                'col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding' : freqDA.select_frequency_description }">
+                       <mat-checkbox [(ngModel)]="freqDA['checked']" [disabled]="!selected.reportFreq_regBasis"> 
+                           {{ freqDA.select_frequency_values }} </mat-checkbox>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding" *ngIf="freqDA.select_frequency_description"> 
+                        <mat-form-field>
+                            <input matInput [placeholder]="freqDA.ddm_rmp_lookup_select_frequency_id === 33?'Specific Periods':'Other'"
+                                    value="" [(ngModel)]="freqDA['description']" [disabled]="!selected.reportFreq_regBasis">
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
+        <button type="button" class="btn btn-success savenProceed" (click)="validateNdSubmit()">Save and Proceed</button>
+    </div>
+</div>

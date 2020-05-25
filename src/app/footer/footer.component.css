@@ -1,5 +1,8 @@
 .bottom {
   height: 5vh;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
   align-content: center;
   background-color: rgb(00,55,72);
   /* background-image: linear-gradient(rgb(116, 116, 116), black); */

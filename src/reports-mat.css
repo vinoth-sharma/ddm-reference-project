@@ -25,3 +25,12 @@
     background-color: #ffff00 !important;
     color: black;
 }
+
+#select-report-criteria .mat-checkbox-inner-container,
+#select-report-criteria .mat-radio-container,
+#select-report-criteria .mat-radio-inner-circle,
+#select-report-criteria .mat-radio-outer-circle {
+    height: 1.3vw!important;
+    width: 1.3vw!important;
+    /* margin-right: .5vw!important; */
+}

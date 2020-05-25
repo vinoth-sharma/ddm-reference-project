@@ -1,0 +1,7 @@
+.dealAllocWrapper{
+    padding: 1vh 1vw;
+    font-size: 2vh;
+}
+:host ::ng-deep .mat-radio-label-content{
+    font-weight: normal;
+}

@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 export class DjangoService {
   constructor(private httpClient: HttpClient) { }
 
+  public defaultUploadMessage: string = 'Please upload a file of CSV/WORD/EXCEL format!';
 
   // ###############################################################################//
   // <--                             GET Methods                             -->   //
@@ -20,10 +21,7 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/lookup_table_data`);
   }
 
-  // http://localhost:8000/RMP/getldap_emailids/?user_to_search=ASD
   public getDistributionList(user): Observable<any> {
-    // let url = "https://ddm-dev-temp.apps.pcfepg3mi.gm.com/"
-
     return this.httpClient.get(`${environment.baseUrl}RMP/getldap_emailids/?user_to_search=` + user).pipe(
       map(res => {
         if (res['data']) {

@@ -83,6 +83,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.submitReqService.setSubmitOnBehalf("","");
     localStorage.removeItem('report_id');
     this.subjectSubscription.unsubscribe()
     // this.submitReqService.loadingStatus.unsubscribe();

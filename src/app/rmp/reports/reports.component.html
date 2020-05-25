@@ -156,7 +156,8 @@
               </td>
               <td class="ddm-report-name">
                 <div class="report-name-edit" *ngIf="!element.clicked">
-                  <a style="font-size:18px" data-toggle="tooltip" title="EDIT" (click)="toggleShowInput(element)">
+                  <a style="font-size:18px" *ngIf="user_role == 'Admin'" data-toggle="tooltip" title="EDIT"
+                    (click)="toggleShowInput(element)">
                     <i id="ic" class="material-icons">mode_edit</i>
                   </a>
                   <p *ngIf="element.report_name">{{element.report_name}}</p>
@@ -390,7 +391,6 @@
                     </div>
                   </div>
                 </div>
-
                 <br>
                 <span>
                   <i>
@@ -457,8 +457,6 @@
       </div>
     </div>
   </div>
-
-
 
   <div id="queryCriteriaReport" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -576,7 +574,6 @@
                 <p *ngIf='text_notification == ""'>No</p>
                 <p *ngIf='text_notification != ""'>Yes</p>
               </div>
-
               <div *ngIf="summary?.report_type == 'ots'">
                 <b style="font-size:150%">Vehicle Event Status Data</b>
                 <br>
@@ -638,7 +635,6 @@
                 </div>
               </div>
               <!--                                Order To Sale Start                                    -->
-
               <!--                      Dealer allocation Part Start                          -->
               <div *ngIf="summary?.report_type == 'da'">
                 <h5>
@@ -714,7 +710,6 @@
 
 
   <!--========================================DOWNLOAD PDF===================================================================-->
-
   <pre class="container-fluid" style="height: auto;display: none" id="print">
     <pre>
       <h1>Distribution DataMart (DDM)       </h1>
@@ -744,7 +739,6 @@
     <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
     <br>
   </pre>
-
   <pre class="div-wrap">
     <b>Region(s) Selected:</b> &nbsp;&nbsp;
     <span>{{ region_description }}&nbsp;&nbsp;</span>
@@ -859,18 +853,16 @@
       <span>{{ model_year }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-  <pre class="div-wrap" *ngIf='summary && summary.da_data && 
-                                  summary.da_data.concensus_data && 
-                                  summary.da_data.concensus_data.length > 0'>
+  <pre class="div-wrap"
+    *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
       <b>Consensus Time and Date:</b> &nbsp;&nbsp;
       <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
         <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
-        <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
+        <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&n  bsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
       </span>
     </pre>
-  <pre class="div-wrap" *ngIf='summary && summary.da_data && 
-                                summary.da_data.concensus_data && 
-                                summary.da_data.concensus_data.length > 0'>
+  <pre class="div-wrap"
+    *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
         <b>Consensus Data:</b> &nbsp;&nbsp;
         <span *ngFor="let element of summary?.da_data.concensus_data">
           {{element?.cd_values}}&nbsp;&nbsp;

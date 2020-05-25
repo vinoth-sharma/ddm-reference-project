@@ -475,14 +475,14 @@ export class VehicleEventStatusComponent implements OnInit {
       if (distributionIds.includes(de.ddm_rmp_lookup_ots_type_data_id))
          return de
     })
-    this.distibutionEntityRadio = l_data.distribution_data[0].radio_btn
+    this.distibutionEntityRadio = l_data.distribution_data.length?l_data.distribution_data[0].radio_btn:"Summary";
 
     let orderIds = l_data.order_type.map(ele=> ele.ddm_rmp_lookup_dropdown_order_type);
     this.selected.order_type = this.l_lookupTableMD.order_type.filter(ot=>{
       if (orderIds.includes(ot.ddm_rmp_lookup_dropdown_order_type_id))
          return ot
     })
-    this.orderTypeRadio = l_data.order_type.length?l_data.order_type[0].radio_btn:"Summary";
+    this.orderTypeRadio = l_data.order_type.length?l_data.order_type[0].display_summary_value:"Summary";
 
     let f_dosp = l_data.data_date_range[0].dosp_start_date
     let t_dsop = l_data.data_date_range[0].dosp_end_date

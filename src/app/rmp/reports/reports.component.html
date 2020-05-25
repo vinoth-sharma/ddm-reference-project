@@ -152,7 +152,7 @@
               </td>
               <td class="ddm-report-name">
                 <div class="report-name-edit" *ngIf="!element.clicked">
-                  <a style="font-size:18px" data-toggle="tooltip" title="EDIT" (click)="toggleShowInput(element)"><i id="ic" class="material-icons">mode_edit</i></a>
+                  <a style="font-size:18px" *ngIf="user_role == 'Admin'" data-toggle="tooltip" title="EDIT" (click)="toggleShowInput(element)"><i id="ic" class="material-icons">mode_edit</i></a>
                   <p *ngIf="element.report_name">{{element.report_name}}</p>
                 </div>
                 <div  class="report-name-edit" *ngIf="element.clicked "><input style="max-width:110px" maxlength="50" placeholder="Name max 50 characters"

@@ -30,56 +30,61 @@ export class DisclaimerWrapperComponent implements OnInit {
       ['image']
     ]
   };
-  public showEditOption:boolean = true;
+  public showEditOption: boolean = true;
 
   public submitReqDescObj = {
-    ddm_rmp_desc_text_id : 3,
-    module_name : "Submit Request",
-    description : ""
+    ddm_rmp_desc_text_id: 3,
+    module_name: "Submit Request",
+    description: ""
   };
-  public l_lookupTableData:any = {};
+  public l_lookupTableData: any = {};
   user_role = "";
 
-  constructor( private toaster: NgToasterComponent,
+  constructor(private toaster: NgToasterComponent,
     private django: DjangoService,
     private subReqService: SubmitRequestService,
     private auth_service: AuthenticationService,
-    private dialog: MatDialog) {}
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    Utils.showSpinner();
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
       }
     })
 
-    this.subReqService.getHttpLookUpTableData().subscribe(res=>{
+    this.updateSubmitRequestDesc();
+
+  }
+
+  updateSubmitRequestDesc(): void {
+    Utils.showSpinner();
+    this.subReqService.getHttpLookUpTableData().subscribe(res => {
       this.l_lookupTableData = res.data;
       this.l_lookupTableData.desc_text.forEach(element => {
-        if(element.ddm_rmp_desc_text_id === 3)
-         this.submitReqDescObj.description = element.description
+        if (element.ddm_rmp_desc_text_id === 3)
+          this.submitReqDescObj.description = element.description
       });
 
       Utils.hideSpinner();
-    },err=>{
+    }, err => {
       Utils.hideSpinner();
     })
   }
 
-  openDisclaimerModal(){
+  openDisclaimerModal() {
     this.dialog.open(DisclaimerModalComponent, {
       data: ""
     })
   }
 
-  openDisclaimerHelpModal(){
+  openDisclaimerHelpModal() {
     this.dialog.open(DisclaimerHelpModalComponent, {
       data: ""
     })
   }
 
-  saveSubmitReqDesc(){
+  saveSubmitReqDesc() {
 
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDescObj).subscribe(response => {
       Utils.hideSpinner()
@@ -89,8 +94,8 @@ export class DisclaimerWrapperComponent implements OnInit {
       this.toaster.error("Server Error");
     })
   }
-  
 
-  textChanged(event){
+
+  textChanged(event) {
   }
 }

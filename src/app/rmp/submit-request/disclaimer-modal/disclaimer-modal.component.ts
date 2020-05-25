@@ -55,17 +55,22 @@ export class DisclaimerModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+
+    Utils.showSpinner();
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
       }
     })
     // console.log(this.data);
-    this.l_lookupTableData = this.subReqService.getLookUpTableData();
-    this.l_lookupTableData.desc_text.forEach(element => {
-     if(element.ddm_rmp_desc_text_id === 15)
-      this.submitReqDisclaimerObj.description = element.description
-   });
+    this.subReqService.getHttpLookUpTableData().subscribe(res=>{
+      this.l_lookupTableData = res.data;
+      this.l_lookupTableData.desc_text.forEach(element => {
+        if(element.ddm_rmp_desc_text_id === 15)
+         this.submitReqDisclaimerObj.description = element.description
+      });
+      Utils.hideSpinner()
+    });
   }
 
   acknowledgeDisclaimer(){
@@ -74,7 +79,7 @@ export class DisclaimerModalComponent implements OnInit {
     this.django.user_info_disclaimer(this.disclaimerAckObj).subscribe(response => {
     
       Utils.hideSpinner()
-      this.toaster.success("Acknowledge Disclaimers successfull");
+      this.toaster.success("Acknowledged Disclaimers successfull");
     },err=>{
       Utils.hideSpinner()
       this.toaster.success("server error");

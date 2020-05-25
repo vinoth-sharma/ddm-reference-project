@@ -614,7 +614,8 @@ export class VehicleEventStatusComponent implements OnInit {
     label: "Division",
     primary_key: 'ddm_rmp_lookup_division_id',
     label_key: 'division_desc',
-    title: ""
+    title: "",
+    isDisabled : true
   };
 
   public vehicle_settings = {

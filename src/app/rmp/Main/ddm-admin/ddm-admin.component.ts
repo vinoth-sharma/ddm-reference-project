@@ -480,6 +480,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
   }
+  
   // edit doc and save it
   public editDocument() {
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();

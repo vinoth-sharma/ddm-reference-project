@@ -412,12 +412,14 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
       })
     }
   }
+
 // to open important notes popup
   openAddNotes(){
     this.dialog.open(NotesWrapperComponent, {
       data: this.info.data.admin_note
     })
   }
+  
   // to read lookup data from currentlookUpTableData observable
   public getCurrentLookUpTable() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {

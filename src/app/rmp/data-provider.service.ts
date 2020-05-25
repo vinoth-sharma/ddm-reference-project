@@ -91,6 +91,7 @@ export class DataProviderService {
       })
     })
   }
+  
   // loading notifications from server and sorting it in a required way
   public loadNotifications() {
     return new Promise((resolve, reject) => {

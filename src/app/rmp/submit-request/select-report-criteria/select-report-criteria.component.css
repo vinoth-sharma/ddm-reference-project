@@ -3,7 +3,7 @@
     background: #fafafa;
     padding: 5rem 10rem;
     margin-top: 8vh;
-    font-size: 0.8vw;
+    font-size: 2vh;
 }
 .reportCriteria{
     background: white;
@@ -25,11 +25,11 @@
     margin-bottom: 1.5vh;
 }
 .rcCallout{
-    font-size: 0.8vw;
+    font-size: 0.8em;
 }
 .bacDealers{
     margin-bottom: 1.5vh;
-    font-size: 0.8vw;
+    font-size: 1.7vh;
 }
 :host ::ng-deep .mat-radio-label-content{
     font-weight: normal;

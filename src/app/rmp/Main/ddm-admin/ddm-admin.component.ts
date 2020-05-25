@@ -234,7 +234,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     this.spinner.show();
     this.django.get_doc_link(index).subscribe(ele => {
       var url = ele['data']['url']
-      window.location.href = url 
+      window.location.href = url
       this.spinner.hide();
     }, err => {
       this.spinner.hide();
@@ -299,7 +299,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   public content_edit() {
     this.editMode = false;
   }
-  
   // setting a few properties of component
   public editTrue() {
     this.editMode = !this.editMode;
@@ -363,9 +362,12 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.document_details["url"] = document_url;
       this.django.ddm_rmp_admin_documents_post(this.document_details).subscribe(response => {
         this.spinner.show();
+        $("#close_modal:button").click();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_admin_documents;
-          if (this.editid) this.toastr.success("Document updated");
+          if (this.editid) {
+            this.toastr.success("Document updated");
+          }
           else this.toastr.success("New document added");
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
@@ -375,7 +377,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
           this.spinner.hide()
           this.toastr.error("Server problem encountered")
         })
-
       }, err => {
         this.spinner.hide()
         this.toastr.error("Server problem encountered")
@@ -383,7 +384,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.naming.push(this.document_details);
     }
     else if (link_title != "" && upload_doc != null && link_url == "") {
-      $("#close_modal:button").click()
       this.files()
     }
     else if (link_title != "" && upload_doc != null && link_url != "") {
@@ -435,36 +435,42 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   // upload file to server
   public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-    var formData = new FormData();
-    formData.append('file_upload', this.file);
-    formData.append('uploaded_file_name', document_title);
-    formData.append('flag', "is_admin");
-    formData.append('type', 'rmp');
 
-    this.spinner.show();
-    this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      this.django.get_files().subscribe(ele => {
-        this.filesList = ele['list'];
-        if (this.filesList) {
-          this.dataProvider.changeFiles(ele)
-        }
-      })
-      $("#document-url").attr('disabled', 'disabled');
-      this.spinner.hide();
-      $('#uploadCheckbox').prop('checked', false);
-      $("#attach-file1").val('');
-      this.toastr.success("Uploaded Successfully");
-    }, err => {
-      this.spinner.hide();
-      $("#document-url").removeAttr('disabled');
-      $("#attach-file1").val('');
-      if (err && err['status'] === 400)
-        this.toastr.error("Submitted file is empty");
-      else
-        this.toastr.error("Server Error");
-      $('#uploadCheckbox').prop('checked', false);
-    });
+    if (this.file['type'] == '.csv' || this.file['type'] == '.doc' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
+      let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+      var formData = new FormData();
+      formData.append('file_upload', this.file);
+      formData.append('uploaded_file_name', document_title);
+      formData.append('flag', "is_admin");
+      formData.append('type', 'rmp');
+
+      this.spinner.show();
+      this.django.ddm_rmp_file_data(formData).subscribe(response => {
+        this.django.get_files().subscribe(ele => {
+          this.filesList = ele['list'];
+          if (this.filesList) {
+            this.dataProvider.changeFiles(ele)
+          }
+        })
+        $("#document-url").attr('disabled', 'disabled');
+        this.spinner.hide();
+        $('#uploadCheckbox').prop('checked', false);
+        $("#attach-file1").val('');
+        this.toastr.success("Uploaded Successfully");
+      }, err => {
+        this.spinner.hide();
+        $("#document-url").removeAttr('disabled');
+        $("#attach-file1").val('');
+        if (err && err['status'] === 400)
+          this.toastr.error("Submitted file is empty");
+        else
+          this.toastr.error("Server Error");
+        $('#uploadCheckbox').prop('checked', false);
+      });
+    }
+    else {
+      this.toastr.error(this.django.defaultUploadMessage)
+    }
   }
 
   // setting a few properties of component
@@ -474,7 +480,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
   }
-  
   // edit doc and save it
   public editDocument() {
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();

@@ -104,8 +104,7 @@ thead {
   font-weight: bold;
 }
 
-th,
-td.col-3 {
+th, td.col-3 {
   display: flex;
   justify-content: center;
   border-right: solid grey;
@@ -120,8 +119,7 @@ tbody {
   border-width: 0.2px;
 }
 
-td.col-9,
-td.col-12 {
+td.col-9, td.col-12 {
   border-top: none;
 }
 
@@ -144,8 +142,7 @@ td.col-12 {
   padding-top: 4%;
 }
 
-.timing,
-.check {
+.timing, .check {
   margin-bottom: 2%;
 }
 

@@ -171,9 +171,10 @@
               </tr>
               <tr class="row">&nbsp;</tr>
               <tr class="row">
-                <button class="btn btn-primary medium-btn" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
-                  data-toggle="collapse" [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id"
-                  style="padding: 0px 0px 0px 4px;font-size: 13px;width: 122%;">Comments
+                <button class="btn-sm btn-primary medium-btn"
+                  (click)="set_report_comments(element.ddm_rmp_post_report_id)" data-toggle="collapse"
+                  [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id"
+                  style="padding: 0px 0px 0px 4px;font-size: 12px">Comments
                   <i id="ic" class="material-icons comment-sec"
                     style="padding-left:0px;font-size:1.5rem;">expand_more</i></button>
               </tr>
@@ -192,7 +193,8 @@
                 <div *ngIf="element.requestor == 'TBD'">
                   {{ element.requestor }}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary" data-toggle="modal" data-target="#tbdModal" (click)="TBD(element)">
+                    <button class="btn-sm btn-primary" data-toggle="modal" data-target="#tbdModal"
+                      (click)="TBD(element)">
                       Assign Owner
                     </button>
                   </div>
@@ -276,8 +278,6 @@
                   (click)="addLinkUrl(element,'edit')">
                   Edit
                 </button>
-
-
               </td>
 
               <td *ngIf="element.status != 'Incomplete'">
@@ -288,37 +288,33 @@
                     QueryCriteria
                   </button>
                 </div>
-
               </td>
 
               <td *ngIf="user_role=='Admin' && element.status == 'Active'">
                 <div>
-                  <button class="btn btn-primary pointer" routerLinkActive="active-route"
-                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)"
-                    style="font-size: 12px;font-weight: 600;padding: 8px 6px;width: 103%;" disabled="true">
+                  <button class="btn-sm btn-primary pointer" routerLinkActive="active-route"
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
                     Create Report
                   </button>
                 </div>
               </td>
               <td *ngIf="user_role=='Non-Admin' && element.status == 'Active'">
                 <div>
-                  <button class="btn btn-primary pointer" routerLinkActive="active-route"
-                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)"
-                    style="font-size: 12px;font-weight: 600;padding: 8px 6px;width: 103%;" disabled="true">
+                  <button class="btn-sm btn-primary pointer" routerLinkActive="active-route"
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
                     Create Report
                   </button>
                 </div>
               </td>
               <td *ngIf="user_role=='Admin' && element.status != 'Active'">
                 <div>
-
                 </div>
               </td>
 
               </tr>
               <tr>
-                <td class="col-sm-12" colspan="10" style="padding:0;height: auto;border-right:none">
-                  <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse" style="width: 100%;">
+                <td class="col-sm-12" colspan="12" style="padding: 0;">
+                  <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse" style="width: 73vw">
                     <div class="row comment_row">
                       <ng-container *ngFor="let comment_element of comment_list">
                         <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
@@ -340,7 +336,6 @@
                         </ng-container>
                       </ng-container>
                     </div>
-
                   </div>
                 </td>
               </tr>
@@ -370,20 +365,19 @@
       </div>
       <div class="modal-body">
         <div><i>
-            <h6>*Max character limit is 255</h6>
+            <h6>*Max character limit is 255;Please do not try to submit empty comments</h6>
           </i></div>
         <div class="form-group">
           <textarea class="form-control" [(ngModel)]="comment_text" maxlength="255" rows="5" id="comment"></textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button style="color:transparent;border:none" data-dismiss="modal" (click)="extract_comment()">
+        <button style="color:transparent;border:none" data-dismiss="modal" *ngIf="comment_text"
+          (click)="extract_comment()">
           <i fa class="fa fa-paper-plane"></i>
         </button>
-
       </div>
     </div>
-
   </div>
 </div>
 
@@ -506,7 +500,7 @@
               Allocation</div>
           </div><br>
           <div class="col-sm-9"></div>
-          <div class="col-sm-1" >
+          <div class="col-sm-1">
             <i id="ic" class="material-icons download-pdf" (click)='captureScreen()'>
               get_app
             </i>
@@ -664,8 +658,7 @@
                 </span>
               </div>
               <div class="div-wrap">
-                <b>Consensus Data:</b> &nbsp;&nbsp;<span
-                  *ngFor="let element of summary?.da_data.concensus_data">
+                <b>Consensus Data:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.da_data.concensus_data">
                   {{element?.cd_values}}&nbsp;&nbsp;
                 </span>
                 <br>
@@ -972,11 +965,13 @@
         </div>
       </div>
       <div class="modal-body">
-        <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" placeholder="https://example.com" type="text" class="form-control" />
+        <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" placeholder="https://example.com"
+          type="text" class="form-control" />
         <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save Changes</button>
+        <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save
+          Changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeLinkUrl()">Close</button>
       </div>
     </div>
@@ -1008,7 +1003,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'"
           (click)="saveReportStatus()">Save Changes</button>
-        <button type="button" class="btn btn-secondary"  data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
       </div>
     </div>
   </div>
@@ -1021,25 +1016,25 @@
     <h1>Distribution DataMart (DDM)       </h1>
     <h1>Report Request Confirmation</h1>
   </pre>
-  <pre>
+<pre>
     <h3>Vehicle Event Status</h3>
   </pre>
-  <br>
-  <br>
+<br>
+<br>
 <pre style="width: 100%;float: left;margin-bottom: 10px;">
   <pre class="div-wrap">
       <span> <b>Request Date:</b>
         &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
   </pre>
-  <pre class="div-wrap">
+<pre class="div-wrap">
       <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
   </pre>
-  <pre *ngFor="let element of summary?.requestor" class="div-wrap">
+<pre *ngFor="let element of summary?.requestor" class="div-wrap">
       <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}
   </pre>
-  <pre class="div-wrap">
+<pre class="div-wrap">
       <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
-  </pre> 
+  </pre>
 </pre>
 <pre class="Request-summary">
 <b style="font-size:150%">Market Selections</b>
@@ -1162,28 +1157,28 @@
     <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
     <span>{{ allocation_group }}&nbsp;&nbsp;</span>
   </pre>
-  <pre class="div-wrap">
+<pre class="div-wrap">
     <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
     <span>{{ model_year }}&nbsp;&nbsp;</span>
     <br>
   </pre>
-  <pre class="div-wrap" *ngIf='summary && summary.da_data && summary.da_data.concensus_time_date && summary.da_data.concensus_time_date.length > 0'>
+<pre class="div-wrap"
+  *ngIf='summary && summary.da_data && summary.da_data.concensus_time_date && summary.da_data.concensus_time_date.length > 0'>
     <b>Consensus Time and Date:</b> &nbsp;&nbsp;
     <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
       <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
       <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
     </span>
   </pre>
-  <pre class="div-wrap" *ngIf='summary && summary.da_data && 
-                                  summary.da_data.concensus_data && 
-                                  summary.da_data.concensus_data.length > 0'>
+<pre class="div-wrap"
+  *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
       <b>Consensus Data:</b> &nbsp;&nbsp;
       <span *ngFor="let element of summary?.da_data.concensus_data">
         {{element?.cd_values}}&nbsp;&nbsp;
       </span>
     <br>
   </pre>
-  <pre class="div-wrap">
+<pre class="div-wrap">
       <b>Additional Requirements:</b> <br>
       <span>{{summary?.additional_req}}</span>
   </pre>

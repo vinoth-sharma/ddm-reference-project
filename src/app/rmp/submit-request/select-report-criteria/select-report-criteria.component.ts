@@ -22,8 +22,8 @@ export class SelectReportCriteriaComp implements OnInit {
   // @Input() lookupMasterData = {};
   // @Input() lookupTableMD = {};
 
-  @Input() selectedReqData: any;
-  @Output() requestCreated = new EventEmitter();
+  // @Input() selectedReqData: any;
+  // @Output() requestCreated = new EventEmitter();
 
   l_lookup_MD: any = {
     market: {},
@@ -101,7 +101,8 @@ export class SelectReportCriteriaComp implements OnInit {
     report_id: null,
     on_behalf_of: "",
     status: "",
-    message: ""
+    message: "",
+    type : "src"
   }
 
   constructor(public djangoService: DjangoService,
@@ -113,8 +114,9 @@ export class SelectReportCriteriaComp implements OnInit {
     this.authService.myMethod$.subscribe(role => {
       if (role) {
         this.userData.fullName = role['first_name'] + ' ' + role['last_name']
-        this.userData.userRole = role['role']
-        this.userData.email = role['email']
+        this.userData.userRole = role['role'];
+        this.userData.email = role['email'];
+        this.req_body.report_detail.requestor = this.userData.fullName;
       }
     })
   }
@@ -132,37 +134,23 @@ export class SelectReportCriteriaComp implements OnInit {
     this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
       // console.log(tableDate);
       // this.lookupTableMasterData = tableDate ? tableDate.data : {};
-      this.l_lookup_MD.other = tableDate ? tableDate.data : {};
+      this.l_lookup_MD.other = tableDate ? JSON.parse(JSON.stringify(tableDate.data)) : {};
       if (this.l_lookup_MD.other) {
         this.special_identifiers_obj.bac = []
         this.special_identifiers_obj.fan = []
         this.refillLookupTableData();
       }
     })
-    // console.log("src done");
+
+    this.submitService.requestStatusEmitter.subscribe((request:any)=>{
+      if(request.type === "srw"){
+        this.refillSelectedRequestData(request.data);
+      }
+    })
     this.submitService.updateLoadingStatus({ status: true, comp: "src" })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // this.l_lookup_MD.market = this.lookupMasterData;
-    // this.l_lookup_MD.other = this.lookupTableMD;
-    // if (this.l_lookup_MD.market) {
-    //   this.filtered_master_data.market = this.l_lookup_MD.market.market_data;
-    // }
-    // if (this.l_lookup_MD.other) {
-    //   console.log(this.l_lookup_MD.other);
-    //   this.special_identifiers_obj.bac = []
-    //   this.special_identifiers_obj.fan = []
-    //   this.refillLookupTableData();
-
-    // }
-    // console.log(this.special_identifiers_obj);
-
-    if (this.selectedReqData) {
-      // console.log(this.selectedReqData);
-      this.refillSelectedRequestData(this.selectedReqData);
-    }
-
   }
 
   refillLookupTableData() {
@@ -175,14 +163,6 @@ export class SelectReportCriteriaComp implements OnInit {
     })
 
   }
-
-
-  showData() {
-    console.log(this.filtered_master_data);
-    console.log(this.selected);
-    console.log(this.special_identifiers_obj);
-  }
-
 
   refillDropdownMasterData() {
     this.filtered_master_data.market = this.l_lookup_MD.market.market_data;
@@ -294,8 +274,6 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.select_frequency = freqReq.report_freq;
     this.req_body.frequency = freqReq.freq
 
-    this.req_body.report_detail.requestor = this.userData.fullName;
-    // this.req_body.report_detail.created_on = new Date();
     this.req_body.report_detail.status_date = new Date();
     this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
 
@@ -303,10 +281,9 @@ export class SelectReportCriteriaComp implements OnInit {
 
     Utils.showSpinner();
     this.submitService.submitUserMarketSelection(this.req_body).subscribe(response => {
-      console.log(response);
-      // this.submitService.setSubmitOnBehalf({});
+      // console.log(response);
       Utils.hideSpinner();
-      this.ngToaster.success("Report created successfully")
+      this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Updated successfully`)
       this.response_body.division_selected = response.division_data;
       this.response_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
       this.response_body.status = response['report_data']['status'];
@@ -322,7 +299,9 @@ export class SelectReportCriteriaComp implements OnInit {
       this.req_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
       this.req_body.report_detail.status = response['report_data']['status'];
 
-      this.requestCreated.emit(this.response_body)
+      // this.requestCreated.emit(this.response_body)
+      if(this.response_body.status === "Incomplete")
+         this.submitService.updateRequestStatus({type:"src",data:this.response_body})
     }, err => {
       Utils.hideSpinner();
       console.log(err);
@@ -388,9 +367,7 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.assigned_to = reqData.report_data.assigned_to;
     this.req_body.report_detail.created_on = reqData.report_data.created_on;
     this.req_body.report_detail.on_behalf_of = reqData.report_data.on_behalf_of;
-    //  this.req_body.report_detail. = reqData.report_data.organization
     this.req_body.report_detail.query_criteria = reqData.report_data.query_criteria;
-    //  this.req_body.report_detail. = reqData.report_data.report_name
     this.req_body.report_detail.report_type = reqData.report_data.report_type;
     this.req_body.report_detail.requestor = reqData.report_data.requestor;
     this.req_body.report_detail.status = reqData.report_data.status;

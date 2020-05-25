@@ -115,6 +115,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public confirmationValue: any;
   public selectedRequestId: any;
   public reportContainer: any;
+  public searchObj: any;
 
   public reportTitle: any;
   public reportName: any;
@@ -164,7 +165,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public linkUrlId: number;
   public addUrlTitle: String = '';
   public linkToUrlFlag = true;
-  public frequencySelections = ['One Time', 'Recurring', 'On Demand', 'On Demand Configurable']
+  public frequencySelections = ['One Time', 'Recurring']
   public selectedNewFrequency: string = "";
   public isRecurringFrequencyHidden: boolean = false;
 
@@ -221,6 +222,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.editModes = false;
 
   }
+
   // execute after html initialized
   public ngAfterViewInit() {
     this.showTooltips();
@@ -292,7 +294,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         ,
         () => {
         },
-    );
+      );
   }
 
   /**
@@ -590,83 +592,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.namings = this.original_contents;
   }
 
-  // used to update schedule report data
-  public startOnDemandScheduling(data) {
-    let dateDetails = new Date();
-    let todaysDate = (dateDetails.getMonth() + 1) + '/' + (dateDetails.getDate()) + '/' + (dateDetails.getFullYear())
-
-    let hours = dateDetails.getHours();
-    let minutes = (dateDetails.getMinutes() + 10);
-    let scheduleTime = hours + ':' + minutes
-    if (hours >= 24) {
-      hours = hours % 24;
-      if (minutes >= 50) {
-        minutes = minutes % 50;
-      }
-    }
-    if (minutes >= 50) {
-      minutes = minutes % 50;
-      hours = hours + 1;
-      if (hours >= 24) {
-        hours = hours % 24;
-        if (minutes >= 50) {
-          minutes = minutes % 50;
-        }
-      }
-    }
-    scheduleTime = hours + ':' + minutes
-
-    this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
-    //obtaining the report id of the od report from RMP reports
-    this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i => i.ddm_rmp_post_report_id)
-
-    // SCHEDULE REPORT ID WAY from DDM report
-    let scheduleReportId;
-    if (data.scheduleId) {
-      scheduleReportId = data.scheduleId;
-    }
-    else if (data.scheduleId.length >= 1) {
-      scheduleReportId = data.scheduleId[0];
-    }
-
-    if (data.scheduleId.length === 0 || scheduleReportId === undefined || scheduleReportId === []) {
-      this.toasterService.error('Scheduling error!');
-      this.toasterService.error('Please ask the admin to configure scheduling parameters!');
-      Utils.hideSpinner();
-      return;
-    }
-
-    this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res => {
-      if (res) {
-        let originalScheduleData = res['data']
-
-        this.onDemandScheduleData = originalScheduleData;
-        this.onDemandScheduleData.schedule_for_date = todaysDate,
-          this.onDemandScheduleData.schedule_for_time = scheduleTime,
-          this.onDemandScheduleData.request_id = this.selectedRequestId[0];
-        this.onDemandScheduleData.created_by = this.userId;
-        this.onDemandScheduleData.modified_by = this.userId;
-
-        if (data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable')) {
-          Utils.showSpinner();
-          this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
-            if (res) {
-              this.toasterService.success("Your " + data['type'] + " schedule process triggered successfully");
-              this.toasterService.success('Your report will be delivered shortly');
-              Utils.hideSpinner();
-              Utils.closeModals();
-            }
-          }, error => {
-            Utils.hideSpinner();
-            this.toasterService.error('Report schedule failed');
-          });
-        }
-      }
-    });
-  }
-
-
-
   /*-------------------Freq Selections------------------------------------- */
   FrequencySelection() {
     this.select_frequency_ots = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id < 4)
@@ -738,7 +663,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // setting final json value based on the selection made in check boxes
-  setFrequency() {
+  public setFrequency() {
     var temp = this.jsonfinal;
     temp.select_frequency = [];
 
@@ -752,10 +677,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         } else {
           this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": "" };
         }
-
         temp.select_frequency.push(this.identifierData);
       });
-
       this.jsonfinal = temp;
     }
     else {
@@ -771,7 +694,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // update frequency to the server
-  updateFreq(request_id) {
+  public updateFreq(request_id) {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
     this.jsonfinal['status'] = "Recurring"
@@ -801,7 +724,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.selectedNewFrequency = '';
     this.changeInFreq = true;
   }
-
 
   /*---------------------------Change Frequency----------------------*/
 
@@ -856,13 +778,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // open change-frequency modal
-  showChangeFrequencyModal() {
+  public showChangeFrequencyModal() {
     $('#change-Frequency').modal('show');
   }
 
   //-------------------------frequency update--------------------------------------------
 
-  frequencySelected(val, event) {
+  public frequencySelected(val, event) {
     if (event.target.checked) {
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
       this.jsonfinal.select_frequency.push(this.frequencyData);
@@ -877,7 +799,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
     this.setFrequency();
 
-
     if (this.jsonfinal['select_frequency'].length > 0) {
       this.jsonfinal['select_frequency'].forEach((obj) => {
         var existNotification = this.frequencyLength.find(({ ddm_rmp_lookup_select_frequency_id }) => obj.ddm_rmp_lookup_select_frequency_id === ddm_rmp_lookup_select_frequency_id);
@@ -889,11 +810,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         }
       });
     }
-
   }
 
   // freuency selected through checkbox
-  frequencySelectedDropdown(val, event) {
+  public frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
 
@@ -912,16 +832,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  searchObj;
-
   // parsing filters into obj
-  filterData() {
+  public filterData() {
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
-
   /*--------------Query Criteria repeated--------------*/
-  query_criteria_report(query_report_id) {
+  public query_criteria_report(query_report_id) {
     this.spinner.show();
     this.summary = [];
     this.django.get_report_description(query_report_id).subscribe(response => {
@@ -1154,7 +1071,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           }
           this.concensus_data = tempArray.join(", ");
         }
-
       }
 
       if (this.summary["bac_data"].length != 0) {
@@ -1210,13 +1126,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
 
   // filter data based on pagination data
-  onPaginationChange(event) {
+  public onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   }
 
   // setting report id to edit link to url and also change the title of modal to edit or create respectively
-  addLinkUrl(element, type) {
+  public addLinkUrl(element, type) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     if (type == "create") {
       this.addUrlTitle = "ADD URL"
@@ -1229,23 +1145,23 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // save link to url
-  saveLinkURL() {
+  public saveLinkURL() {
     let link = document.querySelector("#add-url-input")["value"]
     let data = { request_id: this.linkUrlId, link_to_results: link }
     Utils.showSpinner();
-    this.django.add_link_to_url(data).subscribe(response =>{
-     if(response['message'] == "updated successfully"){
-      document.querySelector("#add-url-input")["value"] = "";
-      $('#close_url_modal').click()
-      this.toasterService.success("URL Updated Successfully !")
-      Utils.hideSpinner()
-      this.reports.map(item =>{
-        if(item.ddm_rmp_post_report_id == this.linkUrlId){
-          item.link_to_results = link
-        }
-      })
-     }
-    },error =>{
+    this.django.add_link_to_url(data).subscribe(response => {
+      if (response['message'] == "updated successfully") {
+        document.querySelector("#add-url-input")["value"] = "";
+        $('#close_url_modal').click()
+        this.toasterService.success("URL Updated Successfully !")
+        Utils.hideSpinner()
+        this.reports.map(item => {
+          if (item.ddm_rmp_post_report_id == this.linkUrlId) {
+            item.link_to_results = link
+          }
+        })
+      }
+    }, error => {
       this.toasterService.error(error.error.error.link_to_results.join())
       Utils.hideSpinner()
     })
@@ -1253,17 +1169,17 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // open links in an new window
-  openNewWindow(url) {
+  public openNewWindow(url) {
     window.open(url)
   }
 
   // close modal
-  closeTBD_Assigned(){
+  public closeTBD_Assigned() {
     $('#close_url_modal').click();
   }
 
   // used to validate weather input is empty or not
-  validateLinkToUrl(data) {
+  public validateLinkToUrl(data) {
     if (data == "") this.linkToUrlFlag = true
     else this.linkToUrlFlag = false;
   }

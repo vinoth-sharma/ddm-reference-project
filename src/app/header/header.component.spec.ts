@@ -25,11 +25,10 @@ describe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HeaderComponent, DummyComponent],
       providers: [
-        
         { provide: AuthenticationService, useClass: AuthenticationMockMockService },
         { provide: DataProviderService, useClass: DataProviderMockMockService }
       ],
-      imports: [BrowserAnimationsModule, MaterialModule, HttpClientTestingModule,RouterTestingModule]
+      imports: [BrowserAnimationsModule, MaterialModule, HttpClientTestingModule, RouterTestingModule]
     })
       .compileComponents();
   }));
@@ -123,6 +122,9 @@ class DataProviderMockMockService {
   changeNotificationData(notification: object) {
     this.notifications.next(notification)
   }
+  loadNotifications() {
+  }
+
 }
 
 class TestRouteHandling {

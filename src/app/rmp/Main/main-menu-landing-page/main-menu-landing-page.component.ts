@@ -7,6 +7,8 @@ import { Router } from "@angular/router";
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import { MatDialog } from '@angular/material/dialog';
+import { NotesWrapperComponent } from '../../admin-notes/notes-wrapper/notes-wrapper.component';
 declare var $: any;
 
 @Component({
@@ -35,6 +37,7 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   public user_role: string = '';
   public readOnlyContentHelper: boolean = true;
   public enableUpdateData: boolean = false;
+  public info
   public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
@@ -93,7 +96,8 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
     private dataProvider: DataProviderService,
     private fb: FormBuilder,
     private router: Router,
-    private toastr: NgToasterComponent) {
+    private toastr: NgToasterComponent,
+    private dialog: MatDialog) {
 
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
@@ -156,6 +160,8 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
         Utils.hideSpinner();
       }
     })
+
+    this.getCurrentLookUpTable()
   }
 
   ngAfterViewInit() {
@@ -405,6 +411,22 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
         this.toastr.error("Server error encountered!");
       })
     }
+  }
+
+// to open important notes popup
+  openAddNotes(){
+    this.dialog.open(NotesWrapperComponent, {
+      data: this.info.data.admin_note
+    })
+  }
+  
+  // to read lookup data from currentlookUpTableData observable
+  public getCurrentLookUpTable() {
+    this.dataProvider.currentlookUpTableData.subscribe(element => {
+      if (element) {
+        this.info = element;
+      }
+    })
   }
 
 }

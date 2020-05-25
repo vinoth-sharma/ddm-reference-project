@@ -348,8 +348,8 @@
           </tbody>
         </table>
       </div>
-      <div>
-        <mat-paginator [length]="paginatorlength" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
+      <div style="display:flex; align-items: flex-end;flex-direction: row;width:100%">
+        <mat-paginator style="margin-left:auto" [length]="paginatorlength" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
           (page)="onPaginationChange($event)">
         </mat-paginator>
       </div>

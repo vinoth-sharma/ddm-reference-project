@@ -300,7 +300,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    * @param element the report element which is being clicked
    */
   toggleShowInput(element) {
-
     this.reports.forEach(ele => {
       if (ele.report_name != element.report_name) {
         ele.clicked = false;

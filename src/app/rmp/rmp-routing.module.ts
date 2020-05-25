@@ -9,14 +9,9 @@ import { ReferenceDocComponent } from './Main/reference-doc/reference-doc.compon
 import { MainMenuComponent } from './Main/main-menu/main-menu.component';
 import { DdmAdminComponent } from './Main/ddm-admin/ddm-admin.component';
 import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
-import { SubmitRequestComponent } from './Submit/submit-request/submit-request.component';
 import { RequestStatusComponent } from './request-status/request-status.component';
 import { ReportsComponent } from './reports/reports.component';
 import { MetricsComponent } from './metrics/metrics.component';
-import { DealerAllocationComponent } from './Submit/dealer-allocation/dealer-allocation.component';
-import { OrderToSaleComponent } from './Submit/order-to-sale/order-to-sale.component';
-import { SelectReportCriteriaComponent } from './Submit/select-report-criteria/select-report-criteria.component';
-import { SubmitLandingPageComponent } from './Submit/submit-landing-page/submit-landing-page.component';
 import { DisclaimerWrapperComponent } from './submit-request/disclaimer-wrapper/disclaimer-wrapper.component';
 import { SubmitRequestWrapperComponent } from './submit-request/submit-request-wrapper/submit-request-wrapper.component';
 
@@ -36,17 +31,8 @@ export const RMP_Routes = [
           { path: '', redirectTo: '/user/main/home' }
         ]
       },
-      {
-        path: 'disclaimer', component: DisclaimerWrapperComponent
-      }, {
-        path: 'submit-request', component: SubmitRequestWrapperComponent,
-        children: [
-          { path: 'select-report-criteria', component: SelectReportCriteriaComponent },
-          { path: 'dealer-allocation', component: DealerAllocationComponent },
-          { path: 'order-to-sale', component: OrderToSaleComponent },
-          // { path: '', component: SubmitLandingPageComponent }
-        ]
-      },
+      { path: 'disclaimer', component: DisclaimerWrapperComponent },
+      { path: 'submit-request', component: SubmitRequestWrapperComponent },
       { path: 'request-status', component: RequestStatusComponent },
       { path: 'reports', component: ReportsComponent },
       { path: 'metrics', component: MetricsComponent },

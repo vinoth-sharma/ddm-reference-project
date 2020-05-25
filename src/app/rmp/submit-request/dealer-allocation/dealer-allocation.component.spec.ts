@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DealerAllocationComponent } from './dealer-allocation.component';
+import { DealerAllocationComp } from './dealer-allocation.component';
 
-describe('DealerAllocationComponent', () => {
-  let component: DealerAllocationComponent;
-  let fixture: ComponentFixture<DealerAllocationComponent>;
+describe('DealerAllocationComp', () => {
+  let component: DealerAllocationComp;
+  let fixture: ComponentFixture<DealerAllocationComp>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DealerAllocationComponent ]
+      declarations: [ DealerAllocationComp ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DealerAllocationComponent);
+    fixture = TestBed.createComponent(DealerAllocationComp);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

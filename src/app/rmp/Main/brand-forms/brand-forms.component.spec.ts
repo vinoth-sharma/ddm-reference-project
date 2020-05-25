@@ -11,7 +11,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 import { OrderByPipe } from "../../../custom-directives/filters/order-by.pipe";
 import { FilterTablePipe } from '../../filter-table.pipe';
 
-fdescribe('BrandFormsComponent', () => {
+describe('BrandFormsComponent', () => {
   let component: BrandFormsComponent;
   let fixture: ComponentFixture<BrandFormsComponent>;
 

@@ -138,7 +138,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     this.naming = temp;
     let ref = this.content['data']['desc_text']
     let temps = ref.find(function (element) {
-      return element["ddm_rmp_desc_text_id"] == 8;
+      return element["ddm_rmp_desc_text_id"] == 8; 
     })
     if (temps) {
       this.original_content = temps.description;
@@ -313,10 +313,10 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     this.document_details = {
       "title": "",
       "url": "",
-      "admin_flag": false
+      "admin_flag": false   
     }
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString(); 
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let duplicateName = this.naming.find(ele => (ele['title'] == link_title));
     let dupeFileName = this.isRef.docs.find(item => item.uploaded_file_name == link_title)

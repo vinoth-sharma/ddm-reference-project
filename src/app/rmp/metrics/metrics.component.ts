@@ -186,7 +186,6 @@ export class MetricsComponent implements OnInit, AfterViewInit {
   // initialization of application
   public ngOnInit() {
     this.generated_report_service.changeButtonStatus(false);
-
     // get all admin details
     this.django.getAllAdmins().subscribe(element => {
       if (element) {
@@ -229,7 +228,6 @@ export class MetricsComponent implements OnInit, AfterViewInit {
             });
           }
         });
-
         for (let i = 0; i < this.reports.length; i++) {
           if (this.reports[i]['frequency_data']) {
             const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Other'];
@@ -280,7 +278,6 @@ export class MetricsComponent implements OnInit, AfterViewInit {
           el.setAttribute('title', this.toolbarTooltips[tool]);
       }
     };
-
     let toolbarElement = document.querySelector('.ql-toolbar');
     if (toolbarElement) {
       let matchesButtons = toolbarElement.querySelectorAll('button');
@@ -389,9 +386,6 @@ export class MetricsComponent implements OnInit, AfterViewInit {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
-      const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(',') : item[key])))
-      const colA = wb.cell('A2').value(transformedData);
-
       workbook.outputAsync().then(function (blob) {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           window.navigator.msSaveOrOpenBlob(blob,
@@ -411,8 +405,9 @@ export class MetricsComponent implements OnInit, AfterViewInit {
     }).catch(error => {
     });
   }
+  
   // creating a body to generate excel report
-  createNewBodyForExcel() {
+  public createNewBodyForExcel() {
     const reportBody = [];
     this.reports.forEach(item => {
       const obj = {

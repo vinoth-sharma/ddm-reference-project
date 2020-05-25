@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import Utils from '../../../../utils';
@@ -6,7 +6,6 @@ import * as Rx from "rxjs";
 import * as $ from "jquery";
 import { AuthenticationService } from "src/app/authentication.service";
 import { NgToasterComponent } from '../../../custom-directives/ng-toaster/ng-toaster.component';
-import { utils } from 'protractor';
 @Component({
   selector: 'app-ddm-intro',
   templateUrl: './ddm-intro.component.html',
@@ -91,9 +90,7 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
       ['image']
     ]
   };
-
   public user_role: string;
-
 
   constructor(private django: DjangoService, private auth_service: AuthenticationService,
     private dataProvider: DataProviderService,
@@ -119,8 +116,6 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
     }
     else { this.original_content = "" }
     this.naming = this.original_content;
-
-
     let refs = this.content['data']['desc_text']
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 5;
@@ -212,9 +207,7 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
         this.editModes = false;
         this.ngOnInit();
         this.original_contents = this.namings;
-
         this.toaster.success("Condition saved successfully")
-
         Utils.hideSpinner()
       }, err => {
         Utils.hideSpinner()

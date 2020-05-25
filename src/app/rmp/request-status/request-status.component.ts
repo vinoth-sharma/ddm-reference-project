@@ -1386,8 +1386,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     if (type == "create") {
       this.addUrlTitle = "ADD URL"
       document.querySelector("#add-url-input")["value"] = "";
-
-    } else {
+    }
+    else {
       this.addUrlTitle = "EDIT URL"
       document.querySelector("#add-url-input")["value"] = element.link_to_results;
       this.validateLinkToUrl(element.link_to_results)
@@ -1397,7 +1397,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   //  save link to url
   public saveLinkURL() {
     let link = document.querySelector("#add-url-input")["value"]
-
     let data = { request_id: this.linkUrlId, link_to_results: link }
     Utils.showSpinner();
     this.django.add_link_to_url(data).subscribe(response => {
@@ -1416,7 +1415,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       this.toastr.error(error.error.error.link_to_results.join())
       Utils.hideSpinner()
     })
-
   }
 
   // open link in a new window

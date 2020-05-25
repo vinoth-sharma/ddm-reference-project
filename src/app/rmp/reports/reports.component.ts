@@ -261,7 +261,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           el.setAttribute('title', this.toolbarTooltips[tool]);
       }
     };
-
     let toolbarElement = document.querySelector('.ql-toolbar');
     if (toolbarElement) {
       let matchesButtons = toolbarElement.querySelectorAll('button');
@@ -281,7 +280,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    * @param reportObject the current report object being edited
    */
   public changeReportName(event: any, reportObject) {
-
     const changedReport = {};
     changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
     changedReport['report_name'] = reportObject.report_name;
@@ -294,7 +292,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         ,
         () => {
         },
-    );
+      );
   }
 
   /**
@@ -330,7 +328,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         const temps = refs.find(function (element) {
           return element['ddm_rmp_desc_text_id'] == 23;
         });
-
         if (temps) {
           this.original_contents = temps.description;
         }
@@ -426,16 +423,12 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             this.reportContainer[i]['changeFreqReq'] = false;
           }
         }
-
-
         this.reportContainer.forEach(ele => {
           if (ele['frequency_data_filtered']) {
             ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");
           }
           ele['clicked'] = false;
-
         })
-
         this.reportContainer.sort((a, b) => {
           if (b['favorites'] == a['favorites']) {
             return a['report_name'] > b['report_name'] ? 1 : -1
@@ -458,7 +451,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.favourite = event.target.checked;
     var finalObj = { 'report_id': id, 'favorite': this.favourite }
     this.django.ddm_rmp_favourite(finalObj).subscribe(response => {
-
       if (response['message'] == "success") {
         this.spinner.hide()
       }
@@ -490,12 +482,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       const wb = workbook.sheet("Sheet1");
       const headings = ["Request No", "Date", "Title", "DDM Name", "Frequency", "Frequency Details", "Other"]
       const reportBody = this.createNewBodyForExcel()
-
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
-
       const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
 
@@ -562,7 +552,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.description_texts["description"] = this.namings;
       $('#edit_button').show()
       this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
-
         let temp_desc_text = this.content['data']['desc_text']
         temp_desc_text.map((element, index) => {
           if (element['ddm_rmp_desc_text_id'] == 23) {
@@ -655,7 +644,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     })
     this.obj_keys_on_demand = Object.keys(this.Select_on_demand)
     this.freq_val_on_demand = Object.values(this.Select_on_demand);
-
   }
 
   // when the user changes the frequency dropdown values
@@ -674,7 +662,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public setFrequency() {
     var temp = this.jsonfinal;
     temp.select_frequency = [];
-
     if (this.jsonfinal['frequency'] != 'One Time') {
       $.each($("input[class='sub']:checked"), function () {
         var id = $(this).val();
@@ -734,7 +721,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   /*---------------------------Change Frequency----------------------*/
-
   public changeFreq(requestId, title, date, frequency) {
     this.spinner.show()
     this.changeFrequency = frequency
@@ -791,7 +777,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   //-------------------------frequency update--------------------------------------------
-
   public frequencySelected(val, event) {
     if (event.target.checked) {
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
@@ -824,7 +809,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
-
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
       this.jsonfinal.select_frequency.push(this.frequencyData);
     }

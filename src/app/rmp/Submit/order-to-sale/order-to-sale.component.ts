@@ -1753,7 +1753,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
                 }
               }
             }
-
           })
         }
 

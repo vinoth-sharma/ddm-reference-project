@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DjangoService } from 'src/app/rmp/django.service';
 import { BrandFormsService } from './brand-forms.service'
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
@@ -29,8 +28,7 @@ export class BrandFormsComponent implements OnInit {
   public filters: any = {}
   public statusFilter: any = [];
 
-  constructor(private django: DjangoService,
-    private brandFormsService: BrandFormsService,
+  constructor(private brandFormsService: BrandFormsService,
     private toasterService: NgToasterComponent) {
   }
 

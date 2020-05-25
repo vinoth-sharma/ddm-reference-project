@@ -278,8 +278,6 @@
                   (click)="addLinkUrl(element,'edit')">
                   Edit
                 </button>
-
-
               </td>
 
               <td *ngIf="element.status != 'Incomplete'">
@@ -290,7 +288,6 @@
                     QueryCriteria
                   </button>
                 </div>
-
               </td>
 
               <td *ngIf="user_role=='Admin' && element.status == 'Active'">
@@ -311,7 +308,6 @@
               </td>
               <td *ngIf="user_role=='Admin' && element.status != 'Active'">
                 <div>
-
                 </div>
               </td>
 
@@ -340,7 +336,6 @@
                         </ng-container>
                       </ng-container>
                     </div>
-
                   </div>
                 </td>
               </tr>
@@ -383,7 +378,6 @@
         </button>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -1176,9 +1170,8 @@
       <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
     </span>
   </pre>
-<pre class="div-wrap" *ngIf='summary && summary.da_data && 
-                                  summary.da_data.concensus_data && 
-                                  summary.da_data.concensus_data.length > 0'>
+<pre class="div-wrap"
+  *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
       <b>Consensus Data:</b> &nbsp;&nbsp;
       <span *ngFor="let element of summary?.da_data.concensus_data">
         {{element?.cd_values}}&nbsp;&nbsp;

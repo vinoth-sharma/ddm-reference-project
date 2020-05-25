@@ -108,7 +108,6 @@
             <td class="col-sm-6">
               <input class="tod_checkbox_group" type="checkbox" value="{{element.ddm_rmp_lookup_ots_type_data_id}}"
                 id="tod_check{{i}}" (change)="Check($event, i, element)">
-
               <b style="margin-left:10px">{{element.type_data_desc}}</b>
             </td>
             <td class="col-sm-2">
@@ -198,7 +197,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -266,7 +264,6 @@
           </tr>
         </tbody>
       </table>
-
     </div>
 
     <div class="col-sm-5">
@@ -389,9 +386,7 @@
           </tr>
         </tbody>
       </table>
-
     </div>
-
   </div>
   <div class="row sub-header">
     Date Range Selection
@@ -408,10 +403,8 @@
           <tr class="row order-event">
             <div class="col-sm-12">
               <td>Order Event:</td>
-              <angular4-multiselect class="dropdown keyData" [data]="orderEvent" 
-                [(ngModel)]="selectedItemsOrderEvent"
-                [settings]="dropdownSettingsOrderEvent" 
-                (onSelect)="onItemSelect($event)"
+              <angular4-multiselect class="dropdown keyData" [data]="orderEvent" [(ngModel)]="selectedItemsOrderEvent"
+                [settings]="dropdownSettingsOrderEvent" (onSelect)="onItemSelect($event)"
                 (onSelectAll)="onSelectAll($event)">
               </angular4-multiselect>
             </div>
@@ -423,9 +416,8 @@
           </tr>
           <tr class="d-flex">
             <td class="col-sm-12" style="padding-left:4%;">
-              <input class="other" id="otherText" type="text" [(ngModel)]="otsObj.otherDesc" 
-              (blur)="other_desc($event)" [disabled]='selectedItemsOrderEvent.length > 0'
-                value="">
+              <input class="other" id="otherText" type="text" [(ngModel)]="otsObj.otherDesc" (blur)="other_desc($event)"
+                [disabled]='selectedItemsOrderEvent.length > 0' value="">
             </td>
           </tr>
         </tbody>
@@ -465,7 +457,6 @@
         </tbody>
       </table>
     </div>
-
   </div>
 </div>
 

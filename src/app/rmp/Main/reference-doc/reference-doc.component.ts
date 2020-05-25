@@ -31,6 +31,13 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     "url": "",
     "admin_flag": false
   }
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
+  public description_text = {
+    "ddm_rmp_desc_text_id": 8,
+    "module_name": "Help_RefDoc",
+    "description": ""
+  }
+  public enableUpdateData = false;
 
   public filesList;
   public contents;
@@ -125,13 +132,6 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     })
   }
 
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  description_text = {
-    "ddm_rmp_desc_text_id": 8,
-    "module_name": "Help_RefDoc",
-    "description": ""
-  }
-
   ngOnInit() {
     Utils.showSpinner();
     let temp = this.content['data'].desc_text_reference_documents;
@@ -212,8 +212,6 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
       (<HTMLInputElement>document.getElementById('document-url')).value = "";
     }
   }
-
-  public enableUpdateData = false;
 
   public textChanged(event) {
     this.textChange = true;

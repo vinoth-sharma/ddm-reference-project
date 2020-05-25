@@ -17,8 +17,6 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/mat
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
 
-import { MatCalendarCellCssClasses } from '@angular/material/datepicker';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import {
   FormControl, FormGroupDirective,
   NgForm, FormGroup, FormBuilder
@@ -52,8 +50,8 @@ const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
-export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
+export class OrderToSaleComponent implements OnInit, AfterViewInit {
   public generated_report_status: string;
   public generated_report_id: number;
   public selectedItems = [];
@@ -84,12 +82,11 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
       "query_criteria": ""
     }
   }
-
-
   public temp_freq = {
     'freq_values': [],
     'desc': []
   }
+
   public Report = {}
   public report_status: string;
   public Report_title: string;
@@ -239,7 +236,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   public from_date: string;
   public user_name: string;
   public error_message: string;
-  public
   public bac_description: any;
   public fan_desc: any;
   public text_notification: any;
@@ -343,6 +339,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     public reportDataService: ReportCriteriaDataService,
     private formBuilder: FormBuilder) {
   }
+
   // execute after html initialized
   public ngAfterViewInit() {
     this.showTooltips();
@@ -423,7 +420,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   }
 
   public lookupDateReassigning(element) {
-
     this.lookup = element
     let ref = this.lookup['data']['desc_text']
     let temps = ref.find(function (element) {
@@ -531,7 +527,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
@@ -549,7 +544,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     this.Checkbox_data = this.lookup.data.checkbox_data
 
     //---------------------------------------DropDown Data-----------------------------------------------------------------------------
-
     this.allo = this.lookup.data.allocation_grp.sort((a, b) => a.allocation_group > b.allocation_group ? 1 : -1);
     this.modelYearSelectedItems = this.lookup.data.model_year
     this.merchandize = this.lookup.data.merchandising_data.sort((a, b) => a.merchandising_model > b.merchandising_model ? 1 : -1);
@@ -565,7 +559,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     this.merchandizeFinalList = this.merchandize.filter(element => {
       return this.division_index.includes(element.ddm_rmp_lookup_division)
     })
-
 
     //------------------------------- For the Dropdowns-----------------------------------------------------------------------
     //------------------------------- For Checkbox groups--------------------------------------------------------------------
@@ -591,7 +584,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     } else {
       this.displaySummary[1][0].default = "unchecked";
     }
-
     this.typeOfData = this.lookup.data.type_data;
     this.typeOfData.sort((a, b) => (a.ddm_rmp_lookup_ots_type_data_id > b.ddm_rmp_lookup_ots_type_data_id) ? 1 : ((b.ddm_rmp_lookup_ots_type_data_id > a.ddm_rmp_lookup_ots_type_data_id) ? -1 : 0));
 
@@ -600,7 +592,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
       if (element.checkbox_desc in this.Checkbox_value) {
         this.Checkbox_value[element.checkbox_desc].push(element.field_values)
         this.Checkbox_value[element.checkbox_desc].push(element.description)
-
       }
       else {
         this.Checkbox_value[element.checkbox_desc] = [];
@@ -608,7 +599,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
         this.Checkbox_value[element.checkbox_desc].push(element.description)
       }
     })
-    // Utils.hideSpinner();
   }
 
   //----------------------------------------------DEPENDENT DROPDOWNS SETTINGS----------------------------------------------------------
@@ -685,7 +675,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   }
 
   public vehicleDeSelection(vehicleIndex: any) {
-
     this.selectedItemsAllocation = this.selectedItemsAllocation.filter(element => {
       return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
     })
@@ -702,7 +691,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
         return this.division_index.includes(element.ddm_rmp_lookup_division)
       })
     }
-
   }
 
   public allocationItemsSelect(item: any) {
@@ -779,7 +767,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   //-----------------------------CHECKBOXES------------------------------------------------------------------------------------
 
   public distributionEntityRadio(i, val, event) {
-
     let DistributionEntityId = event.target.id
     let DistributionEntityIdentifier = DistributionEntityId.charAt(6)
     DistributionEntityIdentifier = +DistributionEntityIdentifier
@@ -873,7 +860,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
   //--------------------Final JSON CREATION----------------------------------------------------------------------------------------------
   public DropdownSelected() {
-
     this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": this.otsObj.modelRadio }
     this.finalData["division_selected"] = { "radio_button": this.otsObj.divisionRadio }
     this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": this.otsObj.alloRadio }
@@ -895,7 +881,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
       }];
       this.finalData["order_event"] = { "dropdown": [] }
     }
-
     this.finalData["report_id"] = this.generated_report_id;
     if (this.other_description == undefined) {
       this.finalData["other_desc"] = "";
@@ -908,7 +893,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
       this.finalData['report_detail']['created_on'] = ""
       this.report_create = ""
     }
-
     if (this.assigned_to == null || this.assigned_to == "" || this.assigned_to == undefined) {
       this.finalData['report_detail']['assigned_to'] = ""
       this.assigned_to = ""
@@ -917,8 +901,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
       this.finalData['report_detail']['status'] = "Pending"
       this.report_status = "Pending"
     }
-
-
     this.date = "";
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
     this.finalData["report_detail"] = {
@@ -936,7 +918,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
       "requestor": this.user_name
     }
     this.order_to_sale_selection = this.finalData
-
   }
 
   public validateInput() {
@@ -982,7 +963,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     }
     else {
       this.summary_flag = true;
-      //$("#review_close:button").click()
       this.modal_validation_flag = false
       this.DropdownSelected();
 
@@ -1001,7 +981,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
           checkedTodBoxes.push(id + 1)
         }
       })
-      let filteredDistributionData = this.finalData.distribution_data
       this.order_to_sales_selection = this.finalData;
       Utils.showSpinner();
       this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
@@ -1017,7 +996,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
         Utils.hideSpinner();
         this.toastr.error("Selection is incomplete")
       })
-
       this.report_id_service.changeSavedChanges(false)
     }
     $('.modal-backdrop').remove();
@@ -1313,7 +1291,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
   //------------------------------------CALENDAR SETTINGS---------------------------------------------------------------------
 
-
   public onOrderEventdateSelection() {
     let from = this.fromDate.value;
     let to = this.toDate.value;
@@ -1338,7 +1315,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   }
 
   //------------------------------------CALENDAR SETTINGS DOSP---------------------------------------------------------------------
-
 
   public onDOSPDateSelection() {
     let from = this.fromDateDOSP.value;
@@ -1387,7 +1363,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
       $('.net-sales').prop("disabled", false);
       this.ncheck = true;
     }
-
     else {
       $(".net-sales").prop("disabled", true);
       $(".net-sales").prop("checked", false);
@@ -1679,7 +1654,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
             }
           })
         })
-
         this.merchandizeItemsSelect = []
         this.merchandizeFinalList.forEach(eleMerch => {
           element['ost_data']['merchandizing_model'].forEach(resMerch => {
@@ -1782,7 +1756,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
           })
         }
 
-        //Key Element Calendar----------------
+        //Key Element Calendar//
         temp.data_date_range.StartDate = null;
         temp.data_date_range.EndDate = null;
         if (element['ost_data']['data_date_range'][0]['start_date']) {
@@ -1802,8 +1776,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
           this.endDate = to.getFullYear() + "-" + (to.getMonth() + 1) + "-" + to.getDate();
           temp.data_date_range = { "StartDate": this.startDate, "EndDate": this.endDate };
         }
-
-
 
         //--------------------DOSP Calendar------------------------
         temp.dosp_start_date = null;
@@ -1837,8 +1809,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
               const id = `disSum${obj.value}1`;
               const radioButton = <HTMLInputElement>document.getElementById(id);
               radioButton.checked = true;
-
-
               this.distributionEntityCheckbox = {
                 value: disrtibutionData[x]['value'],
                 id: disrtibutionData[x]['ddm_rmp_lookup_ots_type_data'],
@@ -1883,7 +1853,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
             temp.checkbox_data.push(this.Checkbox_selected);
           }
         }
-
         this.finalData = temp
       }
       Utils.hideSpinner();
@@ -1960,7 +1929,6 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const invalidCtrl = !!(control && control.invalid);
     const invalidParent = !!(control && control.parent && control.parent.invalid);
-
     return (invalidCtrl || invalidParent);
   }
 }

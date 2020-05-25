@@ -26,20 +26,17 @@
               (onContentChanged)='textChanged($event)'></quill-editor>
           </div>
         </div>
-
       </div>
       <div class="modal-footer modal-footer-pad" style="height:60px;">
         <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal"
           (click)="edit_True()" style="width:16%;margin-right:20px;">Close</button>
       </div>
     </div>
-
   </div>
 </div>
 
 <div class="wrapper">
   <div class="container-fluid save-bar">
-
     <div class="row dealer-allo">
       <div class="col-sm-6" style="padding-left:0px; padding-top:5px;">
         <div class="row heading">
@@ -73,7 +70,6 @@
   <div class="container-fluid consensus">
     <div class="row sub-header">Consensus Process</div>
     <div class="row merchandise">
-
       <div class="col-sm-4">
         <div class="col-sm-12">
           <div class="row">
@@ -99,7 +95,6 @@
             <strong style="padding-left:5%; padding-bottom:3%; width:100%">Model Year(s)<span
                 class="mandatory-fields">*</span>&nbsp;</strong>
             <span *ngIf="my_flag" style="color:red;font-weight: bold;">Please make Model Year selections</span>
-
           </div>
           <div class="row">
             <div class="col-sm-12" id="dropdownHolder">
@@ -124,7 +119,6 @@
             <strong style="padding-left:5%; padding-bottom:3%; width:100%">Allocation Group(s)<span
                 class="mandatory-fields">*</span>&nbsp;</strong>
             <span *ngIf="ag_flag" style="color:red;font-weight: bold;">Please make Allocation Group selections</span>
-
           </div>
           <div class="row">
             <div class="col-sm-12">
@@ -141,7 +135,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="row consens-data" style="margin-top: 18px;margin-bottom: 10px;">
@@ -182,7 +175,6 @@
                     </div>
                   </tr>
                 </div>
-
 
                 <div class="col-sm-3">
                   <tr>
@@ -269,7 +261,6 @@
             </div>
           </div>
           <div class="modal-body display-summary-scroll">
-
             <div class="form-group" style="width:50%;float:left;padding-top: 20px">
               <label for="title">Add Report Title:<span class="mandatory-fields">*</span></label>
               <input id="title" type="text" [(ngModel)]="Report_title" maxlength="60" class="form-control title-box"

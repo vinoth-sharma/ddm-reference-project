@@ -1,0 +1,104 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dealAllocWrapper">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h5 class="bold">Consensus Process</h5>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="req_body.report_id"
+    style="margin: 0px 0px 15px;font-size: 1.3em;font-weight: 600;">
+        <div [innerHTML]="display_message"></div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="!req_body.report_id" >
+        <div class="red">Create Request to proceed with Dealer Allocation</div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <app-mat-multiselect [data]="filtered_MD.divisions" [settings]="division_settings"
+        [(inputModel)]="selected.divisions"></app-mat-multiselect>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                Model Years
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <app-mat-multiselect [data]="filtered_MD.model_years" [settings]="model_yr_settings"
+                [(inputModel)]="selected.model_years"></app-mat-multiselect>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                Allocation Groups
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <app-mat-multiselect [data]="filtered_MD.allocation_groups" [settings]="allocation_settings"
+                [(inputModel)]="selected.allocation_groups"></app-mat-multiselect>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold">
+            Consensus Range
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignCenter">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Start Date</div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                <mat-form-field>
+                    <mat-label>Month and Year</mat-label>
+                    <input matInput [matDatepicker]="dp" [formControl]="consensusStartDate">
+                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                    <mat-datepicker #dp
+                                    startView="multi-year"
+                                    (yearSelected)="chosenYearHandler($event)"
+                                    (monthSelected)="chosenMonthHandler($event, dp)"
+                                    panelClass="example-month-picker">
+                    </mat-datepicker>
+                  </mat-form-field>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                    style="width: 100%;" [(ngModel)]="startCycle">
+                    <mat-radio-button class="example-radio-button radio-label"
+                        *ngFor="let splId of ['Cycle 1', 'Cycle 2']" [value]="splId">
+                        {{splId}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignCenter">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">End Date</div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                <mat-form-field>
+                    <mat-label>Month and Year</mat-label>
+                    <input matInput [matDatepicker]="dp1" [formControl]="consensusEndDate"
+                    [min]="minDate">
+                    <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                    <mat-datepicker #dp1
+                                    startView="multi-year"
+                                    (yearSelected)="chosenYearHandler1($event)"
+                                    (monthSelected)="chosenMonthHandler1($event, dp1)"
+                                    panelClass="example-month-picker">
+                    </mat-datepicker>
+                  </mat-form-field>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                    style="width: 100%;" [(ngModel)]="endCycle">
+                    <mat-radio-button class="example-radio-button radio-label"
+                        *ngFor="let splId of ['Cycle 1', 'Cycle 2']" [value]="splId">
+                        {{splId}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 alignCenter">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding bold">
+                Consensus Data Available
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 bold">
+                <app-mat-multiselect [data]="filtered_MD.consensus" [settings]="consensus_settings"
+                [(inputModel)]="selected.consensus"></app-mat-multiselect>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
+    <button [cssBtn]="'ok'" mat-raised-button (click)="openAdditionalReqModal();"
+    [disabled]="!req_body.report_id"
+    [paramFlag]="!req_body.report_id?true:false">Continue</button>
+</div>

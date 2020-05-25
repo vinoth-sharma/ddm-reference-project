@@ -1,0 +1,67 @@
+.row, label{
+    font-size: 2vh;
+  }
+  
+  .rightSection {
+    border-left: 1px solid lightgray;
+  }
+  
+  .mat-checkbox label{
+    font-weight: normal!important;
+  }
+  
+  :host ::ng-deep .mat-radio-label-content, mat-checkbox-layout{
+    font-weight: normal;
+  }
+  :host ::ng-deep .mat-body, .mat-body-1, .mat-typography, .mat-chip{
+    font-size: 0.8vw;
+  }
+  
+  :host ::ng-deep .prodCons>.mat-checkbox-layout .mat-checkbox-label{
+    line-height: 1vw;
+  }
+  
+  :host ::ng-deep label{
+    font-weight: normal;
+    white-space: pre-wrap;
+  }
+  
+  .splIdTitle{
+      font-weight: bold;
+      margin-bottom: 1vh;
+  }
+  
+  .example-radio-group {
+    display: flex;
+    margin: 15px 0;
+  }
+    
+  .example-radio-button {
+    margin: 5px;
+  }
+  
+  .example-chip-list {
+    width: 100%;
+  }
+
+  .emailHolder{
+    border: 1px solid lightgray;
+    padding: 1vh 1vw;
+  }
+
+  .selFreqTitle{
+    font-weight: bold;
+    font-size: 1vw;
+    margin-bottom: 2vh;
+  }
+  
+  .selFreqSubHead{
+    font-size: 0.8vw;
+    margin-bottom: 1vh;
+    font-weight: bold;
+  }
+
+  .morefilterSeparator{
+    border-top: 1px solid lightgray;
+    padding: 2vh;
+  }

@@ -1,4 +1,3 @@
-// Migrated by Ganesha
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import "../../../../assets/debug2.js";
 declare var jsPDF: any;
@@ -485,10 +484,10 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
   // formating date 
   public dateFormat(str: any) {
-    var date = new Date(str),
+    const date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
       day = ("0" + date.getDate()).slice(-2);
-    return [date.getFullYear(), mnth, day].join("-");
+    return [date.getFullYear(), mnth, day].join("");
   }
 
   public textChanged(event) {
@@ -1430,6 +1429,8 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   }
 
   public captureScreen() {
+
+    let pdfName = 'request_' + this.dateFormat(new Date()) + '.pdf';
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
@@ -1446,7 +1447,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     doc.fromHTML(
       $('#print').html(), margins.left, margins.top,
       { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
-      function () { doc.save('sample-file.pdf'); }, margins
+      function () { doc.save(pdfName); }, margins
     );
   }
 
@@ -1752,7 +1753,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
                 }
               }
             }
-
           })
         }
 

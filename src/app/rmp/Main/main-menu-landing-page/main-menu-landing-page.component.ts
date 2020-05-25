@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
@@ -160,7 +160,6 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
         Utils.hideSpinner();
       }
     })
-
     this.getCurrentLookUpTable()
   }
 
@@ -336,20 +335,28 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   // add new link based on validate previous link
   public addLinkTitleURL() {
     let urlList = this.auth_service.getListUrl();
-    for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
-      let b = urlList.find(url => url === this.LinkTitleURL.value[i].link);
-      let a = document.getElementById(i + 'url');
-      if (b) {
-        a.setAttribute('style', 'display: none !important');
-        this.LinkTitleURL.push(this.fb.group({
-          title: ['', Validators.required],
-          link: ['', Validators.required]
-        }));
+    if (this.LinkTitleURL.value.length > 0) {
+      for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
+        let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
+        let urlElement = document.getElementById(i + 'url');
+        if (validUrl) {
+          urlElement.setAttribute('style', 'display: none !important');
+          this.LinkTitleURL.push(this.fb.group({
+            title: ['', Validators.required],
+            link: ['', Validators.required]
+          }));
+        }
+        else {
+          urlElement.setAttribute('style', 'display: block !important');
+        }
       }
-      else {
-        a.setAttribute('style', 'display: block !important');
-      }
+    } else {
+      this.LinkTitleURL.push(this.fb.group({
+        title: ['', Validators.required],
+        link: ['', Validators.required]
+      }));
     }
+
   }
 
   public deleteLinkTitleURL(index) {
@@ -361,6 +368,16 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   }
 
   public saveChanges() {
+    if (this.LinkTitleURL.value.length > 0) {
+      let urlList = this.auth_service.getListUrl();
+      for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
+        let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
+        let urlElement = document.getElementById(i + 'url');
+        if (!validUrl) {
+          return urlElement.setAttribute('style', 'display: block !important');
+        }
+      }
+    }
     if (!this.newContent) {
       Utils.showSpinner();
       let response_json = {
@@ -413,13 +430,13 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
     }
   }
 
-// to open important notes popup
-  openAddNotes(){
+  // to open important notes popup
+  public openAddNotes() {
     this.dialog.open(NotesWrapperComponent, {
       data: this.info.data.admin_note
     })
   }
-  
+
   // to read lookup data from currentlookUpTableData observable
   public getCurrentLookUpTable() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {

@@ -209,12 +209,14 @@
   margin-right: 5%;
   color: maroon;
   }
+
   .fa-link {
   font-size: 170%;
   margin-left: 5%;
   margin-right: 5%;
   color: darkslategrey;
   }
+  
   .fa-paper-plane {
   font-size: 170%;
   margin-left: 5%;
@@ -277,6 +279,7 @@
   .modal-header {
   align-content: center;
   }
+
   .modal-title {
   color: white;
   font-size: medium;
@@ -323,6 +326,7 @@
   .footer-buttons {
   float: left;
   }
+
   .Request-details {
   width: 100%;
   float: left;
@@ -376,6 +380,7 @@
   color: black;
   float: left;
   }
+
   .bubble_left:before {
   content: "";
   position: absolute;
@@ -417,6 +422,7 @@
   justify-content: flex-start;
   height: 50px;
   }
+
   td > div {
   width: 85px;
   align-items: center;
@@ -450,6 +456,7 @@
   justify-content: space-between;
   height: 40px;
   }
+
   td > div {
   width: 90px;
   align-items: center;
@@ -512,9 +519,6 @@
   height :100px;
 }
 
-.error-modal-message {
-  }
-  
   .error-modal-message {
   height: auto !important;
   max-height: 400px;

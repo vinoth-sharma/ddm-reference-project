@@ -158,7 +158,6 @@ export class HeaderComponent implements OnInit {
   this.notification_number = this.unreadNotificationList.length
   this.unreadNotificationList = this.unreadNotificationList.concat(this.redNotificationList)
   }
-// updating consolidated data sets 
   
 }
 

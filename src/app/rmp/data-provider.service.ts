@@ -96,7 +96,6 @@ export class DataProviderService {
     return new Promise((resolve, reject) => {
       this.django.get_notifications().subscribe(response => {
         let data = [];
-        console.log("res",response)
         if (response) {
           data.push(...response['pending_requests'])
           data.push(...response['active_requests'])

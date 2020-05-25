@@ -196,6 +196,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     else { this.original_content = "" }
     this.namings = this.original_content;
   }
+
   // get current files from server
   public getCurrentFiles() {
     this.dataProvider.currentFiles.subscribe(ele => {
@@ -210,12 +211,14 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       }
     })
   }
+
   // subscribing to an observable in dataprovier service
   public getCurrentTableLookupData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       this.content = element;
     })
   }
+
   // subscribing to an observable to get user info from auth_service
   public getUserInfo() {
     this.auth_service.myMethod$.subscribe(role => {
@@ -225,6 +228,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       }
     })
   }
+
   // getting links from server
   public getLink(index) {
     this.spinner.show();
@@ -237,12 +241,14 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.toastr.error("Server Error");
     })
   }
+
   // read data from quill editor
   public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
+
   // save changes made in help modal
   public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
@@ -274,26 +280,31 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.toastr.error("please enter the data");
     }
   }
+
   // setting a few properties of component
-  public edit_True() {
+  public edit_true() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_content;
   }
+
   // setting a few properties of component
   public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_content;
   }
+
   // setting a few properties of component
   public content_edit() {
     this.editMode = false;
   }
+  
   // setting a few properties of component
   public editTrue() {
     this.editMode = !this.editMode;
   }
+
   // setting a few properties of component
   public NewDoc() {
     this.editid = undefined;
@@ -302,6 +313,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     (<HTMLInputElement>document.getElementById('uploadCheckbox')).checked = false;
     this.upload("")
   }
+
   // used to disable/enable url input field
   public upload(isChecked) {
     if ($('#uploadCheckbox').is(':checked')) {
@@ -315,6 +327,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       $("#attach-file1").val('');
     }
   }
+
   // add document to server
   public addDocument() {
     this.document_details = {
@@ -377,8 +390,8 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Select one, either Url or Upload</h5>";
       document.getElementById("errorTrigger").click()
     }
-
   }
+
   // delete document from server
   public deleteDocument(id: number, index: number) {
     this.spinner.show()
@@ -391,6 +404,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.toastr.error("Server problem encountered")
     })
   }
+
   // delete file from server
   public delete_upload_file(id, index) {
     this.spinner.show();
@@ -452,6 +466,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       $('#uploadCheckbox').prop('checked', false);
     });
   }
+
   // setting a few properties of component
   public editDoc(id, val, url) {
     this.editid = id;
@@ -459,6 +474,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
   }
+  
   // edit doc and save it
   public editDocument() {
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();

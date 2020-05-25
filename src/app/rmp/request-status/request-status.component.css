@@ -142,9 +142,11 @@
   .comment_row {
   margin: 0;
   height: 300px;
-  overflow-y: auto;
   width: 100%;
   overflow-x: hidden;
+  overflow-y: hidden;
+  height: auto;
+  padding: 2%;
   }
   
   .icons {
@@ -214,7 +216,6 @@
   margin-right: 5%;
   color: darkslategrey;
   }
-
   .fa-paper-plane {
   font-size: 170%;
   margin-left: 5%;
@@ -277,6 +278,7 @@
   .modal-header {
   align-content: center;
   }
+
   .modal-title {
   color: white;
   font-size: medium;
@@ -348,7 +350,7 @@
   .bubble_right:before {
   content: "";
   position: absolute;
-  z-index: -1;
+  z-index: 1;
   bottom: -2px;
   right: -7px;
   height: 20px;
@@ -548,4 +550,6 @@
   padding: 0.5vh 0.5vw;
   font-size: 12px;
   }
+
+ 
   

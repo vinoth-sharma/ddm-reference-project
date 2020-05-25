@@ -109,7 +109,7 @@
             </a>
           </div>
 
-          <div class="col-1" style="padding-bottom: 6px;">
+          <div class="col-2" style="padding-bottom: 6px;">
             <a [id]="'delete'+element.file_id" (click)="delete_upload_file(element.file_id,i)" *ngIf="editMode">
               <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
             </a>
@@ -149,8 +149,7 @@
           </div>
         </div>
         <div class="modal-footer modal-footer-pad">
-          <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_True()"
-            data-dismiss="modal">Close</button>
+          <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_true()" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

@@ -24,7 +24,6 @@ export class HeaderComponent implements OnInit {
   public unreadNotificationList = []
   public redTraker = [];
   public unreadTraker = [];
-
   public routerObj = [{
     label: "Main Menu",
     routerVal: "main",
@@ -55,9 +54,9 @@ export class HeaderComponent implements OnInit {
   constructor(private route: Router,
     private authenticationService: AuthenticationService,
     private dataProvider: DataProviderService) {
-    this.subscribeToService();
+    this.subscribeToService()
+    dataProvider.loadNotifications()
     route.events.subscribe((val) => {
-      // console.log(val);
       if (val instanceof NavigationEnd) {
         // Hide loading indicator
         this.routerObj.forEach(ele => {
@@ -71,6 +70,7 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
+
   // subscribe to observables in authenticationservice and dataProvider service 
   // to get user info and notification details
   public subscribeToService() {
@@ -88,10 +88,6 @@ export class HeaderComponent implements OnInit {
             this.user_role = role["role"];
             if (this.user_role === "Admin")
               this.routerObj[4].isVisible = true;
-            // this.notification_list = element.filter(element => {
-            //   return element.commentor != this.user_name
-            // })
-            // this.user_role = role["role"]
             this.notification_list = element;
             let unread = [];
             let red = [];
@@ -119,6 +115,7 @@ export class HeaderComponent implements OnInit {
   public modulePageRoute() {
     this.route.navigate(['user'])
   }
+
   // open downloaded pdf in a new window
   public redirect(value: string) {
     Utils.showSpinner();
@@ -129,36 +126,34 @@ export class HeaderComponent implements OnInit {
       window.open(data);
     })
   }
-//  creating data set to consolidate notification messages
+
+  //creating data set to consolidate notification messages
   sortNotification(notificationList){
   this.redNotificationList = []
   this.unreadNotificationList = []
   this.redTraker = [];
   this.unreadTraker = [];
   notificationList.forEach(item =>{
-    if(item.comment_read_flag && !this.redTraker.includes(item.ddm_rmp_post_report)){
-      this.redTraker.push(item.ddm_rmp_post_report);
-      this.redNotificationList.push({reportNo:item.ddm_rmp_post_report,count:0,comment_read_flag:true})
-    }
-    if(!item.comment_read_flag && !this.unreadTraker.includes(item.ddm_rmp_post_report)){
-      this.unreadTraker.push(item.ddm_rmp_post_report);
-      this.unreadNotificationList.push({reportNo:item.ddm_rmp_post_report,count:0,comment_read_flag:false})
-    }
-  })
-  this.sortCommentsBasedOnRequest()
-  }
-// updating consolidated data sets 
-  sortCommentsBasedOnRequest(){
-    this.notification_list.forEach(item =>{
-      if(this.redTraker.indexOf(item.ddm_rmp_post_report) >= 0 && item.comment_read_flag){
-      this.redNotificationList[this.redTraker.indexOf(item.ddm_rmp_post_report)].count++
+    if(item.comment_read_flag){
+      if(!this.redTraker.includes(item.ddm_rmp_post_report)){
+        this.redTraker.push(item.ddm_rmp_post_report);
+        this.redNotificationList.push({reportNo:item.ddm_rmp_post_report,count:1,comment_read_flag:true})
+      } else{
+        this.redNotificationList[this.redTraker.indexOf(item.ddm_rmp_post_report)].count++
       }
-      if(this.unreadTraker.indexOf(item.ddm_rmp_post_report) >= 0 && !item.comment_read_flag){
+    }
+    else{
+      if(!this.unreadTraker.includes(item.ddm_rmp_post_report)){
+        this.unreadTraker.push(item.ddm_rmp_post_report);
+        this.unreadNotificationList.push({reportNo:item.ddm_rmp_post_report,count:1,comment_read_flag:false})
+      }else{
         this.unreadNotificationList[this.unreadTraker.indexOf(item.ddm_rmp_post_report)].count++
       }
-    })
-    this.notification_number = this.unreadNotificationList.length
-    this.unreadNotificationList = this.unreadNotificationList.concat(this.redNotificationList)
+    }
+  })
+  this.notification_number = this.unreadNotificationList.length
+  this.unreadNotificationList = this.unreadNotificationList.concat(this.redNotificationList)
   }
+  
 }
 

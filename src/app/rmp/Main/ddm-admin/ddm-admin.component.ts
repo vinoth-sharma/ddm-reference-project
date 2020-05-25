@@ -196,6 +196,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     else { this.original_content = "" }
     this.namings = this.original_content;
   }
+
   // get current files from server
   public getCurrentFiles() {
     this.dataProvider.currentFiles.subscribe(ele => {
@@ -281,7 +282,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   }
 
   // setting a few properties of component
-  public edit_True() {
+  public edit_true() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_content;
@@ -298,7 +299,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   public content_edit() {
     this.editMode = false;
   }
-
   // setting a few properties of component
   public editTrue() {
     this.editMode = !this.editMode;
@@ -309,6 +309,8 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     this.editid = undefined;
     (<HTMLInputElement>document.getElementById('document-name')).value = "";
     (<HTMLInputElement>document.getElementById('document-url')).value = "";
+    (<HTMLInputElement>document.getElementById('uploadCheckbox')).checked = false;
+    this.upload("")
   }
 
   // used to disable/enable url input field
@@ -336,7 +338,9 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let duplicateName = this.naming.find(ele => (ele['title'] == link_title));
-    if (!this.editid && duplicateName) {
+    let dupeFileName = this.isAdmin.docs.find(item => item.uploaded_file_name == link_title)
+    
+    if (!this.editid && (duplicateName || dupeFileName)) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
       document.getElementById("errorTrigger").click()
     } else if (link_title == "") {
@@ -476,7 +480,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
   }
-
+  
   // edit doc and save it
   public editDocument() {
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();

@@ -110,7 +110,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding" *ngIf="freqDA.select_frequency_description"> 
                         <mat-form-field>
-                            <input matInput [placeholder]="freqDA.ddm_rmp_lookup_select_frequency_id === 33?'Specific Periods':'Other'"
+                            <input matInput [placeholder]="freqDA.ddm_rmp_lookup_select_frequency_id === 33?'Specific Period(s)':'Other'"
                                     value="" [(ngModel)]="freqDA['description']" [disabled]="!selected.reportFreq_regBasis">
                         </mat-form-field>
                     </div>

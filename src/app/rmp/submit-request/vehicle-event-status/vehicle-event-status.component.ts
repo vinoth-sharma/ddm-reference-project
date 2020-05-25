@@ -11,6 +11,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 import { SubmitRequestService } from "../submit-request.service";
 import { DataProviderService } from '../../data-provider.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 const moment = _moment;
 const MY_FORMATS = {
@@ -142,6 +143,8 @@ export class VehicleEventStatusComponent implements OnInit {
   user_name = "";
   user_role = "";
 
+  subjectSubscription : Subscription;
+
   constructor(public matDialog: MatDialog,
     private dataProvider: DataProviderService,
     public ngToaster: NgToasterComponent,
@@ -164,7 +167,7 @@ export class VehicleEventStatusComponent implements OnInit {
       this.refillMasterDatatoOptions();
     })
 
-    this.submitService.requestStatusEmitter.subscribe((res: any) => {
+    this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
       if (res.type === "src") {
         this.refillDivisionsMD(res.data.division_selected);
         // this.req_body.report_detail.status = res.data.status;
@@ -676,6 +679,10 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_dropdown_order_event_id',
     label_key: 'order_event',
     title: ""
+  }
+
+  ngOnDestroy(){
+    this.subjectSubscription.unsubscribe();
   }
 }
 

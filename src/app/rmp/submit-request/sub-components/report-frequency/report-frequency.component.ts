@@ -4,6 +4,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from "@angular/material/chips";
 import { SubmitRequestService } from '../../submit-request.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import { Subscription } from 'rxjs';
 
 export interface Dl {
   mail: string;
@@ -37,13 +38,15 @@ export class ReportFrequencyComponent implements OnInit {
     dl_list: []
   }
 
+  subjectSubscription : Subscription;
+
   constructor(public subReqService: SubmitRequestService,
     public toaster: NgToasterComponent) { }
 
 
   ngOnInit(): void {
 
-    this.subReqService.requestStatusEmitter.subscribe((res:any)=>{
+    this.subjectSubscription = this.subReqService.requestStatusEmitter.subscribe((res:any)=>{
       if(res.type === "srw"){
         this.refillSelectedRequestData(res.data);
       }
@@ -212,6 +215,10 @@ export class ReportFrequencyComponent implements OnInit {
     else if (o1.ddm_rmp_lookup_select_frequency_id == o2.ddm_rmp_lookup_select_frequency_id)
       return true;
     else return false
+  }
+
+  ngOnDestroy(){
+    this.subjectSubscription.unsubscribe();
   }
 
 }

@@ -8,6 +8,7 @@ import { ReportCriteriaDataService } from '../../services/report-criteria-data.s
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { SubmitRequestService } from '../submit-request.service';
 import Utils from 'src/utils';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-submit-request-wrapper',
@@ -22,6 +23,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
     self_email: ""
   }
 
+  subjectSubscription: Subscription ;
   // lookupMasterData = {};
   // lookupTableMasterData = {};
 
@@ -59,28 +61,30 @@ export class SubmitRequestWrapperComponent implements OnInit {
   }
 
   ngOnInit() {
-  this.submitReqService.loadingStatus.subscribe((status: any) => {
-    // console.log(status);
-    if (status.comp === "da" && status.status) {
-      let requestId = localStorage.getItem("report_id")
-      if (requestId){
-        Utils.showSpinner();
-        this.submitReqService.getReportDescription(requestId).subscribe(res => {
-          // console.log(res);
-          this.submitReqService.updateRequestStatus({type:"srw",data:res});
-          // this.selectedReportData = res;
-          Utils.hideSpinner();
-        }, err => {
-          Utils.hideSpinner();
-        })
+    this.subjectSubscription = this.submitReqService.loadingStatus.subscribe((status: any) => {
+      console.log(status);
+      if (status.comp === "da" && status.status) {
+        let requestId = localStorage.getItem("report_id")
+        if (requestId) {
+          Utils.showSpinner();
+          this.submitReqService.getReportDescription(requestId).subscribe(res => {
+            console.log(res);
+            this.submitReqService.updateRequestStatus({ type: "srw", data: res });
+            // this.selectedReportData = res;
+            Utils.hideSpinner();
+          }, err => {
+            Utils.hideSpinner();
+          })
+
+        }
 
       }
+    })
+  }
 
-    }
-  }) }
-
-  ngOnDestroy(){
+  ngOnDestroy() {
     localStorage.removeItem('report_id');
+    this.subjectSubscription.unsubscribe()
     // this.submitReqService.loadingStatus.unsubscribe();
   }
 }

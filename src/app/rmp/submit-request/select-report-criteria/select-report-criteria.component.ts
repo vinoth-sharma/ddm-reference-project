@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RequestOnbehalfComp } from '../request-onbehalf/request-onbehalf.component';
 import { DataProviderService } from '../../data-provider.service';
 import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -105,6 +106,8 @@ export class SelectReportCriteriaComp implements OnInit {
     type : "src"
   }
 
+  subjectSubscription : Subscription;
+
   constructor(public djangoService: DjangoService,
     public ngToaster: NgToasterComponent,
     public dialog: MatDialog,
@@ -142,7 +145,9 @@ export class SelectReportCriteriaComp implements OnInit {
       }
     })
 
-    this.submitService.requestStatusEmitter.subscribe((request:any)=>{
+    this.subjectSubscription =  this.submitService.requestStatusEmitter.subscribe((request:any)=>{
+      console.log(request);
+      
       if(request.type === "srw"){
         this.refillSelectedRequestData(request.data);
       }
@@ -441,4 +446,8 @@ export class SelectReportCriteriaComp implements OnInit {
     title: "LMA Selection"
   };
 
+
+  ngOnDestroy(){
+    this.subjectSubscription.unsubscribe();
+  }
 }

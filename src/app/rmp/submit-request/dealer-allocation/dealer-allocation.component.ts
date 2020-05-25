@@ -14,6 +14,7 @@ import { default as _rollupMoment, Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { AdditionalReqModalComponent } from '../additional-req-modal/additional-req-modal.component';
 import { DataProviderService } from '../../data-provider.service';
+import { Subscription } from 'rxjs';
 
 const moment = _rollupMoment || _moment;
 
@@ -100,6 +101,7 @@ export class DealerAllocationComp implements OnInit {
   }
 
   display_message = "";
+  subjectSubscription : Subscription;
 
   constructor(public matDialog: MatDialog,
     public ngToaster: NgToasterComponent,
@@ -121,7 +123,7 @@ export class DealerAllocationComp implements OnInit {
       this.refillMasterDatatoOptions();
     })
 
-    this.submitService.requestStatusEmitter.subscribe((res:any)=>{
+    this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res:any)=>{
       if(res.type === "src"){
         this.refillDivisionMD(res.data.division_selected);
         this.req_body.report_id = res.data.report_id;
@@ -362,5 +364,9 @@ export class DealerAllocationComp implements OnInit {
     label_key: "cd_values",
     title: ""
   };
+
+  ngOnDestroy(){
+    this.subjectSubscription.unsubscribe();
+  }
 
 }

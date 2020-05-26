@@ -125,6 +125,7 @@ export class DealerAllocationComp implements OnInit {
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res:any)=>{
       if(res.type === "src"){
+        this.division_settings.primary_key = "ddm_rmp_lookup_division_id"
         this.refillDivisionMD(res.data.division_selected);
         this.req_body.report_id = res.data.report_id;
         this.display_message = `<span class="red">Request #${this.req_body.report_id} - Incomplete</span>`

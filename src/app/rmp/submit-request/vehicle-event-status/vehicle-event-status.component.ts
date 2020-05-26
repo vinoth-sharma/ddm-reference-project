@@ -169,7 +169,10 @@ export class VehicleEventStatusComponent implements OnInit {
     })
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
+      console.log(res);
+      
       if (res.type === "src") {
+        this.division_settings.primary_key = "ddm_rmp_lookup_division_id"
         this.refillDivisionsMD(res.data.division_selected);
         // this.req_body.report_detail.status = res.data.status;
         this.req_body.report_id = res.data.report_id;
@@ -263,10 +266,15 @@ export class VehicleEventStatusComponent implements OnInit {
   }
 
   refillDivisionsMD(divisions) {
+    console.log(divisions);
+    
     this.selected.divisions = divisions;
     this.filtered_MD.divisions = divisions;
     this.filtered_MD.vehicle = this.l_lookupTableMD.vehicle_data;
-    this.multiSelectChange('division')
+    // this.multiSelectChange('division');
+    console.log(JSON.parse(JSON.stringify(this.selected)));
+    console.log(this.filtered_MD);
+    
   }
 
   multiSelectChange(type) {

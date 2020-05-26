@@ -221,6 +221,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.editModes = false;
 
   }
+
   // execute after html initialized
   public ngAfterViewInit() {
     this.showTooltips();
@@ -278,7 +279,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    * @param event event catched on change of the input value
    * @param reportObject the current report object being edited
    */
-  changeReportName(event: any, reportObject) {
+  public changeReportName(event: any, reportObject) {
 
     const changedReport = {};
     changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
@@ -299,8 +300,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    * @function to toggle the input field on DDM Name 
    * @param element the report element which is being clicked
    */
-  toggleShowInput(element) {
-
+  public toggleShowInput(element) {
     this.reports.forEach(ele => {
       if (ele.report_name != element.report_name) {
         ele.clicked = false;
@@ -311,7 +311,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // read user role from an observable
-  readUserRole() {
+  public readUserRole() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role['role'];
@@ -320,7 +320,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   //  get lookup table data from the server
-  getLookUptableData() {
+  public getLookUptableData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
         this.content = element;
@@ -340,11 +340,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // get valuse from obj
-  getValues(obj: Object) {
+  public getValues(obj: Object) {
     return Object.values(obj);
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.getSemanticLayerID()
     Utils.showSpinner();
     this.getScheduledReports()
@@ -355,7 +355,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // set semanticlayer id
-  getSemanticLayerID() {
+  public getSemanticLayerID() {
     this.changeInFreq = true;
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
@@ -378,7 +378,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // get reports list from server
-  getReportList() {
+  public getReportList() {
     this.django.get_report_list().subscribe(list => {
       if (list) {
         this.reportContainer = list['data'];
@@ -452,7 +452,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // to mark a report as favourites
-  checked(id, event) {
+  public checked(id, event) {
     this.spinner.show()
     this.favourite = event.target.checked;
     var finalObj = { 'report_id': id, 'favorite': this.favourite }
@@ -467,7 +467,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // used to set typeval property of reports
-  sort(typeVal) {
+  public sort(typeVal) {
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
@@ -475,14 +475,14 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   // formating date 
   public dateFormat(str: any) {
-    var date = new Date(str),
+    const date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
       day = ("0" + date.getDate()).slice(-2);
     return [date.getFullYear(), mnth, day].join("");
   }
 
   // generates excel report
-  xlsxJson() {
+  public xlsxJson() {
     let fileName = "Reports_" + this.dateFormat(new Date());  // changes done by Ganesh
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
@@ -520,7 +520,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // creating a body to generate excel report
-  createNewBodyForExcel() {
+  public createNewBodyForExcel() {
     let reportBody = []
     this.reports.forEach(item => {
       let obj = {
@@ -538,7 +538,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // used ti toggle reverse property
-  setOrder(value: any) {
+  public setOrder(value: any) {
     if (this.order === value) {
       this.reverse = !this.reverse;
     }
@@ -546,14 +546,14 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // used to set a few properties when content get changed in quill editor
-  textChanged(event) {
+  public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   // save changes made to help
-  content_edits() {
+  public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       this.spinner.show()
       this.editModes = false;
@@ -586,15 +586,14 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // used to set a few properties of component
-  edit_True() {
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
 
   // used to set a few properties of component
-
-  editEnable() {
+  public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_contents;
@@ -675,8 +674,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     });
   }
 
-
-
   /*-------------------Freq Selections------------------------------------- */
   FrequencySelection() {
     this.select_frequency_ots = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id < 4)
@@ -748,7 +745,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // setting final json value based on the selection made in check boxes
-  setFrequency() {
+  public setFrequency() {
     var temp = this.jsonfinal;
     temp.select_frequency = [];
 
@@ -781,7 +778,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // update frequency to the server
-  updateFreq(request_id) {
+  public updateFreq(request_id) {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
     this.jsonfinal['status'] = "Recurring"
@@ -866,13 +863,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // open change-frequency modal
-  showChangeFrequencyModal() {
+  public showChangeFrequencyModal() {
     $('#change-Frequency').modal('show');
   }
 
   //-------------------------frequency update--------------------------------------------
 
-  frequencySelected(val, event) {
+  public frequencySelected(val, event) {
     if (event.target.checked) {
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
       this.jsonfinal.select_frequency.push(this.frequencyData);
@@ -903,7 +900,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // freuency selected through checkbox
-  frequencySelectedDropdown(val, event) {
+  public frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
 
@@ -925,13 +922,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   searchObj;
 
   // parsing filters into obj
-  filterData() {
+  public filterData() {
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
 
   /*--------------Query Criteria repeated--------------*/
-  query_criteria_report(query_report_id) {
+  public query_criteria_report(query_report_id) {
     this.spinner.show();
     this.summary = [];
     this.django.get_report_description(query_report_id).subscribe(response => {
@@ -1219,13 +1216,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
 
   // filter data based on pagination data
-  onPaginationChange(event) {
+  public onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   }
 
   // setting report id to edit link to url and also change the title of modal to edit or create respectively
-  addLinkUrl(element, type) {
+  public addLinkUrl(element, type) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     if (type == "create") {
       this.addUrlTitle = "ADD URL"
@@ -1238,7 +1235,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // save link to url
-  saveLinkURL() {
+  public saveLinkURL() {
     let link = document.querySelector("#add-url-input")["value"]
     let data = { request_id: this.linkUrlId, link_to_results: link }
     Utils.showSpinner();
@@ -1262,17 +1259,17 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // open links in an new window
-  openNewWindow(url) {
+  public openNewWindow(url) {
     window.open(url)
   }
 
   // close modal
-  closeTBD_Assigned() {
+  public closeTBD_Assigned() {
     $('#close_url_modal').click();
   }
 
   // used to validate weather input is empty or not
-  validateLinkToUrl(data) {
+  public validateLinkToUrl(data) {
     if (data == "") this.linkToUrlFlag = true
     else this.linkToUrlFlag = false;
   }

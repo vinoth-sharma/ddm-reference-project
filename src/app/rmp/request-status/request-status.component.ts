@@ -589,7 +589,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     $('#CancelRequest').modal('hide');
   }
 
-
   public AssignTBD() {
     Utils.showSpinner();
     this.assignTBD['request_id'] = this.finalData[0]['ddm_rmp_post_report_id'];
@@ -755,12 +754,11 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
   // formating date 
   public dateFormat(str: any) {
-    var date = new Date(str),
+    const date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
       day = ("0" + date.getDate()).slice(-2);
     return [date.getFullYear(), mnth, day].join("");
   }
-
 
   // download list of reports into excel sheet
   public xlsxJson() {
@@ -798,8 +796,9 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     }).catch(error => {
     });
   }
+
   // creating a body to generate excel report
-  createNewBodyForExcel() {
+ public createNewBodyForExcel() {
     let reportBody = []
     this.reports.forEach(item => {
       let obj = {
@@ -1385,7 +1384,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   // capture pagination page event
-  addLinkUrl(element, type) {
+  public addLinkUrl(element, type) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     if (type == "create") {
       this.addUrlTitle = "ADD URL"
@@ -1397,8 +1396,9 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       this.validateLinkToUrl(element.link_to_results)
     }
   }
+
   //  save link to url
-  saveLinkURL() {
+  public saveLinkURL() {
     let link = document.querySelector("#add-url-input")["value"]
 
     let data = { request_id: this.linkUrlId, link_to_results: link }
@@ -1421,21 +1421,25 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     })
 
   }
+
   // open link in a new window
-  openNewWindow(url) {
+  public openNewWindow(url) {
     window.open(url)
   }
+
   // setting report id inorder to edit
-  openEditStatusModal(element) {
+  public openEditStatusModal(element) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     document.querySelector("#selectReportStatus")["value"] = "Active"
   }
+
   // capturing report status from input
-  setselectReportStatus() {
+  public setselectReportStatus() {
     this.selectReportStatus = document.querySelector("#selectReportStatus")["value"]
   }
+
   // saving report status to server
-  saveReportStatus() {
+  public saveReportStatus() {
     let link = document.querySelector("#add-url-input")["value"]
     let data = { request_id: this.linkUrlId, status: "Completed", status_date: new Date() }
     Utils.showSpinner();
@@ -1456,20 +1460,23 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       Utils.hideSpinner()
     })
   }
+
   // close modal
-  closeLinkUrl() {
+  public closeLinkUrl() {
     $('#addUrl').modal('hide');
   }
+
   // close modal
-  closeStatusUrl() {
+  public closeStatusUrl() {
     $('#changeStatusModal').modal('hide');
   }
 
   // used to validate weather input is empty or not
-  validateLinkToUrl(data) {
+  public validateLinkToUrl(data) {
     if (data == "") this.linkToUrlFlag = true
     else this.linkToUrlFlag = false;
   }
+
   public onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;

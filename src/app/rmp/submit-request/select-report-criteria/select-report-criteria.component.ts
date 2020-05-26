@@ -97,14 +97,7 @@ export class SelectReportCriteriaComp implements OnInit {
     email: ""
   }
 
-  response_body = {
-    division_selected: [],
-    report_id: null,
-    on_behalf_of: "",
-    status: "",
-    message: "",
-    type : "src"
-  }
+  message = "";
 
   subjectSubscription : Subscription;
 
@@ -282,6 +275,9 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.status_date = new Date();
     this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
 
+    if(this.req_body.report_detail.status === "Cancelled")
+      this.req_body.report_detail.status = "Incomplete"
+
     // console.log(this.req_body);
 
     Utils.showSpinner();
@@ -289,26 +285,17 @@ export class SelectReportCriteriaComp implements OnInit {
       // console.log(response);
       Utils.hideSpinner();
       this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Updated successfully`)
-      this.response_body.division_selected = response.division_data;
-      this.response_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
-      this.response_body.status = response['report_data']['status'];
-      this.response_body.on_behalf_of = response['report_data']['on_behalf_of'];
 
       if (response['report_data']['status'] === "Incomplete")
-        this.response_body.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
-      else if (response['report_data']['status'] === "Pending")
-        this.response_body.message = ""
+        this.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
       else
-        this.response_body.message = ""
+        this.message = "";
 
       this.req_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
       this.req_body.report_detail.status = response['report_data']['status'];
 
-      // this.requestCreated.emit(this.response_body)
-      if(this.response_body.status === "Incomplete")
-         this.submitService.updateRequestStatus({type:"src",data:this.response_body})
-      else
-        this.submitService.updateLoadingStatus({ status: true, comp: "da" })
+      localStorage.setItem('report_id',response['report_data']['ddm_rmp_post_report_id'])
+      this.submitService.updateLoadingStatus({ status: true, comp: "da" });
     }, err => {
       Utils.hideSpinner();
       console.log(err);
@@ -377,20 +364,20 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.query_criteria = reqData.report_data.query_criteria;
     this.req_body.report_detail.report_type = reqData.report_data.report_type;
     this.req_body.report_detail.requestor = reqData.report_data.requestor;
-    this.req_body.report_detail.status = reqData.report_data.status;
     this.req_body.report_detail.title = reqData.report_data.title;
     this.req_body.report_id = reqData.ddm_rmp_post_report_id;
 
     this.submitService.setSubmitOnBehalf(this.req_body.report_detail.on_behalf_of,"");
-    this.response_body.report_id = this.req_body.report_id;
-    this.response_body.status = this.req_body.report_detail.status;
-    if (this.req_body.report_detail.status === "Incomplete")
-      this.response_body.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
-    else if (this.req_body.report_detail.status === "Pending")
-      this.response_body.message = "";
-    else
-      this.response_body.message = "";
-
+    if (reqData.report_data.status === "Incomplete")
+      this.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
+    else if(reqData.report_data.status === "Cancelled"){
+      this.req_body.report_detail.status = reqData.report_data.status;      
+      this.message = "";
+    }
+    else{
+      this.req_body.report_detail.status = reqData.report_data.status;      
+      this.message = "";
+    }
   }
 
   openRequestOnBehalf() {

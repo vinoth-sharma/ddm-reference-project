@@ -124,38 +124,27 @@ export class DealerAllocationComp implements OnInit {
     })
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res:any)=>{
-      if(res.type === "src"){
-        this.division_settings.primary_key = "ddm_rmp_lookup_division_id"
-        this.refillDivisionMD(res.data.division_selected);
-        this.req_body.report_id = res.data.report_id;
+      console.log(res);
+      
+      this.division_settings.primary_key = "ddm_rmp_lookup_division"
+      this.refillDivisionMD(res.data.division_dropdown);
+      this.req_body.report_id = res.data.ddm_rmp_post_report_id;
+      this.fillReportDetails(res.data);
+      this.refillSelectedRequestData(res.data);
+
+      if (res.type === "srw" && res.data.status === "Incomplete") {
+        this.req_body.report_detail.status = "Pending";
         this.display_message = `<span class="red">Request #${this.req_body.report_id} - Incomplete</span>`
-      }
-      else if (res.type === "srw" && res.data.status === "Incomplete") {
-        this.division_settings.primary_key = "ddm_rmp_lookup_division"
-        this.refillDivisionMD(res.data.division_dropdown);
-        this.req_body.report_id = res.data.ddm_rmp_post_report_id;
-        this.display_message = `<span class="red">Request #${this.req_body.report_id} - Incomplete</span>`
-        // this.refillSelectedRequestData(request.data);
-        this.fillReportDetails(res.data);
       }
       else if (res.type === "srw" && res.data.status != "Incomplete") {
-        // console.log(res.data);
-        this.division_settings.primary_key = "ddm_rmp_lookup_division"
-        this.refillDivisionMD(res.data.division_dropdown);
-
         this.req_body.report_detail.status = res.data.status;
-        this.req_body.report_id = res.data.ddm_rmp_post_report_id;
-
         if (res.data.report_type === "ots"){
           this.display_message = `<span class="green">Request #${this.req_body.report_id} - ${this.req_body.report_detail.status}</span>
                                 . Report Type - Vehicle event status<br> Though you can submit new vehicle event status`
         }
         else{
           this.display_message = `<span class="green">Request #${this.req_body.report_id} - ${this.req_body.report_detail.status}</span>`
-          this.refillSelectedRequestData(res.data);
         }
-        this.fillReportDetails(res.data);
-
       }
     })
 
@@ -255,6 +244,11 @@ export class DealerAllocationComp implements OnInit {
   }
 
   refillSelectedRequestData(data){
+
+    //stop the function when da data is null 
+    if(!data['da_data'])
+      return true
+
     let l_data = data.da_data;
 
     let modelYrIds = l_data.model_year.map(ele=> ele.ddm_rmp_lookup_dropdown_model_year);

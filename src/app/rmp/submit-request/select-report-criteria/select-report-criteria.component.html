@@ -13,25 +13,20 @@
         </div>
     </div>
     <div class="row topFiltersWrapper margBottom">
-        <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15" *ngIf="response_body.report_id" 
+        <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15" *ngIf="req_body.report_id" 
          style="margin : 0px 20px 10px;font-size: 1.1em; font-weight: 600;">
-            <div class="green"> Request #{{ response_body.report_id }} - {{ response_body.status }}. </div>
-            <div [innerHTML]="response_body.message"></div>
+            <div class="green"> Request #{{ req_body.report_id }} - {{ req_body.report_detail.status }}. </div>
+            <div [innerHTML]="message"></div>
         </div>
         <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15">
             <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15">
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
                     <app-mat-multiselect [data]="filtered_master_data.market" [settings]="market_settings"
                     [(inputModel)]="selected.market" (selectionDone)="multiSelectChange($event,'market')"></app-mat-multiselect>
-                    <!-- <app-topfilter [userProfile]="mktSelnSltd" [filters]="mktSeln" [title]="'Market Selection'">
-                    </app-topfilter> -->
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
                     <app-mat-multiselect [data]="filtered_master_data.division" [settings]="division_settings"
                     [(inputModel)]="selected.division"></app-mat-multiselect>
-<!--                     
-                    <app-topfilter [userProfile]="divisionSltd" [filters]="division" [title]="'Division'">
-                    </app-topfilter> -->
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
                     <app-mat-multiselect [data]="filtered_master_data.region" [settings]="region_settings"

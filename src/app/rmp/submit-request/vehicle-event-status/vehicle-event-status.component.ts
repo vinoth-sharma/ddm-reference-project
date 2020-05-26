@@ -106,6 +106,7 @@ export class VehicleEventStatusComponent implements OnInit {
   }
 
   l_lookupTableMD: any = {};
+  l_selectedReqData:any = {};
 
   // private othersDescIds = [5, 8, 15, 54];
   public req_body = {
@@ -170,40 +171,26 @@ export class VehicleEventStatusComponent implements OnInit {
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
       console.log(res);
-      
-      if (res.type === "src") {
-        this.division_settings.primary_key = "ddm_rmp_lookup_division_id"
-        this.refillDivisionsMD(res.data.division_selected);
-        // this.req_body.report_detail.status = res.data.status;
-        this.req_body.report_id = res.data.report_id;
+      this.l_selectedReqData = res.data;
+      this.req_body.report_id = res.data.ddm_rmp_post_report_id;
+      this.division_settings.primary_key = "ddm_rmp_lookup_division"
+      this.refillDivisionsMD(res.data.division_dropdown);
+      this.fillReportDetails(res.data)
+      this.refillSelectedRequestData(res.data);
+
+      if (res.type === "srw" && res.data.status === "Incomplete") {
+        this.req_body.report_detail.status = "Pending";
         this.display_message = `<span class="red">Request #${this.req_body.report_id} - Incomplete</span>`
-      }
-      else if (res.type === "srw" && res.data.status === "Incomplete") {
-        this.division_settings.primary_key = "ddm_rmp_lookup_division"
-        this.refillDivisionsMD(res.data.division_dropdown);
-        this.req_body.report_id = res.data.ddm_rmp_post_report_id;
-        this.req_body.report_detail.created_on = res.data.report_data.created_on;
-        this.req_body.report_detail.requestor = res.data.report_data.requestor;
-        this.display_message = `<span class="red">Request #${this.req_body.report_id} - Incomplete</span>`
-        // this.refillSelectedRequestData(request.data);
-        this.fillReportDetails(res.data)
       }
       else if (res.type === "srw" && res.data.status != "Incomplete") {
-        this.division_settings.primary_key = "ddm_rmp_lookup_division"
-        this.refillDivisionsMD(res.data.division_dropdown);
-
         this.req_body.report_detail.status = res.data.status;
-        this.req_body.report_id = res.data.ddm_rmp_post_report_id;
-
         if (res.data.report_type === "da"){
           this.display_message = `<span class="green">Request #${this.req_body.report_id} - ${this.req_body.report_detail.status}</span>
                                 . Report Type - Dealer Allocation<br> Though you can submit new vehicle event status`
         }
         else{
           this.display_message = `<span class="green">Request #${this.req_body.report_id} - ${this.req_body.report_detail.status}</span>`
-          this.refillSelectedRequestData(res.data);
         }
-        this.fillReportDetails(res.data);
       }
     })
 
@@ -266,15 +253,10 @@ export class VehicleEventStatusComponent implements OnInit {
   }
 
   refillDivisionsMD(divisions) {
-    console.log(divisions);
-    
     this.selected.divisions = divisions;
     this.filtered_MD.divisions = divisions;
     this.filtered_MD.vehicle = this.l_lookupTableMD.vehicle_data;
-    // this.multiSelectChange('division');
-    console.log(JSON.parse(JSON.stringify(this.selected)));
-    console.log(this.filtered_MD);
-    
+    this.multiSelectChange('division');
   }
 
   multiSelectChange(type) {
@@ -443,7 +425,10 @@ export class VehicleEventStatusComponent implements OnInit {
 
   openPreviewModal(){
     const dialogRef = this.matDialog.open(ReviewReqModalComponent, {
-      data: this.req_body
+      data: {
+        reqBody : this.req_body,
+        selectedReqData : this.l_selectedReqData
+      }
     })
 
     dialogRef.afterClosed().subscribe(result => {
@@ -470,6 +455,10 @@ export class VehicleEventStatusComponent implements OnInit {
   }
 
   refillSelectedRequestData(data){
+    //stop the function when ost_data is null 
+    if(!data['ost_data'])
+      return true
+
     let l_data = data.ost_data;
 
     let vehicleIds = l_data.vehicle_line.map(ele=> ele.ddm_rmp_lookup_dropdown_vehicle_line_brand);

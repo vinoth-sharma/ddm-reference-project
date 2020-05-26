@@ -1242,7 +1242,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
         element['status'] == "Pending" || element['status'] == "Cancelled") {
         this.report_id_service.changeUpdate(true)
       } else if (element['status'] == 'Completed') { // changes done by Ganesh
-        if (element['frequency'] == 'Recurring') {
+        if (element['frequency_of_report'] == 'Recurring') {
           this.report_id_service.changeUpdate(false)
         } else if (element['frequency_data'].length > 1) {
           this.report_id_service.changeUpdate(true)

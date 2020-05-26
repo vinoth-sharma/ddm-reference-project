@@ -24,7 +24,6 @@ export class DataProviderService {
   public filesList: any;
 
   constructor(private django: DjangoService) {
-    this.loadNotifications();
     this.loadLookUpData();
     this.loadLookUpTableData();
     this.getFiles();
@@ -92,6 +91,7 @@ export class DataProviderService {
       })
     })
   }
+  
   // loading notifications from server and sorting it in a required way
   public loadNotifications() {
     return new Promise((resolve, reject) => {

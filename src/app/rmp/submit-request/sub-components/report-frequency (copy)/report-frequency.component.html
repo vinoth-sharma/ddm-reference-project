@@ -1,0 +1,50 @@
+<div>Select frequency of ongoing routine reports</div>
+<div>
+    <div>Report Frequency</div>
+    <div class="ds-flex-centre" style="margin-top: 10px">
+        <div style="width: 50%;">Is this report required on a regular basis?</div>
+        <mat-radio-group aria-labelledby="example-radio-group-label" class="src-radio-group">
+        <mat-radio-button value="Yes">Yes</mat-radio-button>
+        <mat-radio-button value="No">No</mat-radio-button>
+        </mat-radio-group>
+    </div>
+</div>
+<div>
+    <div>Frequency of Vehicle Events Status Requests</div>
+    <div class="ds-flex-centre" style="margin-top: 10px">
+        <div style="width: 50%;">Daily / Weekly (Monday to Friday only)</div>
+        <mat-form-field>
+            <mat-label>Toppings</mat-label>
+            <mat-select [formControl]="toppings" multiple>
+              <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="ds-flex-centre" style="margin-top: 10px">
+        <div style="width: 50%;">Daily / Weekly (Monday to Friday only)</div>
+        <mat-form-field>
+            <mat-label>Toppings</mat-label>
+            <mat-select [formControl]="toppings" multiple>
+              <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="ds-flex-centre" style="margin-top: 10px">
+        <div style="width: 50%;">Daily / Weekly (Monday to Friday only)</div>
+        <mat-form-field>
+            <mat-label>Toppings</mat-label>
+            <mat-select [formControl]="toppings" multiple>
+              <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+<div>
+    <div>Frequency of Dealer Allocation Requests</div>
+    <div class="" style="margin-top: 10px">
+        <div><mat-checkbox>Check me!</mat-checkbox> </div>
+        <div><mat-checkbox>Check me!</mat-checkbox> </div>
+        <div><mat-checkbox>Check me!</mat-checkbox> </div>
+        <div><mat-checkbox>Check me!</mat-checkbox> </div>
+    </div>
+</div>

@@ -17,14 +17,10 @@ export class NotesWrapperComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
-    // console.log(this.data);
   }
 
   closeDailog(): void {
     this.dialogRef.close();
   }
-
-
-
 
 }

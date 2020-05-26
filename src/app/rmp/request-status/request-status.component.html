@@ -6,8 +6,7 @@
         <button class="btn btn-primary" (click)="NewReportOnSelectedCriteria()">New Request Using Selected Criteria / Modify Request</button>
       </a>
       <a>
-        <button class="btn btn-primary" onmouseover="" style="cursor: pointer;" (click)="populateDl()" data-backdrop="static"
-          data-keyboard="false">Edit Distribution List</button>
+        <button class="btn btn-primary" onmouseover="" style="cursor: pointer;" (click)="populateDl()" data-backdrop="static" data-keyboard="false">Edit Distribution List</button>
       </a>
       <a>
         <button class="btn btn-danger" data-toggle="modal" (click)="CheckCancel()">Cancel/Reassign</button>
@@ -176,8 +175,8 @@
                   </tr>
                   <tr class="row">&nbsp;</tr>
                   <tr class="row">
-                    <button class="btn btn-primary medium-btn" (click)="set_report_comments(element.ddm_rmp_post_report_id)" data-toggle="collapse"
-                      [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id" style="padding: 0px 0px 0px 4px;font-size: 13px;width: 122%;">Comments
+                    <button class="btn-sm btn-primary medium-btn" (click)="set_report_comments(element.ddm_rmp_post_report_id)" data-toggle="collapse"
+                      [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id" style="padding: 0px 0px 0px 4px;font-size: 12px">Comments
                       <i id="ic" class="material-icons comment-sec" style="padding-left:0px;font-size:1.5rem;">expand_more</i>
                     </button>
                   </tr>
@@ -273,8 +272,6 @@
                     style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl" (click)="addLinkUrl(element,'edit')">
                     Edit
                   </button>
-
-
                 </td>
 
                 <td *ngIf="element.status != 'Incomplete'">
@@ -284,33 +281,33 @@
                       QueryCriteria
                     </button>
                   </div>
-
                 </td>
 
                 <td *ngIf="user_role=='Admin' && element.status == 'Active'">
                   <div>
-                    <button class="btn btn-primary pointer" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" style="font-size: 12px;font-weight: 600;padding: 8px 6px;width: 103%;">
+                    <button class="btn-sm btn-primary pointer" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)"
+                      style="font-size: 12px">
                       Create Report
                     </button>
                   </div>
                 </td>
                 <td *ngIf="user_role=='Non-Admin' && element.status == 'Active'">
                   <div>
-                    <button class="btn btn-primary pointer" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" style="font-size: 12px;font-weight: 600;padding: 8px 6px;width: 103%;">
+                    <button class="btn-sm btn-primary pointer" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)"
+                      style="font-size: 12px">
                       Create Report
                     </button>
                   </div>
                 </td>
                 <td *ngIf="user_role=='Admin' && element.status != 'Active'">
                   <div>
-
                   </div>
                 </td>
 
               </tr>
               <tr>
                 <td class="col-sm-12" colspan="12" style="padding: 0;">
-                  <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse" style="width: 100%;">
+                  <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse" style="width: 73vw">
                     <div class="row comment_row">
                       <ng-container *ngFor="let comment_element of comment_list">
                         <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
@@ -332,7 +329,6 @@
                         </ng-container>
                       </ng-container>
                     </div>
-
                   </div>
                 </td>
               </tr>
@@ -362,7 +358,7 @@
       <div class="modal-body">
         <div>
           <i>
-            <h6>*Max character limit is 255</h6>
+            <h6>*Max character limit is 255;Please do not try to submit empty comments</h6>
           </i>
         </div>
         <div class="form-group">
@@ -370,13 +366,11 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button style="color:transparent;border:none" data-dismiss="modal" (click)="extract_comment()">
+        <button style="color:transparent;border:none" data-dismiss="modal" *ngIf="comment_text" (click)="extract_comment()">
           <i fa class="fa fa-paper-plane"></i>
         </button>
-
       </div>
     </div>
-
   </div>
 </div>
 
@@ -1024,12 +1018,14 @@
         <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save Changes</button>
+        <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save Changes
+        </button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeLinkUrl()">Close</button>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- edit Status Modal -->
 <div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -1052,7 +1048,6 @@
           <option value="Active"> Active </option>
           <option value="Completed"> Completed </option>
         </select>
-        <!-- <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'" (click)="saveReportStatus()">Save Changes</button>
@@ -1222,9 +1217,7 @@
       <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
     </span>
   </pre>
-<pre class="div-wrap" *ngIf='summary && summary.da_data && 
-                                  summary.da_data.concensus_data && 
-                                  summary.da_data.concensus_data.length > 0'>
+<pre class="div-wrap" *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
       <b>Consensus Data:</b> &nbsp;&nbsp;
       <span *ngFor="let element of summary?.da_data.concensus_data">
         {{element?.cd_values}}&nbsp;&nbsp;

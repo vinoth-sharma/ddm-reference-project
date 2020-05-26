@@ -115,6 +115,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public confirmationValue: any;
   public selectedRequestId: any;
   public reportContainer: any;
+  public searchObj: any;
 
   public reportTitle: any;
   public reportName: any;
@@ -164,7 +165,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public linkUrlId: number;
   public addUrlTitle: String = '';
   public linkToUrlFlag = true;
-  public frequencySelections = ['One Time', 'Recurring', 'On Demand', 'On Demand Configurable']
+  public frequencySelections = ['One Time', 'Recurring']
   public selectedNewFrequency: string = "";
   public isRecurringFrequencyHidden: boolean = false;
 
@@ -599,81 +600,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.namings = this.original_contents;
   }
 
-  // used to update schedule report data
-  public startOnDemandScheduling(data) {
-    let dateDetails = new Date();
-    let todaysDate = (dateDetails.getMonth() + 1) + '/' + (dateDetails.getDate()) + '/' + (dateDetails.getFullYear())
-
-    let hours = dateDetails.getHours();
-    let minutes = (dateDetails.getMinutes() + 10);
-    let scheduleTime = hours + ':' + minutes
-    if (hours >= 24) {
-      hours = hours % 24;
-      if (minutes >= 50) {
-        minutes = minutes % 50;
-      }
-    }
-    if (minutes >= 50) {
-      minutes = minutes % 50;
-      hours = hours + 1;
-      if (hours >= 24) {
-        hours = hours % 24;
-        if (minutes >= 50) {
-          minutes = minutes % 50;
-        }
-      }
-    }
-    scheduleTime = hours + ':' + minutes
-
-    this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
-    //obtaining the report id of the od report from RMP reports
-    this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i => i.ddm_rmp_post_report_id)
-
-    // SCHEDULE REPORT ID WAY from DDM report
-    let scheduleReportId;
-    if (data.scheduleId) {
-      scheduleReportId = data.scheduleId;
-    }
-    else if (data.scheduleId.length >= 1) {
-      scheduleReportId = data.scheduleId[0];
-    }
-
-    if (data.scheduleId.length === 0 || scheduleReportId === undefined || scheduleReportId === []) {
-      this.toasterService.error('Scheduling error!');
-      this.toasterService.error('Please ask the admin to configure scheduling parameters!');
-      Utils.hideSpinner();
-      return;
-    }
-
-    this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res => {
-      if (res) {
-        let originalScheduleData = res['data']
-
-        this.onDemandScheduleData = originalScheduleData;
-        this.onDemandScheduleData.schedule_for_date = todaysDate,
-          this.onDemandScheduleData.schedule_for_time = scheduleTime,
-          this.onDemandScheduleData.request_id = this.selectedRequestId[0];
-        this.onDemandScheduleData.created_by = this.userId;
-        this.onDemandScheduleData.modified_by = this.userId;
-
-        if (data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable')) {
-          Utils.showSpinner();
-          this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
-            if (res) {
-              this.toasterService.success("Your " + data['type'] + " schedule process triggered successfully");
-              this.toasterService.success('Your report will be delivered shortly');
-              Utils.hideSpinner();
-              Utils.closeModals();
-            }
-          }, error => {
-            Utils.hideSpinner();
-            this.toasterService.error('Report schedule failed');
-          });
-        }
-      }
-    });
-  }
-
   /*-------------------Freq Selections------------------------------------- */
   FrequencySelection() {
     this.select_frequency_ots = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id < 4)
@@ -759,10 +685,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         } else {
           this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": "" };
         }
-
         temp.select_frequency.push(this.identifierData);
       });
-
       this.jsonfinal = temp;
     }
     else {
@@ -808,7 +732,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.selectedNewFrequency = '';
     this.changeInFreq = true;
   }
-
 
   /*---------------------------Change Frequency----------------------*/
 
@@ -884,7 +807,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
     this.setFrequency();
 
-
     if (this.jsonfinal['select_frequency'].length > 0) {
       this.jsonfinal['select_frequency'].forEach((obj) => {
         var existNotification = this.frequencyLength.find(({ ddm_rmp_lookup_select_frequency_id }) => obj.ddm_rmp_lookup_select_frequency_id === ddm_rmp_lookup_select_frequency_id);
@@ -896,7 +818,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         }
       });
     }
-
   }
 
   // freuency selected through checkbox
@@ -919,13 +840,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  searchObj;
-
   // parsing filters into obj
   public filterData() {
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
-
 
   /*--------------Query Criteria repeated--------------*/
   public query_criteria_report(query_report_id) {
@@ -1159,7 +1077,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           }
           this.concensus_data = tempArray.join(", ");
         }
-
       }
 
       if (response["bac_data"].length != 0) {

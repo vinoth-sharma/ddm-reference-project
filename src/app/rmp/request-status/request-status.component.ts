@@ -12,7 +12,6 @@ import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
-import { ScheduleService } from '../../schedule/schedule.service';
 import Utils from 'src/utils';
 import '../../../assets/debug2.js';
 declare var jsPDF: any;
@@ -192,6 +191,18 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
 
+  public searchGlobalObj = {
+    'ddm_rmp_post_report_id': this.searchText,
+    'ddm_rmp_status_date': this.searchText,
+    'created_on': this.searchText,
+    'title': this.searchText,
+    'requestor': this.searchText,
+    'on_behalf_of': this.searchText,
+    'assigned_to': this.searchText,
+    'status': this.searchText
+  };
+
+
   public toolbarTooltips = {
     'font': 'Select a font',
     'size': 'Select a font size',
@@ -237,8 +248,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
     private auth_service: AuthenticationService,
-    private toastr: NgToasterComponent,
-    private scheduleService: ScheduleService) {
+    private toastr: NgToasterComponent) {
     this.getCurrentNotifications();
     this.model = "";
     this.getRoleDetails();
@@ -706,7 +716,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
   // converting status into Active of reports
   public Accept() {
-
     if (this.finalData[0].status == "Cancelled") {
       this.errorModalMessageRequest = 'status for the report ' + this.finalData[0].ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted';
       $('#errorModalRequest').modal('show');
@@ -766,7 +775,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
-      // const headings = Object.keys(this.reports[0]);
       const headings = ["Request Number", "Created On", "Requestor", "On Behalf Of", "Title", "Frequency", "Assigned To", "Status", "Status Date"]
       const reportBody = this.createNewBodyForExcel()
       headings.forEach((heading, index) => {
@@ -798,7 +806,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   // creating a body to generate excel report
- public createNewBodyForExcel() {
+  public createNewBodyForExcel() {
     let reportBody = []
     this.reports.forEach(item => {
       let obj = {
@@ -837,6 +845,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       $("#post_link_button:button").trigger('click');
     }
   }
+
   public closePostLink() {
     this.hidVar = true;
   }
@@ -927,6 +936,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           this.django.post_report_comments(report_comment).subscribe(response => {
             this.comment_list.push(response['data']);
             this.comment_text = "";
+            this.toastr.success('Comments for request-id :' + report_comment.ddm_rmp_post_report + ' saved successfully!')
             Utils.hideSpinner();
           }, err => {
             this.errorModalMessageRequest = "Please post the comment again";
@@ -935,7 +945,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           })
         }
       });
-
     }
   }
 
@@ -1188,7 +1197,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
   // create new request for selected reports
   public NewReportOnSelectedCriteria() {
-
     this.checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
     if (this.checkbox_length < 1) {
       this.errorModalMessageRequest = "Select at least one report";
@@ -1201,7 +1209,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     else {
       localStorage.setItem('report_id', $(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-      this.router.navigate(["user/submit-request/select-report-criteria"]);
+      this.router.navigate(["user/submit-request"]);
     }
   }
 
@@ -1225,9 +1233,10 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       Utils.hideSpinner();
       this.toastr.error("Report has not been uploaded properly,Please save/upload the report again!!");
     })
-
   }
+
   /*---------------------------Distribution List---------------------*/
+
   // add list of contacts
   public addContact() {
     if (this.model == "") {
@@ -1251,7 +1260,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       if (sList[i] == "checked")
         indList.push(i);
     }
-
     for (var i = indList.length - 1; i >= 0; i--)
       this.contacts.splice(indList[i], 1);
   }
@@ -1303,17 +1311,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         Utils.hideSpinner();
       });
   }
-
-  public searchGlobalObj = {
-    'ddm_rmp_post_report_id': this.searchText,
-    'ddm_rmp_status_date': this.searchText,
-    'created_on': this.searchText,
-    'title': this.searchText,
-    'requestor': this.searchText,
-    'on_behalf_of': this.searchText,
-    'assigned_to': this.searchText,
-    'status': this.searchText
-  };
 
   // Search by Request Number/Requestor/Title/Status
   public filterData() {

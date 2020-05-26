@@ -1,9 +1,16 @@
 <div class="header-container">
-  <div class="header-cont-part">
+  <div class="header-cont-part" style="width: 40%; font-size: 1.2em;">
     <img id="DDM_logo" src="/assets/OFT_Logo.jpg" (click)="role()">
     <div class="header-title">
       Order Fulfillment Distribution Data Mart
     </div>
+  </div>
+  <div style="" class="menu-container">
+    <ng-container *ngFor="let routeEle of routerObj">
+      <a *ngIf="routeEle.isVisible" [routerLink]="routeEle.routerVal" routerLinkActive="active">
+        <button mat-button [ngClass]="{'active': routeEle.isActive }">{{ routeEle.label }}</button>
+      </a>
+    </ng-container>
   </div>
   <div class="header-cont-part" style="justify-content: flex-end;">
     <button mat-icon-button style="margin-right: 55px;" [matMenuTriggerFor]="notifcations">

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, } from '@angular/router';
+import { Router, NavigationEnd, } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import Utils from '../../utils';
@@ -24,14 +24,55 @@ export class HeaderComponent implements OnInit {
   public unreadNotificationList = []
   public redTraker = [];
   public unreadTraker = [];
+  public routerObj = [{
+    label: "Main Menu",
+    routerVal: "main",
+    isVisible: true,
+    isActive: true
+  }, {
+    label: "Submit Request",
+    routerVal: "disclaimer",
+    isVisible: true,
+    isActive: false
+  }, {
+    label: "Request Status",
+    routerVal: "request-status",
+    isVisible: true,
+    isActive: false
+  }, {
+    label: "Reports",
+    routerVal: "reports",
+    isVisible: true,
+    isActive: false
+  }, {
+    label: "Metrics",
+    routerVal: "metrics",
+    isVisible: false,
+    isActive: false
+  }]
 
   constructor(private route: Router,
     private authenticationService: AuthenticationService,
     private dataProvider: DataProviderService) {
     this.subscribeToService()
+    dataProvider.loadNotifications()
+    route.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        // Hide loading indicator
+        this.routerObj.forEach(ele => {
+          if (val.urlAfterRedirects.includes(ele.routerVal))
+            ele.isActive = true;
+          else if (ele.routerVal === "disclaimer" && val.urlAfterRedirects.includes("submit-request"))
+            ele.isActive = true;
+          else
+            ele.isActive = false;
+        })
+      }
+    });
   }
-// subscribe to observables in authenticationservice and dataProvider service 
-// to get user info and notification details
+
+  // subscribe to observables in authenticationservice and dataProvider service 
+  // to get user info and notification details
   public subscribeToService() {
     this.authenticationService.myMethod$.subscribe((arr) => {
       this.arr = arr;
@@ -44,7 +85,9 @@ export class HeaderComponent implements OnInit {
         this.dataProvider.currentNotifications.subscribe((element: Array<any>) => {
           if (element) {
             this.user_name = role["first_name"] + " " + role["last_name"]
-            this.user_role = role["role"]
+            this.user_role = role["role"];
+            if (this.user_role === "Admin")
+              this.routerObj[4].isVisible = true;
             this.notification_list = element;
             let unread = [];
             let red = [];
@@ -72,7 +115,8 @@ export class HeaderComponent implements OnInit {
   public modulePageRoute() {
     this.route.navigate(['user'])
   }
-// open downloaded pdf in a new window
+
+  // open downloaded pdf in a new window
   public redirect(value: string) {
     Utils.showSpinner();
     this.authenticationService.getHelpRedirection(value).subscribe(res => {
@@ -82,36 +126,34 @@ export class HeaderComponent implements OnInit {
       window.open(data);
     })
   }
-//  creating data set to consolidate notification messages
+
+  //creating data set to consolidate notification messages
   sortNotification(notificationList){
   this.redNotificationList = []
   this.unreadNotificationList = []
   this.redTraker = [];
   this.unreadTraker = [];
   notificationList.forEach(item =>{
-    if(item.comment_read_flag && !this.redTraker.includes(item.ddm_rmp_post_report)){
-      this.redTraker.push(item.ddm_rmp_post_report);
-      this.redNotificationList.push({reportNo:item.ddm_rmp_post_report,count:0,comment_read_flag:true})
-    }
-    if(!item.comment_read_flag && !this.unreadTraker.includes(item.ddm_rmp_post_report)){
-      this.unreadTraker.push(item.ddm_rmp_post_report);
-      this.unreadNotificationList.push({reportNo:item.ddm_rmp_post_report,count:0,comment_read_flag:false})
-    }
-  })
-  this.sortCommentsBasedOnRequest()
-  }
-// updating consolidated data sets 
-  sortCommentsBasedOnRequest(){
-    this.notification_list.forEach(item =>{
-      if(this.redTraker.indexOf(item.ddm_rmp_post_report) >= 0 && item.comment_read_flag){
-      this.redNotificationList[this.redTraker.indexOf(item.ddm_rmp_post_report)].count++
+    if(item.comment_read_flag){
+      if(!this.redTraker.includes(item.ddm_rmp_post_report)){
+        this.redTraker.push(item.ddm_rmp_post_report);
+        this.redNotificationList.push({reportNo:item.ddm_rmp_post_report,count:1,comment_read_flag:true})
+      } else{
+        this.redNotificationList[this.redTraker.indexOf(item.ddm_rmp_post_report)].count++
       }
-      if(this.unreadTraker.indexOf(item.ddm_rmp_post_report) >= 0 && !item.comment_read_flag){
+    }
+    else{
+      if(!this.unreadTraker.includes(item.ddm_rmp_post_report)){
+        this.unreadTraker.push(item.ddm_rmp_post_report);
+        this.unreadNotificationList.push({reportNo:item.ddm_rmp_post_report,count:1,comment_read_flag:false})
+      }else{
         this.unreadNotificationList[this.unreadTraker.indexOf(item.ddm_rmp_post_report)].count++
       }
-    })
-    this.notification_number = this.unreadNotificationList.length
-    this.unreadNotificationList = this.unreadNotificationList.concat(this.redNotificationList)
+    }
+  })
+  this.notification_number = this.unreadNotificationList.length
+  this.unreadNotificationList = this.unreadNotificationList.concat(this.redNotificationList)
   }
+  
 }
 

@@ -1,0 +1,125 @@
+<!-- <div class="reportCriteria"> -->
+
+<div class="row" style="width: 100%;">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 rcHeadWrapper">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 noPadding">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding rcTitle">Report Criteria</div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding rcCallout">Selections can be used to generate Vehicle Event Status or Dealer Allocation Requests
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 alignRight">
+            <!-- <div class="btn btn-primary clearBtn" (click)="showData()">CLEAR ALL</div> -->
+            <div class="btn btn-primary clearBtn" (click)="openRequestOnBehalf()">Request on behalf</div>
+        </div>
+    </div>
+    <div class="row topFiltersWrapper margBottom">
+        <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15" *ngIf="response_body.report_id" 
+         style="margin : 0px 20px 10px;font-size: 1.3em; font-weight: 600;">
+            <div class="green"> Report #{{ req_body.report_id }} generated. </div>
+            <div [innerHTML]="response_body.message"></div>
+        </div>
+        <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15">
+            <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-mat-multiselect [data]="filtered_master_data.market" [settings]="market_settings"
+                    [(inputModel)]="selected.market" (selectionDone)="multiSelectChange($event,'market')"></app-mat-multiselect>
+                    <!-- <app-topfilter [userProfile]="mktSelnSltd" [filters]="mktSeln" [title]="'Market Selection'">
+                    </app-topfilter> -->
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-mat-multiselect [data]="filtered_master_data.division" [settings]="division_settings"
+                    [(inputModel)]="selected.division"></app-mat-multiselect>
+<!--                     
+                    <app-topfilter [userProfile]="divisionSltd" [filters]="division" [title]="'Division'">
+                    </app-topfilter> -->
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-mat-multiselect [data]="filtered_master_data.region" [settings]="region_settings"
+                    [(inputModel)]="selected.region" (selectionDone)="multiSelectChange($event,'region')"></app-mat-multiselect>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-mat-multiselect [data]="filtered_master_data.zone" [settings]="zone_settings"
+                    [(inputModel)]="selected.zone" (selectionDone)="multiSelectChange($event,'zone')"></app-mat-multiselect>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-mat-multiselect [data]="filtered_master_data.area" [settings]="area_settings"
+                    [(inputModel)]="selected.area"></app-mat-multiselect>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-mat-multiselect [data]="filtered_master_data.gmma" [settings]="gmma_settings"
+                    [(inputModel)]="selected.gmma"></app-mat-multiselect>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 noPadding">
+                    <app-mat-multiselect [data]="filtered_master_data.lma" [settings]="lma_settings"
+                    [(inputModel)]="selected.lma"></app-mat-multiselect>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 noPadding">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                            <app-ng-chips [custom_placeholder]="'Add BAC'" 
+                            [(inputModel)]="selected.bac"></app-ng-chips>
+                        </div>
+                        <ng-container *ngFor="let ques of special_identifiers_obj.bac">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter bacDealers">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="lineHeight"> {{ ques.spl_desc }} </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    class="example-radio-group" style="width: 100%;" [(ngModel)]="ques['checked']">
+                                    <mat-radio-button class="example-radio-button radio-label"
+                                        *ngFor="let splId of ['Yes', 'No']" [value]="splId">
+                                        {{splId}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        </ng-container>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 21px;">
+                            <app-ng-chips [custom_placeholder]="'Add FAN'" 
+                            [(inputModel)]="selected.fan" [type]="'fan'"></app-ng-chips>
+                        </div>
+                        <ng-container *ngFor="let ques of special_identifiers_obj.fan">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding bacDealers">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="lineHeight"> {{ ques.spl_desc }} </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    class="example-radio-group" style="width: 100%;" [(ngModel)]="ques['checked']">
+                                    <mat-radio-button class="example-radio-button radio-label"
+                                        *ngFor="let splId of ['Yes', 'No']" [value]="splId">
+                                        {{splId}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-report-frequency [lookupTableData]="l_lookup_MD.other" (reportFreqEmitter)="repFreqChange($event)"
+    ></app-report-frequency>
+    <!-- <app-morefilters></app-morefilters> -->
+    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
+        <button type="button" class="btn btn-success savenProceed">Save and Proceed</button>
+    </div> -->
+
+
+    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+        <app-tabs></app-tabs>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Continue</button>
+        <div class="modal fade" id="myModal" role="dialog">
+            <app-addreq-modal></app-addreq-modal>
+        </div>
+    </div> -->
+</div>
+
+<!-- </div> -->

@@ -41,7 +41,7 @@ import { CommonModule } from '@angular/common';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
   imports: [
@@ -87,7 +87,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     CdkTreeModule,
     MatTreeModule,
     MatBottomSheetModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatDividerModule
   ],
   exports: [
     CommonModule,
@@ -132,7 +133,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     CdkTreeModule,
     MatTreeModule,
     MatBottomSheetModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatDividerModule
   ],
 
 })

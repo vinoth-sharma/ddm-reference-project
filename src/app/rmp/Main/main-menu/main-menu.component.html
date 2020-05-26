@@ -1,25 +1,22 @@
-<div class="flex-container row tool-body">
+<div class="flex-container tool-body">
     <!--                            Left Tabs                                 -->
     <div class="left-tabs">
-        <div class="tabs">
-            <a routerLink="ddm" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                <button class="btn btn-primary">What is DDM?</button>
-            </a>
-            <a routerLink="user-profile" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                <button class="btn btn-primary">User Profile</button>
-            </a>
-            <a routerLink="ddm-team" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                <button class="btn btn-primary">DDM Team</button>
-            </a>
-            <a routerLink="reference-documents" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                <button class="btn btn-primary">Reference Documents</button>
-            </a>
+        <div class="tabs-list-container">
+            <a routerLink="ddm" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button
+                    class="btn btn-primary">What is DDM?</button></a>
+            <a routerLink="user-profile" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button
+                    class="btn btn-primary">User Profile</button></a>
+            <a routerLink="ddm-team" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button
+                    class="btn btn-primary">DDM Team</button></a>
+            <a routerLink="reference-documents" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">Reference
+                    Documents</button></a>
             <a *ngIf="user_role == 'Admin'" routerLink="ddm-admin" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact:true}">
                 <button class="btn btn-primary">DDM Administrator</button></a>
             <a *ngIf="user_role == 'Admin'" routerLink="ddm-brand-forms" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact:true}">
-                <button class="btn btn-primary" disabled="true">Go to Reference Data Management</button>
+                <button class="btn btn-primary">Go to Reference Data Management</button>
             </a>
             <a *ngIf="user_role != 'Business-user'">
                 <button class="btn btn-primary" (click)='role()' disabled="true">Go To Tool</button>
@@ -27,7 +24,7 @@
         </div>
     </div>
     <!--                            Main Body Content                         -->
-    <div class="main-tool-body" style="height:100%">
+    <div class="main-tool-body" >
         <router-outlet></router-outlet>
     </div>
 </div>

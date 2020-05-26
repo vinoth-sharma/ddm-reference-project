@@ -1,1 +1,292 @@
-<p>review-req-modal works!</p>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content borRad">
+        <!-- <div class="modal-header borTopRad alignCenter" style="background: #747474;">
+            <div class="modal-title ">
+                <div class="">Review Report Request </div>
+            </div>
+            <div class="">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div> -->
+        <div class="revViewHeader borTopRad alignCenter" style="">
+            <div class="modal-title ">
+                <div class="">Review Report Request </div>
+            </div>
+            <div class="alignCenter">
+                <span class="glyphicon glyphicon-download-alt marLR" aria-hidden="true" style="color: white;"></span>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Request Date
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ reqDate }}
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Request Number
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ reqNumber }}
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Request Number
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ repTitle }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom fontMedium">
+                        Market Selections:
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Market(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            US
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Division(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            012-GMC (US), 006-Cadillac (US), 004-Buick (US), 001-Chevrolet (US)
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Region(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            10 WESTERN REGION, 20 SOUTH CENTRAL REGION, 30 SOUTHEAST REGION, 40 NORTHEAST REGION, 50
+                            NORTHCENTRAL REGION
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Zone(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            1111 CHV DENVER/ROCKY MT, 1112 CHV SEATTLE/PAC NW, 1113 CHV NO CAL, 1114 CHV SO CAL, 1115
+                            CHV PHOENIX/DESERT
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Area(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            1111 CHV ALBQ/COLO SPG
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            LMA(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            GMMA(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            BAC(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            FAN(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Frequency of Reports:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            One time
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Special Identifiers:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Business Elite (US and Canada)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Would you need Text Notifications when Requests are fulfilled?
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Yes
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom fontMedium">
+                        Vehicle Event Status Selections:
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom">
+                            Order Criteria
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Allocation Group(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            ACALTD, ACADIA
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Model(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            2020
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Vehicle Line Brand(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Acadia
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Merchandizing Model(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            TNB26
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Order Event(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            3800 Produced
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Order Type(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            FBC
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom">
+                            Order Metrics
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Order Metric(s) Selected:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            Order Processed in DOSP, Total Sales (Event 6000), Penetration by number: Ordered, 3800
+                            Produced, Full Option String, Order Number
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
+                            Key Data Elemet Date Range:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
+                                <span class="bold">Start:&nbsp;</span>12-May-2020
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
+                                <span class="bold">End:&nbsp;</span>26-May-2020
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
+                            DOSP Date Range:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
+                                <span class="bold">Start:&nbsp;</span>12-May-2020
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
+                                <span class="bold">End:&nbsp;</span>26-May-2020
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
+                            Target Production Date Range:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
+                                <span class="bold">Start:&nbsp;</span>12-May-2020
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
+                                <span class="bold">End:&nbsp;</span>26-May-2020
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight bold fontMedium">
+                        Additional Requirements
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Reviewed and Submitting</button>
+        </div>
+    </div>
+</div>

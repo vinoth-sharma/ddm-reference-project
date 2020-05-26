@@ -1,0 +1,18 @@
+
+.modal-body{
+    max-height: 70vh;
+    overflow: auto;
+}
+.revViewHeader{
+    justify-content: space-between; 
+    background: #747474;
+    padding: 15px;
+}
+.marLR{
+    margin: auto 1vw;
+}
+.modal-dialog{
+    margin: unset;
+    width: 63vw;
+    max-width: unset;
+}

@@ -297,7 +297,7 @@ export class SelectReportCriteriaComp implements OnInit {
       if (response['report_data']['status'] === "Incomplete")
         this.response_body.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
       else if (response['report_data']['status'] === "Pending")
-        this.response_body.message = `<span> Request status - ${this.response_body.status} </span>`
+        this.response_body.message = ""
       else
         this.response_body.message = ""
 
@@ -387,9 +387,9 @@ export class SelectReportCriteriaComp implements OnInit {
     if (this.req_body.report_detail.status === "Incomplete")
       this.response_body.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
     else if (this.req_body.report_detail.status === "Pending")
-      this.response_body.message = `<span> Request status - ${this.response_body.status}</span>`
+      this.response_body.message = "";
     else
-      this.response_body.message = ""
+      this.response_body.message = "";
 
   }
 

@@ -12,6 +12,7 @@ import { SubmitRequestService } from "../submit-request.service";
 import { DataProviderService } from '../../data-provider.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ReviewReqModalComponent } from '../review-req-modal/review-req-modal.component';
 
 const moment = _moment;
 const MY_FORMATS = {
@@ -428,8 +429,25 @@ export class VehicleEventStatusComponent implements OnInit {
     this.req_body.report_detail.title = result.data.reportTitle;
     this.req_body.report_detail.additional_req = result.data.addReq;
     this.req_body.report_detail.status_date = new Date();
+    // this.saveVehicleEventStatus();
+    this.openPreviewModal();
+  }
 
+  openPreviewModal(){
+    const dialogRef = this.matDialog.open(ReviewReqModalComponent, {
+      data: this.req_body
+    })
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        // this.saveVehicleEventStatus();
+      }
+    })
+  }
+
+//to save vehicle event status for selected request
+  saveVehicleEventStatus(){
     Utils.showSpinner();
     this.submitService.submitVehicelEventStatus(this.req_body).subscribe(response => {
       // console.log(response);

@@ -18,8 +18,38 @@ export class ReviewReqModalComponent implements OnInit {
   reqNumber: Number = 3671;
   repTitle: string = 'New Report'
 
+    marketData = [];
+
   ngOnInit(): void {
 console.log(this.data);
+    this.generateMarketData(this.data.selectedReqData)
+  }
+
+  generateMarketData(data){
+    
+    if(data.market_data.length){
+     let obj = {
+       label : "Market(s) selection:",
+        data : data.market_data.map(ele=>ele.market)
+      }
+      this.marketData.push(obj)      
+    }
+    if(data.division_dropdown.length){
+      let obj = {
+        label : "Division(s) selection:",
+         data : data.division_dropdown.map(ele=>ele.division_desc)
+       }
+       this.marketData.push(obj)      
+     }
+    //  if(data.division_dropdown.length){
+    //   let obj = {
+    //     label : "Division(s) selection:",
+    //      data : data.division_dropdown.map(ele=>ele.division_desc)
+    //    }
+    //    this.marketData.push(obj)      
+    //  }
+
+     console.log(this.marketData);
 
   }
 

@@ -1,6 +1,6 @@
 <div class="modal-dialog">
     <!-- Modal content-->
-    <div class="modal-content borRad">
+    <div class="modal-content borRad" style="border: unset;">
         <!-- <div class="modal-header borTopRad alignCenter" style="background: #747474;">
             <div class="modal-title ">
                 <div class="">Review Report Request </div>
@@ -12,13 +12,13 @@
                 </button>
             </div>
         </div> -->
-        <div class="revViewHeader borTopRad alignCenter" style="">
+        <div class="modal-header borTopRad alignCenter" style="">
             <div class="modal-title ">
                 <div class="">Review Report Request </div>
             </div>
             <div class="alignCenter">
                 <span class="glyphicon glyphicon-download-alt marLR" aria-hidden="true" style="color: white;"></span>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
             </div>
         </div>
         <div class="modal-body">

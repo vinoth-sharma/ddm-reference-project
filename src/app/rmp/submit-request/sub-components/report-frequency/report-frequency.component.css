@@ -1,5 +1,5 @@
 .row, label{
-    font-size: 2vh;
+    /* font-size: 1.2em; */
   }
   
   .rightSection {
@@ -49,11 +49,12 @@
   }
   .selFreqTitle{
     font-weight: bold;
-    font-size: 1vw;
+    /* font-size: 1vw; */
+    font-size: 1.1em;
     margin-bottom: 2vh;
   }
   .selFreqSubHead{
-    font-size: 0.8vw;
+    /* font-size: 1.1em; */
     margin-bottom: 1vh;
     font-weight: bold;
   }

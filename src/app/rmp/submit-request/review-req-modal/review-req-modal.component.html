@@ -29,7 +29,7 @@
                             Request Date
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            {{ reqDate }}
+                            {{ reqDetails.reqDate }}
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
@@ -37,94 +37,28 @@
                             Request Number
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            {{ reqNumber }}
+                            {{ reqDetails.reqId }}
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
-                            Request Number
+                            Title
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            {{ repTitle }}
+                            {{ reqDetails.title }}
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom fontMedium">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom ">
                         Market Selections:
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let market of marketData">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Market(s) Selected:
+                            {{ market.label }}
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            US
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Division(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            012-GMC (US), 006-Cadillac (US), 004-Buick (US), 001-Chevrolet (US)
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Region(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            10 WESTERN REGION, 20 SOUTH CENTRAL REGION, 30 SOUTHEAST REGION, 40 NORTHEAST REGION, 50
-                            NORTHCENTRAL REGION
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Zone(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            1111 CHV DENVER/ROCKY MT, 1112 CHV SEATTLE/PAC NW, 1113 CHV NO CAL, 1114 CHV SO CAL, 1115
-                            CHV PHOENIX/DESERT
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Area(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            1111 CHV ALBQ/COLO SPG
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            LMA(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            GMMA(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            BAC(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            FAN(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-
+                            {{ market.data.toString() }}
                         </div>
                     </div>
                 </div>
@@ -133,18 +67,24 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
                             Frequency of Reports:
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            One time
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                            {{ otherReportCriteria.freq }}
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom"
+                    *ngIf="otherReportCriteria.spclIdentifiers.length">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
                             Special Identifiers:
                         </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Business Elite (US and Canada)
+                            {{ spcl.label }}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ spcl.data.toString() }}
                         </div>
                     </div>
                 </div>
@@ -154,12 +94,12 @@
                             Would you need Text Notifications when Requests are fulfilled?
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Yes
+                            {{ otherReportCriteria.textNotification }}
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom fontMedium">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom" *ngIf="reqDetails.type === 'ots'">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom ">
                         Vehicle Event Status Selections:
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -167,52 +107,13 @@
                             Order Criteria
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
+                        *ngFor="let ele of vehicleEvent.orderCriteria">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Allocation Group(s) Selected:
+                            {{ ele.label }}
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            ACALTD, ACADIA
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Model(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            2020
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Vehicle Line Brand(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Acadia
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Merchandizing Model(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            TNB26
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Order Event(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            3800 Produced
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Order Type(s) Selected:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            FBC
+                            {{ ele.data.toString() }}
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -220,42 +121,42 @@
                             Order Metrics
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
+                        *ngFor="let metrics of vehicleEvent.orderMetrics">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Order Metric(s) Selected:
+                            {{  metrics.label }}
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            Order Processed in DOSP, Total Sales (Event 6000), Penetration by number: Ordered, 3800
-                            Produced, Full Option String, Order Number
+                            {{  metrics.data.toString() }}
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="vehicleEvent.keyData_start">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
                             Key Data Elemet Date Range:
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
-                                <span class="bold">Start:&nbsp;</span>12-May-2020
+                                <span class="bold">Start:&nbsp;</span> {{ vehicleEvent.keyData_start }}
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
-                                <span class="bold">End:&nbsp;</span>26-May-2020
+                                <span class="bold">End:&nbsp;</span> {{ vehicleEvent.keyData_end }}
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="vehicleEvent.dosp_start">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
                             DOSP Date Range:
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
-                                <span class="bold">Start:&nbsp;</span>12-May-2020
+                                <span class="bold">Start:&nbsp;</span> {{ vehicleEvent.dosp_start }}
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
-                                <span class="bold">End:&nbsp;</span>26-May-2020
+                                <span class="bold">End:&nbsp;</span> {{ vehicleEvent.dosp_end }}
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
                             Target Production Date Range:
                         </div>
@@ -267,26 +168,37 @@
                                 <span class="bold">End:&nbsp;</span>26-May-2020
                             </div>
                         </div>
+                    </div> -->
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom" *ngIf="reqDetails.type === 'da'">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom ">
+                        Dealer Allocation Selections:
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
+                        *ngFor="let ele of dealerAlloc.consensusProcess">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ ele.label }}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                            {{ ele.data.toString() }}
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight bold fontMedium">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight bold">
                         Additional Requirements
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            {{ reqDetails.addReq }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" data-dismiss="modal">Reviewed and Submitting</button>
+            <button type="button" class="btn btn-success" (click)="submitRequest()">Reviewed and Submitting</button>
         </div>
     </div>
 </div>

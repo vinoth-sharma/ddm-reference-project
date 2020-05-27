@@ -17,3 +17,6 @@
     width: 63vw;
     max-width: unset;
 }
+.breakWord{
+    word-break: break-all;
+}

@@ -15,6 +15,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { AdditionalReqModalComponent } from '../additional-req-modal/additional-req-modal.component';
 import { DataProviderService } from '../../data-provider.service';
 import { Subscription } from 'rxjs';
+import { ReviewReqModalComponent } from '../review-req-modal/review-req-modal.component';
 
 const moment = _rollupMoment || _moment;
 
@@ -46,7 +47,8 @@ export const MY_FORMATS = {
 })
 export class DealerAllocationComp implements OnInit {
 
-  l_lookupTableMD: any = {}
+  l_lookupTableMD: any = {};
+  l_selectedReqData :any = {};
   user_name = "";
   user_role = "";
 
@@ -125,7 +127,8 @@ export class DealerAllocationComp implements OnInit {
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res:any)=>{
       console.log(res);
-      
+      this.l_selectedReqData = res.data;
+
       this.division_settings.primary_key = "ddm_rmp_lookup_division"
       this.refillDivisionMD(res.data.division_dropdown);
       this.req_body.report_id = res.data.ddm_rmp_post_report_id;
@@ -229,18 +232,24 @@ export class DealerAllocationComp implements OnInit {
     this.req_body.concensus_time_date.endY = to.year();
 
     // console.log(this.req_body);
-    Utils.showSpinner();
-    this.submitService.submitDealerAllocation(this.req_body).subscribe(response => {
-      // console.log(response);
-      Utils.hideSpinner();
-      this.submitService.setSubmitOnBehalf("","");
-      this.ngToaster.success("Request Updated successfully");
-      this.router.navigate(["user/request-status"]);
-    }, err => {
-      Utils.hideSpinner();
-      console.log(err);
-    });
+    this.openPreviewModal();
 
+  }
+
+  openPreviewModal() {
+    const dialogRef = this.matDialog.open(ReviewReqModalComponent, {
+      data: {
+        reqBody: this.req_body,
+        selectedReqData: this.l_selectedReqData
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      // if (result) {
+        // this.saveVehicleEventStatus();
+      // }
+    })
   }
 
   refillSelectedRequestData(data){

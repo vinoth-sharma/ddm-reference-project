@@ -93,7 +93,7 @@ export class VehicleEventStatusComponent implements OnInit {
   // public orderEvtToDate: any = new FormControl();
   public minOrderEventDate: Date = null;
 
-  public keyDataEle:any = {
+  public keyDataEle: any = {
     masterData: [],
     selected: [],
     others: {
@@ -101,12 +101,12 @@ export class VehicleEventStatusComponent implements OnInit {
       order_event: "",
       checked: false
     },
-    orderEvtFromDate : new FormControl(),
-    orderEvtToDate :  new FormControl()
+    orderEvtFromDate: new FormControl(),
+    orderEvtToDate: new FormControl()
   }
 
   l_lookupTableMD: any = {};
-  l_selectedReqData:any = {};
+  l_selectedReqData: any = {};
 
   // private othersDescIds = [5, 8, 15, 54];
   public req_body = {
@@ -145,7 +145,7 @@ export class VehicleEventStatusComponent implements OnInit {
   user_name = "";
   user_role = "";
 
-  subjectSubscription : Subscription;
+  subjectSubscription: Subscription;
 
   constructor(public matDialog: MatDialog,
     private dataProvider: DataProviderService,
@@ -153,8 +153,8 @@ export class VehicleEventStatusComponent implements OnInit {
     private router: Router,
     public submitService: SubmitRequestService,
     public auth_service: AuthenticationService,
-    public ngZone : NgZone,
-    public changeDetRef : ChangeDetectorRef) { }
+    public ngZone: NgZone,
+    public changeDetRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.auth_service.myMethod$.subscribe(role => {
@@ -184,11 +184,11 @@ export class VehicleEventStatusComponent implements OnInit {
       }
       else if (res.type === "srw" && res.data.status != "Incomplete") {
         this.req_body.report_detail.status = res.data.status;
-        if (res.data.report_type === "da"){
+        if (res.data.report_type === "da") {
           this.display_message = `<span class="green">Request #${this.req_body.report_id} - ${this.req_body.report_detail.status}</span>
                                 . Report Type - Dealer Allocation<br> Though you can submit new vehicle event status`
         }
-        else{
+        else {
           this.display_message = `<span class="green">Request #${this.req_body.report_id} - ${this.req_body.report_detail.status}</span>`
         }
       }
@@ -370,8 +370,8 @@ export class VehicleEventStatusComponent implements OnInit {
     else {
       let obj = {
         checkboxData: this.getSelectedCheckboxData(),
-        l_title : this.req_body.report_detail.title,
-        l_addReq : this.req_body.report_detail.additional_req
+        l_title: this.req_body.report_detail.title,
+        l_addReq: this.req_body.report_detail.additional_req
       }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
         data: obj
@@ -423,95 +423,84 @@ export class VehicleEventStatusComponent implements OnInit {
     this.openPreviewModal();
   }
 
-  openPreviewModal(){
+  openPreviewModal() {
     const dialogRef = this.matDialog.open(ReviewReqModalComponent, {
       data: {
-        reqBody : this.req_body,
-        selectedReqData : this.l_selectedReqData
+        reqBody: this.req_body,
+        selectedReqData: this.l_selectedReqData
       }
     })
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-      if (result) {
+      // if (result) {
         // this.saveVehicleEventStatus();
-      }
+      // }
     })
   }
 
-//to save vehicle event status for selected request
-  saveVehicleEventStatus(){
-    Utils.showSpinner();
-    this.submitService.submitVehicelEventStatus(this.req_body).subscribe(response => {
-      // console.log(response);
-      Utils.hideSpinner();
-      this.ngToaster.success(`Request #${this.req_body.report_id} Updated successfully`);
-      this.submitService.setSubmitOnBehalf("","");
-      this.router.navigate(["user/request-status"]);
-    }, err => {
-      Utils.hideSpinner();
-      console.log(err);
-    });
-  }
-
-  refillSelectedRequestData(data){
+  refillSelectedRequestData(data) {
     //stop the function when ost_data is null 
-    if(!data['ost_data'])
+    if (!data['ost_data'])
       return true
 
     let l_data = data.ost_data;
 
-    let vehicleIds = l_data.vehicle_line.map(ele=> ele.ddm_rmp_lookup_dropdown_vehicle_line_brand);
-    this.selected.vehicle = this.l_lookupTableMD.vehicle_data.filter(vehicle=>{
+    let vehicleIds = l_data.vehicle_line.map(ele => ele.ddm_rmp_lookup_dropdown_vehicle_line_brand);
+    this.selected.vehicle = this.l_lookupTableMD.vehicle_data.filter(vehicle => {
       if (vehicleIds.includes(vehicle.ddm_rmp_lookup_dropdown_vehicle_line_brand_id))
-         return vehicle
+        return vehicle
     })
     this.multiSelectChange('vehicle')
-    let allocationIds = l_data.allocation_group.map(ele=> ele.ddm_rmp_lookup_dropdown_allocation_group);
-    this.selected.allocation = this.l_lookupTableMD.allocation_grp.filter(allocation=>{
+    let allocationIds = l_data.allocation_group.map(ele => ele.ddm_rmp_lookup_dropdown_allocation_group);
+    this.selected.allocation = this.l_lookupTableMD.allocation_grp.filter(allocation => {
       if (allocationIds.includes(allocation.ddm_rmp_lookup_dropdown_allocation_group_id))
-         return allocation
+        return allocation
     })
     this.multiSelectChange('allocation')
-    let merchandisingIds = l_data.merchandizing_model.map(ele=> ele.ddm_rmp_lookup_dropdown_merchandising_model);
-    this.selected.merchandising = this.l_lookupTableMD.merchandising_data.filter(allocation=>{
+    let merchandisingIds = l_data.merchandizing_model.map(ele => ele.ddm_rmp_lookup_dropdown_merchandising_model);
+    this.selected.merchandising = this.l_lookupTableMD.merchandising_data.filter(allocation => {
       if (merchandisingIds.includes(allocation.ddm_rmp_lookup_dropdown_merchandising_model_id))
-         return allocation
+        return allocation
     })
 
-    let modelYrIds = l_data.model_year.map(ele=> ele.ddm_rmp_lookup_dropdown_model_year);
-    this.selected.model_years = this.l_lookupTableMD.model_year.filter(my=>{
+    let modelYrIds = l_data.model_year.map(ele => ele.ddm_rmp_lookup_dropdown_model_year);
+    this.selected.model_years = this.l_lookupTableMD.model_year.filter(my => {
       if (modelYrIds.includes(my.ddm_rmp_lookup_dropdown_model_year_id))
-         return my
+        return my
     })
 
-    let distributionIds = l_data.distribution_data.map(ele=> ele.ddm_rmp_lookup_ots_type_data);
-    this.selected.distribution_entity = this.l_lookupTableMD.type_data.filter(de=>{
+    let distributionIds = l_data.distribution_data.map(ele => ele.ddm_rmp_lookup_ots_type_data);
+    this.selected.distribution_entity = this.l_lookupTableMD.type_data.filter(de => {
       if (distributionIds.includes(de.ddm_rmp_lookup_ots_type_data_id))
-         return de
+        return de
     })
-    this.distibutionEntityRadio = l_data.distribution_data.length?l_data.distribution_data[0].radio_btn:"Summary";
+    this.distibutionEntityRadio = l_data.distribution_data.length ? l_data.distribution_data[0].radio_btn : "Summary";
 
-    let orderIds = l_data.order_type.map(ele=> ele.ddm_rmp_lookup_dropdown_order_type);
-    this.selected.order_type = this.l_lookupTableMD.order_type.filter(ot=>{
+    let orderIds = l_data.order_type.map(ele => ele.ddm_rmp_lookup_dropdown_order_type);
+    this.selected.order_type = this.l_lookupTableMD.order_type.filter(ot => {
       if (orderIds.includes(ot.ddm_rmp_lookup_dropdown_order_type_id))
-         return ot
+        return ot
     })
-    this.orderTypeRadio = l_data.order_type.length?l_data.order_type[0].display_summary_value:"Summary";
+    this.orderTypeRadio = l_data.order_type.length ? l_data.order_type[0].display_summary_value : "Summary";
 
     let f_dosp = l_data.data_date_range[0].dosp_start_date
     let t_dsop = l_data.data_date_range[0].dosp_end_date
-     let f_dataEle = l_data.data_date_range[0].start_date
+    let f_dataEle = l_data.data_date_range[0].start_date
     let t_dataEle = l_data.data_date_range[0].end_date
 
-    if(f_dosp){
+    if (f_dosp) {
+      this.req_body.dosp_start_date = f_dosp;
+      this.req_body.dosp_end_date = t_dsop;
       this.fromDateDOSP.setValue(this.formatedDateToMoment(f_dosp));
-      this.toDateDOSP.setValue(this.formatedDateToMoment(t_dsop))
+      this.toDateDOSP.setValue(this.formatedDateToMoment(t_dsop));
       this.minDateDosp = new Date(f_dosp);
+
     }
-    if(f_dataEle){
-    this.keyDataEle.orderEvtFromDate.setValue(this.formatedDateToMoment(f_dataEle))
-    this.keyDataEle.orderEvtToDate.setValue(this.formatedDateToMoment(t_dataEle))
+    if (f_dataEle) {
+      this.req_body.data_date_range = { StartDate: f_dataEle, EndDate: t_dataEle };
+      this.keyDataEle.orderEvtFromDate.setValue(this.formatedDateToMoment(f_dataEle));
+      this.keyDataEle.orderEvtToDate.setValue(this.formatedDateToMoment(t_dataEle));
     }
 
     //reset selected array
@@ -527,10 +516,10 @@ export class VehicleEventStatusComponent implements OnInit {
       for (const attr in this.checkBxMD1) {
         if (this.checkBxMD1.hasOwnProperty(attr)) {
           const objEle = this.checkBxMD1[attr];
-          let foundEle = objEle.find(ele=>ele.ddm_rmp_lookup_ots_checkbox_values_id === element.ddm_rmp_lookup_ots_checkbox_values)
-          if(foundEle){
-            if(foundEle.description)
-                foundEle['desc'] = element.description_text;
+          let foundEle = objEle.find(ele => ele.ddm_rmp_lookup_ots_checkbox_values_id === element.ddm_rmp_lookup_ots_checkbox_values)
+          if (foundEle) {
+            if (foundEle.description)
+              foundEle['desc'] = element.description_text;
             this.selected_checkbox[attr].push(foundEle);
             break;
           }
@@ -541,7 +530,7 @@ export class VehicleEventStatusComponent implements OnInit {
         if (this.checkboxMD2.hasOwnProperty(attr)) {
           const objEle = this.checkboxMD2[attr];
           objEle.forEach(cb => {
-            if(cb.ddm_rmp_lookup_ots_checkbox_values_id === element.ddm_rmp_lookup_ots_checkbox_values)            
+            if (cb.ddm_rmp_lookup_ots_checkbox_values_id === element.ddm_rmp_lookup_ots_checkbox_values)
               cb['checked'] = true;
           });
         }
@@ -553,32 +542,32 @@ export class VehicleEventStatusComponent implements OnInit {
     this.selected_checkbox.order_event_avail_ds = [...this.selected_checkbox.order_event_avail_ds]
 
     // updating Key Data Elements for Date Range
-    if(l_data.order_event.length === 1 && !l_data.order_event[0].ddm_rmp_lookup_dropdown_order_event){
+    if (l_data.order_event.length === 1 && !l_data.order_event[0].ddm_rmp_lookup_dropdown_order_event) {
       this.keyDataEle.others.order_event = l_data.order_event[0].order_event;
       this.keyDataEle.others.checked = true;
     }
-    else{
-      let keyEleIds = l_data.order_event.map(oe=>oe.ddm_rmp_lookup_dropdown_order_event)
-      this.keyDataEle.selected = this.keyDataEle.masterData.filter(oe=>{
-        if(keyEleIds.includes(oe.ddm_rmp_lookup_dropdown_order_event_id))
+    else {
+      let keyEleIds = l_data.order_event.map(oe => oe.ddm_rmp_lookup_dropdown_order_event)
+      this.keyDataEle.selected = this.keyDataEle.masterData.filter(oe => {
+        if (keyEleIds.includes(oe.ddm_rmp_lookup_dropdown_order_event_id))
           return oe
       })
     }
   }
 
-  formatedDateToMoment(str){
+  formatedDateToMoment(str) {
     return moment(new Date(str))
   }
 
   //refill the existing report details 
-  fillReportDetails(data){
+  fillReportDetails(data) {
     this.req_body.report_detail.title = data.title;
     this.req_body.report_detail.additional_req = data.additional_req;
     this.req_body.report_detail.created_on = data.report_data.created_on;
     this.req_body.report_detail.assigned_to = data.report_data.assigned_to;
     this.req_body.report_detail.requestor = data.report_data.requestor;
     this.req_body.report_detail.link_title = data.report_data.link_title;
-    this.req_body.report_detail.link_to_results  = data.report_data.link_to_results;
+    this.req_body.report_detail.link_to_results = data.report_data.link_to_results;
     this.req_body.report_detail.query_criteria = data.report_data.query_criteria;
   }
 
@@ -630,7 +619,7 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_division_id',
     label_key: 'division_desc',
     title: "",
-    isDisabled : true
+    isDisabled: true
   };
 
   public vehicle_settings = {
@@ -697,7 +686,7 @@ export class VehicleEventStatusComponent implements OnInit {
     title: ""
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subjectSubscription.unsubscribe();
   }
 }

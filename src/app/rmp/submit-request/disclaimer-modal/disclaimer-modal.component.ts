@@ -68,7 +68,7 @@ export class DisclaimerModalComponent implements OnInit {
     this.disclaimerAckObj.disclaimer_ack = new Date();
     Utils.showSpinner();
     this.django.user_info_disclaimer(this.disclaimerAckObj).subscribe(response => {
-
+      this.dialogRef.close(new Date());
       Utils.hideSpinner()
       this.toaster.success("Acknowledge Disclaimers successfull");
     }, err => {
@@ -85,7 +85,7 @@ export class DisclaimerModalComponent implements OnInit {
       modalBtn: 'Yes'
     }
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: obj
+      data: obj,disableClose:true
     })
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);

@@ -5,12 +5,12 @@
   </div>
   <div class="modal-body">
     <div style="text-align: center;">
-      <button mat-raised-button (click)="acknowledgeDisclaimer()">Acknowledge Disclaimers</button>
+      <button mat-raised-button [disabled]="user_role != 'Admin'" (click)="acknowledgeDisclaimer()">Acknowledge Disclaimers</button>
     </div>
     <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre">
       <ng-container *ngIf="showEditOption">
         <button mat-icon-button style="margin-right: 15px;" matTooltip="edit" (click)="showEditOption=!showEditOption"
-          *ngIf="user_role==='Admin'">
+          *ngIf="user_role ==='Admin'">
           <mat-icon class="notification-icon">edit</mat-icon>
         </button>
         <button mat-icon-button style="margin-right: 15px;" matTooltip="Download Disclaimers"

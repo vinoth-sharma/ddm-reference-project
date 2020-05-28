@@ -15,7 +15,7 @@
         <button *ngIf="user_role=='Admin'" (click)="notifyChildren()" id="main-edit">
           <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
         </button>
-        <button data-target="#helpModal" data-toggle="modal" id="main-help">
+        <button data-target="#helpModal" data-toggle="modal" data-backdrop="static" id="main-help">
           <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
         </button>
         <button mat-stroked-button color="primary" style="top:-10px" (click)="openAddNotes()">
@@ -25,7 +25,7 @@
     </div>
   </div>
   <div class="main-tool-body-content" id="print-content">
-    <button *ngIf="enable_edit" type="button" id="create-new-element" class="btn btn-success" data-toggle="modal"
+    <button *ngIf="enable_edit" type="button" id="create-new-element" class="btn btn-success" data-toggle="modal" data-backdrop="static"
       data-target="#mainMenuModal" (click)="content_new()">Create a new element</button>
     <ng-container *ngFor="let element of main_menu_content;let i = index;">
       <div class="row card-group" *ngIf="i%3==0" style="margin-top:2%;margin-right: 0;">
@@ -46,12 +46,12 @@
               <div class="row">
                 <div class="col-sm-7"></div>
                 <div class="col-sm-5">
-                  <button *ngIf="enable_edit" [id]="'edit-list-'+i" class="btn btn-outline-primary" data-toggle="modal"
+                  <button *ngIf="enable_edit" [id]="'edit-list-'+i" class="btn btn-outline-primary" data-toggle="modal" data-backdrop="static"
                     data-target="#mainMenuModal"
                     (click)="content_edit(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">edit</i></button>
                   <button *ngIf="enable_edit" [id]="'delete-list-'+i" class="btn btn-outline-primary"
-                    data-toggle="modal" data-target="#deleteModal"
+                    data-toggle="modal" data-target="#deleteModal" data-backdrop="static"
                     (click)="content_delete(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">delete_forever</i></button>
                 </div>
@@ -76,11 +76,11 @@
                 <div class="col-sm-7"></div>
                 <div class="col-sm-5">
                   <button *ngIf="enable_edit" [id]="'edit-list-'+(i+1)" class="btn btn-outline-primary"
-                    data-toggle="modal" data-target="#mainMenuModal"
+                    data-toggle="modal" data-backdrop="static" data-target="#mainMenuModal"
                     (click)="content_edit(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">edit</i></button>
                   <button *ngIf="enable_edit" [id]="'delete-list-'+(i+1)" class="btn btn-outline-primary"
-                    data-toggle="modal" data-target="#deleteModal"
+                    data-toggle="modal" data-target="#deleteModal" data-backdrop="static"
                     (click)="content_delete(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">delete_forever</i></button>
                 </div>
@@ -105,11 +105,11 @@
                 <div class="col-sm-7"></div>
                 <div class="col-sm-5">
                   <button *ngIf="enable_edit" [id]="'edit-list-'+(i+2)" class="btn btn-outline-primary"
-                    data-toggle="modal" data-target="#mainMenuModal"
+                    data-toggle="modal" data-target="#mainMenuModal" data-backdrop="static"
                     (click)="content_edit(main_menu_content[i+2].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">edit</i></button>
                   <button *ngIf="enable_edit" [id]="'delete-list-'+(i+2)" class="btn btn-outline-primary"
-                    data-toggle="modal" data-target="#deleteModal"
+                    data-toggle="modal" data-target="#deleteModal" data-backdrop="static"
                     (click)="content_delete(main_menu_content[i+2].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">delete_forever</i></button>
                 </div>

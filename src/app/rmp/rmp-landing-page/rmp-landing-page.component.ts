@@ -66,7 +66,7 @@ export class RmpLandingPageComponent implements OnInit {
     if (this.note_status) {
       if (today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
         this.dialog.open(DisplayNotesComponent, {
-          data: { notes: adminNotes.notes_content }
+          data: { notes: adminNotes.notes_content },disableClose:true
         })
     } else
       $('#display-notes-status').prop("checked", true);
@@ -87,7 +87,7 @@ export class RmpLandingPageComponent implements OnInit {
 
   openNotesModal() {
     this.dialog.open(NotesWrapperComponent, {
-      data: this.info.data.admin_note
+      data: this.info.data.admin_note,disableClose:true
     })
   }
 

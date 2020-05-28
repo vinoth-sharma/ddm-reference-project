@@ -433,7 +433,7 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   // to open important notes popup
   public openAddNotes() {
     this.dialog.open(NotesWrapperComponent, {
-      data: this.info.data.admin_note
+      data: this.info.data.admin_note,disableClose:true
     })
   }
 

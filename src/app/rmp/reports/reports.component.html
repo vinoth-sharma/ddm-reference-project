@@ -12,7 +12,7 @@
         <div class="col">
           <div class="icons">
             <div class="press">
-              <button data-toggle="modal" data-target="#helpModal"
+              <button data-toggle="modal" data-backdrop="static" data-target="#helpModal"
                 style="background-color:white; border:none;padding-right:0px;">
                 <a data-toggle="tooltip" title="HELP">
                   <i id="ic" class="material-icons">help_outline</i>
@@ -199,13 +199,13 @@
                     style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                     Url&nbsp;&nbsp;&#10145;
                   </button>
-                  <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addUrl"
+                  <button class="btn btn-outline-primary" data-toggle="modal" data-backdrop="static" data-target="#addUrl"
                     (click)="addLinkUrl(element,'create')" *ngIf="element.link_to_results == ''&& user_role =='Admin'"
                     style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                     Add Url
                   </button>
                   <button *ngIf="element.link_to_results != '' && user_role =='Admin'" class="btn btn-primary"
-                    style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
+                    style="margin-left: 15px;" data-toggle="modal" data-backdrop="static" data-target="#addUrl"
                     (click)="addLinkUrl(element,'edit')">
                     Edit
                   </button>
@@ -215,7 +215,7 @@
               <td>
                 <div>
                   <button class="btn btn-outline-primary"
-                    (click)="query_criteria_report(element.ddm_rmp_post_report_id)" data-toggle="modal"
+                    (click)="query_criteria_report(element.ddm_rmp_post_report_id)" data-toggle="modal" data-backdrop="static"
                     data-target="#queryCriteriaReport">
                     QueryCriteria
                   </button>

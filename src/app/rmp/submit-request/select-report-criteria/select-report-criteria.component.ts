@@ -284,8 +284,16 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.status_date = new Date();
     this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
 
+    console.log(this.req_body);
+    
     if(this.req_body.report_detail.status === "Cancelled")
-      this.req_body.report_detail.status = "Incomplete"
+      this.req_body.report_detail.status = "Incomplete";
+    else if(this.req_body.report_detail.status === "Completed" && this.req_body.frequency === "Recurring"){
+      this.req_body.report_detail.status = "Incomplete";
+      this.req_body.report_id = null;
+      this.req_body.report_detail.report_type = "";
+    }
+
 
     // console.log(this.req_body);
 
@@ -293,8 +301,11 @@ export class SelectReportCriteriaComp implements OnInit {
     this.submitService.submitUserMarketSelection(this.req_body).subscribe(response => {
       // console.log(response);
       Utils.hideSpinner();
-      this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Updated successfully`)
-
+      if(this.req_body.report_id)
+         this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Updated successfully`)
+      else
+          this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Created successfully`)
+        
       if (response['report_data']['status'] === "Incomplete")
         this.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
       else

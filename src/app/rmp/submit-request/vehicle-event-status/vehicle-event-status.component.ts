@@ -140,7 +140,8 @@ export class VehicleEventStatusComponent implements OnInit {
     other_desc: ""
   }
 
-  display_message = "";
+  display_message = "Create Request to proceed with vehicle event status";
+  messageClass  = "red";
 
   user_name = "";
   user_role = "";
@@ -172,26 +173,43 @@ export class VehicleEventStatusComponent implements OnInit {
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
       console.log(res);
       this.l_selectedReqData = res.data;
-      this.req_body.report_id = res.data.ddm_rmp_post_report_id;
-      this.division_settings.primary_key = "ddm_rmp_lookup_division"
+
+      // this.division_settings.primary_key = "ddm_rmp_lookup_division"
       this.refillDivisionsMD(res.data.division_dropdown);
       this.fillReportDetails(res.data)
       this.refillSelectedRequestData(res.data);
+      this.messageClass = "red";
 
-      if (res.type === "srw" && res.data.status === "Incomplete") {
+      let l_status = res.data.status;
+      let l_reportId = res.data.ddm_rmp_post_report_id;
+      let l_reqType = res.data.report_type;
+      this.display_message = `Request #${l_reportId} (Request type - ${l_reqType==="ots"?"Vehicle event status":"Dealer Allocation"})`;
+
+      if(res.type === "srw" && (l_status === "Cancelled" || l_status === "Completed" )){
+        this.req_body.report_detail.status = l_status;
+        if(l_status === "Cancelled")
+          this.req_body.report_id = null;
+        else if(l_status === "Completed" && !res.data.frequency_data.some(freq=>freq.ddm_rmp_lookup_select_frequency_id === 39))
+          this.req_body.report_id = null;
+        else{
+          this.messageClass = "green";
+          this.req_body.report_id = l_reportId;
+        }
+      }
+      else if(res.type === "srw" && l_status === "Incomplete") {
+        this.messageClass = "red";
+        this.req_body.report_id = l_reportId;
+        this.display_message = `Request #${l_reportId} ( ${l_status} )`;
         this.req_body.report_detail.status = "Pending";
-        this.display_message = `<span class="red">Request #${this.req_body.report_id} - Incomplete</span>`
       }
-      else if (res.type === "srw" && res.data.status != "Incomplete") {
-        this.req_body.report_detail.status = res.data.status;
-        if (res.data.report_type === "da") {
-          this.display_message = `<span class="green">Request #${this.req_body.report_id} - ${this.req_body.report_detail.status}</span>
-                                . Report Type - Dealer Allocation<br> Though you can submit new vehicle event status`
-        }
-        else {
-          this.display_message = `<span class="green">Request #${this.req_body.report_id} - ${this.req_body.report_detail.status}</span>`
-        }
+      else if (res.type === "srw" && l_status != "Incomplete") {
+        this.messageClass = "green";
+        this.req_body.report_id = l_reportId;
+        this.req_body.report_detail.status = l_status;
       }
+
+      console.log(this.req_body);
+      
     })
 
     this.submitService.updateLoadingStatus({ status: true, comp: "ves" })
@@ -616,7 +634,7 @@ export class VehicleEventStatusComponent implements OnInit {
 
   public division_settings = {
     label: "Division",
-    primary_key: 'ddm_rmp_lookup_division_id',
+    primary_key: 'ddm_rmp_lookup_division',
     label_key: 'division_desc',
     title: "",
     isDisabled: true

@@ -20,6 +20,8 @@ export class ReportFrequencyComponent implements OnInit {
   @Output() reportFreqEmitter = new EventEmitter();
   reportFreq: {}[] = [{ label: 'Yes', id: true }, { label: 'No', id: false }];
 
+  l_masterLookUpTableData:any = {};
+
   l_lookupData = {
     daily_weekly: [],
     monthly_bimonthly: [],
@@ -47,7 +49,10 @@ export class ReportFrequencyComponent implements OnInit {
   ngOnInit(): void {
 
     this.subjectSubscription = this.subReqService.requestStatusEmitter.subscribe((res:any)=>{
+      console.log(res);
+      
       if(res.type === "srw"){
+        this.refillMasterData();
         this.refillSelectedRequestData(res.data);
       }
     })
@@ -118,8 +123,9 @@ export class ReportFrequencyComponent implements OnInit {
 
 
   refillMasterData() {
+    this.l_masterLookUpTableData = JSON.parse(JSON.stringify(this.lookupTableData)); 
     this.resetMDdata();
-    let l_lookuptableData_freq = this.lookupTableData.report_frequency.sort(sortFreq);
+    let l_lookuptableData_freq = this.l_masterLookUpTableData.report_frequency.sort(sortFreq);
     l_lookuptableData_freq.forEach(freq => {
       if (freq.ddm_rmp_lookup_report_frequency_id === 1)
         this.l_lookupData.daily_weekly.push(freq)
@@ -182,12 +188,12 @@ export class ReportFrequencyComponent implements OnInit {
         })
       })
     }
-    // console.log(req_body); 
+    
     if (this.selected.reportFreq_regBasis) {
       if (!req_body.report_freq.length) {
         this.toaster.error("Please select atleast one frequency")
       }
-      else if (req_body.report_freq.every(freq => freq['description'].length))
+      else if (req_body.report_freq.every(freq => freq['description']?freq['description'].length:false))
         this.reportFreqEmitter.emit(req_body)
       else
         this.toaster.error("Please specify the value if selected others")

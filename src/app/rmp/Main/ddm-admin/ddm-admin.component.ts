@@ -19,6 +19,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   public editMode: Boolean;
   public enableUpdateData = false;
   public textChange = false;
+  public deleteIndex = undefined
   public document_details = {
     "title": "",
     "url": "",
@@ -339,11 +340,14 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let duplicateName = this.naming.find(ele => (ele['title'] == link_title));
     let dupeFileName = this.isAdmin.docs.find(item => item.uploaded_file_name == link_title)
-    
-    if (!this.editid && (duplicateName || dupeFileName)) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
-      document.getElementById("errorTrigger").click()
-    } else if (link_title == "") {
+    if ( (duplicateName || dupeFileName)  ) {
+        let eid = duplicateName ? duplicateName['ddm_rmp_desc_text_admin_documents_id'] : undefined;
+      if(eid != this.editid || dupeFileName){
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
+        document.getElementById("errorTrigger").click();
+        return
+      }
+    } if (link_title == "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
     }
@@ -397,7 +401,11 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     this.spinner.show()
     this.django.ddm_rmp_admin_documents_delete(id).subscribe(response => {
       document.getElementById("editable" + index).style.display = "none"
-      this.toastr.success("Document deleted");
+      this.editid = undefined;
+      if(this.deleteIndex == undefined){
+        this.toastr.success("Document deleted");
+      }
+      this.deleteIndex = undefined
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
@@ -457,6 +465,10 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
         $('#uploadCheckbox').prop('checked', false);
         $("#attach-file1").val('');
         this.toastr.success("Uploaded Successfully");
+        document.getElementById("close_modal").click()
+        if(this.editid){
+          this.deleteDocument(this.editid,this.deleteIndex)
+        }
       }, err => {
         this.spinner.hide();
         $("#document-url").removeAttr('disabled');
@@ -474,8 +486,9 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   }
 
   // setting a few properties of component
-  public editDoc(id, val, url) {
+  public editDoc(id, val, url,index) {
     this.editid = id;
+    this.deleteIndex = index
     this.changeDoc = true;
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;

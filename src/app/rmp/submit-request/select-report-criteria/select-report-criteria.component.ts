@@ -159,12 +159,15 @@ export class SelectReportCriteriaComp implements OnInit {
       else
         this.special_identifiers_obj.fan.push(si)
     })
-    this.special_identifiers_obj.bac.forEach(bac=>{
-      bac['checked'] = "No";
-    });
-    this.special_identifiers_obj.fan.forEach(fan=>{
-      fan['checked'] = "Yes";
-    })
+
+    // to set default values for special identifiers
+    
+    // this.special_identifiers_obj.bac.forEach(bac=>{
+    //   bac['checked'] = "No";
+    // });
+    // this.special_identifiers_obj.fan.forEach(fan=>{
+    //   fan['checked'] = "Yes";
+    // })
 
   }
 

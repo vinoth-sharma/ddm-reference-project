@@ -143,7 +143,7 @@ export class ReportFrequencyComponent implements OnInit {
 
   validateNdSubmit() {
     if (!this.selected.dl_list.length)
-      this.toaster.error("Please add at least one email in Distribution Lis");
+      this.toaster.error("Please add at least one email in Distribution List");
     else
       this.submitFrequencyData();
   }

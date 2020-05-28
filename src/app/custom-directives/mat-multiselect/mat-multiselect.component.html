@@ -14,6 +14,7 @@
         <div *ngFor="let item of searched_data" class="custom-checkbox-opt">
             <mat-checkbox [ngModel]="item['checked']" [value]="item[settings.primary_key]"
                 [disabled]="settings.isDisabled"
+                [matTooltip]="item['tooltip']"
                 (change)="checkedBox($event)"> {{ item[settings.label_key] }} </mat-checkbox>
         </div>
 

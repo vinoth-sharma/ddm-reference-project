@@ -185,7 +185,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public linkToUrlFlag = true;
 
   // paginator params
-  public paginatorlength = 100;
   public paginatorpageSize = 10;
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
@@ -472,7 +471,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           Utils.hideSpinner();
           this.toastr.error("Data not Updated")
         })
-    } else {
+    }
+    else {
       this.toastr.error("please enter the data");
     }
   }
@@ -526,36 +526,44 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   // check status of selected report and take action on based on status
   public CheckCancel() {
     this.finalData = [];
-    this.reports.find(e => {
-      if (e.isChecked) {
-        if (e.status == "Cancelled") {
-          this.errorModalMessageRequest = "Request #" + e.ddm_rmp_post_report_id + " is already cancelled";
-          $('#errorModalRequest').modal('show');
-          this.finalData = [];
-        } else {
-          this.finalData = [e];
-          if ($(".report_id_checkboxes:checkbox:checked").length) {
-            if (e.status == "Incomplete" || e.status == "Pending") {
-              $('#CancelRequest').modal('hide');
-              $('#CancelPermanently').modal('show');
-            }
-            else if (e.status == "Completed" || e.status == "Active" ||
-              e.status == "Recurring") {
-              $('#CancelPermanently').modal('hide');
-              $('#CancelRequest').modal('show');
-            }
-          }
-          else if (!$(".report_id_checkboxes:checkbox:checked").length) {
-            this.errorModalMessageRequest = "Select a report to Cancel";
-            $('#errorModalRequest').modal('show');
+    if ($(".report_id_checkboxes:checkbox:checked").length) {
+      this.reports.find(e => {
+        if (e.isChecked) {
+          if (e.status == "Cancelled") {
+            this.errorModalMessageRequest = "Request #" + e.ddm_rmp_post_report_id + " is already cancelled";
+            $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
+            this.finalData = [];
           }
           else {
-            this.errorModalMessageRequest = "Cannot cancel multiple reports";
-            $('#errorModalRequest').modal('show');
+            this.finalData = [e];
+            if ($(".report_id_checkboxes:checkbox:checked").length) {
+              if (e.status == "Incomplete" || e.status == "Pending") {
+                $('#CancelRequest').modal('hide');
+                $('#CancelPermanently').modal({ backdrop: "static", keyboard: true, show: true });
+              }
+              else if (e.status == "Completed" || e.status == "Active" ||
+                e.status == "Recurring") {
+                $('#CancelPermanently').modal('hide');
+                $('#CancelRequest').modal({ backdrop: "static", keyboard: true, show: true });
+              }
+            }
+            else if (!$(".report_id_checkboxes:checkbox:checked").length) {
+              this.errorModalMessageRequest = "Select a report to Cancel";
+              $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
+            }
+            else {
+              this.errorModalMessageRequest = "Cannot cancel multiple reports";
+              $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
+            }
           }
         }
-      }
-    });
+      });
+    }
+    else {
+      this.errorModalMessageRequest = " Please select a checkbox to perform 'Cancel/Reassign' operation!";
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
+      this.finalData = [];
+    }
   }
 
   // changing status of report to cancelled
@@ -631,7 +639,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
       this.django.list_of_reports(obj).subscribe(list => {
         this.reports = list["report_list"];
-        this.paginatorlength = this.reports.length;
         Utils.hideSpinner();
         this.finalData = []
       })
@@ -711,48 +718,55 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
   // converting status into Active of reports
   public Accept() {
-    if (this.finalData[0].status == "Cancelled") {
-      this.errorModalMessageRequest = 'status for the report ' + this.finalData[0].ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted';
-      $('#errorModalRequest').modal('show');
-      this.finalData = [];
-    }
-    else if (this.finalData[0].status == "Incomplete") {
-      this.errorModalMessageRequest = 'status for the report ' + this.finalData[0].ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report';
-      $('#errorModalRequest').modal('show');
-      this.finalData = [];
-    } else {
-      if ($(".report_id_checkboxes:checkbox:checked").length) {
-        Utils.showSpinner();
-        this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
-        this.accept_report.accept_reports.push(
-          {
-            'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
-            'assign_to': this.user_name, 'status_date': this.date,
-            'status': 'Active'
-          });
-
-        this.django.accept_report(this.accept_report).subscribe(response => {
-          const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
-          this.django.list_of_reports(obj).subscribe(list => {
-            this.reports = list["report_list"];
-            this.reports.forEach(ele => {
-              if (ele.ddm_rmp_post_report_id ===
-                this.finalData[0].ddm_rmp_post_report_id)
-                this.showODCBtn = ele['status'] === 'Active' ? true : false;
+    if ($(".report_id_checkboxes:checkbox:checked").length) {
+      if (this.finalData[0].status == "Cancelled") {
+        this.errorModalMessageRequest = 'status for the report ' + this.finalData[0].ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted';
+        $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
+        this.finalData = [];
+      }
+      else if (this.finalData[0].status == "Incomplete") {
+        this.errorModalMessageRequest = 'status for the report ' + this.finalData[0].ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report';
+        $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
+        this.finalData = [];
+      } else {
+        if ($(".report_id_checkboxes:checkbox:checked").length) {
+          Utils.showSpinner();
+          this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
+          this.accept_report.accept_reports.push(
+            {
+              'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
+              'assign_to': this.user_name, 'status_date': this.date,
+              'status': 'Active'
             });
-            this.toastr.success("Status Changed to Active");
+
+          this.django.accept_report(this.accept_report).subscribe(response => {
+            const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+            this.django.list_of_reports(obj).subscribe(list => {
+              this.reports = list["report_list"];
+              this.reports.forEach(ele => {
+                if (ele.ddm_rmp_post_report_id ===
+                  this.finalData[0].ddm_rmp_post_report_id)
+                  this.showODCBtn = ele['status'] === 'Active' ? true : false;
+              });
+              this.toastr.success("Status Changed to Active");
+              Utils.hideSpinner();
+              this.finalData = [];
+            });
+          }, err => {
+            this.toastr.error("Server Error")
             Utils.hideSpinner();
-            this.finalData = [];
-          });
-        }, err => {
-          this.toastr.error("Server Error")
-          Utils.hideSpinner();
-        })
+          })
+        }
+        else if (!$(".report_id_checkboxes:checkbox:checked").length) {
+          this.errorModalMessageRequest = "Select a report to Accept";
+          $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
+        }
       }
-      else if (!$(".report_id_checkboxes:checkbox:checked").length) {
-        this.errorModalMessageRequest = "Select a report to Accept";
-        $('#errorModalRequest').modal('show');
-      }
+    }
+    else {
+      this.errorModalMessageRequest = "Please select a checkbox to perform 'Accept Assignment' operation!";
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
+      this.finalData = [];
     }
   }
 
@@ -824,16 +838,16 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
     if (this.checkbox_length == 0) {
       this.errorModalMessageRequest = "Select a report to post link for it";
-      $('#errorModalRequest').modal('show');
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
     }
     else if (this.checkbox_length > 1) {
       this.errorModalMessageRequest = "You cannot post link on multiple reports at once";
-      $('#errorModalRequest').modal('show');
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
       this.finalData = [];
     } else if (this.checkbox_length == 1) {
       if (this.finalData[0].status != "Active") {
         this.errorModalMessageRequest = "Request not Active yet. Can't post link to results.";
-        $('#errorModalRequest').modal('show');
+        $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
         this.finalData = [];
       } else if (this.finalData[0].status == "Active" ||
         this.finalData[0].status == "Completed") { }
@@ -871,7 +885,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       }
       else if (this.checkbox_length == 0) {
         this.errorModalMessageRequest = "Select a report to post a link";
-        $('#errorModalRequest').modal('show');
+        $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
       }
     }
   }
@@ -882,11 +896,11 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
     if (this.checkbox_length > 1) {
       this.errorModalMessageRequest = "You cannot comment on multiple reports at once";
-      $('#errorModalRequest').modal('show');
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
     }
     else if (this.checkbox_length == 0) {
       this.errorModalMessageRequest = "Select a report to comment on it";
-      $('#errorModalRequest').modal('show');
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
     }
     else if (this.checkbox_length == 1) {
       this.comment_text = "";
@@ -904,7 +918,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public extract_comment() {
     if (!this.comment_text || this.comment_text == "") {
       this.errorModalMessageRequest = "Enter some comment";
-      $('#errorModalRequest').modal('show');
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
     }
     else {
       Utils.showSpinner();
@@ -935,7 +949,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
             Utils.hideSpinner();
           }, err => {
             this.errorModalMessageRequest = "Please post the comment again";
-            $('#errorModalRequest').modal('show');
+            $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
             Utils.hideSpinner();
           })
         }
@@ -986,6 +1000,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       } else {
         this.market_description = [];
       }
+
       if (response["country_region_data"].length) {
         let tempArray = [];
         response["country_region_data"].
@@ -1046,13 +1061,13 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         this.frequency_flag = false;
       }
 
-      if (!response["division_dropdown"].length)
-        this.division_dropdown = []
-      else {
+      if (response["division_dropdown"].length) {
         let tempArray = [];
         response["division_dropdown"].map(element =>
           tempArray.push(element.division_desc));
         this.division_dropdown = tempArray.join(", ");
+      } else {
+        this.division_dropdown = []
       }
 
       if (response["special_identifier_data"].length) {
@@ -1195,11 +1210,11 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
     if (this.checkbox_length < 1) {
       this.errorModalMessageRequest = "Select at least one report";
-      $('#errorModalRequest').modal('show');
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
     }
     else if (this.checkbox_length > 1) {
       this.errorModalMessageRequest = "Can select only one report for generating new report with same criteria";
-      $('#errorModalRequest').modal('show');
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
     }
     else {
       localStorage.setItem('report_id', $(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
@@ -1262,7 +1277,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public populateDl() {
     this.contacts = []
     if (this.finalData.length == 1 && (this.finalData[0].status != "Cancelled" || this.finalData[0].status != "Completed")) {
-      $('#DistributionListModal').modal('show');
+      $('#DistributionListModal').modal({ backdrop: "static", keyboard: true, show: true });
       Utils.showSpinner();
       let reportID = this.finalData[0]['ddm_rmp_post_report_id']
       this.django.get_report_description(reportID).subscribe(element => {
@@ -1280,16 +1295,16 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     }
     else if (!this.finalData.length) {
       this.errorModalMessageRequest = "Select a report to update DL";
-      $('#errorModalRequest').modal('show');
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
     }
     else if (this.finalData[0].status == "Cancelled" ||
       this.finalData[0].status == "Completed") {
       this.errorModalMessageRequest = "Cannot update a cancelled/completed report";
-      $('#errorModalRequest').modal('show');
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
     }
     else {
       this.errorModalMessageRequest = "Cannot update multiple reports";
-      $('#errorModalRequest').modal('show');
+      $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
     }
   }
 

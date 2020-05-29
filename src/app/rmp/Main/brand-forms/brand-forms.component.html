@@ -64,7 +64,7 @@
           <tr *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType">
             <td class="ddm-report-name">
               <!-- First part -->
-              <div class="report-name-edit">
+              <div class="report-name-non-edit">
                 <div class="col-xs-9">
                   <p *ngIf="element[reportDataColumns['immutable']]"
                     title="{{element[reportDataColumns['immutable']]}}">{{element[reportDataColumns['immutable']]}}</p>
@@ -73,9 +73,10 @@
             </td>
             <td class="ddm-report-name">
               <!-- First part -->
-              <div class="report-name-edit" *ngIf="!element.clicked">
+              <div *ngIf="!element.clicked">
                 <div class="col-xs-9">
-                  <p *ngIf="element[reportDataColumns['mutable']]" title="{{element[reportDataColumns['mutable']]}}">
+                  <p class="max-length-display" *ngIf="element[reportDataColumns['mutable']]"
+                    title="{{element[reportDataColumns['mutable']]}}">
                     {{element[reportDataColumns['mutable']]}}</p>
                 </div>
                 <div class="col-xs-3">
@@ -87,7 +88,7 @@
               <!-- Second part -->
               <div class="report-name-edit" *ngIf="element.clicked ">
                 <div class="col-xs-6">
-                  <input class="input-width" id="editedField" maxlength="50" placeholder="Max 50 characters"
+                  <input class="input-width" id="editedField" maxlength="40" placeholder="Max 40 characters"
                     [(ngModel)]="newBrandName"
                     [value]="element[reportDataColumns['mutable']]?element[reportDataColumns['mutable']]:''">
                 </div>

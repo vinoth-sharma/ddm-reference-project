@@ -3,7 +3,7 @@
 <!-- Modal -->
 <div *ngIf="content">
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" style="overflow: hidden">
+    aria-hidden="true" style="overflow: hidden" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -17,21 +17,21 @@
         <div class="modal-body">
           <form>
             <div class="form-group">
-              <label for="document-name" class="col-form-label">Document Name<span _ngcontent-c1=""
-                  class="mandatory-fields">*</span>:</label>
+              <label for="document-name" class="col-form-label">Document Name
+                <span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
               <span style="color: red;">Max limit 50 characters</span>
               <input type="text" class="form-control" id="document-name" maxlength="50" value="" required>
             </div>
             <div class="form-group">
-              <label for="message-text" class="col-form-label">URL<span _ngcontent-c1=""
-                  class="mandatory-fields">*</span>:</label>
+              <label for="message-text" class="col-form-label">URL
+                <span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
               <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
                 id="document-url" value="" required>
             </div>
             <div class="form-group" title="Please upload a file of CSV/WORD/EXCEL format!">
               <input type="checkbox" id="uploadCheckbox" (click)="upload(isChecked)" [checked]="isChecked">&nbsp;&nbsp;
-              <label for="upload-doc" class="col-form-label">Upload Document<span _ngcontent-c1=""
-                  class="mandatory-fields">*</span>:</label>
+              <label for="upload-doc" class="col-form-label">Upload Document
+                <span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
               <input id="attach-file1" name="attach-file1" type="file" style="margin-left: 20px;display:inline;"
                 disabled>
             </div>
@@ -40,8 +40,8 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" id="close_modal" data-dismiss="modal">Close</button>
           <ng-container>
-            <button type="button" class="btn btn-success" (click)="addDocument()">Save
-              changes</button>
+            <button type="button" class="btn btn-success" (click)="addDocument()">Save changes
+            </button>
           </ng-container>
         </div>
       </div>
@@ -60,10 +60,12 @@
 
     <div class="icons">
       <div class="press" *ngIf="user_role == 'Admin'">
-        <a data-toggle="tooltip" title="EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
+        <a data-toggle="tooltip" title="EDIT" (click)="editTrue()">
+          <i id="ic" class="material-icons">mode_edit</i>
+        </a>
       </div>
       <div class="press">
-        <button data-target="#helpModal" data-toggle="modal" style="padding-right:0px;">
+        <button data-target="#helpModal" data-toggle="modal" data-backdrop="static" style="padding-right:0px;">
           <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
         </button>
       </div>
@@ -74,34 +76,35 @@
       <div id="editable">
         <div class="container-fluid" *ngIf="editMode">
           <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
-            (click)="NewDoc()">
+            data-backdrop="static" (click)="NewDoc()">
             Add a Reference Material
           </button>
-          <br><br>
+          <br>
+          <br>
         </div>
 
         <div class="ref-styling row" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
-          <div class="col-4">
+          <div class="col-7">
             <a [id]="'ref_doc'+element.ddm_rmp_desc_text_admin_documents_id" data-toggle="tooltip"
               title="{{element.url}}" target="_blank" href="{{element.url}}">
               {{element.title}}
             </a>
           </div>
 
-          <div class="col-1" style="padding-bottom: 6px;">
+          <div class="col-2" style="padding-bottom: 6px; display:flex;justify-content: start">
             <a [id]="'delete'+element.ddm_rmp_desc_text_admin_documents_id"
               (click)="deleteDocument(element.ddm_rmp_desc_text_admin_documents_id,i)" *ngIf="editMode">
               <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
             </a>
-            <a data-toggle="modal" data-target="#exampleModal" *ngIf="editMode"
-              (click)="editDoc(element.ddm_rmp_desc_text_admin_documents_id,element.title,element.url)">
+            <a data-toggle="modal" data-target="#exampleModal" *ngIf="editMode" data-backdrop="static"
+              (click)="editDoc(element.ddm_rmp_desc_text_admin_documents_id,element.title,element.url,i)">
               <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">mode_edit</i>
             </a>
           </div>
         </div>
 
         <div class="ref-styling row" [id]="'upload_doc'+i" *ngFor='let element of isAdmin.docs;let i = index'>
-          <div class="col-4">
+          <div class="col-7">
             <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle="tooltip"
               title="{{element.uploaded_file_name}}" (click)="getLink(element.file_id)"
               style="color: blue;cursor:pointer;">
@@ -109,7 +112,7 @@
             </a>
           </div>
 
-          <div class="col-2" style="padding-bottom: 6px;">
+          <div class="col-2" style="padding-bottom: 6px; display:flex;justify-content: start">
             <a [id]="'delete'+element.file_id" (click)="delete_upload_file(element.file_id,i)" *ngIf="editMode">
               <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
             </a>
@@ -138,8 +141,9 @@
             </div>
             <div class="col-3" style="padding-left:12%;">
               <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="editEnable()">
-                <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons"
-                    style="font-size:3rem;">mode_edit</i></a>
+                <a data-toggle="tooltip" title="EDIT">
+                  <i id="ic" class="material-icons" style="font-size:3rem;">mode_edit</i>
+                </a>
               </button>
             </div>
           </div>
@@ -149,7 +153,8 @@
           </div>
         </div>
         <div class="modal-footer modal-footer-pad">
-          <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_true()" data-dismiss="modal">Close</button>
+          <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_true()"
+            data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -160,7 +165,8 @@
   <mat-spinner style="height:100%;width:100%;"></mat-spinner>
 </div>
 
-<button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
+<button id="errorTrigger" data-toggle="modal" data-backdrop="static" data-target="#errorModal"
+  style="display:none">Error</button>
 <div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true" style="z-index: 10000">
   <div class="modal-dialog" role="document">

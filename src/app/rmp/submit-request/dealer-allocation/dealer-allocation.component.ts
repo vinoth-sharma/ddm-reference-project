@@ -97,7 +97,10 @@ export class DealerAllocationComp implements OnInit {
         link_to_results: "",
         query_criteria: "",
         link_title: "",
-        requestor: ""
+        requestor: "",
+        is_vin_level_report: null,
+        is_summary_report: null,
+        business_req: ""
     },
     report_id : null
   }
@@ -204,7 +207,10 @@ export class DealerAllocationComp implements OnInit {
       let obj = {
         checkboxData: [],
         l_title : this.req_body.report_detail.title,
-        l_addReq : this.req_body.report_detail.additional_req
+        l_addReq : this.req_body.report_detail.additional_req,
+        l_isVvinReq: this.req_body.report_detail.is_vin_level_report,
+        l_isSummaryReq: this.req_body.report_detail.is_summary_report,
+        l_businessReq: this.req_body.report_detail.business_req
       }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
         data: obj
@@ -235,6 +241,9 @@ export class DealerAllocationComp implements OnInit {
     this.req_body.report_detail.additional_req = result.data.addReq;
     this.req_body.report_detail.status_date = new Date();
     this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
+    this.req_body.report_detail.is_vin_level_report = result.data.isVinLevel;
+    this.req_body.report_detail.is_summary_report = result.data.isSummaryReport;
+    this.req_body.report_detail.business_req = result.data.businessReq;
     
     this.req_body.concensus_time_date.startCycle = this.startCycle;
     this.req_body.concensus_time_date.endCycle = this.endCycle;
@@ -319,6 +328,9 @@ export class DealerAllocationComp implements OnInit {
     this.req_body.report_detail.link_title = data.report_data.link_title;
     this.req_body.report_detail.link_to_results  = data.report_data.link_to_results;
     this.req_body.report_detail.query_criteria = data.report_data.query_criteria;
+    this.req_body.report_detail.is_vin_level_report = data.report_data.is_vin_level_report;
+    this.req_body.report_detail.is_summary_report = data.report_data.is_summary_report;
+    this.req_body.report_detail.business_req = data.report_data.business_req;
   }
 
   chosenYearHandler(normalizedYear: Moment) {

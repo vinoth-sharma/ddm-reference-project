@@ -7,13 +7,11 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
-                    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        Add Report Title<span class="red">*</span>
-                    </div> -->
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
                         <mat-form-field style="width: 100%">
                             <mat-label>Report Title<span class="red">*</span></mat-label>
-                            <input matInput placeholder="Please enter the report title..." [(ngModel)]="report_title">
+                            <input matInput placeholder="Please enter the report title..."
+                                [(ngModel)]="responseData.reportTitle">
                         </mat-form-field>
                     </div>
                 </div>
@@ -28,87 +26,44 @@
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                <ng-container  *ngFor="let cb of l_CB_data">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding ds-flex-centre" *ngIf="cb.description && [1,2].includes(cb.ddm_rmp_ots_checkbox_group_id)">
-                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-                        <div style="padding-top: 12px;"> {{ cb.field_values }} </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding callout lineHeight margBtmLight"
-                        style="padding-top: 10px !important;">
-                            <!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 lineHeightSmall"> -->
+                <ng-container *ngFor="let cb of l_CB_data">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding ds-flex-centre"
+                        *ngIf="cb.description && [1,2].includes(cb.ddm_rmp_ots_checkbox_group_id)">
+                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                            <div style="padding-top: 12px;"> {{ cb.field_values }} </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding callout lineHeight margBtmLight"
+                                style="padding-top: 10px !important;">
                                 *{{ cb.checkbox_desc }}
-                            <!-- </div> -->
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
+                            <mat-form-field *ngIf="cb.field_values !== 'Target Production Date'">
+                                <mat-label>{{cb.field_values}}</mat-label>
+                                <input matInput placeholder="Enter the value..." [(ngModel)]="cb['desc']">
+                            </mat-form-field>
+
+                            <mat-form-field *ngIf="cb.field_values === 'Target Production Date'">
+                                <mat-label>{{cb.field_values}}</mat-label>
+                                <mat-select [(ngModel)]="cb['desc']">
+                                    <mat-option *ngFor="let tpd of ['original','subsequent','both']" [value]="tpd">
+                                        {{ tpd }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                     </div>
-                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
-                         <mat-form-field *ngIf="cb.field_values !== 'Target Production Date'">
-                            <mat-label>{{cb.field_values}}</mat-label>
-                            <input matInput placeholder="Enter the value..." [(ngModel)]="cb['desc']">
-                          </mat-form-field>
+                </ng-container>
 
-                          <mat-form-field *ngIf="cb.field_values === 'Target Production Date'">
-                            <mat-label>{{cb.field_values}}</mat-label>
-                            <mat-select [(ngModel)]="cb['desc']">
-                              <mat-option *ngFor="let tpd of ['original','subsequent','both']" [value]="tpd">
-                                {{ tpd }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                    </div>
-                </div>
-            </ng-container>
-
-                <!-- Commonly Requested Fields Available for Display -->
-                <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 header-opt" *ngIf="l_data1.length"> 
-                    Commonly Requested Fields Available for Display <span class="red">*</span>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding ds-flex-centre" *ngFor="let cb of l_data1">
-                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-                        <div> {{ cb.field_values }} </div>
-                    </div>
-                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
-                         <mat-form-field *ngIf="cb.ddm_rmp_lookup_ots_checkbox_values_id !== 5">
-                            <mat-label>{{cb.field_values}}</mat-label>
-                            <input matInput placeholder="Enter the value..." [(ngModel)]="cb['desc']">
-                          </mat-form-field>
-
-                          <mat-form-field *ngIf="cb.ddm_rmp_lookup_ots_checkbox_values_id === 5">
-                            <mat-label>{{cb.field_values}}</mat-label>
-                            <mat-select [(ngModel)]="cb['desc']">
-                              <mat-option *ngFor="let tpd of ['original','subsequent','both']" [value]="tpd">
-                                {{ tpd }}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                    </div>
-                </div> -->
-
-                <!-- "Option Content Available for Display" -->
-                <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 header-opt " *ngIf="l_data2.length">
-                    Option Content Available for Display <span class="red">*</span> 
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding ds-flex-centre" *ngFor="let cb of l_data2">
-                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-                        <div> {{ cb.field_values }} </div>
-                    </div>
-                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
-                        <mat-form-field class="example-full-width">
-                            <mat-label>{{cb.field_values}}</mat-label>
-                            <input matInput placeholder="Enter the value..." [(ngModel)]="cb['desc']">
-                          </mat-form-field>
-                    </div>
-                </div> -->
-
-
-                <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                     <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                         <div>Is this a Order Number/VIN level detail report?</div>
                     </div>
                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                         <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-                            style="width: 100%;">
-                            <mat-radio-button class="example-radio-button radio-label"
-                                *ngFor="let splId of ['Yes', 'No']" [value]="splId">
-                                {{splId}}
+                            style="width: 100%;" [(ngModel)]="responseData.isVinLevel">
+                            <mat-radio-button class="example-radio-button radio-label" *ngFor="let option of radioOpt"
+                                [value]="option.value">
+                                {{ option.label }}
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>
@@ -119,40 +74,38 @@
                     </div>
                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                         <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-                            style="width: 100%;">
-                            <mat-radio-button class="example-radio-button radio-label"
-                                *ngFor="let splId of ['Yes', 'No']" [value]="splId">
-                                {{splId}}
+                            style="width: 100%;" [(ngModel)]="responseData.isSummaryReport">
+                            <mat-radio-button class="example-radio-button radio-label" *ngFor="let option of radioOpt"
+                                [value]="option.value">
+                                {{ option.label }}
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>
-                </div> -->
+                </div>
             </div>
-            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <mat-form-field>
                         <mat-label>Business Requirement</mat-label>
                         <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
-                            cdkAutosizeMaxRows="8"></textarea>
+                            cdkAutosizeMaxRows="8" [(ngModel)]="responseData.businessReq"></textarea>
                     </mat-form-field>
                 </div>
-            </div> -->
+            </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <mat-form-field>
-                        <mat-label>Additional Report Requirements or General Comments<span class="red">*</span></mat-label>
+                        <mat-label>Additional Report Requirements or General Comments<span class="red">*</span>
+                        </mat-label>
                         <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
-                            cdkAutosizeMaxRows="8" [(ngModel)]="additional_req"></textarea>
+                            cdkAutosizeMaxRows="8" [(ngModel)]="responseData.addReq"></textarea>
                     </mat-form-field>
                 </div>
             </div>
 
         </div>
-
-
     </div>
     <div class="modal-footer">
-        <button [cssBtn]="'mid'" mat-raised-button (click)="reviewRequest();"
-         >Review</button>
+        <button [cssBtn]="'mid'" mat-raised-button (click)="reviewRequest();">Review</button>
     </div>
 </div>

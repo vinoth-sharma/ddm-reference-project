@@ -134,14 +134,17 @@ export class VehicleEventStatusComponent implements OnInit {
       link_to_results: "",
       link_title: "",
       requestor: "",
-      query_criteria: ""
+      query_criteria: "",
+      is_vin_level_report: null,
+      is_summary_report: null,
+      business_req: ""
     },
     report_id: null,
     other_desc: ""
   }
 
   display_message = "Create Request to proceed with vehicle event status";
-  messageClass  = "red";
+  messageClass = "red";
 
   user_name = "";
   user_role = "";
@@ -183,20 +186,20 @@ export class VehicleEventStatusComponent implements OnInit {
       let l_status = res.data.status;
       let l_reportId = res.data.ddm_rmp_post_report_id;
       let l_reqType = res.data.report_type;
-      this.display_message = `Request #${l_reportId} (Request type - ${l_reqType==="ots"?"Vehicle event status":"Dealer Allocation"})`;
+      this.display_message = `Request #${l_reportId} (Request type - ${l_reqType === "ots" ? "Vehicle event status" : "Dealer Allocation"})`;
 
-      if(res.type === "srw" && (l_status === "Cancelled" || l_status === "Completed" )){
+      if (res.type === "srw" && (l_status === "Cancelled" || l_status === "Completed")) {
         this.req_body.report_detail.status = l_status;
-        if(l_status === "Cancelled")
+        if (l_status === "Cancelled")
           this.req_body.report_id = null;
-        else if(l_status === "Completed" && !res.data.frequency_data.some(freq=>freq.ddm_rmp_lookup_select_frequency_id === 39))
+        else if (l_status === "Completed" && !res.data.frequency_data.some(freq => freq.ddm_rmp_lookup_select_frequency_id === 39))
           this.req_body.report_id = null;
-        else{
+        else {
           this.messageClass = "green";
           this.req_body.report_id = l_reportId;
         }
       }
-      else if(res.type === "srw" && l_status === "Incomplete") {
+      else if (res.type === "srw" && l_status === "Incomplete") {
         this.messageClass = "red";
         this.req_body.report_id = l_reportId;
         this.display_message = `Request #${l_reportId} ( ${l_status} )`;
@@ -209,7 +212,7 @@ export class VehicleEventStatusComponent implements OnInit {
       }
 
       console.log(this.req_body);
-      
+
     })
 
     this.submitService.updateLoadingStatus({ status: true, comp: "ves" })
@@ -389,7 +392,11 @@ export class VehicleEventStatusComponent implements OnInit {
       let obj = {
         checkboxData: this.getSelectedCheckboxData(),
         l_title: this.req_body.report_detail.title,
-        l_addReq: this.req_body.report_detail.additional_req
+        l_addReq: this.req_body.report_detail.additional_req,
+        l_isVvinReq: this.req_body.report_detail.is_vin_level_report,
+        l_isSummaryReq: this.req_body.report_detail.is_summary_report,
+        l_businessReq: this.req_body.report_detail.business_req
+
       }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
         data: obj
@@ -437,6 +444,10 @@ export class VehicleEventStatusComponent implements OnInit {
     this.req_body.report_detail.title = result.data.reportTitle;
     this.req_body.report_detail.additional_req = result.data.addReq;
     this.req_body.report_detail.status_date = new Date();
+    this.req_body.report_detail.is_vin_level_report = result.data.isVinLevel;
+    this.req_body.report_detail.is_summary_report = result.data.isSummaryReport;
+    this.req_body.report_detail.business_req = result.data.businessReq;
+
     // this.saveVehicleEventStatus();
     this.openPreviewModal();
   }
@@ -452,7 +463,7 @@ export class VehicleEventStatusComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       // if (result) {
-        // this.saveVehicleEventStatus();
+      // this.saveVehicleEventStatus();
       // }
     })
   }
@@ -587,6 +598,9 @@ export class VehicleEventStatusComponent implements OnInit {
     this.req_body.report_detail.link_title = data.report_data.link_title;
     this.req_body.report_detail.link_to_results = data.report_data.link_to_results;
     this.req_body.report_detail.query_criteria = data.report_data.query_criteria;
+    this.req_body.report_detail.is_vin_level_report = data.report_data.is_vin_level_report;
+    this.req_body.report_detail.is_summary_report = data.report_data.is_summary_report;
+    this.req_body.report_detail.business_req = data.report_data.business_req;
   }
 
   getSelectedCheckboxData() {

@@ -165,7 +165,7 @@
                 <div class="report-name-edit" *ngIf="element.clicked ">
                   <input style="max-width:110px" maxlength="50" placeholder="Name max 50 characters"
                     [(ngModel)]="element.report_name" [value]="element.report_name?element.report_name:''"
-                    (change)="changeReportName($event , element)">
+                    >
                   <div>
 
                     <a data-toggle="tooltip" title="Save" (click)="changeReportName($event , element)"

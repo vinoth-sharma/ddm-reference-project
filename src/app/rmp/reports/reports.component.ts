@@ -281,21 +281,25 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    */
   public changeReportName(event: any, reportObject) {
     const changedReport = {};
+
     if (!reportObject.report_name.length) {
+      reportObject.report_name = reportObject.report_name_old;
       this.toasterService.error('Cannot save empty name');
-      return;
-    }
-    changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
-    changedReport['report_name'] = reportObject.report_name;
-    this.django.update_rmpReports_DDMName(changedReport)
-      .subscribe(
-        resp => {
-          reportObject.clicked = false;
-          reportObject.report_name = changedReport['report_name'];
-          this.toasterService.success('Successfuly Changed');
-        }
+      reportObject.clicked = false;
+    } else {
+      changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
+      changedReport['report_name'] = reportObject.report_name;
+      this.django.update_rmpReports_DDMName(changedReport)
+        .subscribe(
+          resp => {
+            reportObject.clicked = false;
+            reportObject.report_name = changedReport['report_name'];
+            this.toasterService.success('Successfuly Changed');
+          }
 
       );
+    }
+    
   }
 
   /**
@@ -430,6 +434,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           if (ele['frequency_data_filtered']) {
             ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");
           }
+          ele['report_name_old'] = ele['report_name'];
           ele['clicked'] = false;
         })
         this.reportContainer.sort((a, b) => {

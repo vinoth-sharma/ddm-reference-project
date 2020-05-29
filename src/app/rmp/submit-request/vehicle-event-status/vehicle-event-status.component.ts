@@ -649,7 +649,8 @@ export class VehicleEventStatusComponent implements OnInit {
     label: "Models",
     primary_key: 'ddm_rmp_lookup_dropdown_model_year_id',
     label_key: 'model_year',
-    title: ""
+    title: "",
+    isDisabled : false
   };
 
   public division_settings = {
@@ -664,21 +665,24 @@ export class VehicleEventStatusComponent implements OnInit {
     label: "Vehicle Line Brands",
     primary_key: 'ddm_rmp_lookup_dropdown_vehicle_line_brand_id',
     label_key: 'vehicle_line_brand',
-    title: ""
+    title: "",
+    isDisabled : false 
   };
 
   public allocation_settings = {
     label: "Allocation Groups(s)",
     primary_key: 'ddm_rmp_lookup_dropdown_allocation_group_id',
     label_key: 'allocation_group',
-    title: ""
+    title: "",
+    isDisabled : false 
   };
 
   public merchandising_settings = {
     label: "Merchandising Model",
     primary_key: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
     label_key: 'merchandising_model',
-    title: ""
+    title: "",
+    isDisabled : false 
   };
 
 
@@ -686,35 +690,40 @@ export class VehicleEventStatusComponent implements OnInit {
     label: "Distribution Entities",
     primary_key: 'ddm_rmp_lookup_ots_type_data_id',
     label_key: 'type_data_desc',
-    title: ""
+    title: "",
+    isDisabled : false 
   };
 
   public orderType_settings = {
     label: "Order Types",
     primary_key: 'ddm_rmp_lookup_dropdown_order_type_id',
     label_key: 'order_type',
-    title: ""
+    title: "",
+    isDisabled : false 
   };
 
   public commonly_req_field_settings = {
     label: "Common fields",
     primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
     label_key: 'field_values',
-    title: ""
+    title: "",
+    isDisabled : false 
   };
 
   public option_content_avail_settings = {
     label: "Option Contents",
     primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
     label_key: 'field_values',
-    title: ""
+    title: "",
+    isDisabled : false
   };
 
   public order_event_avail_settings = {
     label: "Order Events",
     primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
     label_key: 'field_values',
-    title: ""
+    title: "",
+    isDisabled : false 
   };
 
   public keyDataEle_settings = {

@@ -23,14 +23,8 @@ export class SubmitRequestWrapperComponent implements OnInit {
     self_email: ""
   }
 
-  subjectSubscription: Subscription ;
-  // lookupMasterData = {};
-  // lookupTableMasterData = {};
-
-
-  // request_details: any = {};
-
-  // selectedReportData = null;
+  subjectSubscription: Subscription;
+  refreshWrapper: boolean = true;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
@@ -48,16 +42,6 @@ export class SubmitRequestWrapperComponent implements OnInit {
         this.user_details.self_email = role["email"]
       }
     })
-
-    // dataProvider.currentlookupData.subscribe(element => {
-    //   console.log(element);
-    //   this.lookupMasterData = element;
-    // })
-
-    // dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
-    //   console.log(tableDate);
-    //   this.lookupTableMasterData = tableDate ? tableDate.data : {};
-    // })
   }
 
   ngOnInit() {
@@ -77,15 +61,24 @@ export class SubmitRequestWrapperComponent implements OnInit {
           })
 
         }
-
       }
     })
   }
 
+  refreshWrapperFunc(): void {
+    Utils.showSpinner();
+    this.refreshWrapper = false;
+    setTimeout(() => {
+      this.submitReqService.setSubmitOnBehalf("", "");
+      localStorage.removeItem('report_id');
+      this.refreshWrapper = true;
+      Utils.hideSpinner();
+    }, 0);
+  }
+
   ngOnDestroy() {
-    this.submitReqService.setSubmitOnBehalf("","");
+    this.submitReqService.setSubmitOnBehalf("", "");
     localStorage.removeItem('report_id');
     this.subjectSubscription.unsubscribe()
-    // this.submitReqService.loadingStatus.unsubscribe();
   }
 }

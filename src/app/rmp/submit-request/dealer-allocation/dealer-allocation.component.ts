@@ -372,7 +372,8 @@ export class DealerAllocationComp implements OnInit {
     label: "Models",
     primary_key: 'ddm_rmp_lookup_dropdown_model_year_id',
     label_key: 'model_year',
-    title: ""
+    title: "",
+    isDisabled : false 
   };
 
   public division_settings = {
@@ -387,14 +388,16 @@ export class DealerAllocationComp implements OnInit {
     label: "Allocation Groups(s)",
     primary_key: 'ddm_rmp_lookup_dropdown_allocation_group_da_id',
     label_key: 'allocation_group',
-    title: ""
+    title: "",
+    isDisabled : false 
   };
 
   public consensus_settings = {
     label: "Available Consensus",
     primary_key: "ddm_rmp_lookup_da_consensus_data_id",
     label_key: "cd_values",
-    title: ""
+    title: "",
+    isDisabled : false 
   };
 
   ngOnDestroy(){

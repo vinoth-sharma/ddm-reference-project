@@ -24,7 +24,7 @@ export class SelectReportCriteriaComp implements OnInit {
   // @Input() lookupTableMD = {};
 
   // @Input() selectedReqData: any;
-  // @Output() requestCreated = new EventEmitter();
+  @Output() clearSubmitReqEmitter = new EventEmitter();
 
   l_lookup_MD: any = {
     market: {},
@@ -407,53 +407,64 @@ export class SelectReportCriteriaComp implements OnInit {
     })
   }
 
+  clearRequestData(){
+    this.clearSubmitReqEmitter.emit(true);
+  }
+
   public market_settings = {
     label: "Market",
     primary_key: 'ddm_rmp_lookup_market_id',
     label_key: 'market',
-    title: "Market Selection<span class='red'>*</span>"
+    title: "Market Selection<span class='red'>*</span>",
+    isDisabled : false 
   };
 
   public region_settings = {
     label: "Region",
     primary_key: 'ddm_rmp_lookup_country_region_id',
     label_key: 'region_desc',
-    title: "Region Selection"
+    title: "Region Selection",
+    isDisabled : false 
   };
 
   public zone_settings = {
     label: "Zone",
     primary_key: 'ddm_rmp_lookup_region_zone_id',
     label_key: 'zone_desc',
-    title: "Zone Selection"
+    title: "Zone Selection",
+    isDisabled : false 
   };
 
   public area_settings = {
     label: "Area",
     primary_key: 'ddm_rmp_lookup_zone_area_id',
     label_key: 'area_desc',
-    title: "Area Selection"
+    title: "Area Selection",
+    isDisabled : false 
   };
 
   public gmma_settings = {
     label: "GMMA",
     primary_key: 'ddm_rmp_lookup_gmma_id',
     label_key: 'gmma_desc',
-    title: "GMMA Selection"
+    title: "GMMA Selection",
+    isDisabled : false 
   };
 
   public division_settings = {
     label: "Division",
     primary_key: 'ddm_rmp_lookup_division_id',
     label_key: 'division_desc',
-    title: "Division Selection<span class='red'>*</span>"
+    title: "Division Selection<span class='red'>*</span>",
+    isDisabled : false 
   };
 
   public lma_settings = {
     label: "LMA",
     primary_key: 'ddm_rmp_lookup_lma_id',
     label_key: 'lmg_desc',
-    title: "LMA Selection"
+    title: "LMA Selection",
+    isDisabled : false 
   };
 
 

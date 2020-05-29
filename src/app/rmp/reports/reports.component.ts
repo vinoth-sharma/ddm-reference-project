@@ -769,7 +769,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   // open change-frequency modal
   public showChangeFrequencyModal() {
-    $('#change-Frequency').modal('show');
+    $('#change-Frequency').modal({backdrop:"static",keyboard:true,show:true});
   }
 
   //-------------------------frequency update--------------------------------------------

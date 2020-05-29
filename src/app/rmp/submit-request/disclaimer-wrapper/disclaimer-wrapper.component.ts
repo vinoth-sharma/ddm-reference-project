@@ -45,7 +45,7 @@ export class DisclaimerWrapperComponent implements OnInit {
     private subReqService: SubmitRequestService,
     private auth_service: AuthenticationService,
     private dialog: MatDialog) { }
-    public userData;
+  public userData;
 
   ngOnInit(): void {
     Utils.showSpinner();

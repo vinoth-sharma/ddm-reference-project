@@ -319,14 +319,14 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let duplicateName = this.naming.find(ele => (ele['title'] == link_title));
     let dupeFileName = this.isRef.docs.find(item => item.uploaded_file_name == link_title)
-    if ( (duplicateName || dupeFileName)  ) {
+    if ((duplicateName || dupeFileName)) {
       let eid = duplicateName ? duplicateName['ddm_rmp_desc_text_reference_documents_id'] : undefined;
-    if(eid != this.editid || dupeFileName){
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
-      document.getElementById("errorTrigger").click();
-      return
-    }
-  } if(link_title != "" && link_url == "" && upload_doc == undefined) {
+      if (eid != this.editid || dupeFileName) {
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
+        document.getElementById("errorTrigger").click();
+        return
+      }
+    } if (link_title != "" && link_url == "" && upload_doc == undefined) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
     }
@@ -375,7 +375,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     this.django.ddm_rmp_reference_documents_delete(id).subscribe(response => {
       document.getElementById("editable" + index).style.display = "none"
       this.editid = undefined;
-      if(this.deleteIndex == undefined){
+      if (this.deleteIndex == undefined) {
         this.toastr.success("Document deleted");
       }
       this.deleteIndex = undefined
@@ -399,7 +399,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     })
   }
 
-  public editDoc(id, val, url,index) {
+  public editDoc(id, val, url, index) {
     this.editid = id;
     this.deleteIndex = index
     this.changeDoc = true;
@@ -440,8 +440,8 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
         $("#attach-file1").val('');
         this.toastr.success("Uploaded Successfully");
         document.getElementById("close_modal").click()
-        if(this.editid){
-          this.deleteDocument(this.editid,this.deleteIndex)
+        if (this.editid) {
+          this.deleteDocument(this.editid, this.deleteIndex)
         }
       }, err => {
         Utils.hideSpinner();

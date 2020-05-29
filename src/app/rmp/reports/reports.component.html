@@ -199,8 +199,9 @@
                     style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                     Url&nbsp;&nbsp;&#10145;
                   </button>
-                  <button class="btn btn-outline-primary" data-toggle="modal" data-backdrop="static" data-target="#addUrl"
-                    (click)="addLinkUrl(element,'create')" *ngIf="element.link_to_results == ''&& user_role =='Admin'"
+                  <button class="btn btn-outline-primary" data-toggle="modal" data-backdrop="static"
+                    data-target="#addUrl" (click)="addLinkUrl(element,'create')"
+                    *ngIf="element.link_to_results == ''&& user_role =='Admin'"
                     style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                     Add Url
                   </button>
@@ -215,8 +216,8 @@
               <td>
                 <div>
                   <button class="btn btn-outline-primary"
-                    (click)="query_criteria_report(element.ddm_rmp_post_report_id)" data-toggle="modal" data-backdrop="static"
-                    data-target="#queryCriteriaReport">
+                    (click)="query_criteria_report(element.ddm_rmp_post_report_id)" data-toggle="modal"
+                    data-backdrop="static" data-target="#queryCriteriaReport">
                     QueryCriteria
                   </button>
                 </div>

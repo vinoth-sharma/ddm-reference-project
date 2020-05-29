@@ -8,7 +8,7 @@
         {{ user_designation }} <br>
         {{ user_department }} <br>
         {{ user_email }} <br>
-       <span *ngIf="user_role != 'Admin'">  Disclaimer Acknowledge: {{ user_disc_ack | date: 'dd-MMM-yyyy'}}</span>
+        <span *ngIf="user_role != 'Admin'"> Disclaimer Acknowledge: {{ user_disc_ack | date: 'dd-MMM-yyyy'}}</span>
       </i>
     </div>
     <div class="col-2">
@@ -29,10 +29,9 @@
           <strong>No</strong>
         </div>
         <div class="row input-group">
-            <p> Enter valid 10 digit phone number(For Ex: (555) 555-1234 should be 5555551234)</p>
-          <input type="text" id="phone"
-                name="phone" title="Phone No." (keypress)='numberOnly($event)' 
-                [value]="text_number" [maxLength]='10'>
+          <p> Enter valid 10 digit phone number(For Ex: (555) 555-1234 should be 5555551234)</p>
+          <input type="text" id="phone" name="phone" title="Phone No." (keypress)='numberOnly($event)'
+            [value]="text_number" [maxLength]='10'>
           <i class="material-icons" (click)="showPassword()">
             remove_red_eye
           </i>
@@ -192,7 +191,8 @@
     </div>
   </div>
 </div>
-<button id="errorTrigger" data-toggle="modal" data-backdrop="static" data-target="#errorModal" style="display:none">Error</button>
+<button id="errorTrigger" data-toggle="modal" data-backdrop="static" data-target="#errorModal"
+  style="display:none">Error</button>
 <div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true" style="z-index: 10000">
   <div class="modal-dialog" role="document">

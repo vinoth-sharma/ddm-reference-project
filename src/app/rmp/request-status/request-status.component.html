@@ -11,18 +11,21 @@
           data-backdrop="static" data-keyboard="false">Edit Distribution List</button>
       </a>
       <a>
-        <button class="btn btn-danger" data-toggle="modal" data-backdrop="static" (click)="CheckCancel()">Cancel/Reassign</button>
+        <button class="btn btn-danger" data-toggle="modal" data-backdrop="static"
+          (click)="CheckCancel()">Cancel/Reassign</button>
       </a>
       <a>
         <button class="btn btn-primary" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;">Enter
           Comment
         </button>
       </a>
-      <button id="enter_comment_button" data-toggle="modal" data-backdrop="static" data-target="#ModalComment" style="display:none"></button>
+      <button id="enter_comment_button" data-toggle="modal" data-backdrop="static" data-target="#ModalComment"
+        style="display:none"></button>
       <a *ngIf="user_role=='Admin'">
         <button class="btn btn-primary" (click)="Accept()">Accept Assignment</button>
       </a>
-      <button id="post_link_button" data-toggle="modal" data-backdrop="static" data-target="#postLink" style="display:none"></button>
+      <button id="post_link_button" data-toggle="modal" data-backdrop="static" data-target="#postLink"
+        style="display:none"></button>
     </div>
   </div>
   <!--                            Main Body Content                         -->
@@ -38,11 +41,11 @@
       <div class="col-4" style="padding-right:0%;">
         <div class="icons">
           <div class="press">
-            <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#UserDetails"
-              data-backdrop="static" data-keyboard="false">
+            <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-backdrop="static"
+              data-target="#UserDetails" data-backdrop="static" data-keyboard="false">
               User Details
             </button>
-            <button data-target="#helpModal" data-toggle="modal" data-backdrop="static"  class="press-button">
+            <button data-target="#helpModal" data-toggle="modal" data-backdrop="static" class="press-button">
               <a data-toggle="tooltip" title="HELP">
                 <i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i>
               </a>
@@ -205,8 +208,8 @@
                 <div *ngIf="element.requestor == 'TBD'">
                   {{ element.requestor }}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary" data-toggle="modal" data-backdrop="static" data-target="#tbdModal"
-                      (click)="TBD(element)">
+                    <button class="btn-sm btn-primary" data-toggle="modal" data-backdrop="static"
+                      data-target="#tbdModal" (click)="TBD(element)">
                       Assign Owner
                     </button>
                   </div>
@@ -234,8 +237,8 @@
                 <div *ngIf="element.assigned_to == 'TBD'">
                   {{ element.assigned_to }}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary" data-toggle="modal" data-backdrop="static" data-target="#tbdModalAssigned"
-                      (click)="TBD(element)">
+                    <button class="btn-sm btn-primary" data-toggle="modal" data-backdrop="static"
+                      data-target="#tbdModalAssigned" (click)="TBD(element)">
                       Assign Owner
                     </button>
                   </div>
@@ -260,8 +263,8 @@
                 <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary medium-btn" style="margin-left: 15px;" data-toggle="modal" data-backdrop="static"
-                      data-target="#changeStatusModal" (click)="openEditStatusModal(element)">
+                    <button class="btn-sm btn-primary medium-btn" style="margin-left: 15px;" data-toggle="modal"
+                      data-backdrop="static" data-target="#changeStatusModal" (click)="openEditStatusModal(element)">
                       Edit
                     </button>
                   </div>
@@ -286,8 +289,8 @@
                   Add Url
                 </button>
                 <button *ngIf="element.link_to_results != '' && element.status=='Completed' && user_role =='Admin'"
-                  class="btn-sm btn-primary" style="margin-left: 15px;" data-toggle="modal" data-backdrop="static" data-target="#addUrl"
-                  (click)="addLinkUrl(element,'edit')">
+                  class="btn-sm btn-primary" style="margin-left: 15px;" data-toggle="modal" data-backdrop="static"
+                  data-target="#addUrl" (click)="addLinkUrl(element,'edit')">
                   Edit
                 </button>
               </td>
@@ -355,8 +358,8 @@
         </table>
       </div>
       <div style="display:flex; align-items: flex-end;flex-direction: row;width:100%">
-        <mat-paginator style="margin-left:auto" [length]="paginatorlength" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
-          (page)="onPaginationChange($event)">
+        <mat-paginator style="margin-left:auto" [length]="paginatorlength" [pageSize]="paginatorpageSize"
+          [pageSizeOptions]="paginatorOptions" (page)="onPaginationChange($event)">
         </mat-paginator>
       </div>
     </div>
@@ -415,10 +418,10 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-backdrop="static" data-target="#ModalComment"
-          onmouseover="" style="cursor: pointer;" data-dismiss="modal">Ok</button>
-        <button type="button" class="btn btn-danger cancel-btn" data-toggle="modal" data-backdrop="static" data-target="#ModalComment"
-          onmouseover="" style="cursor: pointer;" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-backdrop="static"
+          data-target="#ModalComment" onmouseover="" style="cursor: pointer;" data-dismiss="modal">Ok</button>
+        <button type="button" class="btn btn-danger cancel-btn" data-toggle="modal" data-backdrop="static"
+          data-target="#ModalComment" onmouseover="" style="cursor: pointer;" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
@@ -769,7 +772,8 @@
 
 <!--                                    <Summary Modal End>                                           -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<button id="errorTrigger" data-toggle="modal" data-backdrop="static" data-target="#errorModalRequest" style="display:none">Error</button>
+<button id="errorTrigger" data-toggle="modal" data-backdrop="static" data-target="#errorModalRequest"
+  style="display:none">Error</button>
 <div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true" style="z-index: 10000">
   <div class="modal-dialog" role="document">
@@ -808,7 +812,8 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-4" style="padding-left: 10px">
-            <button class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#CancelPermanently">Cancel Permanently
+            <button class="btn btn-primary" data-toggle="modal" data-backdrop="static"
+              data-target="#CancelPermanently">Cancel Permanently
             </button>
           </div>
           <div class="col-4" style="padding-left: 30px;">

@@ -13,15 +13,21 @@
     </div>
     <div class="disclaimer-body" style="height: calc(100% - 150px);overflow: auto;padding: 0px 35px;">
         <div style="display: flex;">
-            <div  style="width:50%">
+            <div style="width:50%">
                 <p class=""><br>Before you submit a request...<br></p>
                 <p>Read <a class="custom-link" (click)='openDisclaimerModal()' style="cursor:pointer">Disclaimers</a>
-                   and click the Acknowledge button when complete
+                    and click the Acknowledge button when complete
                 </p>
             </div>
             <div style="width:50%" class="disclaimer_section">
-                <p style="width: 90%;" *ngIf="user_role !='Admin'"> <mat-checkbox disabled [checked]="userData.disclaimer_ack"> Disclaimer Acknowledged : {{userData.disclaimer_ack | date:"dd-MM-yyyy"}}</mat-checkbox></p>
-                <p style="width: 90%;"> <mat-checkbox disabled [checked]="userData.saved_setting"> Settings Saved : {{userData.saved_setting | date:"dd-MM-yyyy"}}</mat-checkbox></p>
+                <p style="width: 90%;" *ngIf="user_role !='Admin'">
+                    <mat-checkbox disabled [checked]="userData.disclaimer_ack"> Disclaimer Acknowledged :
+                        {{userData.disclaimer_ack | date:"dd-MM-yyyy"}}</mat-checkbox>
+                </p>
+                <p style="width: 90%;">
+                    <mat-checkbox disabled [checked]="userData.saved_setting"> Settings Saved :
+                        {{userData.saved_setting | date:"dd-MM-yyyy"}}</mat-checkbox>
+                </p>
             </div>
         </div>
         <div class="quillEditorSubmit">

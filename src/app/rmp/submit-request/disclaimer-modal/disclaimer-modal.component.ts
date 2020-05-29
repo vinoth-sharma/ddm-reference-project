@@ -85,10 +85,9 @@ export class DisclaimerModalComponent implements OnInit {
       modalBtn: 'Yes'
     }
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: obj,disableClose:true
+      data: obj, disableClose: true
     })
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (result.confirmation)
         this.submitReqDisclaimerDesc();
     });

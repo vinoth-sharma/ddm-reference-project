@@ -314,7 +314,7 @@
   }
   
   .modal-body {
-  padding: 20px;
+  padding: 20px 20px 0 20px;
   }
   
   .material-icons {
@@ -554,3 +554,10 @@
   padding: 0.5vh 0.5vw;
   font-size: 12px;
   }
+
+  ::ng-deep .quillEditor quill-editor .ql-container.ql-snow{
+    height: 255px !important;
+}
+
+ 
+  

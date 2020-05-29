@@ -6,14 +6,13 @@
           <h3>Reports</h3>
         </div>
         <div class="col">
-          <input (input)="filterData()" placeholder="Insert Keywords/Request Number here " class="form-control"
-            [(ngModel)]="filters.global" name="global">
+          <input (input)="filterData()" placeholder="Insert Keywords/Request Number here " class="form-control" [(ngModel)]="filters.global"
+            name="global">
         </div>
         <div class="col">
           <div class="icons">
             <div class="press">
-              <button data-toggle="modal" data-target="#helpModal"
-                style="background-color:white; border:none;padding-right:0px;">
+              <button data-toggle="modal" data-target="#helpModal" style="background-color:white; border:none;padding-right:0px;">
                 <a data-toggle="tooltip" title="HELP">
                   <i id="ic" class="material-icons">help_outline</i>
                 </a>
@@ -47,8 +46,8 @@
                     <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Enter Request no" class="form-control"
-                      [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id">
+                    <input (input)="filterData()" placeholder="Enter Request no" class="form-control" [(ngModel)]="filters.ddm_rmp_post_report_id"
+                      name="filters.ddm_rmp_post_report_id">
                   </div>
                 </div>
               </th>
@@ -59,8 +58,7 @@
                     <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
                     <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                   </div>
-                  <input (input)="filterData()" placeholder="Enter Date" class="form-control"
-                    [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
+                  <input (input)="filterData()" placeholder="Enter Date" class="form-control" [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
                 </div>
               </th>
               <th>
@@ -71,8 +69,7 @@
                     <div *ngIf="reports['title']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Enter Title" class="form-control"
-                      [(ngModel)]="filters.title" name="filters.title">
+                    <input (input)="filterData()" placeholder="Enter Title" class="form-control" [(ngModel)]="filters.title" name="filters.title">
                   </div>
                 </div>
               </th>
@@ -84,8 +81,7 @@
                     <div *ngIf="reports['report_name']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Enter DDM Name" class="form-control"
-                      [(ngModel)]="filters.report_name" name="filters.report_name">
+                    <input (input)="filterData()" placeholder="Enter DDM Name" class="form-control" [(ngModel)]="filters.report_name" name="filters.report_name">
                   </div>
                 </div>
               </th>
@@ -97,8 +93,7 @@
                     <div *ngIf="reports['frequency']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Enter Frequency" class="form-control"
-                      [(ngModel)]="filters.frequency" name="filters.frequency">
+                    <input (input)="filterData()" placeholder="Enter Frequency" class="form-control" [(ngModel)]="filters.frequency" name="filters.frequency">
                   </div>
                 </div>
               </th>
@@ -119,8 +114,7 @@
                     <div *ngIf="reports['frequency_data_filtered']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Search" class="form-control"
-                      [(ngModel)]="filters.frequency_data_filtered" name="filters.frequency_data_filtered">
+                    <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.frequency_data_filtered" name="filters.frequency_data_filtered">
                   </div>
                 </div>
               </th>
@@ -133,13 +127,12 @@
             </tr>
           </thead>
           <tbody *ngIf="reports">
-            <tr
-              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ; let i = index">
+            <tr *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ; let i = index">
               <td class="fav" scope="col">
                 <div style="width: 70px!important;">
                   <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
-                    <input type="checkbox" [(ngModel)]="element.favorites" id="{{element.ddm_rmp_post_report_id}}"
-                      (click)="checked(element.ddm_rmp_post_report_id,$event)" />
+                    <input type="checkbox" [(ngModel)]="element.favorites" id="{{element.ddm_rmp_post_report_id}}" (click)="checked(element.ddm_rmp_post_report_id,$event)"
+                    />
                     <i class="material-icons empty">star_border</i>
                     <i class="material-icons star">star</i>
                   </label>
@@ -156,20 +149,17 @@
               </td>
               <td class="ddm-report-name">
                 <div class="report-name-edit" *ngIf="!element.clicked">
-                  <a style="font-size:18px" *ngIf="user_role == 'Admin'" data-toggle="tooltip" title="EDIT"
-                    (click)="toggleShowInput(element)">
+                  <a style="font-size:18px" *ngIf="user_role == 'Admin'" data-toggle="tooltip" title="EDIT" (click)="toggleShowInput(element)">
                     <i id="ic" class="material-icons">mode_edit</i>
                   </a>
                   <p *ngIf="element.report_name">{{element.report_name}}</p>
                 </div>
                 <div class="report-name-edit" *ngIf="element.clicked ">
-                  <input style="max-width:110px" maxlength="50" placeholder="Name max 50 characters"
-                    [(ngModel)]="element.report_name" [value]="element.report_name?element.report_name:''"
+                  <input style="max-width:110px" maxlength="50" placeholder="Name max 50 characters" [(ngModel)]="element.report_name" [value]="element.report_name?element.report_name:''"
                     (change)="changeReportName($event , element)">
                   <div>
 
-                    <a data-toggle="tooltip" title="Save" (click)="changeReportName($event , element)"
-                      style="color:grey ; ">
+                    <a data-toggle="tooltip" title="Save" (click)="changeReportName($event , element)" style="color:grey ; ">
                       <i id="ic" class="material-icons">save</i>
                     </a>
                     <a data-toggle="tooltip" title="Cancel" (click)="toggleShowInput(element)" style="color:grey ; ">
@@ -178,8 +168,7 @@
                   </div>
                 </div>
               </td>
-              <td class="change-freq"
-                (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
+              <td class="change-freq" (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
                 <div>{{element.frequency}}</div>
               </td>
               <td *ngFor="let weekDay of weekDays">
@@ -194,19 +183,16 @@
               </td>
               <td>
                 <div style="width: 60px !important;">
-                  <button class="btn btn-outline-primary" [title]="element.link_to_results"
-                    (click)="openNewWindow(element.link_to_results)" *ngIf="element.link_to_results != ''"
-                    style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
+                  <button class="btn btn-outline-primary" [title]="element.link_to_results" (click)="openNewWindow(element.link_to_results)"
+                    *ngIf="element.link_to_results != ''" style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                     Url&nbsp;&nbsp;&#10145;
                   </button>
-                  <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addUrl"
-                    (click)="addLinkUrl(element,'create')" *ngIf="element.link_to_results == ''&& user_role =='Admin'"
-                    style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
+                  <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addUrl" (click)="addLinkUrl(element,'create')"
+                    *ngIf="element.link_to_results == ''&& user_role =='Admin'" style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                     Add Url
                   </button>
-                  <button *ngIf="element.link_to_results != '' && user_role =='Admin'" class="btn btn-primary"
-                    style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
-                    (click)="addLinkUrl(element,'edit')">
+                  <button *ngIf="element.link_to_results != '' && user_role =='Admin'" class="btn btn-primary" style="margin-left: 15px;" data-toggle="modal"
+                    data-target="#addUrl" (click)="addLinkUrl(element,'edit')">
                     Edit
                   </button>
 
@@ -214,8 +200,7 @@
               </td>
               <td>
                 <div>
-                  <button class="btn btn-outline-primary"
-                    (click)="query_criteria_report(element.ddm_rmp_post_report_id)" data-toggle="modal"
+                  <button class="btn btn-outline-primary" (click)="query_criteria_report(element.ddm_rmp_post_report_id)" data-toggle="modal"
                     data-target="#queryCriteriaReport">
                     QueryCriteria
                   </button>
@@ -226,8 +211,7 @@
         </table>
       </div>
       <div style="padding-top: 0.7%;">
-        <mat-paginator [length]="paginatorlength" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
-          (page)="onPaginationChange($event)">
+        <mat-paginator [length]="reports.length" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions" (page)="onPaginationChange($event)">
         </mat-paginator>
       </div>
     </div>
@@ -240,8 +224,8 @@
     </div>
   </div>
 
-  <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header" style="justify-content: flex-start;">
@@ -251,13 +235,11 @@
         <div class="modal-body display-notes-scroll-modal">
           <div class="row">
             <div class="col-9">
-              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
-                style="margin-right:3%">Save</button>
+              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
               <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
             </div>
             <div class="col-3" style="padding-left:12%;">
-              <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)='editEnable()'
-                style="background-color:white;border: none;">
+              <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)='editEnable()' style="background-color:white;border: none;">
                 <a data-toggle="tooltip" title="EDIT">
                   <i id="ic" class="material-icons">mode_edit</i>
                 </a>
@@ -265,13 +247,11 @@
             </div>
           </div>
           <div class="quillEditor">
-            <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'
-              (onContentChanged)='textChanged($event)'></quill-editor>
+            <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper' (onContentChanged)='textChanged($event)'></quill-editor>
           </div>
         </div>
         <div class="modal-footer modal-footer-pad">
-          <button type="button" id="modal_close_button" (click)="edit_True()" class="btn btn-secondary"
-            data-dismiss="modal">Close</button>
+          <button type="button" id="modal_close_button" (click)="edit_True()" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -327,8 +307,7 @@
                 </span>
                 <div>
                   <div class="col-xs-7">
-                    <select class="form-control pt-0 pb-0" [(ngModel)]="selectedNewFrequency" id="reportFormat"
-                      (change)="setSelectedFrequency(selectedNewFrequency)">
+                    <select class="form-control pt-0 pb-0" [(ngModel)]="selectedNewFrequency" id="reportFormat" (change)="setSelectedFrequency(selectedNewFrequency)">
                       <option *ngFor="let choice of frequencySelections" [value]="choice">{{ choice }}</option>
                     </select>
                   </div>
@@ -352,13 +331,11 @@
 
                 <div class="row" *ngFor="let element of obj_keys;let i = index">
                   <div class="time-check col-sm-8 " [id]="'section'+i">
-                    <div data-toggle="collapse" [attr.data-target]="'#'+'drop'+i" class="timing day" type="radio"
-                      name="dates" [id]="'check'+i" (change)="toggle_freq_selections(i)"
-                      style="cursor:pointer; margin-top: 2%" #frequency_selections>&nbsp;&nbsp;{{element}}</div>
+                    <div data-toggle="collapse" [attr.data-target]="'#'+'drop'+i" class="timing day" type="radio" name="dates" [id]="'check'+i"
+                      (change)="toggle_freq_selections(i)" style="cursor:pointer; margin-top: 2%" #frequency_selections>&nbsp;&nbsp;{{element}}</div>
                   </div>
                   <div class="time-options col-sm-4">
-                    <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drop'+i"
-                      aria-expanded="false" [attr.aria-controls]="'drop'+i">
+                    <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drop'+i" aria-expanded="false" [attr.aria-controls]="'drop'+i">
                       <svg class="sv" style="width:24px;height:24px">
                         <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
                       </svg>
@@ -370,21 +347,16 @@
                         <div *ngFor="let subelement of element; let z=index">
                           <div *ngIf="subelement.select_frequency_description == false">
                             &nbsp;&nbsp;
-                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
-                              (click)="frequencySelected(subelement,$event)"
-                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
-                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox" (click)="frequencySelected(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}} [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                           </div>
                           <div *ngIf="subelement.select_frequency_description == true">
                             &nbsp;&nbsp;
-                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
-                              (click)="frequencySelectedDropdown(subelement,$event)"
-                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
-                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox" (click)="frequencySelectedDropdown(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}} [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                             <br> &nbsp;&nbsp; &nbsp;&nbsp;
-                            <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub-freq"
-                              (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
-                              value="" disabled>
+                            <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub-freq" (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event)
+                              type="text" value="" disabled>
                           </div>
                         </div>
                       </div>
@@ -403,13 +375,11 @@
                 </span>
                 <div class="row" *ngFor="let element of obj_keys_da;let i = index">
                   <div class="time-check col-sm-8 " [id]="'section'+i">
-                    <div data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" class="timing day" type="radio"
-                      name="dates" [id]="'check'+i" (change)="toggle_freq_selections(i)"
-                      style="cursor:pointer; margin-top: 2%" #frequency_selections>&nbsp;&nbsp;{{element}}</div>
+                    <div data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" class="timing day" type="radio" name="dates" [id]="'check'+i"
+                      (change)="toggle_freq_selections(i)" style="cursor:pointer; margin-top: 2%" #frequency_selections>&nbsp;&nbsp;{{element}}</div>
                   </div>
                   <div class="time-options col-sm-4">
-                    <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drops'+i"
-                      aria-expanded="false" [attr.aria-controls]="'drops'+i">
+                    <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" aria-expanded="false" [attr.aria-controls]="'drops'+i">
                       <svg class="sv" style="width:24px;height:24px">
                         <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
                       </svg>
@@ -421,21 +391,16 @@
                         <div *ngFor="let subelement of element; let z=index">
                           <div *ngIf="subelement.select_frequency_description == false">
                             &nbsp;&nbsp;
-                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
-                              (click)="frequencySelected(subelement,$event)"
-                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
-                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox" (click)="frequencySelected(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}} [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                           </div>
                           <div *ngIf="subelement.select_frequency_description == true">
                             &nbsp;&nbsp;
-                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
-                              (click)="frequencySelectedDropdown(subelement,$event)"
-                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
-                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox" (click)="frequencySelectedDropdown(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}} [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                             <br> &nbsp;&nbsp; &nbsp;&nbsp;
-                            <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}}
-                              (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
-                              value="" disabled>
+                            <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}} (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event)
+                              type="text" value="" disabled>
                           </div>
                         </div>
                       </div>
@@ -449,8 +414,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" (click)="updateFreq(changeFreqId)" [disabled]=changeInFreq>Save
-            changes
+          <button type="button" class="btn btn-success" (click)="updateFreq(changeFreqId)" [disabled]=changeInFreq>Save changes
           </button>
           <button type="button" class="btn btn-primary" data-dismiss="modal" (click)=clearFreq()>Cancel</button>
         </div>
@@ -470,8 +434,7 @@
               <b>Distribution DataMart (DDM) Report Request Confirmation</b>
               <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">
                 Vehicle Event Status</div>
-              <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer
-                Allocation
+              <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer Allocation
               </div>
             </div>
             <br>
@@ -492,8 +455,7 @@
               <span>
                 <b>Request Date:</b>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <span
-                  *ngIf='summary && summary?.ddm_rmp_status_date'>{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span>
+                <span *ngIf='summary && summary?.ddm_rmp_status_date'>{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span>
               </span>
               <br>
               <span>
@@ -659,8 +621,7 @@
                 </div>
                 <div class="div-wrap">
                   <b>Consensus Data:</b> &nbsp;&nbsp;
-                  <span
-                    *ngFor="let element of summary?.da_data.concensus_data">{{element?.cd_values}}&nbsp;&nbsp;</span>
+                  <span *ngFor="let element of summary?.da_data.concensus_data">{{element?.cd_values}}&nbsp;&nbsp;</span>
                   <br>
                 </div>
                 <div class="div-wrap">
@@ -678,7 +639,7 @@
   </div>
 
   <!-- add url modal -->
-  <div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -694,15 +655,14 @@
           </div>
         </div>
         <div class="modal-body">
-          <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" type="text"
-            placeholder="https://example.com" class="form-control" />
+          <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" type="text" placeholder="https://example.com"
+            class="form-control" />
           <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save
-            Changes</button>
-          <button type="button" class="btn btn-secondary" id="close_url_modal" data-dismiss="modal"
-            (click)="closeTBD_Assigned()">Close</button>
+          <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save Changes
+          </button>
+          <button type="button" class="btn btn-secondary" id="close_url_modal" data-dismiss="modal" (click)="closeTBD_Assigned()">Close</button>
         </div>
       </div>
     </div>
@@ -719,71 +679,73 @@
       <h3>Vehicle Event Status</h3>
     </pre>
   <br>
+  <pre style="width: 100%;float: left;margin-bottom: 10px;">
+      <pre class="div-wrap">
+          <span> <b>Request Date:</b>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <span *ngIf='summary && summary.ddm_rmp_status_date'>{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span></span>
+      </pre>
+  <pre class="div-wrap">
+          <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span *ngIf='summary && summary.ddm_rmp_post_report_id'> {{summary?.ddm_rmp_post_report_id}}</span></span>
+      </pre>
+  <pre *ngFor="let element of summary?.requestor" class="div-wrap">
+          <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf='element && element.requestor'>{{ element?.requestor }}</span>
+      </pre>
+  <pre class="div-wrap">
+          <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf='summary && summary.title'>{{summary?.title}}</span></span> <br>
+      </pre>
+  </pre>
   <br>
-  <pre class="Request-summary" *ngIf='summary'>
-    <span> <b>Request Date:</b>
-      &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
-    <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
-    <pre class="div-wrap" *ngFor="let element of summary?.requestor">
-        <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}
-        <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
-    </pre>
+  <pre class="Request-summary">
   <b style="font-size:150%">Market Selections</b>
   <pre class="div-wrap">
     <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
       *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
-    <br>
   </pre>
   <pre class="div-wrap">
     <b>Division(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='division_dropdown'>{{ division_dropdown }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Region(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ region_description }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='region_description'>{{ region_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Zone(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ zone_description }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='zone_description'>{{ zone_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Area(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ area_description }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='area_description'>{{ area_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>LMA(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ lma_description }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='lma_description'>{{ lma_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ gmma_description }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='gmma_description'>{{ gmma_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>BAC(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ bac_description }}&nbsp;&nbsp;</span>
-                <br>
+    <span *ngIf='bac_description'>{{ bac_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>FAN(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ fan_desc }}&nbsp;&nbsp;</span>
-    <br><br>
+    <span *ngIf='fan_desc'>{{ fan_desc }}&nbsp;&nbsp;</span>
+    <br>
   </pre>
   <b style="font-size:120%">Frequency of Reports</b>
-  <pre class="div-wrap" *ngIf="!frequency_flag">
-    <span>{{ report_frequency }}&nbsp;&nbsp;</span> <br><br>
+  <pre class="div-wrap">
+    <span *ngIf='report_frequency'>{{ report_frequency }}&nbsp;&nbsp;</span> <br>
   </pre>
   <b style="font-size:120%">Special Identifiers</b>
   <pre class="div-wrap">
-    <p>{{ special_identifier }}</p>
+    <p *ngIf='special_identifier'>{{ special_identifier }}</p>
   </pre>
   <h5>
-    <b>Text Notification, when Requests are fulfilled?</b>
+    <b style="font-size:150%">Text Notification, when Requests are fulfilled?</b>
   </h5>
   <pre class="div-wrap">
     <p *ngIf='text_notification == ""'>No</p>
@@ -792,43 +754,36 @@
   <!--                                Order To Sale Start                                    -->
 
   <pre class="div-wrap" *ngIf="summary?.report_type == 'ots'">
-    <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
+    <b style="font-size:150%">Vehicle Event Status Data</b><br>
   <pre class="div-wrap">
     <b style="font-size:120%">Order Criteria</b><br>
     <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ allocation_group }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='allocation_group'>{{ allocation_group }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ model_year }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='model_year'>{{ model_year }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='vehicle_line_brand'>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
     </pre>
   <pre class="div-wrap">
     <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='merchandising_model'>{{ merchandising_model }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ order_event }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='order_event'>{{ order_event }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ order_type }}&nbsp;&nbsp;</span>
-    <br><br><br>
+    <span *ngIf='order_type'>{{ order_type }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
-    <b style="font-size:120%">Order Metrics</b><br><br>
+    <b style="font-size:120%">Order Metrics</b><br>
     <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
-    <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
-    <br><br>
+    <span *ngIf='checkbox_data'>{{ checkbox_data}} &nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Consensus Time and Date:</b> &nbsp;&nbsp;
@@ -837,41 +792,33 @@
       <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
     </span>
   </pre>
-  <pre class="div-wrap">
-    <b>Additional Requirements:</b> <br>
-    <span>{{summary?.additional_req}}</span>
-  </pre>
   </pre>
   <pre class="div-wrap">
-    <h5><b>Dealer Allocation Selections</b></h5><br>
+    <h5><b style="font-size:150%">Dealer Allocation Selections</b></h5><br>
     <pre class="div-wrap">
       <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
-      <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+      <span *ngIf='allocation_group'>{{ allocation_group }}&nbsp;&nbsp;</span>
     </pre>
   <pre class="div-wrap">
       <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-      <span>{{ model_year }}&nbsp;&nbsp;</span>
-      <br>
+      <span *ngIf='model_year'>{{ model_year }}&nbsp;&nbsp;</span>
     </pre>
-  <pre class="div-wrap"
-    *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
+  <pre class="div-wrap" *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
       <b>Consensus Time and Date:</b> &nbsp;&nbsp;
       <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
         <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
         <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&n  bsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
       </span>
     </pre>
-  <pre class="div-wrap"
-    *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
+  <pre class="div-wrap" *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
         <b>Consensus Data:</b> &nbsp;&nbsp;
         <span *ngFor="let element of summary?.da_data.concensus_data">
-          {{element?.cd_values}}&nbsp;&nbsp;
+          <span *ngIf='element && element.cd_values'>{{element?.cd_values}}</span>&nbsp;&nbsp;
         </span>
-      <br>
     </pre>
   <pre class="div-wrap">
-        <b>Additional Requirements:</b> <br>
-        <span>{{summary?.additional_req}}</span>
+        <b>Additional Requirements:</b>
+        <span *ngIf='summary && summary.additional_req'>{{summary?.additional_req}}</span>
     </pre>
   </pre>
   </pre>

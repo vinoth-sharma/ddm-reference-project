@@ -2,7 +2,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true" style="overflow: hidden;">
+  aria-hidden="true" style="overflow: hidden;" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -16,21 +16,21 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="document-name" class="col-form-label">Document Name<span _ngcontent-c1=""
-                class="mandatory-fields">*</span>:</label>
+            <label for="document-name" class="col-form-label">Document Name
+              <span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
             <span style="color: red;">Max limit 50 characters</span>
             <input type="text" class="form-control" maxlength="50" id="document-name" required>
           </div>
           <div class="form-group">
-            <label for="message-text" class="col-form-label">URL<span _ngcontent-c1=""
-                class="mandatory-fields">*</span>:</label>
+            <label for="message-text" class="col-form-label">URL
+              <span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
             <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
               id="document-url" required>
           </div>
           <div class="form-group" title="Please upload a file of CSV/WORD/EXCEL format!">
             <input type="checkbox" id="uploadCheckbox" (click)="upload(isChecked)" [checked]="isChecked">&nbsp;&nbsp;
-            <label for="upload-doc" class="col-form-label">Upload Document<span _ngcontent-c1=""
-                class="mandatory-fields">*</span>:</label>
+            <label for="upload-doc" class="col-form-label">Upload Document
+              <span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
             <input id="attach-file1" name="attach-file1" type="file" style="margin-left: 20px;display:inline;" disabled>
           </div>
         </form>
@@ -38,8 +38,8 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close_modal">Close</button>
         <ng-container>
-          <button type="button" class="btn btn-success" (click)="addDocument()">Save
-            changes</button>
+          <button type="button" class="btn btn-success" (click)="addDocument()">Save changes
+          </button>
         </ng-container>
       </div>
     </div>
@@ -48,16 +48,20 @@
 <div class="main-tool-body-header">
   <div class="heading">
     <div class="buffer"></div>
-    <div class="caption-style"><b>Reference Documents</b></div>
-    <div class="buffer"><i>Launch any of the documents below to assist with interpreting data included in DDM
-        queries.<br>
-        Selecting a document will download it to your local directory.</i></div>
+    <div class="caption-style">
+      <b>Reference Documents</b>
+    </div>
+    <div class="buffer">
+      <i>Launch any of the documents below to assist with interpreting data included in DDM queries.
+        <br> Selecting a document will download it to your local directory.</i>
+    </div>
   </div>
 
   <div class="icons">
     <div *ngIf="user_role=='Admin'" class="press">
-      <a data-toggle="tooltip" title="EDIT" style="cursor: pointer;" (click)="editTrue()"><i id="ic"
-          class="material-icons">mode_edit</i></a>
+      <a data-toggle="tooltip" title="EDIT" style="cursor: pointer;" (click)="editTrue()">
+        <i id="ic" class="material-icons">mode_edit</i>
+      </a>
     </div>
     <div class="press" style="margin-top:42%;">
       <button data-target="#helpModal" data-toggle="modal" data-backdrop="static" style="padding-right:0px;">
@@ -75,7 +79,8 @@
           data-backdrop="static" (click)="NewDoc()">
           Add a Reference Document
         </button>
-        <br><br>
+        <br>
+        <br>
       </div>
 
       <div class="ref-styling row" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
@@ -136,7 +141,9 @@
           </div>
           <div class="col-3" style="padding-left:12%;">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="editEnable()">
-              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+              <a data-toggle="tooltip" title="EDIT">
+                <i id="ic" class="material-icons">mode_edit</i>
+              </a>
             </button>
           </div>
         </div>

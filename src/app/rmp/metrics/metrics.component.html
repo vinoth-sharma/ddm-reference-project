@@ -16,7 +16,9 @@
                 style="background-color:white; border:none;padding-right:0px;">
                 <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
               </button>
-              <a (click)="xlsxJson()" style="cursor:pointer"><i id="ic" class="material-icons">get_app</i></a>
+              <a (click)="xlsxJson()" style="cursor:pointer">
+                <i id="ic" class="material-icons">get_app</i>
+              </a>
             </div>
           </div>
         </div>
@@ -115,12 +117,11 @@
                   </div>
                 </th>
                 <th style="width: 12%;">
-                  <div class="alignLeft" (click)="sort('status')">
+                  <div class="alignLeft">
                     <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
-                      [settings]="StatusDropdownSettings" (onSelect)="filterData()" (onDeSelect)="filterData()"
-                      style="width: 100%;">
+                      [settings]="StatusDropdownSettings" (onSelect)="sort('status');filterData()"
+                      (onDeSelect)="filterData()" style="width: 100%;">
                     </angular4-multiselect>
-
                   </div>
 
                 </th>
@@ -152,7 +153,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let element of tableData  | filterTable: searchObj | orderBy: param:orderType ">
+              <tr
+                *ngFor="let element of reports  | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ; let i = index ">
                 <td scope="col">
                   {{element.ddm_rmp_post_report_id}}
                 </td>
@@ -194,11 +196,10 @@
             </tbody>
           </table>
         </div>
-        <div class="row" style="width: 100%;">
-          <div class="col-sm-4"></div>
-          <div style="margin-top: 10px;">
-            <mat-paginator [length]="paginatorlength" [pageSize]="paginatorpageSize"
-              [pageSizeOptions]="paginatorOptions" (page)="onPaginationChange($event)">
+        <div style="width: 100%;">
+          <div style="margin-top: 10px;float: right;">
+            <mat-paginator [length]="reports.length" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
+              (page)="onPaginationChange($event)">
             </mat-paginator>
           </div>
         </div>
@@ -224,7 +225,9 @@
               <div class="col-3" style="padding-left:12%;">
                 <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)='editEnable()'
                   style="background-color:white;border: none;">
-                  <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+                  <a data-toggle="tooltip" title="EDIT">
+                    <i id="ic" class="material-icons">mode_edit</i>
+                  </a>
                 </button>
               </div>
             </div>

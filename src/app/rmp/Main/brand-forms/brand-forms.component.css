@@ -4,7 +4,7 @@
 }
 
 p {
-    width : 250px;
+    width : 16vw;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -85,6 +85,7 @@ tbody {
 .complete-table {
     padding-left: 16vw;
     width: 40vw;
+    min-width: 56vw;
 }
 
 .search-width {
@@ -93,4 +94,16 @@ tbody {
 
 .input-width {
     width: 8vw;
+}
+
+.report-name-non-edit {
+    min-width: 18vw;
+}
+
+.report-name-edit {
+    min-width: 18vw;
+}
+
+.max-length-display {
+/* do not delete */
 }

@@ -116,7 +116,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public selectedRequestId: any;
   public reportContainer: any;
   public searchObj: any;
-
   public reportTitle: any;
   public reportName: any;
   public reportRequestNumber: any;
@@ -157,7 +156,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     ]
   };
   // paginator params
-  public paginatorlength = 100;
   public paginatorpageSize = 10;
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
@@ -168,7 +166,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public frequencySelections = ['One Time', 'Recurring']
   public selectedNewFrequency: string = "";
   public isRecurringFrequencyHidden: boolean = false;
-
   public toolbarTooltips = {
     'font': 'Select a font',
     'size': 'Select a font size',
@@ -292,7 +289,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         ,
         () => {
         },
-      );
+    );
   }
 
   /**
@@ -436,7 +433,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           return b['favorites'] > a['favorites'] ? 1 : -1
         })
         this.reports = this.reportContainer;
-        this.paginatorlength = this.reports.length
         this.reportsOriginal = this.reportContainer.slice();
         Utils.hideSpinner();
       }

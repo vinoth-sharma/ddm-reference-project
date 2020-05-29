@@ -23,7 +23,7 @@ import { NgCustomSpinnerComponent } from 'src/app/custom-directives/ng-custom-sp
 import Utils from 'src/utils';
 declare var $: any;
 
-describe('ReportsComponent', () => {
+fdescribe('ReportsComponent', () => {
   let component: ReportsComponent;
   let fixture: ComponentFixture<ReportsComponent>;
   let reportData = {

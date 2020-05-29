@@ -13,7 +13,9 @@
     <div class="icons">
       <div class="press">
         <button *ngIf="user_role=='Admin'" (click)="notifyChildren()" id="main-edit">
-          <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+          <a data-toggle="tooltip" title="EDIT">
+            <i id="ic" class="material-icons">mode_edit</i>
+          </a>
         </button>
         <button data-target="#helpModal" data-toggle="modal" data-backdrop="static" id="main-help">
           <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
@@ -47,13 +49,15 @@
                 <div class="col-sm-7"></div>
                 <div class="col-sm-5">
                   <button *ngIf="enable_edit" [id]="'edit-list-'+i" class="btn btn-outline-primary" data-toggle="modal"
-                    data-backdrop="static" data-target="#mainMenuModal"
-                    (click)="content_edit(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
-                      class="material-icons">edit</i></button>
+                    data-target="#mainMenuModal"
+                    (click)="content_edit(main_menu_content[i].ddm_rmp_main_menu_description_text_id)">
+                    <i id="ic" class="material-icons">edit</i>
+                  </button>
                   <button *ngIf="enable_edit" [id]="'delete-list-'+i" class="btn btn-outline-primary"
-                    data-toggle="modal" data-target="#deleteModal" data-backdrop="static"
-                    (click)="content_delete(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
-                      class="material-icons">delete_forever</i></button>
+                    data-toggle="modal" data-target="#deleteModal"
+                    (click)="content_delete(main_menu_content[i].ddm_rmp_main_menu_description_text_id)">
+                    <i id="ic" class="material-icons">delete_forever</i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -123,7 +127,7 @@
 
     <!-- Modal -->
     <div class="modal fade " id="mainMenuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
+      aria-hidden="true" data-keyboard="false" data-backdrop="static">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -137,12 +141,16 @@
           <div class="modal-body">
             <form [formGroup]="contentForm">
               <div class="form-group">
-                <label>Question<span _ngcontent-c1="" class="mandatory-fields">*</span>:<br>(max. 500 letters)
+                <label>Question
+                  <span _ngcontent-c1="" class="mandatory-fields">*</span>:
+                  <br>(max. 500 letters)
                 </label>
                 <textarea class="form-control" formControlName="question" rows="4" required="true"
                   maxlength="500"></textarea>
                 <br>
-                <label>Answer<span _ngcontent-c1="" class="mandatory-fields">*</span>: <br>(max. 1000 letters)
+                <label>Answer
+                  <span _ngcontent-c1="" class="mandatory-fields">*</span>:
+                  <br>(max. 1000 letters)
                 </label>
                 <textarea class="form-control" formControlName="answer" rows="4" required="true"
                   maxlength="1000"></textarea>
@@ -152,8 +160,9 @@
                   [formGroupName]="pointIndex">
                   <div>
                     <label style="width: 40%;">
-                      Title<span _ngcontent-c1="" class="mandatory-fields">*</span>: <input class="form-control"
-                        formControlName="title" required="true" maxlength="35" />
+                      Title
+                      <span _ngcontent-c1="" class="mandatory-fields">*</span>:
+                      <input class="form-control" formControlName="title" required="true" maxlength="35" />
                     </label>
                     <label style="width: 40%;">
                       URL<span _ngcontent-c1="" class="mandatory-fields">*</span>:
@@ -163,8 +172,8 @@
                       <input class="form-control" formControlName="link" required="true" />
                     </label>
                     <button [id]="'form_delete_button_'+pointIndex" type="button"
-                      (click)="deleteLinkTitleURL(pointIndex)">Delete
-                      Link</button>
+                      (click)="deleteLinkTitleURL(pointIndex)">Delete Link
+                    </button>
                   </div>
                 </ng-container>
                 <button [disabled]="!contentForm.valid" id="modal_add_link" type="button"
@@ -228,7 +237,9 @@
           <div class="col-3">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
               style="padding-right:0px;">
-              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+              <a data-toggle="tooltip" title="EDIT">
+                <i id="ic" class="material-icons">mode_edit</i>
+              </a>
             </button>
           </div>
         </div>

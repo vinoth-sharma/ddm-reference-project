@@ -33,11 +33,6 @@
         <div class="quillEditorSubmit">
             <quill-editor class="quill" [(ngModel)]="submitReqDescObj.description" [modules]="config"
                 [readOnly]="showEditOption"></quill-editor>
-            <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre" *ngIf="!showEditOption">
-                <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;"
-                    (click)="saveSubmitReqDesc()">Save</button>
-                <button mat-raised-button [cssBtn]="'cancel'" (click)="showEditOption=true">Cancel</button>
-            </div>
         </div>
     </div>
     <div class="disclaimer-footer ds-flex-centre" style="height: 70px;">
@@ -46,5 +41,11 @@
             routerLinkActive="active">
             Proceed to select report criteria
         </button>
+        <div style="height: 60px;justify-content: flex-end;position: relative;left: 5%;" class="ds-flex-centre"
+            *ngIf="!showEditOption">
+            <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;"
+                (click)="saveSubmitReqDesc()">Save</button>
+            <button mat-raised-button [cssBtn]="'cancel'" (click)="showEditOption=true">Cancel</button>
+        </div>
     </div>
 </div>

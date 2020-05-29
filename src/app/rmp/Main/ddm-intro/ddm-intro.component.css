@@ -17,14 +17,14 @@
 .main-tool-body-content {
     height: 88%;
     width: 95%;
-    border: 1px solid rgb(175, 175, 175);
     margin-left: 2.5%;
-    overflow: auto;
     -webkit-print-color-adjust: exact
 }
 
+ /* changes done Ganesha */
 ::ng-deep .main-tool-body-content .information .quill .ql-container .ql-editor {
-        overflow: auto;
+        overflow-y: auto;
+        max-height: 395px;
 }
 
 .editButton {

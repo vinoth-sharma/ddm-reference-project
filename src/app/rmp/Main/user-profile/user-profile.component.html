@@ -3,7 +3,8 @@
     <div class="col-4">
       <i>
         <b>
-          {{ user_name }}<br>
+          {{ user_name }}
+          <br>
         </b>
         {{ user_designation }} <br>
         {{ user_department }} <br>
@@ -19,8 +20,10 @@
     <div class="col-5">
       <div class="text-notifications">
         <div class="row">
-          <strong>Text Notification(Available for U.S. only)</strong><br>
-          <i>when requests are fulfilled?</i><br>
+          <strong>Text Notification(Available for U.S. only)</strong>
+          <br>
+          <i>when requests are fulfilled?</i>
+          <br>
         </div>
         <div class="row">
           <input id="notification_yes" type="radio" name="notification" (click)="enableNotificationBox()">
@@ -30,8 +33,8 @@
         </div>
         <div class="row input-group">
           <p> Enter valid 10 digit phone number(For Ex: (555) 555-1234 should be 5555551234)</p>
-          <input type="text" id="phone" name="phone" title="Phone No." (keypress)='numberOnly($event)'
-            [value]="text_number" [maxLength]='10'>
+          <input type="text" id="phone" name="phone" [(ngModel)]='text_number' title="Phone No."
+            (keypress)='numberOnly($event)' [maxLength]='10'>
           <i class="material-icons" (click)="showPassword()">
             remove_red_eye
           </i>
@@ -69,14 +72,17 @@
     <div class="col-2">
       <div class="row" style="margin-top: 20px;margin-left: 120px;">
         <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save
-          Settings</button>
+          Settings
+        </button>
       </div>
     </div>
   </div>
 
   <div class="row market-sel">
     <div class="col-12" id="dropdownHolder">
-      <div>{{dropdownSettings["text"]}}<span _ngcontent-c1="" class="mandatory-fields">*</span></div>
+      <div>{{dropdownSettings["text"]}}
+        <span _ngcontent-c1="" class="mandatory-fields">*</span>
+      </div>
       <angular4-multiselect [data]="dropdownList" [(ngModel)]="selectedItems" [settings]="dropdownSettings"
         (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
         (onDeSelectAll)="onDeSelectAll($event)">
@@ -145,7 +151,9 @@
         [placeholder]="'Type & press Enter to add'" [secondaryPlaceholder]="'Type & press Enter to add'"
         theme='bootstrap'></tag-input>
       <br>
-      <b><i>*If more granular information is required, please mention it in Additional Requirements</i></b>
+      <b>
+        <i>*If more granular information is required, please mention it in Additional Requirements</i>
+      </b>
       <br>
       <br>
 
@@ -174,7 +182,9 @@
           </div>
           <div class="col-3" style="padding-left:12%;">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="editEnable()">
-              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+              <a data-toggle="tooltip" title="EDIT">
+                <i id="ic" class="material-icons">mode_edit</i>
+              </a>
             </button>
           </div>
         </div>
@@ -200,7 +210,8 @@
       <div class="modal-header">
         <h3>Alert!</h3>
       </div>
-      <div class="modal-body" id="errorModalMessage">
+      <div class="modal-body">
+        <h5>{{errorModalMessage}}</h5>
       </div>
       <div class="modal-footer">
         <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>

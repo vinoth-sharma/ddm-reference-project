@@ -162,16 +162,14 @@ export class BrandFormsComponent implements OnInit {
       if (this.reports[this.reportDataColumns['immutable']]) {
         delete this.reports[this.reportDataColumns['immutable']]
       }
-      this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
-      this.orderType = this.reports[typeVal];
     }
     else if (typeVal == this.reportDataColumns['immutable']) {
       if (this.reports[this.reportDataColumns['mutable']]) {
         delete this.reports[this.reportDataColumns['mutable']]
       }
-      this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
-      this.orderType = this.reports[typeVal];
     }
+    this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
+    this.orderType = this.reports[typeVal];
   }
 
 }

@@ -131,7 +131,9 @@ export class DealerAllocationComp implements OnInit {
     })
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res:any)=>{
+
       console.log(res);
+      if(res.type === "srw"){
       this.l_selectedReqData = res.data;
       this.refillDivisionMD(res.data.division_dropdown);
       this.fillReportDetails(res.data);
@@ -166,6 +168,7 @@ export class DealerAllocationComp implements OnInit {
         this.req_body.report_id = l_reportId;
         this.req_body.report_detail.status = l_status;
       }
+    }
     })
 
     this.submitService.updateLoadingStatus({status: true, comp : "da"})

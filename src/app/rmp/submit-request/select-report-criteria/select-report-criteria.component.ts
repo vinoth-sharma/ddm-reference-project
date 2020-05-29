@@ -145,6 +145,8 @@ export class SelectReportCriteriaComp implements OnInit {
         this.l_selectedReqData = request.data;
         this.refillSelectedRequestData(request.data);
       }
+      else if(request.type === "user_selection")
+        this.refillDefaultUserSelectedData(request.data);
     })
     this.submitService.updateLoadingStatus({ status: true, comp: "src" })
   }
@@ -399,6 +401,28 @@ export class SelectReportCriteriaComp implements OnInit {
       this.req_body.report_detail.status = reqData.report_data.status;      
       this.message = "";
     }
+  }
+
+  refillDefaultUserSelectedData(data){
+    console.log("refill");
+    console.log(data);
+    if(!data.has_previous_selections)
+      return true
+
+    this.selected.market = data.market_data;
+    this.multiSelectChange({}, "market");
+    this.selected.region = data.country_region_data;
+    this.multiSelectChange({}, "region");
+    this.selected.zone = data.region_zone_data;
+    this.multiSelectChange({}, "zone");
+    this.selected.area = data.zone_area_data;
+
+    this.selected.division = data.division_data;
+    this.selected.gmma = data.gmma_data;
+    this.selected.lma = data.lma_data;
+
+    this.selected.bac = data.bac_data[0].bac_desc;
+    this.selected.fan = data.fan_data[0].fan_data;
   }
 
   openRequestOnBehalf() {

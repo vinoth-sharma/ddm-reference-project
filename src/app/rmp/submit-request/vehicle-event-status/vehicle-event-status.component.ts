@@ -175,6 +175,8 @@ export class VehicleEventStatusComponent implements OnInit {
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
       console.log(res);
+      if(res.type === "srw"){
+
       this.l_selectedReqData = res.data;
 
       // this.division_settings.primary_key = "ddm_rmp_lookup_division"
@@ -212,7 +214,7 @@ export class VehicleEventStatusComponent implements OnInit {
       }
 
       console.log(this.req_body);
-
+    }
     })
 
     this.submitService.updateLoadingStatus({ status: true, comp: "ves" })

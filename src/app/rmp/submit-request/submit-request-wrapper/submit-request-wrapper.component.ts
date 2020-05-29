@@ -25,6 +25,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
 
   subjectSubscription: Subscription;
   refreshWrapper: boolean = true;
+  clearAll:boolean = false;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
@@ -59,7 +60,15 @@ export class SubmitRequestWrapperComponent implements OnInit {
           }, err => {
             Utils.hideSpinner();
           })
-
+        }
+        else if(!this.clearAll){
+          Utils.showSpinner();
+          this.submitReqService.getUserSelectedData().subscribe(res=>{
+            this.submitReqService.updateRequestStatus({type:"user_selection", data: res})
+            Utils.hideSpinner();
+          },err=>{
+            Utils.hideSpinner();
+          })
         }
       }
     })
@@ -68,6 +77,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
   refreshWrapperFunc(): void {
     Utils.showSpinner();
     this.refreshWrapper = false;
+    this.clearAll = true;
     setTimeout(() => {
       this.submitReqService.setSubmitOnBehalf("", "");
       localStorage.removeItem('report_id');

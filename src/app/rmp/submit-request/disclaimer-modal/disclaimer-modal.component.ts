@@ -31,20 +31,17 @@ export class DisclaimerModalComponent implements OnInit {
     ]
   };
 
-  l_lookupTableData:any = {};
-  public showEditOption:boolean = true;
-
+  l_lookupTableData: any = {};
+  public showEditOption: boolean = true;
   public submitReqDisclaimerObj = {
-    ddm_rmp_desc_text_id : 15,
-    module_name : "Disclaimer",
-    description : ""
+    ddm_rmp_desc_text_id: 15,
+    module_name: "Disclaimer",
+    description: ""
   }
-
-  disclaimerAckObj = {
-    disclaimer_ack : undefined
+  public disclaimerAckObj = {
+    disclaimer_ack: undefined
   }
-
-  user_role="";
+  public user_role = "";
 
   constructor(public dialogRef: MatDialogRef<DisclaimerModalComponent>,
     public subReqService: SubmitRequestService,
@@ -73,11 +70,11 @@ export class DisclaimerModalComponent implements OnInit {
     });
   }
 
-  acknowledgeDisclaimer(){
+  acknowledgeDisclaimer() {
     this.disclaimerAckObj.disclaimer_ack = new Date();
     Utils.showSpinner();
     this.django.user_info_disclaimer(this.disclaimerAckObj).subscribe(response => {
-    
+      this.dialogRef.close(new Date());
       Utils.hideSpinner()
       this.toaster.success("Acknowledged Disclaimers successfull");
     },err=>{
@@ -86,26 +83,25 @@ export class DisclaimerModalComponent implements OnInit {
     })
   }
 
-  confirmDisclaimerSubmit(){
+  confirmDisclaimerSubmit() {
     let obj = {
       confirmation: false,
       modalTitle: 'Confirmation for changes in Disclaimer',
       modalBody: 'Are you sure you want to change the disclaimer as it affects numerous users?',
       modalBtn: 'Yes'
     }
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent,{
-      data : obj
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: obj, disableClose: true
     })
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      if(result.confirmation)
+      if (result.confirmation)
         this.submitReqDisclaimerDesc();
     });
   }
 
-  submitReqDisclaimerDesc(){
+  submitReqDisclaimerDesc() {
     Utils.showSpinner();
-    this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDisclaimerObj).subscribe((response:any) => {
+    this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDisclaimerObj).subscribe((response: any) => {
       Utils.hideSpinner()
       this.toaster.success(response.message);
     }, err => {
@@ -114,7 +110,7 @@ export class DisclaimerModalComponent implements OnInit {
     })
   }
 
-  downloadDisclaimer(){
+  downloadDisclaimer() {
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
@@ -135,10 +131,6 @@ export class DisclaimerModalComponent implements OnInit {
     )
   }
 
-  textChanged(event){
-    // console.log(event);
-  }
-  
   closeDailog(): void {
     this.dialogRef.close();
   }

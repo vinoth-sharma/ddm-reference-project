@@ -28,17 +28,15 @@ export class DisclaimerHelpModalComponent implements OnInit {
     ]
   };
 
-  l_lookupTableData:any = {};
-  public showEditOption:boolean = true;
-
+  public l_lookupTableData: any = {};
+  public showEditOption: boolean = true;
   public submitReqHelpDescObj = {
-    ddm_rmp_desc_text_id : 14,
-    module_name : "Help_SubmitRequest",
-    description : ""
+    ddm_rmp_desc_text_id: 14,
+    module_name: "Help_SubmitRequest",
+    description: ""
   }
+  public user_role = "";
 
-  user_role = "";
-  
   constructor(public dialogRef: MatDialogRef<DisclaimerHelpModalComponent>,
     public subReqService: SubmitRequestService,
     private toaster: NgToasterComponent,
@@ -65,7 +63,7 @@ export class DisclaimerHelpModalComponent implements OnInit {
     });
   }
 
-  submitReqHelpDesc(){
+  submitReqHelpDesc() {
     Utils.showSpinner();
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqHelpDescObj).subscribe((response:any) => {
       Utils.hideSpinner();
@@ -74,10 +72,6 @@ export class DisclaimerHelpModalComponent implements OnInit {
       Utils.hideSpinner()
       this.toaster.error("Server Error");
     })
-  }
-
-  textChanged(event){
-    // console.log(event);
   }
 
   closeDailog(): void {

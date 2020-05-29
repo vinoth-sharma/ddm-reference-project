@@ -115,7 +115,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public confirmationValue: any;
   public selectedRequestId: any;
   public reportContainer: any;
-
+  public searchObj: any;
   public reportTitle: any;
   public reportName: any;
   public reportRequestNumber: any;
@@ -156,7 +156,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     ]
   };
   // paginator params
-  public paginatorlength = 100;
   public paginatorpageSize = 10;
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
@@ -164,10 +163,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public linkUrlId: number;
   public addUrlTitle: String = '';
   public linkToUrlFlag = true;
-  public frequencySelections = ['One Time', 'Recurring', 'On Demand', 'On Demand Configurable']
+  public frequencySelections = ['One Time', 'Recurring']
   public selectedNewFrequency: string = "";
   public isRecurringFrequencyHidden: boolean = false;
-
   public toolbarTooltips = {
     'font': 'Select a font',
     'size': 'Select a font size',
@@ -221,6 +219,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.editModes = false;
 
   }
+
   // execute after html initialized
   public ngAfterViewInit() {
     this.showTooltips();
@@ -259,7 +258,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           el.setAttribute('title', this.toolbarTooltips[tool]);
       }
     };
-
     let toolbarElement = document.querySelector('.ql-toolbar');
     if (toolbarElement) {
       let matchesButtons = toolbarElement.querySelectorAll('button');
@@ -278,29 +276,33 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    * @param event event catched on change of the input value
    * @param reportObject the current report object being edited
    */
-  changeReportName(event: any, reportObject) {
-
+  public changeReportName(event: any, reportObject) {
     const changedReport = {};
-    changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
-    changedReport['report_name'] = reportObject.report_name;
-    this.django.update_rmpReports_DDMName(changedReport)
-      .subscribe(
-        resp => {
-          reportObject.clicked = false;
-          reportObject.report_name = changedReport['report_name'];
-        }
-        ,
-        () => {
-        },
-    );
+
+    if (!reportObject.report_name.length) {
+      reportObject.report_name = reportObject.report_name_old;
+      this.toasterService.error('Cannot save empty name');
+      reportObject.clicked = false;
+    } else {
+      changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
+      changedReport['report_name'] = reportObject.report_name;
+      this.django.update_rmpReports_DDMName(changedReport)
+        .subscribe(
+          resp => {
+            reportObject.clicked = false;
+            reportObject.report_name = changedReport['report_name'];
+            this.toasterService.success('Successfuly Changed');
+          }
+
+      );
+    }
   }
 
   /**
    * @function to toggle the input field on DDM Name 
    * @param element the report element which is being clicked
    */
-  toggleShowInput(element) {
-
+  public toggleShowInput(element) {
     this.reports.forEach(ele => {
       if (ele.report_name != element.report_name) {
         ele.clicked = false;
@@ -311,7 +313,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // read user role from an observable
-  readUserRole() {
+  public readUserRole() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role['role'];
@@ -320,7 +322,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   //  get lookup table data from the server
-  getLookUptableData() {
+  public getLookUptableData() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
         this.content = element;
@@ -329,7 +331,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         const temps = refs.find(function (element) {
           return element['ddm_rmp_desc_text_id'] == 23;
         });
-
         if (temps) {
           this.original_contents = temps.description;
         }
@@ -340,11 +341,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // get valuse from obj
-  getValues(obj: Object) {
+  public getValues(obj: Object) {
     return Object.values(obj);
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.getSemanticLayerID()
     Utils.showSpinner();
     this.getScheduledReports()
@@ -355,7 +356,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // set semanticlayer id
-  getSemanticLayerID() {
+  public getSemanticLayerID() {
     this.changeInFreq = true;
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
@@ -378,7 +379,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // get reports list from server
-  getReportList() {
+  public getReportList() {
     this.django.get_report_list().subscribe(list => {
       if (list) {
         this.reportContainer = list['data'];
@@ -425,16 +426,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             this.reportContainer[i]['changeFreqReq'] = false;
           }
         }
-
-
         this.reportContainer.forEach(ele => {
           if (ele['frequency_data_filtered']) {
             ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");
           }
+          ele['report_name_old'] = ele['report_name'];
           ele['clicked'] = false;
-
         })
-
         this.reportContainer.sort((a, b) => {
           if (b['favorites'] == a['favorites']) {
             return a['report_name'] > b['report_name'] ? 1 : -1
@@ -442,7 +440,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           return b['favorites'] > a['favorites'] ? 1 : -1
         })
         this.reports = this.reportContainer;
-        this.paginatorlength = this.reports.length
         this.reportsOriginal = this.reportContainer.slice();
         Utils.hideSpinner();
       }
@@ -452,12 +449,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // to mark a report as favourites
-  checked(id, event) {
+  public checked(id, event) {
     this.spinner.show()
     this.favourite = event.target.checked;
     var finalObj = { 'report_id': id, 'favorite': this.favourite }
     this.django.ddm_rmp_favourite(finalObj).subscribe(response => {
-
       if (response['message'] == "success") {
         this.spinner.hide()
       }
@@ -467,32 +463,39 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // used to set typeval property of reports
-  sort(typeVal) {
+  public sort(typeVal) {
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
   }
 
+  // formating date 
+  public dateFormat(str: any) {
+    const date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("");
+  }
+
   // generates excel report
-  xlsxJson() {
+  public xlsxJson() {
+    let fileName = "Reports_" + this.dateFormat(new Date());  // changes done by Ganesh
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
       const headings = ["Request No", "Date", "Title", "DDM Name", "Frequency", "Frequency Details", "Other"]
       const reportBody = this.createNewBodyForExcel()
-
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
-
       const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
 
       workbook.outputAsync().then(function (blob) {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           window.navigator.msSaveOrOpenBlob(blob,
-            "Reports" + new Date().getTime() + EXCEL_EXTENSION
+            fileName + EXCEL_EXTENSION
           );
         }
         else {
@@ -500,7 +503,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           var a = document.createElement("a");
           document.body.appendChild(a);
           a.href = url;
-          a.download = "Reports" + new Date().getTime() + EXCEL_EXTENSION;
+          a.download = fileName + EXCEL_EXTENSION;
           a.click();
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a)
@@ -511,7 +514,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // creating a body to generate excel report
-  createNewBodyForExcel() {
+  public createNewBodyForExcel() {
     let reportBody = []
     this.reports.forEach(item => {
       let obj = {
@@ -529,7 +532,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // used ti toggle reverse property
-  setOrder(value: any) {
+  public setOrder(value: any) {
     if (this.order === value) {
       this.reverse = !this.reverse;
     }
@@ -537,14 +540,14 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // used to set a few properties when content get changed in quill editor
-  textChanged(event) {
+  public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   // save changes made to help
-  content_edits() {
+  public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       this.spinner.show()
       this.editModes = false;
@@ -552,7 +555,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.description_texts["description"] = this.namings;
       $('#edit_button').show()
       this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
-
         let temp_desc_text = this.content['data']['desc_text']
         temp_desc_text.map((element, index) => {
           if (element['ddm_rmp_desc_text_id'] == 23) {
@@ -577,96 +579,18 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // used to set a few properties of component
-  edit_True() {
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
 
   // used to set a few properties of component
-
-  editEnable() {
+  public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_contents;
   }
-
-  // used to update schedule report data
-  public startOnDemandScheduling(data) {
-    let dateDetails = new Date();
-    let todaysDate = (dateDetails.getMonth() + 1) + '/' + (dateDetails.getDate()) + '/' + (dateDetails.getFullYear())
-
-    let hours = dateDetails.getHours();
-    let minutes = (dateDetails.getMinutes() + 10);
-    let scheduleTime = hours + ':' + minutes
-    if (hours >= 24) {
-      hours = hours % 24;
-      if (minutes >= 50) {
-        minutes = minutes % 50;
-      }
-    }
-    if (minutes >= 50) {
-      minutes = minutes % 50;
-      hours = hours + 1;
-      if (hours >= 24) {
-        hours = hours % 24;
-        if (minutes >= 50) {
-          minutes = minutes % 50;
-        }
-      }
-    }
-    scheduleTime = hours + ':' + minutes
-
-    this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
-    //obtaining the report id of the od report from RMP reports
-    this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i => i.ddm_rmp_post_report_id)
-
-    // SCHEDULE REPORT ID WAY from DDM report
-    let scheduleReportId;
-    if (data.scheduleId) {
-      scheduleReportId = data.scheduleId;
-    }
-    else if (data.scheduleId.length >= 1) {
-      scheduleReportId = data.scheduleId[0];
-    }
-
-    if (data.scheduleId.length === 0 || scheduleReportId === undefined || scheduleReportId === []) {
-      this.toasterService.error('Scheduling error!');
-      this.toasterService.error('Please ask the admin to configure scheduling parameters!');
-      Utils.hideSpinner();
-      return;
-    }
-
-    this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res => {
-      if (res) {
-        let originalScheduleData = res['data']
-
-        this.onDemandScheduleData = originalScheduleData;
-        this.onDemandScheduleData.schedule_for_date = todaysDate,
-          this.onDemandScheduleData.schedule_for_time = scheduleTime,
-          this.onDemandScheduleData.request_id = this.selectedRequestId[0];
-        this.onDemandScheduleData.created_by = this.userId;
-        this.onDemandScheduleData.modified_by = this.userId;
-
-        if (data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable')) {
-          Utils.showSpinner();
-          this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
-            if (res) {
-              this.toasterService.success("Your " + data['type'] + " schedule process triggered successfully");
-              this.toasterService.success('Your report will be delivered shortly');
-              Utils.hideSpinner();
-              Utils.closeModals();
-            }
-          }, error => {
-            Utils.hideSpinner();
-            this.toasterService.error('Report schedule failed');
-          });
-        }
-      }
-    });
-  }
-
-
 
   /*-------------------Freq Selections------------------------------------- */
   FrequencySelection() {
@@ -723,7 +647,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     })
     this.obj_keys_on_demand = Object.keys(this.Select_on_demand)
     this.freq_val_on_demand = Object.values(this.Select_on_demand);
-
   }
 
   // when the user changes the frequency dropdown values
@@ -739,10 +662,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // setting final json value based on the selection made in check boxes
-  setFrequency() {
+  public setFrequency() {
     var temp = this.jsonfinal;
     temp.select_frequency = [];
-
     if (this.jsonfinal['frequency'] != 'One Time') {
       $.each($("input[class='sub']:checked"), function () {
         var id = $(this).val();
@@ -753,10 +675,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         } else {
           this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": "" };
         }
-
         temp.select_frequency.push(this.identifierData);
       });
-
       this.jsonfinal = temp;
     }
     else {
@@ -772,7 +692,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // update frequency to the server
-  updateFreq(request_id) {
+  public updateFreq(request_id) {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
     this.jsonfinal['status'] = "Recurring"
@@ -803,9 +723,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.changeInFreq = true;
   }
 
-
   /*---------------------------Change Frequency----------------------*/
-
   public changeFreq(requestId, title, date, frequency) {
     this.spinner.show()
     this.changeFrequency = frequency
@@ -857,13 +775,12 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // open change-frequency modal
-  showChangeFrequencyModal() {
-    $('#change-Frequency').modal('show');
+  public showChangeFrequencyModal() {
+    $('#change-Frequency').modal({backdrop:"static",keyboard:true,show:true});
   }
 
   //-------------------------frequency update--------------------------------------------
-
-  frequencySelected(val, event) {
+  public frequencySelected(val, event) {
     if (event.target.checked) {
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
       this.jsonfinal.select_frequency.push(this.frequencyData);
@@ -878,7 +795,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
     this.setFrequency();
 
-
     if (this.jsonfinal['select_frequency'].length > 0) {
       this.jsonfinal['select_frequency'].forEach((obj) => {
         var existNotification = this.frequencyLength.find(({ ddm_rmp_lookup_select_frequency_id }) => obj.ddm_rmp_lookup_select_frequency_id === ddm_rmp_lookup_select_frequency_id);
@@ -890,14 +806,12 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         }
       });
     }
-
   }
 
   // freuency selected through checkbox
-  frequencySelectedDropdown(val, event) {
+  public frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
-
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
       this.jsonfinal.select_frequency.push(this.frequencyData);
     }
@@ -913,39 +827,34 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  searchObj;
-
   // parsing filters into obj
-  filterData() {
+  public filterData() {
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
-
   /*--------------Query Criteria repeated--------------*/
-  query_criteria_report(query_report_id) {
+  public query_criteria_report(query_report_id) {
     this.spinner.show();
     this.summary = [];
     this.django.get_report_description(query_report_id).subscribe(response => {
-      this.summary = response;
       this.spinner.hide();
-
       let tempArray = []
-      if (this.summary["market_data"].length != 0) {
-        if (this.summary["market_data"] == []) {
+      if (response["market_data"].length != 0) {
+        if (response["market_data"] == []) {
           this.market_description = []
         } else {
-          this.summary["market_data"].map(element => {
+          response["market_data"].map(element => {
             tempArray.push(element.market)
           })
         }
         this.market_description = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["country_region_data"].length != 0) {
-        if (this.summary["country_region_data"] == []) {
+      if (response["country_region_data"].length != 0) {
+        if (response["country_region_data"] == []) {
           this.region_description = []
         } else {
-          this.summary["country_region_data"].map(element => {
+          response["country_region_data"].map(element => {
             tempArray.push(element.region_desc)
           })
         }
@@ -953,55 +862,55 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       }
 
       tempArray = []
-      if (this.summary["region_zone_data"].length != 0) {
-        if (this.summary["region_zone_data"] == []) {
+      if (response["region_zone_data"].length != 0) {
+        if (response["region_zone_data"] == []) {
           this.zone_description = []
         } else {
-          this.summary["region_zone_data"].map(element => {
+          response["region_zone_data"].map(element => {
             tempArray.push(element.zone_desc)
           })
         }
         this.zone_description = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["zone_area_data"].length != 0) {
-        if (this.summary["zone_area_data"] == []) {
+      if (response["zone_area_data"].length != 0) {
+        if (response["zone_area_data"] == []) {
           this.area_description = []
         } else {
-          this.summary["zone_area_data"].map(element => {
+          response["zone_area_data"].map(element => {
             tempArray.push(element.area_desc)
           })
         }
         this.area_description = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["lma_data"].length != 0) {
-        if (this.summary["lma_data"] == []) {
+      if (response["lma_data"].length != 0) {
+        if (response["lma_data"] == []) {
           this.lma_description = []
         } else {
-          this.summary["lma_data"].map(element => {
+          response["lma_data"].map(element => {
             tempArray.push(element.lmg_desc)
           })
         }
         this.lma_description = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["gmma_data"].length != 0) {
-        if (this.summary["gmma_data"] == []) {
+      if (response["gmma_data"].length != 0) {
+        if (response["gmma_data"] == []) {
           this.gmma_description = []
         } else {
-          this.summary["gmma_data"].map(element => {
+          response["gmma_data"].map(element => {
             tempArray.push(element.gmma_desc)
           })
         }
         this.gmma_description = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["frequency_data"].length != 0) {
-        if (this.summary["frequency_data"] == []) {
+      if (response["frequency_data"].length != 0) {
+        if (response["frequency_data"] == []) {
           this.report_frequency = []
         } else {
-          this.summary["frequency_data"].map(element => {
+          response["frequency_data"].map(element => {
             if (element.description != '') {
               tempArray.push(element.select_frequency_values + "-" + element.description)
             }
@@ -1013,101 +922,101 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.report_frequency = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["division_dropdown"].length != 0) {
-        if (this.summary["division_dropdown"] == []) {
+      if (response["division_dropdown"].length != 0) {
+        if (response["division_dropdown"] == []) {
           this.division_dropdown = []
         } else {
-          this.summary["division_dropdown"].map(element => {
+          response["division_dropdown"].map(element => {
             tempArray.push(element.division_desc)
           })
         }
         this.division_dropdown = tempArray.join(", ");
       }
       tempArray = []
-      if (this.summary["special_identifier_data"].length != 0) {
-        if (this.summary["special_identifier_data"] == []) {
+      if (response["special_identifier_data"].length != 0) {
+        if (response["special_identifier_data"] == []) {
           this.special_identifier = []
         } else {
-          this.summary["special_identifier_data"].map(element => {
+          response["special_identifier_data"].map(element => {
             tempArray.push(element.spl_desc)
           })
         }
         this.special_identifier = tempArray.join(", ");
       }
-      if (this.summary["ost_data"] != undefined) {
+      if (response["ost_data"] != undefined) {
 
         tempArray = []
-        if (this.summary["ost_data"]["allocation_group"].length != 0) {
-          if (this.summary["ost_data"]["allocation_group"] == []) {
+        if (response["ost_data"]["allocation_group"].length != 0) {
+          if (response["ost_data"]["allocation_group"] == []) {
             this.allocation_group = []
           } else {
-            this.summary["ost_data"]["allocation_group"].map(element => {
+            response["ost_data"]["allocation_group"].map(element => {
               tempArray.push(element.allocation_group)
             })
           }
           this.allocation_group = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["model_year"].length != 0) {
-          if (this.summary["ost_data"]["model_year"] == []) {
+        if (response["ost_data"]["model_year"].length != 0) {
+          if (response["ost_data"]["model_year"] == []) {
             this.model_year = []
           } else {
-            this.summary["ost_data"]["model_year"].map(element => {
+            response["ost_data"]["model_year"].map(element => {
               tempArray.push(element.model_year)
             })
           }
           this.model_year = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["vehicle_line"].length != 0) {
-          if (this.summary["ost_data"]["vehicle_line"] == []) {
+        if (response["ost_data"]["vehicle_line"].length != 0) {
+          if (response["ost_data"]["vehicle_line"] == []) {
             this.vehicle_line_brand = []
           } else {
-            this.summary["ost_data"]["vehicle_line"].map(element => {
+            response["ost_data"]["vehicle_line"].map(element => {
               tempArray.push(element.vehicle_line_brand)
             })
           }
           this.vehicle_line_brand = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["merchandizing_model"].length != 0) {
-          if (this.summary["ost_data"]["merchandizing_model"] == []) {
+        if (response["ost_data"]["merchandizing_model"].length != 0) {
+          if (response["ost_data"]["merchandizing_model"] == []) {
             this.merchandising_model = []
           } else {
-            this.summary["ost_data"]["merchandizing_model"].map(element => {
+            response["ost_data"]["merchandizing_model"].map(element => {
               tempArray.push(element.merchandising_model)
             })
           }
           this.merchandising_model = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["order_event"].length != 0) {
-          if (this.summary["ost_data"]["order_event"] == []) {
+        if (response["ost_data"]["order_event"].length != 0) {
+          if (response["ost_data"]["order_event"] == []) {
             this.order_event = []
           } else {
-            this.summary["ost_data"]["order_event"].map(element => {
+            response["ost_data"]["order_event"].map(element => {
               tempArray.push(element.order_event)
             })
           }
           this.order_event = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["order_type"].length != 0) {
-          if (this.summary["ost_data"]["order_type"] == []) {
+        if (response["ost_data"]["order_type"].length != 0) {
+          if (response["ost_data"]["order_type"] == []) {
             this.order_type = []
           } else {
-            this.summary["ost_data"]["order_type"].map(element => {
+            response["ost_data"]["order_type"].map(element => {
               tempArray.push(element.order_type)
             })
           }
           this.order_type = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["ost_data"]["checkbox_data"].length != 0) {
-          if (this.summary["ost_data"]["checkbox_data"] == []) {
+        if (response["ost_data"]["checkbox_data"].length != 0) {
+          if (response["ost_data"]["checkbox_data"] == []) {
             this.checkbox_data = []
           } else {
-            this.summary["ost_data"]["checkbox_data"].map(element => {
+            response["ost_data"]["checkbox_data"].map(element => {
               if (element.description_text != '') {
                 tempArray.push(element.checkbox_description + "-" + element.description_text)
               }
@@ -1121,65 +1030,65 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       }
 
       // //-----DA-----//
-      if (this.summary["da_data"] != undefined) {
+      if (response["da_data"] != undefined) {
         tempArray = []
-        if (this.summary["da_data"]["allocation_grp"].length != 0) {
-          if (this.summary["da_data"]["allocation_grp"] == []) {
+        if (response["da_data"]["allocation_grp"].length != 0) {
+          if (response["da_data"]["allocation_grp"] == []) {
             this.allocation_group = []
           } else {
-            this.summary["da_data"]["allocation_grp"].map(element => {
+            response["da_data"]["allocation_grp"].map(element => {
               tempArray.push(element.allocation_group)
             })
           }
           this.allocation_group = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["da_data"]["model_year"].length != 0) {
-          if (this.summary["da_data"]["model_year"] == []) {
+        if (response["da_data"]["model_year"].length != 0) {
+          if (response["da_data"]["model_year"] == []) {
             this.model_year = []
           } else {
-            this.summary["da_data"]["model_year"].map(element => {
+            response["da_data"]["model_year"].map(element => {
               tempArray.push(element.model_year)
             })
           }
           this.model_year = tempArray.join(", ");
         }
         tempArray = []
-        if (this.summary["da_data"]["concensus_data"].length != 0) {
-          if (this.summary["da_data"]["concensus_data"] == []) {
+        if (response["da_data"]["concensus_data"].length != 0) {
+          if (response["da_data"]["concensus_data"] == []) {
             this.concensus_data = []
           } else {
-            this.summary["da_data"]["concensus_data"].map(element => {
+            response["da_data"]["concensus_data"].map(element => {
               tempArray.push(element.cd_values)
             })
           }
           this.concensus_data = tempArray.join(", ");
         }
-
       }
 
-      if (this.summary["bac_data"].length != 0) {
-        if (this.summary["bac_data"][0]["bac_desc"] == null) {
+      if (response["bac_data"].length != 0) {
+        if (response["bac_data"][0]["bac_desc"] == null) {
           this.bac_description = []
         } else {
-          this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
+          this.bac_description = (response["bac_data"][0].bac_desc).join(", ");
         }
       }
       else {
         this.bac_description = []
       }
 
-      if (this.summary["fan_data"].length != 0) {
-        if (this.summary["fan_data"][0]["fan_data"] == null) {
+      if (response["fan_data"].length != 0) {
+        if (response["fan_data"][0]["fan_data"] == null) {
           this.fan_desc = []
         } else {
-          this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
+          this.fan_desc = response["fan_data"][0].fan_data.join(", ");
         }
       }
       else {
         this.fan_desc = []
       }
-      this.text_notification = this.summary["user_data"][0]['alternate_number'];
+      this.text_notification = response["user_data"][0]['alternate_number'];
+      this.summary = response;
 
     }, err => {
       this.spinner.hide()
@@ -1211,13 +1120,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
 
   // filter data based on pagination data
-  onPaginationChange(event) {
+  public onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   }
 
   // setting report id to edit link to url and also change the title of modal to edit or create respectively
-  addLinkUrl(element, type) {
+  public addLinkUrl(element, type) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     if (type == "create") {
       this.addUrlTitle = "ADD URL"
@@ -1230,23 +1139,23 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // save link to url
-  saveLinkURL() {
+  public saveLinkURL() {
     let link = document.querySelector("#add-url-input")["value"]
     let data = { request_id: this.linkUrlId, link_to_results: link }
     Utils.showSpinner();
-    this.django.add_link_to_url(data).subscribe(response =>{
-     if(response['message'] == "updated successfully"){
-      document.querySelector("#add-url-input")["value"] = "";
-      $('#close_url_modal').click()
-      this.toasterService.success("URL Updated Successfully !")
-      Utils.hideSpinner()
-      this.reports.map(item =>{
-        if(item.ddm_rmp_post_report_id == this.linkUrlId){
-          item.link_to_results = link
-        }
-      })
-     }
-    },error =>{
+    this.django.add_link_to_url(data).subscribe(response => {
+      if (response['message'] == "updated successfully") {
+        document.querySelector("#add-url-input")["value"] = "";
+        $('#close_url_modal').click()
+        this.toasterService.success("URL Updated Successfully !")
+        Utils.hideSpinner()
+        this.reports.map(item => {
+          if (item.ddm_rmp_post_report_id == this.linkUrlId) {
+            item.link_to_results = link
+          }
+        })
+      }
+    }, error => {
       this.toasterService.error(error.error.error.link_to_results.join())
       Utils.hideSpinner()
     })
@@ -1254,17 +1163,17 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // open links in an new window
-  openNewWindow(url) {
+  public openNewWindow(url) {
     window.open(url)
   }
 
   // close modal
-  closeTBD_Assigned(){
+  public closeTBD_Assigned() {
     $('#close_url_modal').click();
   }
 
   // used to validate weather input is empty or not
-  validateLinkToUrl(data) {
+  public validateLinkToUrl(data) {
     if (data == "") this.linkToUrlFlag = true
     else this.linkToUrlFlag = false;
   }

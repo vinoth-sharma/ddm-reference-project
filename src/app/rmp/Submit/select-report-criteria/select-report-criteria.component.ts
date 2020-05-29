@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service'
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common'
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import Utils from '../../../../utils';
@@ -20,40 +20,40 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./select-report-criteria.component.css']
 })
 export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
-  showReportId: String;
-  update: boolean;
-  onDemandSchedulingValue = null;
-  textChange = false;
+  public showReportId: String;
+  public update: boolean;
+  public onDemandSchedulingValue = null;
+  public textChange = false;
 
   public model: string;
   private userList: Array<string> = []
 
-  market_selection: object;
-  dealer_allocation_selection: object;
-  market: Array<object>
-  division: Array<object>
-  region: Array<object>
-  zone: Array<object>
-  area: Array<object>
-  gmma: Array<object>
-  lma: Array<object>
-  bac: Array<object>
-  generated_report_id: number;
-  generated_report_status: string;
+  public market_selection: object;
+  public dealer_allocation_selection: object;
+  public market: Array<object>
+  public division: Array<object>
+  public region: Array<object>
+  public zone: Array<object>
+  public area: Array<object>
+  public gmma: Array<object>
+  public lma: Array<object>
+  public bac: Array<object>
+  public generated_report_id: number;
+  public generated_report_status: string;
 
-  report_status: string;
-  report_create: string;
-  assigned_to: string;
-  report_user: string;
-  report_on_behalf: string;
-  report_title: string;
-  report_req: string;
-  report_type: string;
+  public report_status: string;
+  public report_create: string;
+  public assigned_to: string;
+  public report_user: string;
+  public report_on_behalf: string;
+  public report_title: string;
+  public report_req: string;
+  public report_type: string;
 
-  select_report_selection: object;
-  frequencyData: {};
-  identifierData: {};
-  jsonfinal = {
+  public select_report_selection: object;
+  public frequencyData: {};
+  public identifierData: {};
+  public jsonfinal = {
     'frequency': "One Time",
     'select_frequency': [],
     'special_identifiers': [],
@@ -67,111 +67,110 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
   }
 
 
-  dropdownList_report = [];
-  selectedItems_report = [];
-  dropdownSettings_report = {};
+  public dropdownList_report = [];
+  public selectedItems_report = [];
+  public dropdownSettings_report = {};
 
-  regiondropdownList_report = [];
-  regionselectedItems_report = [];
-  regiondropdownSettings_report = {};
-  marketindex = []
-  regiondropdownListfinal_report = []
+  public regiondropdownList_report = [];
+  public regionselectedItems_report = [];
+  public regiondropdownSettings_report = {};
+  public marketindex = []
+  public regiondropdownListfinal_report = []
 
-  zonedropdownList_report = [];
-  zoneselectedItems_report = [];
-  zonedropdownSettings_report = {};
-  regionindex = []
-  zonedropdownListfinal_report = []
+  public zonedropdownList_report = [];
+  public zoneselectedItems_report = [];
+  public zonedropdownSettings_report = {};
+  public regionindex = []
+  public zonedropdownListfinal_report = []
 
-  areadropdownList_report = [];
-  areaselectedItems_report = [];
-  areadropdownSettings_report = {};
-  zoneindex = []
-  areadropdownListfinal_report = []
+  public areadropdownList_report = [];
+  public areaselectedItems_report = [];
+  public areadropdownSettings_report = {};
+  public zoneindex = []
+  public areadropdownListfinal_report = []
 
-  gmmadropdownList_report = [];
-  gmmaselectedItems_report = [];
-  gmmadropdownSettings_report = {};
-  gmmadropdownListfinal_report = []
+  public gmmadropdownList_report = [];
+  public gmmaselectedItems_report = [];
+  public gmmadropdownSettings_report = {};
+  public gmmadropdownListfinal_report = []
 
-  lmadropdownList_report = [];
-  lmaselectedItems_report = [];
-  lmadropdownSettings_report = {};
-  lmadropdownListfinal_report = []
+  public lmadropdownList_report = [];
+  public lmaselectedItems_report = [];
+  public lmadropdownSettings_report = {};
+  public lmadropdownListfinal_report = []
 
-  bacselectedItems_report = [];
-  fanselectedItems_report = [];
+  public bacselectedItems_report = [];
+  public fanselectedItems_report = [];
 
-  divisiondropdownList_report = [];
-  divisionselectedItems_report = [];
-  divisiondropdownSettings_report = {};
-  divisiondropdownListfinal_report = []
+  public divisiondropdownList_report = [];
+  public divisionselectedItems_report = [];
+  public divisiondropdownSettings_report = {};
+  public divisiondropdownListfinal_report = []
 
-  special_identifier: any;
-  frequency: any;
-  contacts: Array<string>;
-  checkedList = [];
+  public special_identifier: any;
+  public frequency: any;
+  public contacts: Array<string>;
+  public checkedList = [];
 
-  checked = false;
-  disabled = false;
-  market_data: any;
-  select_frequency: any;
-  Select_ots = {};
-  Select_da = {};
-  Select_on_demand = {};
-  Sel = {};
+  public checked = false;
+  public disabled = false;
+  public market_data: any;
+  public select_frequency: any;
+  public Select_ots = {};
+  public Select_da = {};
+  public Select_on_demand = {};
+  public Sel = {};
 
-  obj_keys: Array<string>
-  obj_keys_da: Array<string>
-  obj_keys_on_demand: Array<string>;
-  freq_val: {}[];
-  freq_val_da: {}[];
-  freq_val_on_demand: {}[];
-  date: string;
+  public obj_keys: Array<string>
+  public obj_keys_da: Array<string>
+  public obj_keys_on_demand: Array<string>;
+  public freq_val: {}[];
+  public freq_val_da: {}[];
+  public freq_val_on_demand: {}[];
+  public date: string;
 
-  lookup;
-  lookup_data;
-  behalf_email;
-  userMarketSelections;
-  reportId = 0;
-  message: string;
-  proceed_instruction: string;
-  report_id: any;
-  jsonUpdate = {
+  public lookup;
+  public lookup_data;
+  public behalf_email;
+  public userMarketSelections;
+  public reportId = 0;
+  public message: string;
+  public proceed_instruction: string;
+  public report_id: any;
+  public jsonUpdate = {
     'frequency': "One Time",
     'select_frequency': [],
     'special_identifiers': [],
     'fan_selection': []
   };
-  dl_flag = false;
+  public dl_flag = false;
 
 
-  contents;
-  enable_edits = false
-  editModes = false;
-  original_contents;
-  namings: any;
-  enableUpdateData = false;
+  public contents;
+  public enable_edits = false
+  public editModes = false;
+  public original_contents;
+  public namings: any;
+  public enableUpdateData = false;
 
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  description_texts = {
+  public parentsSubject: Rx.Subject<any> = new Rx.Subject();
+  public description_texts = {
     "ddm_rmp_desc_text_id": 10,
     "module_name": "Help_SelectReportCriteria",
     "description": ""
   }
-  behalf = "";
-  user_role: string;
-  select_frequency_ots: any;
-  select_frequency_da: any;
-  on_demand_freq: any;
-  user_name: string;
-  specialIden: boolean;
-  self_email: string;
-  onBehalf: any;
-  readOnlyContentHelper = true;
-  // public toastr: NgToasterComponent
+  public behalf = "";
+  public user_role: string;
+  public select_frequency_ots: any;
+  public select_frequency_da: any;
+  public on_demand_freq: any;
+  public user_name: string;
+  public specialIden: boolean;
+  public self_email: string;
+  public onBehalf: any;
+  public readOnlyContentHelper = true;
 
-  config = {
+  public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
@@ -317,7 +316,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getMarketSelectionData() {
+  public getMarketSelectionData() {
     this.dataProvider.currentlookupData.subscribe(element => {
       if (element) {
         this.lookup_data = element
@@ -330,7 +329,6 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
           this.userMarketSelections = element;
           this.userSelectionInitialisation();
         }, err => {
-          // Utils.showSpinner()
         })
 
         if (this.lookup) {
@@ -349,14 +347,14 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     })
   }
 
-  notify() {
+  public notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
     $('#edit_button').hide()
   }
 
-  addContact() {
+  public addContact() {
     let contact = this.model
     if (contact == "") {
       this.dl_flag = true
@@ -368,7 +366,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  removeContact() {
+  public removeContact() {
     var sList = [];
     $('.form-check-input').each(function () {
       sList.push($(this).val() + (this.checked ? "checked" : "not checked"));
@@ -402,7 +400,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     return vs
   }
 
-  textChanged(event) {
+  public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
@@ -437,19 +435,19 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  edit_True() {
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
 
-  editEnable() {
+  public editEnable() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_contents;
   }
 
-  cancelUpdate() {
+  public cancelUpdate() {
     this.contacts = [];
     localStorage.removeItem('report_id');
     this.update = !this.update;
@@ -467,7 +465,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.jsonUpdate['select_frequency'] = []
   }
 
-  updateSelections() {
+  public updateSelections() {
     Utils.showSpinner()
 
     if (this.selectedItems_report.length < 1) {
@@ -559,7 +557,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     })
   }
 
-  getUserMarketInfo() {
+  public getUserMarketInfo() {
     Utils.showSpinner()
     this.dropdownList_report = this.lookup_data['market_data'].sort((a, b) => a.market > b.market ? 1 : -1);
     this.divisiondropdownList_report = this.lookup_data['division_data'].sort((a, b) => a.division_desc > b.division_desc ? 1 : -1);
@@ -636,7 +634,6 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
       classes: "select_report_criteria_multiselect"
     };
 
-
     this.lmadropdownSettings_report = {
       text: "LMA",
       singleSelection: false,
@@ -648,11 +645,10 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
       enableCheckAll: true,
       classes: "select_report_criteria_multiselect"
     };
-
   }
 
 
-  userSelectionInitialisation() {
+  public userSelectionInitialisation() {
     this.market_selection = this.userMarketSelections
     if (this.market_selection['has_previous_selections']) {
       this.selectedItems_report = this.market_selection["market_data"]
@@ -777,7 +773,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  specialIdenEnabler() {
+  public specialIdenEnabler() {
     let i = 0;
     if (this.divisionselectedItems_report.length == 0) {
       this.specialIden = true
@@ -796,33 +792,33 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onDivisionSelect(item) {
+  public onDivisionSelect(item) {
     this.specialIdenEnabler()
   }
 
-  onDivisionDeSelect(item) {
+  public onDivisionDeSelect(item) {
     this.specialIdenEnabler()
   }
 
-  onDivisionSelectAll(item) {
+  public onDivisionSelectAll(item) {
     this.specialIdenEnabler()
   }
 
-  onDivisionDeSelectAll(item) {
+  public onDivisionDeSelectAll(item) {
     this.specialIdenEnabler()
   }
 
-  selectAll(index) {
+  public selectAll(index) {
     var target = ".market_sel_group" + index.toString();
     $(target).prop("checked", "true");
   }
 
-  enableDropdown(group, index) {
+  public enableDropdown(group, index) {
     var target_dropdown = "#dropdown" + group.toString() + index.toString();
     var target_dropdown_2 = ".dropdownMenu" + group.toString() + index.toString();
   }
 
-  toggle_freq(dropdown_id, subelement) {
+  public toggle_freq(dropdown_id, subelement) {
     this.onDemandSchedulingValue = null;
 
     if (dropdown_id == "frequency0") {
@@ -854,7 +850,8 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
       this.jsonUpdate['frequency'] = "Recurring"
     }
   }
-  onItemSelect(item: any) {
+
+  public onItemSelect(item: any) {
     this.selectedItems_report.map(element => {
       if (!(this.marketindex.includes(element["ddm_rmp_lookup_market_id"]))) {
         this.marketindex.push(element["ddm_rmp_lookup_market_id"])
@@ -864,14 +861,14 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.specialIdenEnabler();
   }
 
-  onItemDeSelect(item: any) {
+  public onItemDeSelect(item: any) {
     this.marketindex.splice(this.marketindex.indexOf(item.ddm_rmp_lookup_market_id), 1)
     this.MarketDependencies(this.marketindex)
     this.MarketDependenciesDeselect(this.marketindex)
     this.specialIdenEnabler();
   }
 
-  MarketDependenciesDeselect(marketindex: any) {
+  public MarketDependenciesDeselect(marketindex: any) {
     this.regionselectedItems_report = this.regionselectedItems_report.filter(element => {
       return this.marketindex.includes(element["ddm_rmp_lookup_market"])
     })
@@ -910,7 +907,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
 
   }
 
-  MarketDependencies(marketindex: any) {
+  public MarketDependencies(marketindex: any) {
     this.regiondropdownListfinal_report = this.regiondropdownList_report.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
@@ -926,7 +923,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
 
   }
 
-  onSelectAll(items: any) {
+  public onSelectAll(items: any) {
     for (let index = 1; index <= items.length; index++) {
       if (!(this.marketindex.includes(index))) {
         this.marketindex.push(index)
@@ -936,7 +933,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.specialIdenEnabler();
   }
 
-  onDeSelectAll(items: any) {
+  public onDeSelectAll(items: any) {
     this.marketindex = []
     this.MarketDependencies(this.marketindex)
     this.MarketDependenciesDeselect(this.marketindex)
@@ -947,7 +944,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.specialIdenEnabler();
   }
 
-  regiononItemSelect(item: any) {
+  public regiononItemSelect(item: any) {
     this.regionselectedItems_report.map(element => {
       if (!(this.regionindex.includes(element["ddm_rmp_lookup_country_region_id"]))) {
         this.regionindex.push(element['ddm_rmp_lookup_country_region_id'])
@@ -956,7 +953,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.regionSelection(this.regionindex)
   }
 
-  regiononItemDeSelect(item: any) {
+  public regiononItemDeSelect(item: any) {
     this.regionindex.splice(this.regionindex.indexOf(item.ddm_rmp_lookup_country_region_id), 1)
     this.regionSelection(this.regionindex)
     this.regionDeselection(this.regionindex)
@@ -972,7 +969,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.zoneDeSelection(this.zoneindex)
   }
 
-  regiononSelectAll(items: any) {
+  public regiononSelectAll(items: any) {
     for (let index = 1; index <= items.length; index++) {
       if (!(this.regionindex.includes(index))) {
         this.regionindex.push(index)
@@ -981,26 +978,26 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.regionSelection(this.regionindex)
   }
 
-  regiononItemDeSelectAll(items: any) {
+  public regiononItemDeSelectAll(items: any) {
     this.regionindex = []
     this.regionSelection(this.regionindex)
     this.regionDeselection(this.regionindex)
     this.zoneonDeSelectAll(this.zoneselectedItems_report)
   }
 
-  regionSelection(regionindex: any) {
+  public regionSelection(regionindex: any) {
     this.zonedropdownListfinal_report = this.zonedropdownList_report.filter(element => {
       return this.regionindex.includes(element['ddm_rmp_lookup_country_region'])
     })
   }
 
-  regionDeselection(regionindex: any) {
+  public regionDeselection(regionindex: any) {
     this.zoneselectedItems_report = this.zoneselectedItems_report.filter(element => {
       return this.regionindex.includes(element["ddm_rmp_lookup_country_region"])
     })
   }
 
-  zoneonItemSelect(item: any) {
+  public zoneonItemSelect(item: any) {
     this.zoneselectedItems_report.map(element => {
       if (!(this.zoneindex.includes(element["ddm_rmp_lookup_region_zone_id"]))) {
         this.zoneindex.push(element["ddm_rmp_lookup_region_zone_id"])
@@ -1009,12 +1006,13 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.zoneSelection(this.zoneindex)
   }
 
-  zoneonItemDeSelect(item: any) {
+  public zoneonItemDeSelect(item: any) {
     this.zoneindex.splice(this.zoneindex.indexOf(item.ddm_rmp_lookup_region_zone_id), 1)
     this.zoneSelection(this.zoneindex)
     this.zoneDeSelection(this.zoneindex)
   }
-  zoneonSelectAll(items: any) {
+
+  public zoneonSelectAll(items: any) {
     for (let index = 1; index <= items.length; index++) {
       if (!(this.zoneindex.includes(index))) {
         this.zoneindex.push(index)
@@ -1022,23 +1020,26 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
     this.zoneSelection(this.zoneindex)
   }
-  zoneonDeSelectAll(items: any) {
+
+  public zoneonDeSelectAll(items: any) {
     this.zoneindex = []
     this.zoneSelection(this.zoneindex)
     this.zoneDeSelection(this.zoneDeSelection)
   }
-  zoneSelection(zoneindex: any) {
+
+  public zoneSelection(zoneindex: any) {
     this.areadropdownListfinal_report = this.areadropdownList_report.filter(element => {
       return this.zoneindex.includes(element['ddm_rmp_lookup_region_zone'])
     })
   }
-  zoneDeSelection(zoneindex: any) {
+
+  public zoneDeSelection(zoneindex: any) {
     this.areaselectedItems_report = this.areaselectedItems_report.filter(element => {
       return this.zoneindex.includes(element["ddm_rmp_lookup_region_zone"])
     })
   }
 
-  clearClick() {
+  public clearClick() {
     this.selectedItems_report = []
     this.marketindex = []
     this.MarketDependencies(this.marketindex)
@@ -1047,7 +1048,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.fanselectedItems_report = []
   }
 
-  frequencySelected(val, event) {
+  public frequencySelected(val, event) {
     if (event.target.checked) {
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": val.select_frequency_values };
       this.jsonfinal.select_frequency.push(this.frequencyData);
@@ -1065,7 +1066,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  frequencySelectedDropdown(val, event) {
+  public frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
 
@@ -1084,7 +1085,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getSpecifyContent(val, event) {
+  public getSpecifyContent(val, event) {
     for (var i = 0; i < this.jsonfinal.select_frequency.length; i++) {
       if (this.jsonfinal.select_frequency[i].ddm_rmp_lookup_select_frequency_id == val) {
         this.jsonfinal.select_frequency[i].description = event.target.value
@@ -1092,7 +1093,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  checkSelections() {
+  public checkSelections() {
     this.report_id_service.behalf_of_name.subscribe(element => {
       this.behalf = element
     })
@@ -1178,7 +1179,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setSpecialIdentifiers() {
+  public setSpecialIdentifiers() {
     var temp = this.jsonfinal;
     var temp2 = this.jsonUpdate;
     temp.special_identifiers = [];
@@ -1193,7 +1194,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.jsonUpdate = temp2;
   }
 
-  setFrequency() {
+  public setFrequency() {
     var temp = this.jsonfinal;
     var temp2 = this.jsonUpdate;
     temp.select_frequency = [];
@@ -1216,7 +1217,8 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.jsonfinal = temp;
     this.jsonUpdate = temp2;
   }
-  specialIdentifierSelected(val, event) {
+
+  public specialIdentifierSelected(val, event) {
     if (event.target.checked) {
       this.identifierData = { "ddm_rmp_lookup_special_identifiers": val.ddm_rmp_lookup_special_identifiers };
       this.jsonfinal.special_identifiers.push(this.identifierData);
@@ -1232,7 +1234,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
 
   }
 
-  reportCriteriaCheckbox(report_id) {
+  public reportCriteriaCheckbox(report_id) {
     if (report_id = localStorage.getItem('report_id') != null) {
       report_id = localStorage.getItem('report_id')
     }
@@ -1241,16 +1243,15 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
       if (element['status'] == "Incomplete" || element['status'] == "Active" ||
         element['status'] == "Pending" || element['status'] == "Cancelled") {
         this.report_id_service.changeUpdate(true)
-      }
-      else if (element['status'] == 'Completed') {
-        if (element['frequency_data'].length > 1) {
+      } else if (element['status'] == 'Completed') { // changes done by Ganesh
+        if (element['frequency_of_report'] == 'Recurring') {
+          this.report_id_service.changeUpdate(false)
+        } else if (element['frequency_data'].length > 1) {
           this.report_id_service.changeUpdate(true)
-        }
-        else {
+        } else {
           this.report_id_service.changeUpdate(false)
         }
       }
-
       this.report_status = element['report_data']['status']
       this.report_create = element['report_data']['created_on']
       this.report_user = element['report_data']['requestor']
@@ -1395,12 +1396,9 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
         if (element["frequency_data"][0]['select_frequency_values'] == 'On Demand Configurable') {
           $("#odCheckbox38").prop("checked", true);
         }
-        // console.log(element['frequency_data'][0]['select_frequency_values'])
         $("#frequency1").prop("checked", true);
         this.toggle_freq("frequency1", "");
         var subData = element["frequency_data"];
-        // console.log("Check prepopulation")
-        // console.log(subData);
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
             $('.sub').each(function (i, obj) {
@@ -1424,8 +1422,6 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
         this.toggle_freq("frequency0", "");
         $("#frequency0").prop("checked", true);
         var subData = element["frequency_data"];
-        // console.log("Check prepopulation")
-        // console.log(subData);
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
             $('.sub').each(function (i, obj) {
@@ -1537,8 +1533,6 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   ngOnDestroy() {
-    // this.cancelUpdate();
   }
 }

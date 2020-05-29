@@ -1,4 +1,4 @@
-import { Component, OnInit, SimpleChanges, Input, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, SimpleChanges, ChangeDetectorRef, NgZone } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -65,18 +65,17 @@ export class VehicleEventStatusComponent implements OnInit {
   public distibutionEntityRadio = "Summary"
   public orderTypeRadio = "Summary"
 
-  checkBxMD1 = {
+  public checkBxMD1 = {
     commonly_req_field: [],
     opt_content_avail: [],
     order_event_avail_ds: []
   }
-  selected_checkbox = {
+  public selected_checkbox = {
     commonly_req_field: [],
     opt_content_avail: [],
     order_event_avail_ds: []
   }
-
-  checkboxMD2 = {
+  public checkboxMD2 = {
     sales_avail: [],
     days_supply1: [],
     days_supply2: [],
@@ -89,8 +88,6 @@ export class VehicleEventStatusComponent implements OnInit {
   public fromDateDOSP = new FormControl();
   public toDateDOSP = new FormControl();
   public minDateDosp: Date = null;
-
-  // public orderEvtToDate: any = new FormControl();
   public minOrderEventDate: Date = null;
 
   public keyDataEle: any = {
@@ -142,12 +139,10 @@ export class VehicleEventStatusComponent implements OnInit {
     report_id: null,
     other_desc: ""
   }
-
+  public user_name = "";
+  public user_role = "";
   display_message = "Create Request to proceed with vehicle event status";
   messageClass = "red";
-
-  user_name = "";
-  user_role = "";
 
   subjectSubscription: Subscription;
 
@@ -212,7 +207,6 @@ export class VehicleEventStatusComponent implements OnInit {
         this.req_body.report_id = l_reportId;
         this.req_body.report_detail.status = l_status;
       }
-
       console.log(this.req_body);
     }
     })
@@ -223,7 +217,7 @@ export class VehicleEventStatusComponent implements OnInit {
   ngOnChanges(simpleChanges: SimpleChanges) {
   }
 
-  refillMasterDatatoOptions() {
+  public refillMasterDatatoOptions() {
     this.filtered_MD.model_years = this.l_lookupTableMD.model_year;
     this.filtered_MD.distribution_entity = this.l_lookupTableMD.type_data;
     this.filtered_MD.order_type = this.l_lookupTableMD.order_type;
@@ -275,14 +269,14 @@ export class VehicleEventStatusComponent implements OnInit {
     this.checkboxMD2.turn_rate.forEach(daysSupplyCB);
   }
 
-  refillDivisionsMD(divisions) {
+  public refillDivisionsMD(divisions) {
     this.selected.divisions = divisions;
     this.filtered_MD.divisions = divisions;
     this.filtered_MD.vehicle = this.l_lookupTableMD.vehicle_data;
     this.multiSelectChange('division');
   }
 
-  multiSelectChange(type) {
+  public multiSelectChange(type) {
     switch (type) {
       case 'division':
         this.divisionDependencies();
@@ -298,7 +292,7 @@ export class VehicleEventStatusComponent implements OnInit {
     }
   }
 
-  divisionDependencies() {
+  public divisionDependencies() {
     let l_division_ids = this.selected.divisions.map(ele => ele[this.division_settings.primary_key]);
     let divisionCBFunc = function (ele) {
       if (l_division_ids.includes(ele.ddm_rmp_lookup_division)) {
@@ -310,7 +304,7 @@ export class VehicleEventStatusComponent implements OnInit {
     this.vehicleDependencies();
   }
 
-  vehicleDependencies() {
+  public vehicleDependencies() {
     let l_vehicle_ids = this.selected.vehicle.map(ele => ele.ddm_rmp_lookup_dropdown_vehicle_line_brand_id);
     let vehicleCBFunc = function (ele) {
       if (l_vehicle_ids.includes(ele.ddm_rmp_lookup_dropdown_vehicle_line_brand)) {
@@ -322,7 +316,7 @@ export class VehicleEventStatusComponent implements OnInit {
     this.allocationDependencies();
   }
 
-  allocationDependencies() {
+  public allocationDependencies() {
     let l_allocation_ids = this.selected.allocation.map(ele => ele.ddm_rmp_lookup_dropdown_allocation_group_id);
     let allocationCBFunc = function (ele) {
       if (l_allocation_ids.includes(ele.ddm_rmp_lookup_dropdown_allocation_group)) {
@@ -381,7 +375,7 @@ export class VehicleEventStatusComponent implements OnInit {
     }
   }
 
-  openAdditionalReqModal() {
+  public openAdditionalReqModal() {
     if (!this.selected.distribution_entity.length)
       this.ngToaster.error("Distribution Entity is mandatory")
     else if (this.keyDataEle.others.checked && !this.keyDataEle.others.order_event.length) {
@@ -412,7 +406,7 @@ export class VehicleEventStatusComponent implements OnInit {
     }
   }
 
-  openReviewModal(result) {
+  public openReviewModal(result) {
     this.req_body.model_year.dropdown = this.selected.model_years;
     this.req_body.vehicle_line.dropdown = this.selected.vehicle;
     this.req_body.allocation_group.dropdown = this.selected.allocation;
@@ -605,7 +599,7 @@ export class VehicleEventStatusComponent implements OnInit {
     this.req_body.report_detail.business_req = data.report_data.business_req;
   }
 
-  getSelectedCheckboxData() {
+  public getSelectedCheckboxData() {
     let l_checkbox_data = [];
     l_checkbox_data.push(...this.selected_checkbox.commonly_req_field, ...this.selected_checkbox.opt_content_avail, ...this.selected_checkbox.order_event_avail_ds)
 

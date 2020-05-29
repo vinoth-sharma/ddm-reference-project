@@ -12,10 +12,6 @@ export class AdditionalReqModalComponent implements OnInit {
   public radioOpt = [{ label: "Yes", value: true }, { label: "No", value: false }]
   public report_title = "";
   public additional_req = "";
-
-  // private descIds1 = [5,54];
-  // private descIds2 = [8,15];
-
   l_CB_data = [];
 
   public l_data1 = [];
@@ -70,6 +66,5 @@ export class AdditionalReqModalComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
-
 
 }

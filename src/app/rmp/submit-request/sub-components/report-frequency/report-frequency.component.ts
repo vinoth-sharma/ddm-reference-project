@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from "@angular/material/chips";
 import { SubmitRequestService } from '../../submit-request.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { Subscription } from 'rxjs';
@@ -16,7 +14,6 @@ export interface Dl {
 })
 export class ReportFrequencyComponent implements OnInit {
   @Input() lookupTableData: any = {}
-  // @Input() existingData: any;
   @Output() reportFreqEmitter = new EventEmitter();
   reportFreq: {}[] = [{ label: 'Yes', id: true }, { label: 'No', id: false }];
 
@@ -29,7 +26,7 @@ export class ReportFrequencyComponent implements OnInit {
     freq_dealer_allo: []
   }
 
-  selected = {
+  public selected = {
     reportFreq_regBasis: false,
     daily_weekly: [],
     monthly_bimonthly: [],
@@ -62,13 +59,9 @@ export class ReportFrequencyComponent implements OnInit {
     if (simpleChange.lookupTableData) {
       this.refillMasterData();
     }
-    // console.log(this.existingData);
-    // if (this.existingData) {
-      // this.refillSelectedRequestData(this.existingData);
-    // }
   }
 
-  refillSelectedRequestData(reqData) {
+  public refillSelectedRequestData(reqData) {
     this.selected = {
       reportFreq_regBasis: false,
       daily_weekly: [],
@@ -107,12 +100,9 @@ export class ReportFrequencyComponent implements OnInit {
             }
           })
         }
-        // this.selected.freq_dealer_allo.push(freq)
       });
 
     }
-// console.log(this.selected);
-
   }
 
   visible = true;
@@ -138,7 +128,7 @@ export class ReportFrequencyComponent implements OnInit {
     })
   }
 
-  monthBimonChanges(event) {
+  public monthBimonChanges(event) {
     if (event.value.length) {
       let flag = event.value.some(ele => ele.select_frequency_values === "Other");
       this.selected.monthly_others = flag;
@@ -147,14 +137,14 @@ export class ReportFrequencyComponent implements OnInit {
       this.selected.monthly_others = false;
   }
 
-  validateNdSubmit() {
+  public validateNdSubmit() {
     if (!this.selected.dl_list.length)
       this.toaster.error("Please add at least one email in Distribution List");
     else
       this.submitFrequencyData();
   }
 
-  submitFrequencyData() {
+  public submitFrequencyData() {
 
     let req_body = {
       freq: "",
@@ -202,11 +192,11 @@ export class ReportFrequencyComponent implements OnInit {
       this.reportFreqEmitter.emit(req_body)
   }
 
-  emailSelectionDone(event) {
+  public emailSelectionDone(event) {
     this.selected.dl_list = event;
   }
 
-  resetMDdata() {
+  public resetMDdata() {
     this.l_lookupData = {
       daily_weekly: [],
       monthly_bimonthly: [],
@@ -215,7 +205,7 @@ export class ReportFrequencyComponent implements OnInit {
     }
   }
 
-  compareFn(o1, o2) {
+  public compareFn(o1, o2) {
     if (!o1 && !o2)
       return false
     else if (o1.ddm_rmp_lookup_select_frequency_id == o2.ddm_rmp_lookup_select_frequency_id)

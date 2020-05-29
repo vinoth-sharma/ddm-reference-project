@@ -3,7 +3,7 @@
     <h3><b>Reference Data Management</b></h3>
   </div>
   <div>
-    <mat-card class="col-xs-6 card-alignment pointer" (click)="getReportList()">
+    <mat-card class="col-xs-6 card-alignment pointer" (click)="getBrandFormList()">
       <mat-card-title>Go To Brand-Forms</mat-card-title>
       <mat-card-subtitle>Click here to edit the Brand-Forms</mat-card-subtitle>
     </mat-card>
@@ -20,36 +20,40 @@
   </div>
   <div class="col-xs-12 p-0">
     <div class="col-xs-11 p-0">
-      <h4><b>Brand-Forms : BRAND_ALLOC_GRP_HIERARCHY</b></h4>
+      <h4><b>Brand-Forms : {{ brandFormName }}</b></h4>
     </div>
     <div class="col-xs-1">
       <a data-toggle="tooltip" title="Go Back to RDM page" (click)="isHomePage = !isHomePage"><i id="ic"
           class="material-icons pointer">arrow_back</i></a>
     </div>
   </div>
-  <div class="col-xs-12 complete-table">
+  <div class="col-xs-12 complete-table" *ngIf="isDataLoaded">
     <div class="col-xs-12 pl-0 search-width">
       <div class="col-xs-6 pl-0">
-        <input placeholder="Search ALLOC_GROUP_CD" class="form-control" (input)="filterData()"
-          [(ngModel)]="filters.ALLOC_GROUP_CD" name="filters.ALLOC_GROUP_CD">
+        <input placeholder="Search {{reportDataColumns['immutable']}}" class="form-control" (input)="filterData()"
+          [(ngModel)]="filters[reportDataColumns['immutable']]" name="filters[reportDataColumns['immutable']]">
       </div>
       <div class="col-xs-6 pl-0">
-        <input placeholder="Search BRAND" class="form-control" (input)="filterData()" [(ngModel)]="filters.BRAND"
-          name="filters.BRAND">
+        <input placeholder="Search {{reportDataColumns['mutable']}}" class="form-control" (input)="filterData()"
+          [(ngModel)]="filters[reportDataColumns['mutable']]" name="filters[reportDataColumns['immutable']]">
       </div>
     </div>
     <table class="table table-striped table-hover">
       <thead class="thead">
         <tr class="col-xs-12 p-0">
           <div class="col-xs-12 p-0">
-            <div class="col-xs-6 p-0">
-              <th class="table-header">
-                <b>ALLOC_GROUP_CD</b>
+            <div class="col-xs-6 p-0" (click)="sort(reportDataColumns['immutable'])">
+              <th class="table-header pointer">
+                <div class="col-xs-8 p-0"><b>{{reportDataColumns['immutable']}}</b></div>
+                <div class="col-xs-2 p-0" *ngIf="!reports[reportDataColumns['immutable']]"><b>&#8593;</b></div>
+                <div class="col-xs-2 p-0" *ngIf="reports[reportDataColumns['immutable']]"><b>&#8595;</b></div>
               </th>
             </div>
-            <div class="col-xs-6 p-0">
-              <th class="table-header">
-                <b>BRAND</b>
+            <div class="col-xs-6 p-0" (click)="sort(reportDataColumns['mutable'])">
+              <th class="table-header pointer">
+                <div class="col-xs-8 p-0"><b>{{reportDataColumns['mutable']}}</b></div>
+                <div class="col-xs-2 p-0" *ngIf="!reports[reportDataColumns['mutable']]"><b>&#8593;</b></div>
+                <div class="col-xs-2 p-0" *ngIf="reports[reportDataColumns['mutable']]">&#8595;</div>
               </th>
             </div>
           </div>
@@ -60,17 +64,20 @@
           <tr *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType">
             <td class="ddm-report-name">
               <!-- First part -->
-              <div class="report-name-edit">
+              <div class="report-name-non-edit">
                 <div class="col-xs-9">
-                  <p *ngIf="element.ALLOC_GRP_CD" title="{{element.ALLOC_GRP_CD}}">{{element.ALLOC_GRP_CD}}</p>
+                  <p *ngIf="element[reportDataColumns['immutable']]"
+                    title="{{element[reportDataColumns['immutable']]}}">{{element[reportDataColumns['immutable']]}}</p>
                 </div>
               </div>
             </td>
             <td class="ddm-report-name">
               <!-- First part -->
-              <div class="report-name-edit" *ngIf="!element.clicked">
+              <div *ngIf="!element.clicked">
                 <div class="col-xs-9">
-                  <p *ngIf="element.BRAND" title="{{element.BRAND}}">{{element.BRAND}}</p>
+                  <p class="max-length-display" *ngIf="element[reportDataColumns['mutable']]"
+                    title="{{element[reportDataColumns['mutable']]}}">
+                    {{element[reportDataColumns['mutable']]}}</p>
                 </div>
                 <div class="col-xs-3">
                   <a style="font-size:18px" data-toggle="tooltip" title="EDIT"
@@ -81,11 +88,12 @@
               <!-- Second part -->
               <div class="report-name-edit" *ngIf="element.clicked ">
                 <div class="col-xs-6">
-                  <input class="input-width" maxlength="50" placeholder="Name max 50 characters"
-                    [(ngModel)]="element.BRAND" [value]="element.BRAND?element.BRAND:''">
+                  <input class="input-width" id="editedField" maxlength="40" placeholder="Max 40 characters"
+                    [(ngModel)]="newBrandName"
+                    [value]="element[reportDataColumns['mutable']]?element[reportDataColumns['mutable']]:''">
                 </div>
                 <div class="col-xs-2">
-                  <a data-toggle="tooltip" title="Save record" (click)="changeReportName(element)"><i id="ic"
+                  <a data-toggle="tooltip" title="Save record" (click)="changeBrandName(newBrandName)"><i id="ic"
                       class="material-icons pointer">save</i></a>
                 </div>
                 <div class="col-xs-2" aria-disabled="true">

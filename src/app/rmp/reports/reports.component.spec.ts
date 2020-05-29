@@ -23,7 +23,7 @@ import { NgCustomSpinnerComponent } from 'src/app/custom-directives/ng-custom-sp
 import Utils from 'src/utils';
 declare var $: any;
 
-describe('ReportsComponent', () => {
+fdescribe('ReportsComponent', () => {
   let component: ReportsComponent;
   let fixture: ComponentFixture<ReportsComponent>;
   let reportData = {
@@ -87,7 +87,7 @@ describe('ReportsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ReportsComponent, OrderByPipe, NgCustomSpinnerComponent, FilterTablePipe, OndemandReportsComponent, OndemandConfigReportsComponent, NgToasterComponent],
+      declarations: [ReportsComponent, OrderByPipe, NgCustomSpinnerComponent, FilterTablePipe, NgToasterComponent],
       imports: [FormsModule, MaterialModule, BrowserAnimationsModule,
         HttpClientTestingModule, RouterTestingModule, QuillModule.forRoot({})],
       providers: [DatePipe,Utils]
@@ -492,40 +492,7 @@ describe('ReportsComponent', () => {
 
       expect(component.isRecurringFrequencyHidden).toEqual(true)
     })
-
-    // On Demand frequency case
-    fixture = TestBed.createComponent(ReportsComponent);
-    component = fixture.componentInstance;
-    let serviceSecond = fixture.debugElement.injector.get(DjangoService);
-    fixture.detectChanges();
-    service.get_report_description(testRequestId).subscribe(res => {
-      res['frequency_of_report'] = 'On Demand'
-      component.selectedNewFrequency = res['frequency_of_report']
-
-      expect(component.isRecurringFrequencyHidden).toEqual(false)
-    })
   });
 
 
 });
-@Component({
-  selector: 'app-ondemand-reports',
-  template: "<div></div>"
-})
-class OndemandReportsComponent {
-  @Input() requestNumber
-  @Input() reportId
-  odScheduleConfirmation = new EventEmitter()
-}
-
-@Component({
-  selector: 'app-ondemand-config-reports',
-  template: "<div></div>"
-})
-class OndemandConfigReportsComponent {
-  @Input() requestNumber
-  @Input() reportId
-  @Input() title
-  @Input() name
-  odcScheduleConfirmation = new EventEmitter();
-}

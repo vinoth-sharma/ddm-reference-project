@@ -149,12 +149,10 @@ export class MetricsComponent implements OnInit, AfterViewInit {
   };
 
   // paginator params
-  public paginatorlength = 100;
   public paginatorpageSize = 10;
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
-  public tableData = [];
   constructor(public django: DjangoService,
     public auth_service: AuthenticationService,
     private generated_report_service: GeneratedReportService,
@@ -186,7 +184,6 @@ export class MetricsComponent implements OnInit, AfterViewInit {
   // initialization of application
   public ngOnInit() {
     this.generated_report_service.changeButtonStatus(false);
-
     // get all admin details
     this.django.getAllAdmins().subscribe(element => {
       if (element) {
@@ -218,8 +215,6 @@ export class MetricsComponent implements OnInit, AfterViewInit {
       if (list) {
         this.reports = list['data'];
         this.dataLoad = true;
-        this.tableData = JSON.parse(JSON.stringify(this.reports)).slice(this.paginatorLowerValue , this.paginatorHigherValue);
-        this.paginatorlength = this.reports.length;
         this.reports.map(reportRow => {
           reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy');
           reportRow['created_on'] = this.DatePipe.transform(reportRow['created_on'], 'dd-MMM-yyyy');
@@ -229,7 +224,6 @@ export class MetricsComponent implements OnInit, AfterViewInit {
             });
           }
         });
-
         for (let i = 0; i < this.reports.length; i++) {
           if (this.reports[i]['frequency_data']) {
             const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Other'];
@@ -237,7 +231,6 @@ export class MetricsComponent implements OnInit, AfterViewInit {
               this.reports[i]['frequency_data'].filter(element => !days.includes(element));
           }
         }
-
       }
     });
   }
@@ -280,7 +273,6 @@ export class MetricsComponent implements OnInit, AfterViewInit {
           el.setAttribute('title', this.toolbarTooltips[tool]);
       }
     };
-
     let toolbarElement = document.querySelector('.ql-toolbar');
     if (toolbarElement) {
       let matchesButtons = toolbarElement.querySelectorAll('button');
@@ -369,8 +361,17 @@ export class MetricsComponent implements OnInit, AfterViewInit {
     this.orderType = this.reports[typeVal];
   }
 
+  // formating date 
+  public dateFormat(str: any) {
+    const date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("");
+  }
+
   // convert json to excel sheet
   public xlsxJson() {
+    let fileName = "Metrics_" + this.dateFormat(new Date()); // changes done by Ganesh
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet('Sheet1');
@@ -380,20 +381,17 @@ export class MetricsComponent implements OnInit, AfterViewInit {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
-      const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(',') : item[key])))
-      const colA = wb.cell('A2').value(transformedData);
-
       workbook.outputAsync().then(function (blob) {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           window.navigator.msSaveOrOpenBlob(blob,
-            'Reports' + new Date().getTime() + EXCEL_EXTENSION
+            fileName + EXCEL_EXTENSION
           );
         } else {
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
           document.body.appendChild(a);
           a.href = url;
-          a.download = 'Reports' + new Date().getTime() + EXCEL_EXTENSION;
+          a.download = fileName + EXCEL_EXTENSION;
           a.click();
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a)
@@ -402,8 +400,9 @@ export class MetricsComponent implements OnInit, AfterViewInit {
     }).catch(error => {
     });
   }
+
   // creating a body to generate excel report
-  createNewBodyForExcel() {
+  public createNewBodyForExcel() {
     const reportBody = [];
     this.reports.forEach(item => {
       const obj = {
@@ -435,6 +434,5 @@ export class MetricsComponent implements OnInit, AfterViewInit {
   public onPaginationChange(event) {
     this.paginatorLowerValue = event.pageIndex * event.pageSize;
     this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
-    this.tableData = this.reports.slice(this.paginatorLowerValue , this.paginatorHigherValue);
   }
 }

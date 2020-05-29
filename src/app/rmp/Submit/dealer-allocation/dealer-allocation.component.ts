@@ -394,7 +394,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   public notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
@@ -402,14 +401,11 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     $('#edit_button').hide()
   }
 
-
-
   public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
-
 
   public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
@@ -462,7 +458,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     })
   }
 
-
   public getDealerAllocatonInfo() {
     this.check = { "value": 1, "id": 2 };
     this.modelYearSelectedItems = this.lookup.data.model_year;
@@ -480,13 +475,16 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     this.startMonth = val;
     this.startValue = this.month.indexOf(val) + 1;
   }
+
   public startY(val) {
     this.startYear = val;
   }
+
   public endM(val) {
     this.endMonth = val;
     this.endValue = this.month.indexOf(val) + 1;
   }
+
   public endY(val) {
     this.endYear = val;
   }
@@ -516,14 +514,19 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
 
   public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    var formData = new FormData();
-    formData.append('file_upload', this.file);
-    Utils.showSpinner();
-    this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      Utils.hideSpinner();
-    }, err => {
-      Utils.hideSpinner();
-    });
+    if (this.file['type'] == '.csv' || this.file['type'] == '.doc' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
+      var formData = new FormData();
+      formData.append('file_upload', this.file);
+      Utils.showSpinner();
+      this.django.ddm_rmp_file_data(formData).subscribe(response => {
+        Utils.hideSpinner();
+      }, err => {
+        Utils.hideSpinner();
+      });
+    }
+    else {
+      this.toastr.error(this.django.defaultUploadMessage)
+    }
   }
 
   public dateRangeData() {
@@ -889,7 +892,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   }
 
   public getDADefaultSelection() {
-
     var temp = this.finalData;
     let ele = document.querySelectorAll("#consensusDataRef input[class='events']:checked");
     ele.forEach((row: any) => {
@@ -922,7 +924,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       function () { doc.save('sample-file.pdf'); }
     )
   }
-
 
   public previousSelections(requestId) {
     Utils.showSpinner();
@@ -960,7 +961,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
           })
         }
 
-
         var subDate = element['da_data']['concensus_time_date'][0]
         this.startMonth = subDate.ddm_rmp_start_month
         this.startYear = subDate.ddm_rmp_start_year
@@ -989,7 +989,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
 
         this.report_create = report_data.created_on
         this.report_on_behalf = report_data.on_behalf_of
-
         this.user_name = report_data.requestor
 
         temp.concensus_time_date = {

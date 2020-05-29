@@ -24,7 +24,6 @@ export class HeaderComponent implements OnInit {
   public unreadNotificationList = []
   public redTraker = [];
   public unreadTraker = [];
-
   public routerObj = [{
     label: "Main Menu",
     routerVal: "main",
@@ -55,9 +54,9 @@ export class HeaderComponent implements OnInit {
   constructor(private route: Router,
     private authenticationService: AuthenticationService,
     private dataProvider: DataProviderService) {
-    this.subscribeToService();
+    this.subscribeToService()
+    dataProvider.loadNotifications()
     route.events.subscribe((val) => {
-      // console.log(val);
       if (val instanceof NavigationEnd) {
         // Hide loading indicator
         this.routerObj.forEach(ele => {
@@ -71,6 +70,7 @@ export class HeaderComponent implements OnInit {
       }
     });
   }
+
   // subscribe to observables in authenticationservice and dataProvider service 
   // to get user info and notification details
   public subscribeToService() {
@@ -88,10 +88,6 @@ export class HeaderComponent implements OnInit {
             this.user_role = role["role"];
             if (this.user_role === "Admin")
               this.routerObj[4].isVisible = true;
-            // this.notification_list = element.filter(element => {
-            //   return element.commentor != this.user_name
-            // })
-            // this.user_role = role["role"]
             this.notification_list = element;
             let unread = [];
             let red = [];
@@ -119,6 +115,7 @@ export class HeaderComponent implements OnInit {
   public modulePageRoute() {
     this.route.navigate(['user'])
   }
+
   // open downloaded pdf in a new window
   public redirect(value: string) {
     Utils.showSpinner();
@@ -129,7 +126,8 @@ export class HeaderComponent implements OnInit {
       window.open(data);
     })
   }
-//  creating data set to consolidate notification messages
+
+  //creating data set to consolidate notification messages
   sortNotification(notificationList){
   this.redNotificationList = []
   this.unreadNotificationList = []
@@ -156,7 +154,6 @@ export class HeaderComponent implements OnInit {
   this.notification_number = this.unreadNotificationList.length
   this.unreadNotificationList = this.unreadNotificationList.concat(this.redNotificationList)
   }
-// updating consolidated data sets 
   
 }
 

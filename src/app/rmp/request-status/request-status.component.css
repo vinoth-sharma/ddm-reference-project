@@ -89,7 +89,7 @@
   
   .tableFixHead {
   overflow-y: auto;
-  height: 460px;
+  height: 55vh;
   overflow-x: auto;
   }
   
@@ -209,6 +209,7 @@
   margin-right: 5%;
   color: maroon;
   }
+
   .fa-link {
   font-size: 170%;
   margin-left: 5%;
@@ -277,6 +278,7 @@
   .modal-header {
   align-content: center;
   }
+
   .modal-title {
   color: white;
   font-size: medium;
@@ -323,6 +325,7 @@
   .footer-buttons {
   float: left;
   }
+
   .Request-details {
   width: 100%;
   float: left;
@@ -343,6 +346,7 @@
   border-radius: 25px;
   float: right;
   }
+
   .bubble_right:before {
   content: "";
   position: absolute;
@@ -376,6 +380,7 @@
   color: black;
   float: left;
   }
+
   .bubble_left:before {
   content: "";
   position: absolute;
@@ -417,6 +422,7 @@
   justify-content: flex-start;
   height: 50px;
   }
+
   td > div {
   width: 85px;
   align-items: center;
@@ -450,6 +456,7 @@
   justify-content: space-between;
   height: 40px;
   }
+
   td > div {
   width: 90px;
   align-items: center;
@@ -481,12 +488,14 @@
   height: 180px;
   overflow: hidden;
   }
+
   .custom-changes-icon{
   padding-left: 16px;
   position: relative;
   top: 10px;
   font-size: 2.5rem;
   }
+
   .custom-changes-edit{
   margin: 0;
   padding: 0;
@@ -506,15 +515,12 @@
   #addUrl .modal-body{
   height :120px;
   min-height: 120px;
-}
-
-#CancelRequest .modal-body{
-  height :100px;
-}
-
-.error-modal-message {
   }
-  
+
+  #CancelRequest .modal-body{
+    height :100px;
+  }
+ 
   .error-modal-message {
   height: auto !important;
   max-height: 400px;
@@ -524,6 +530,7 @@
   margin-right: none;
   cursor: pointer;
   }
+  
   .modal-dialog{
   margin-top: auto;
   top:15%
@@ -536,7 +543,7 @@
   }
   
   .btn-sm {
-  padding: 0.36vh 0.36vw;
+  padding: 0.3vh 0.3vw;
   }
   
   .medium-btn{

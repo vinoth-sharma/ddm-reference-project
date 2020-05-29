@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
@@ -7,6 +7,8 @@ import { Router } from "@angular/router";
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import { MatDialog } from '@angular/material/dialog';
+import { NotesWrapperComponent } from '../../admin-notes/notes-wrapper/notes-wrapper.component';
 declare var $: any;
 
 @Component({
@@ -35,6 +37,7 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   public user_role: string = '';
   public readOnlyContentHelper: boolean = true;
   public enableUpdateData: boolean = false;
+  public info
   public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
@@ -93,7 +96,8 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
     private dataProvider: DataProviderService,
     private fb: FormBuilder,
     private router: Router,
-    private toastr: NgToasterComponent) {
+    private toastr: NgToasterComponent,
+    private dialog: MatDialog) {
 
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
@@ -156,6 +160,7 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
         Utils.hideSpinner();
       }
     })
+    this.getCurrentLookUpTable()
   }
 
   ngAfterViewInit() {
@@ -330,20 +335,28 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   // add new link based on validate previous link
   public addLinkTitleURL() {
     let urlList = this.auth_service.getListUrl();
-    for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
-      let b = urlList.find(url => url === this.LinkTitleURL.value[i].link);
-      let a = document.getElementById(i + 'url');
-      if (b) {
-        a.setAttribute('style', 'display: none !important');
-        this.LinkTitleURL.push(this.fb.group({
-          title: ['', Validators.required],
-          link: ['', Validators.required]
-        }));
+    if (this.LinkTitleURL.value.length > 0) {
+      for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
+        let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
+        let urlElement = document.getElementById(i + 'url');
+        if (validUrl) {
+          urlElement.setAttribute('style', 'display: none !important');
+          this.LinkTitleURL.push(this.fb.group({
+            title: ['', Validators.required],
+            link: ['', Validators.required]
+          }));
+        }
+        else {
+          urlElement.setAttribute('style', 'display: block !important');
+        }
       }
-      else {
-        a.setAttribute('style', 'display: block !important');
-      }
+    } else {
+      this.LinkTitleURL.push(this.fb.group({
+        title: ['', Validators.required],
+        link: ['', Validators.required]
+      }));
     }
+
   }
 
   public deleteLinkTitleURL(index) {
@@ -355,6 +368,16 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   }
 
   public saveChanges() {
+    if (this.LinkTitleURL.value.length > 0) {
+      let urlList = this.auth_service.getListUrl();
+      for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
+        let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
+        let urlElement = document.getElementById(i + 'url');
+        if (!validUrl) {
+          return urlElement.setAttribute('style', 'display: block !important');
+        }
+      }
+    }
     if (!this.newContent) {
       Utils.showSpinner();
       let response_json = {
@@ -405,6 +428,22 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
         this.toastr.error("Server error encountered!");
       })
     }
+  }
+
+  // to open important notes popup
+  public openAddNotes() {
+    this.dialog.open(NotesWrapperComponent, {
+      data: this.info.data.admin_note
+    })
+  }
+
+  // to read lookup data from currentlookUpTableData observable
+  public getCurrentLookUpTable() {
+    this.dataProvider.currentlookUpTableData.subscribe(element => {
+      if (element) {
+        this.info = element;
+      }
+    })
   }
 
 }

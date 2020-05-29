@@ -5,7 +5,7 @@
 }
 
 .heading {
-    width: 85%;
+    width: 50%;
     float: left;
     height: 100%;
 }
@@ -16,12 +16,15 @@
 }
 
 .icons {
-    width: 15%;
+    width: 50%;
     height: 100%;
     float: right;
     align-content: center;
     padding-left: 5%;
     padding-top: 2%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .buffer {
@@ -110,6 +113,9 @@ a:active {
     display: none;
     font-size: 10px;
 }
+
+
+
 
 
 

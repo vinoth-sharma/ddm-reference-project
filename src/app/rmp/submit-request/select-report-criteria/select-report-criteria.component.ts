@@ -31,7 +31,7 @@ export class SelectReportCriteriaComp implements OnInit {
     other: {}
   }
 
-  l_lookupMasterData: any = {};
+  l_selectedReqData : any = {};
 
   selected = {
     market: [],
@@ -142,6 +142,7 @@ export class SelectReportCriteriaComp implements OnInit {
       console.log(request);
       
       if(request.type === "srw"){
+        this.l_selectedReqData = request.data;
         this.refillSelectedRequestData(request.data);
       }
     })
@@ -288,7 +289,7 @@ export class SelectReportCriteriaComp implements OnInit {
     
     if(this.req_body.report_detail.status === "Cancelled")
       this.req_body.report_detail.status = "Incomplete";
-    else if(this.req_body.report_detail.status === "Completed" && this.req_body.frequency === "Recurring"){
+    else if(this.req_body.report_detail.status === "Completed" && !this.l_selectedReqData.frequency_data.some(freq=>freq.ddm_rmp_lookup_select_frequency_id === 39)){
       this.req_body.report_detail.status = "Incomplete";
       this.req_body.report_id = null;
       this.req_body.report_detail.report_type = "";

@@ -95,8 +95,8 @@ mat-form-field{
     white-space: normal !important;
 }
 .mat-checkbox-inner-container, .mat-radio-outer-circle, .mat-radio-container, .mat-radio-inner-circle{
-    height: 1vw!important;
-    width: 1vw!important;
+    height: 16px !important;
+    width: 16px !important;
     margin-right: 0.5vw!important;
 }
 /* .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate{

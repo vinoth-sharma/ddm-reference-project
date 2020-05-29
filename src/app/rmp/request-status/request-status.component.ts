@@ -190,7 +190,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
-
   public searchGlobalObj = {
     'ddm_rmp_post_report_id': this.searchText,
     'ddm_rmp_status_date': this.searchText,
@@ -201,8 +200,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     'assigned_to': this.searchText,
     'status': this.searchText
   };
-
-
   public toolbarTooltips = {
     'font': 'Select a font',
     'size': 'Select a font size',
@@ -240,7 +237,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     'remove-table': 'Remove selected table',
     'help': 'Show help'
   };
-
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -309,7 +305,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
               $('.ok-btn').prop('disabled', true);
           });
         });
-
         $(document).ready(function () {
           $('.address-open-button').prop('disabled', true);
           $('.address-text').keyup(function () {

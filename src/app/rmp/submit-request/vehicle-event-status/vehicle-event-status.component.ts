@@ -448,7 +448,6 @@ export class VehicleEventStatusComponent implements OnInit {
     this.req_body.report_detail.is_summary_report = result.data.isSummaryReport;
     this.req_body.report_detail.business_req = result.data.businessReq;
 
-    // this.saveVehicleEventStatus();
     this.openPreviewModal();
   }
 
@@ -574,6 +573,7 @@ export class VehicleEventStatusComponent implements OnInit {
     if (l_data.order_event.length === 1 && !l_data.order_event[0].ddm_rmp_lookup_dropdown_order_event) {
       this.keyDataEle.others.order_event = l_data.order_event[0].order_event;
       this.keyDataEle.others.checked = true;
+      this.keyDataEle_settings.isDisabled = true;
     }
     else {
       let keyEleIds = l_data.order_event.map(oe => oe.ddm_rmp_lookup_dropdown_order_event)
@@ -619,6 +619,14 @@ export class VehicleEventStatusComponent implements OnInit {
     return l_checkbox_data
   }
 
+  checkKeyDataEle(event){
+    console.log(event);
+    if(event.checked)
+      this.keyDataEle_settings.isDisabled = true;
+    else
+      this.keyDataEle_settings.isDisabled = false;
+  }
+
   resetCheckboxData() {
     for (const key in this.checkBxMD1) {
       if (this.checkBxMD1.hasOwnProperty(key)) {
@@ -635,8 +643,6 @@ export class VehicleEventStatusComponent implements OnInit {
         this.checkboxMD2[key] = [];
       }
     }
-
-
   }
 
   public model_yr_settings = {
@@ -715,7 +721,8 @@ export class VehicleEventStatusComponent implements OnInit {
     label: "Key Data Elements",
     primary_key: 'ddm_rmp_lookup_dropdown_order_event_id',
     label_key: 'order_event',
-    title: ""
+    title: "",
+    isDisabled : false
   }
 
   ngOnDestroy() {

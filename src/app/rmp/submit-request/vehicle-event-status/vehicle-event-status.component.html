@@ -156,7 +156,7 @@
                 Other Key Data Elements<span class="red">*</span>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 alignCenter">
-                <mat-checkbox [(ngModel)]="keyDataEle.others.checked"></mat-checkbox>
+                <mat-checkbox [(ngModel)]="keyDataEle.others.checked" (change)="checkKeyDataEle($event)"></mat-checkbox>
                 <mat-form-field style="width: 100%">
                     <mat-label>Please enter other Key Data Elements</mat-label>
                     <input matInput placeholder="Please enter other Key Data Elements" value="" 

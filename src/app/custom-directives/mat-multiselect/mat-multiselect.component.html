@@ -3,7 +3,8 @@
 
 <mat-form-field>
     <mat-label>{{ l_db.length?settings.label:"" }}</mat-label>
-    <mat-select multiple [(ngModel)]="selectAll" [formControl]="toppings" [matTooltip]="l_db.length?getTitle():''">
+    <mat-select multiple [(ngModel)]="selectAll" [formControl]="toppings" [matTooltip]="l_db.length?getTitle():''"
+    [disabled]="settings.isDisabled">
         <mat-select-trigger>
             {{ selectAll.length === 2 ? getTitle() : getTitle() }}
         </mat-select-trigger>
@@ -13,7 +14,6 @@
         <input matInput (keyup)="onKey($event.target.value)" placeholder="search..." id="multiInput">
         <div *ngFor="let item of searched_data" class="custom-checkbox-opt">
             <mat-checkbox [ngModel]="item['checked']" [value]="item[settings.primary_key]"
-                [disabled]="settings.isDisabled"
                 [matTooltip]="item['tooltip']"
                 (change)="checkedBox($event)"> {{ item[settings.label_key] }} </mat-checkbox>
         </div>

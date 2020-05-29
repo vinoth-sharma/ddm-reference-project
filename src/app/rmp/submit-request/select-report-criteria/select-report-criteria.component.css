@@ -3,7 +3,7 @@
     background: #fafafa;
     padding: 5rem 10rem;
     margin-top: 8vh;
-    font-size: 2vh;
+    font-size: inherit;
 }
 .reportCriteria{
     background: white;

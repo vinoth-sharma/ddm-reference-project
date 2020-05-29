@@ -95,8 +95,8 @@ mat-form-field{
     white-space: normal !important;
 }
 .mat-checkbox-inner-container, .mat-radio-outer-circle, .mat-radio-container, .mat-radio-inner-circle{
-    height: 16px !important;
-    width: 16px !important;
+    height: 1.1vw !important;
+    width: 1.1vw !important;
     margin-right: 0.5vw!important;
 }
 /* .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate{
@@ -148,4 +148,7 @@ a:hover, a:focus{
 }
 .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate{
     background: #ff4081;
+}
+.modal-header{
+    font-size: 1.5em !important;
 }

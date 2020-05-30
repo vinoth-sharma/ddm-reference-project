@@ -137,12 +137,12 @@ export class ReportFrequencyComponent implements OnInit {
       this.selected.monthly_others = false;
   }
 
-  public validateNdSubmit() {
-    if (!this.selected.dl_list.length)
-      this.toaster.error("Please add at least one email in Distribution List");
-    else
-      this.submitFrequencyData();
-  }
+  // public validateNdSubmit() {
+  //   if (!this.selected.dl_list.length)
+  //     this.toaster.error("Please add at least one email in Distribution List");
+  //   else
+  //     this.submitFrequencyData();
+  // }
 
   public submitFrequencyData() {
 
@@ -179,17 +179,18 @@ export class ReportFrequencyComponent implements OnInit {
       })
     }
     
-    if (this.selected.reportFreq_regBasis) {
-      if (!req_body.report_freq.length) {
-        this.toaster.error("Please select atleast one frequency")
-      }
-      else if (req_body.report_freq.every(freq => freq['description']?freq['description'].length:false))
-        this.reportFreqEmitter.emit(req_body)
-      else
-        this.toaster.error("Please specify the value if selected others")
-    }
-    else
-      this.reportFreqEmitter.emit(req_body)
+    // if (this.selected.reportFreq_regBasis) {
+    //   if (!req_body.report_freq.length) {
+    //     this.toaster.error("Please select atleast one frequency")
+    //   }
+    //   else if (req_body.report_freq.every(freq => freq['description']?freq['description'].length:false))
+    //     this.reportFreqEmitter.emit(req_body)
+    //   else
+    //     this.toaster.error("Please specify the value if selected others")
+    // }
+    // else
+
+      this.reportFreqEmitter.emit(req_body);
   }
 
   public emailSelectionDone(event) {

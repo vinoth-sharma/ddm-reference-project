@@ -248,6 +248,17 @@ export class SelectReportCriteriaComp implements OnInit {
       this.ngToaster.error("Market selection is mandatory")
     else if (!this.selected.division.length)
       this.ngToaster.error("Division selection is mandatory")
+    else if(!req.dl_list.length)
+      this.ngToaster.error("Please add at least one email in Distribution List");
+    else if (req.freq === "Recurring") {
+        if (!req.report_freq.length) {
+          this.ngToaster.error("Please select atleast one frequency")
+        }
+        else if (req.report_freq.every(freq => freq['description']?freq['description'].length:false))
+          this.submitReportCriteria(req);
+        else
+          this.ngToaster.error("Please specify the value if selected others")
+      }
     else
       this.submitReportCriteria(req);
   }

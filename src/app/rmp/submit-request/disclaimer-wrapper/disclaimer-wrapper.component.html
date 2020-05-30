@@ -17,11 +17,11 @@
             <p>Read <a class="custom-link" (click)='openDisclaimerModal()' style="cursor:pointer">Disclaimers</a>
                 and click the Acknowledge button when complete
             </p>
-            <p style="width: 90%;" *ngIf="user_role !='Admin'">
+            <p style="width: 90%;" *ngIf="user_role !='Admin' && userData">
                 <mat-checkbox disabled [checked]="userData.disclaimer_ack"> Disclaimer Acknowledged :
                     {{userData.disclaimer_ack | date:"dd-MMM-yyyy"}}</mat-checkbox>
             </p>
-            <p style="width: 90%;">
+            <p style="width: 90%;" *ngIf="userData">
                 <mat-checkbox disabled [checked]="userData.saved_setting"> Settings Saved :
                     {{userData.saved_setting | date:"dd-MMM-yyyy"}}</mat-checkbox>
             </p>

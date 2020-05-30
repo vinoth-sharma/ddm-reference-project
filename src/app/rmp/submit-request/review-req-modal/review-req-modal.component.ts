@@ -4,6 +4,8 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 import Utils from 'src/utils';
 import { Router } from '@angular/router';
 import { SubmitRequestService } from '../submit-request.service';
+declare var jsPDF: any;
+declare var $:any;
 
 @Component({
   selector: 'app-review-req-modal',
@@ -330,6 +332,22 @@ export class ReviewReqModalComponent implements OnInit {
 
     console.log(this.marketData);
 
+  }
+
+  downloadSummary(){
+    var specialElementHandlers = {
+      '#editor': function (element, renderer) {
+        return true;
+      }
+    };
+    var doc = new jsPDF();
+    // doc.setFont("arial");
+    doc.lineHeightProportion = 2;
+    doc.fromHTML(
+      $('#summaryView').html() , 15, 15,
+      { 'width': 170, 'elementHandlers': specialElementHandlers },
+      function () { doc.save(`summary-request.pdf`); }
+    )
   }
 
   closeDailog(): void {

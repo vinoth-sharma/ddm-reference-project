@@ -149,6 +149,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public user_role: string;
   public readOnlyContentHelper = true;
   public enableUpdateData = false;
+  public errorModalMessage: string = '';
   public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
@@ -310,15 +311,11 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       this.user_department = this.user_info['department']
       this.user_email = this.user_info['email']
       this.user_contact = this.user_info['contact_no']
-      this.text_notification = this.user_info['alternate_number']
-      if (this.text_notification != "" && this.text_notification != null) {
-
-        this.te_number = this.text_notification.split(/[-]/);
-        this.text_number = this.te_number[1];
-      }
-      else {
+      if (this.user_info['alternate_number'] != ""
+        && this.user_info['alternate_number'] != null)
+        this.text_number = this.user_info['alternate_number']
+      else
         this.text_number = ""
-      }
       this.marketselections = response
       if (this.user_info['carrier'] == "") {
         this.disableNotificationBox()
@@ -402,14 +399,8 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     $("#notification_yes").prop("checked", "true")
     $("#phone").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");
-    if (this.marketselections["user_text_notification_data"]["alternate_number"] != null && this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
-      let cellPhoneHolder = this.marketselections["user_text_notification_data"]['alternate_number'];
-      this.te_number = cellPhoneHolder.split(/[-]/);
-      this.text_number = this.te_number[1];
-
-      if ((<HTMLInputElement>document.getElementById("phone"))) {
-        ((<HTMLInputElement>document.getElementById("phone")).value) = this.text_number;
-      }
+    if (this.user_info["alternate_number"] != null && this.user_info["alternate_number"] != "") {
+      this.text_number = this.user_info["alternate_number"];
       let selectedCellular = this.marketselections["user_text_notification_data"]["carrier"]
       this.carrier_selected = selectedCellular
       $("#carrier option:eq(0)").prop("selected", "true")
@@ -424,16 +415,14 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       $("#notification_yes").prop("checked", "true")
       $("#phone").removeAttr("disabled");
       $("#carrier").removeAttr("disabled");
-      if ((<HTMLInputElement>document.getElementById("phone"))) {
-        ((<HTMLInputElement>document.getElementById("phone")).value) = "";
-      }
+      this.text_number = '';
       $("#carrier option[value = '']").prop("selected", "true")
     }
   }
 
   // disable  a few input field based on checkbox selection
   public disableNotificationBox() {
-    (<HTMLTextAreaElement>(document.getElementById("phone"))).value = "";
+    this.text_number = '';
     $("#carrier option[value = '']").prop("selected", "true")
     this.carrier_selected = ""
     $("#notification_no").prop("checked", "true")
@@ -649,7 +638,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.report_id_service.changeSaved(true);
 
     if (this.selectedItems.length < 1 || this.divisionselectedItems.length < 1) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Select at least one market and division to proceed forward</h5>";
+      this.errorModalMessage = "Select at least one market and division to proceed forward";
       document.getElementById("errorTrigger").click()
       this.spinner.hide();
     }
@@ -943,17 +932,17 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     }
 
     else if (this.text_number == "" && this.carrier_selected == "") {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter a valid number and select a carrier</h5>";
+      this.errorModalMessage = "Please enter a valid number and select a carrier";
       document.getElementById("errorTrigger").click()
       return
     }
     else if (this.text_number == "") {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Number field cannot be blank</h5>";
+      this.errorModalMessage = "Number field cannot be blank";
       document.getElementById("errorTrigger").click()
       return
     }
     else if (this.carrier_selected == "") {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Please select a carrier</h5>";
+      this.errorModalMessage = "Please select a carrier";
       document.getElementById("errorTrigger").click()
       return
     }
@@ -972,7 +961,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
         })
       }
       else {
-        document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter valid number(strictly numbers without special characters)</h5>";
+        this.errorModalMessage = "Please enter valid number(strictly numbers without special characters)";
         document.getElementById("errorTrigger").click()
         this.spinner.hide();
         return

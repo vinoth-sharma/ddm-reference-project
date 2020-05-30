@@ -3,19 +3,16 @@
   <div *ngIf="reports" class="left-tabs">
     <div class="tabs">
       <a>
-        <button class="btn btn-primary" (click)="NewReportOnSelectedCriteria()">New Request Using Selected Criteria /
-          Modify Request</button>
+        <button class="btn btn-primary" (click)="NewReportOnSelectedCriteria()">New Request Using Selected Criteria / Modify Request</button>
       </a>
       <a>
-        <button class="btn btn-primary" onmouseover="" style="cursor: pointer;" (click)="populateDl()"
-          data-backdrop="static" data-keyboard="false">Edit Distribution List</button>
+        <button class="btn btn-primary" onmouseover="" style="cursor: pointer;" (click)="populateDl()" data-backdrop="static" data-keyboard="false">Edit Distribution List</button>
       </a>
       <a>
         <button class="btn btn-danger" data-toggle="modal" (click)="CheckCancel()">Cancel/Reassign</button>
       </a>
       <a>
-        <button class="btn btn-primary" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;">Enter
-          Comment
+        <button class="btn btn-primary" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;">Enter Comment
         </button>
       </a>
       <button id="enter_comment_button" data-toggle="modal" data-target="#ModalComment" style="display:none"></button>
@@ -32,14 +29,14 @@
         <h3>Request Status</h3>
       </div>
       <div class="col-4">
-        <input placeholder="Search by Request Number/Requestor/Title/Status" class="form-control"
-          [(ngModel)]="filters.global" name="global" (input)="filterData()" [ngModelOptions]="{standalone: true}">
+        <input placeholder="Search by Request Number/Requestor/Title/Status" class="form-control" [(ngModel)]="filters.global" name="global"
+          (input)="filterData()" [ngModelOptions]="{standalone: true}">
       </div>
       <div class="col-4" style="padding-right:0%;">
         <div class="icons">
           <div class="press">
-            <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
-              data-backdrop="static" data-keyboard="false">
+            <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails" data-backdrop="static"
+              data-keyboard="false">
               User Details
             </button>
             <button data-target="#helpModal" data-toggle="modal" class="press-button">
@@ -69,8 +66,7 @@
                   <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                 </div>
                 <div style="width: 70px !important;">
-                  <input (input)="filterData()" placeholder="Search" class="form-control"
-                    [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id"
+                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id"
                     [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
@@ -81,8 +77,8 @@
                   <div *ngIf="reports['created_on']">&#8595;</div>
                 </div>
                 <div style="width: 70px !important;">
-                  <input (input)="filterData()" placeholder="Search" class="form-control"
-                    [(ngModel)]="filters.created_on" name="filters.created_on" [ngModelOptions]="{standalone: true}">
+                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.created_on" name="filters.created_on"
+                    [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -92,8 +88,8 @@
                   <div *ngIf="reports['requestor']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control"
-                    [(ngModel)]="filters.requestor" name="filters.requestor" [ngModelOptions]="{standalone: true}">
+                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.requestor" name="filters.requestor"
+                    [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -103,8 +99,7 @@
                   <div *ngIf="reports['on_behalf_of']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control"
-                    [(ngModel)]="filters.on_behalf_of" name="filters.on_behalf_of"
+                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.on_behalf_of" name="filters.on_behalf_of"
                     [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
@@ -115,8 +110,8 @@
                   <div *ngIf="reports['title']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.title"
-                    name="filters.title" [ngModelOptions]="{standalone: true}">
+                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.title" name="filters.title"
+                    [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -126,8 +121,8 @@
                   <div *ngIf="reports['frequency']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
-                    class="form-control" [(ngModel)]="filters.frequency" name="filters.frequency">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search" class="form-control" [(ngModel)]="filters.frequency"
+                    name="filters.frequency">
                 </div>
               </th>
               <th>
@@ -137,15 +132,14 @@
                   <div *ngIf="reports['assigned_to']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
-                    class="form-control" [(ngModel)]="filters.assigned_to" name="filters.assigned_to">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search" class="form-control" [(ngModel)]="filters.assigned_to"
+                    name="filters.assigned_to">
                 </div>
               </th>
               <th style="min-width: 135px;">
                 <div id="status_dropdown" style="width: 135px !important;">
-                  <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
-                    [settings]="StatusDropdownSettings" (onSelect)="filterData()" (onDeSelect)="filterData()"
-                    style="font-size: 12px;width:135px; ">
+                  <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter" [settings]="StatusDropdownSettings" (onSelect)="filterData()"
+                    (onDeSelect)="filterData()" style="font-size: 12px;width:135px; ">
                   </angular4-multiselect>
                 </div>
               </th>
@@ -156,8 +150,8 @@
                   <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                 </div>
                 <div style="width: 70px !important;">
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
-                    class="form-control" [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search" class="form-control" [(ngModel)]="filters.ddm_rmp_status_date"
+                    name="filters.ddm_rmp_status_date">
                 </div>
               </th>
               <th style="text-align:center">
@@ -172,154 +166,141 @@
             </tr>
           </thead>
           <tbody>
-            <ng-container
-              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ;">
+            <ng-container *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ;">
               <tr class="clickable">
                 <td style="padding:6px;width: 100%;">
-              <tr class="row">
-                <input type="checkbox" [checked]="element.isChecked" class="report_id_checkboxes"
-                  [id]="element.ddm_rmp_post_report_id" (click)="Report_request(element, $event)">
-              </tr>
-              <tr class="row">&nbsp;</tr>
-              <tr class="row">
-                <button class="btn-sm btn-primary medium-btn"
-                  (click)="set_report_comments(element.ddm_rmp_post_report_id)" data-toggle="collapse"
-                  [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id"
-                  style="padding: 0px 0px 0px 4px;font-size: 12px">Comments
-                  <i id="ic" class="material-icons comment-sec"
-                    style="padding-left:0px;font-size:1.5rem;">expand_more</i>
-                </button>
-              </tr>
-              </td>
-              <td>
-                <div style="width: 70px !important;">
-                  {{element.ddm_rmp_post_report_id}}
-                </div>
-              </td>
-              <td>
-                <div style="width: 70px !important;">
-                  {{element.created_on| date: 'dd-MMM-yyyy' }}
-                </div>
-              </td>
-              <td>
-                <div *ngIf="element.requestor == 'TBD'">
-                  {{ element.requestor }}
-                  <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary" data-toggle="modal" data-target="#tbdModal"
-                      (click)="TBD(element)">
-                      Assign Owner
+                  <tr class="row">
+                    <input type="checkbox" [checked]="element.isChecked" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id" (click)="Report_request(element, $event)">
+                  </tr>
+                  <tr class="row">&nbsp;</tr>
+                  <tr class="row">
+                    <button class="btn-sm btn-primary medium-btn" (click)="set_report_comments(element.ddm_rmp_post_report_id)" data-toggle="collapse"
+                      [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id" style="padding: 0px 0px 0px 4px;font-size: 12px">Comments
+                      <i id="ic" class="material-icons comment-sec" style="padding-left:0px;font-size:1.5rem;">expand_more</i>
                     </button>
+                  </tr>
+                </td>
+                <td>
+                  <div style="width: 70px !important;">
+                    {{reports.length}}
+                    {{element.ddm_rmp_post_report_id}}
                   </div>
-                </div>
-                <div *ngIf="element.requestor != 'TBD'">
-                  {{ element.requestor }}
-                </div>
-              </td>
-              <td>
-                <div>
-                  {{element.on_behalf_of}}
-                </div>
-              </td>
-              <td>
-                <div>
-                  {{element.title}}
-                </div>
-              </td>
-              <td>
-                <div>
-                  {{element.frequency}}
-                </div>
-              </td>
-              <td>
-                <div *ngIf="element.assigned_to == 'TBD'">
-                  {{ element.assigned_to }}
-                  <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary" data-toggle="modal" data-target="#tbdModalAssigned"
-                      (click)="TBD(element)">
-                      Assign Owner
-                    </button>
+                </td>
+                <td>
+                  <div style="width: 70px !important;">
+                    {{element.created_on| date: 'dd-MMM-yyyy' }}
                   </div>
-                </div>
-                <div *ngIf="element.assigned_to != 'TBD'">
-                  {{element.assigned_to}}
-                </div>
-              </td>
-              <td>
-                <div *ngIf="element.status != 'Recurring' && element.status != 'Active'"
-                  style="width: 115px !important;">
-                  {{element.status}}
-                </div>
-                <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
-                  {{element.status}}
-                  <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary" (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
-                      Mark as Complete
-                    </button>
+                </td>
+                <td>
+                  <div *ngIf="element.requestor == 'TBD'">
+                    {{ element.requestor }}
+                    <div *ngIf="user_role=='Admin'">
+                      <button class="btn-sm btn-primary" data-toggle="modal" data-target="#tbdModal" (click)="TBD(element)">
+                        Assign Owner
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
-                  {{element.status}}
-                  <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary medium-btn" style="margin-left: 15px;" data-toggle="modal"
-                      data-target="#changeStatusModal" (click)="openEditStatusModal(element)">
-                      Edit
-                    </button>
+                  <div *ngIf="element.requestor != 'TBD'">
+                    {{ element.requestor }}
                   </div>
-                </div>
-              </td>
-              <td>
-                <div style="width: 70px !important;">
-                  {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
-                </div>
-              </td>
-              <td style="position: relative;">
-                <button class="btn btn-outline-primary" [title]="element.link_to_results"
-                  (click)="openNewWindow(element.link_to_results)"
-                  *ngIf="element.link_to_results != '' && element.status=='Completed'"
-                  style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
-                  Url&nbsp;&nbsp;&#10145;
-                </button>
-                <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addUrl"
-                  (click)="addLinkUrl(element,'create')"
-                  *ngIf="element.link_to_results == '' && element.status=='Completed' && user_role =='Admin'"
-                  style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
-                  Add Url
-                </button>
-                <button *ngIf="element.link_to_results != '' && element.status=='Completed' && user_role =='Admin'"
-                  class="btn-sm btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
-                  (click)="addLinkUrl(element,'edit')">
-                  Edit
-                </button>
-              </td>
-              <td *ngIf="element.status != 'Incomplete'">
-                <div style="width: 80px !important;">
-                  <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
-                    data-toggle="modal" data-target="#queryCriteria"
-                    style="    width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
-                    QueryCriteria
+                </td>
+                <td>
+                  <div>
+                    {{element.on_behalf_of}}
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    {{element.title}}
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    {{element.frequency}}
+                  </div>
+                </td>
+                <td>
+                  <div *ngIf="element.assigned_to == 'TBD'">
+                    {{ element.assigned_to }}
+                    <div *ngIf="user_role=='Admin'">
+                      <button class="btn-sm btn-primary" data-toggle="modal" data-target="#tbdModalAssigned" (click)="TBD(element)">
+                        Assign Owner
+                      </button>
+                    </div>
+                  </div>
+                  <div *ngIf="element.assigned_to != 'TBD'">
+                    {{element.assigned_to}}
+                  </div>
+                </td>
+                <td>
+                  <div *ngIf="element.status != 'Recurring' && element.status != 'Active'" style="width: 115px !important;">
+                    {{element.status}}
+                  </div>
+                  <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
+                    {{element.status}}
+                    <div *ngIf="user_role=='Admin'">
+                      <button class="btn-sm btn-primary" (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
+                        Mark as Complete
+                      </button>
+                    </div>
+                  </div>
+                  <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
+                    {{element.status}}
+                    <div *ngIf="user_role=='Admin'">
+                      <button class="btn-sm btn-primary medium-btn" style="margin-left: 15px;" data-toggle="modal" data-target="#changeStatusModal"
+                        (click)="openEditStatusModal(element)">
+                        Edit
+                      </button>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div style="width: 70px !important;">
+                    {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
+                  </div>
+                </td>
+                <td style="position: relative;">
+                  <button class="btn btn-outline-primary" [title]="element.link_to_results" (click)="openNewWindow(element.link_to_results)"
+                    *ngIf="element.link_to_results != '' && element.status=='Completed'" style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
+                    Url&nbsp;&nbsp;&#10145;
                   </button>
-                </div>
-              </td>
-              <td *ngIf="user_role=='Admin' && element.status == 'Active'">
-                <div>
-                  <button class="btn-sm btn-primary pointer" routerLinkActive="active-route"
-                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
-                    Create Report
+                  <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addUrl" (click)="addLinkUrl(element,'create')"
+                    *ngIf="element.link_to_results == '' && element.status=='Completed' && user_role =='Admin'" style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
+                    Add Url
                   </button>
-                </div>
-              </td>
-              <td *ngIf="user_role=='Non-Admin' && element.status == 'Active'">
-                <div>
-                  <button class="btn-sm btn-primary pointer" routerLinkActive="active-route"
-                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
-                    Create Report
+                  <button *ngIf="element.link_to_results != '' && element.status=='Completed' && user_role =='Admin'" class="btn-sm btn-primary"
+                    style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl" (click)="addLinkUrl(element,'edit')">
+                    Edit
                   </button>
-                </div>
-              </td>
-              <td *ngIf="user_role=='Admin' && element.status != 'Active'">
-                <div>
-                </div>
-              </td>
+                </td>
+                <td *ngIf="element.status != 'Incomplete'">
+                  <div style="width: 80px !important;">
+                    <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)" data-toggle="modal"
+                      data-target="#queryCriteria" style="    width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
+                      QueryCriteria
+                    </button>
+                  </div>
+                </td>
+                <td *ngIf="user_role=='Admin' && element.status == 'Active'">
+                  <div>
+                    <button class="btn-sm btn-primary pointer" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)"
+                      style="font-size: 12px">
+                      Create Report
+                    </button>
+                  </div>
+                </td>
+                <td *ngIf="user_role=='Non-Admin' && element.status == 'Active'">
+                  <div>
+                    <button class="btn-sm btn-primary pointer" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)"
+                      style="font-size: 12px">
+                      Create Report
+                    </button>
+                  </div>
+                </td>
+                <td *ngIf="user_role=='Admin' && element.status != 'Active'">
+                  <div>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td class="col-sm-12" colspan="12" style="padding: 0;">
@@ -329,8 +310,7 @@
                         <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
                           <div class="col-sm-5">
                             <p *ngIf="comment_element.users_table == user_id" class="comment bubble_left">
-                              <strong>{{comment_element.commentor}}
-                                [{{comment_element.comment_timestamp | date:'yyyy-MM-dd HH:mm:ss'}}]:
+                              <strong>{{comment_element.commentor}} [{{comment_element.comment_timestamp | date:'yyyy-MM-dd HH:mm:ss'}}]:
                               </strong>
                               <br>{{comment_element.comment}}
                             </p>
@@ -338,8 +318,7 @@
                           <div class="col-sm-2"></div>
                           <div class="col-sm-5">
                             <p *ngIf="comment_element.users_table != user_id" class="comment bubble_right">
-                              <strong>{{comment_element.commentor}}
-                                [{{comment_element.comment_timestamp | date:'yyyy-MM-dd HH:mm:ss'}}]:
+                              <strong>{{comment_element.commentor}} [{{comment_element.comment_timestamp | date:'yyyy-MM-dd HH:mm:ss'}}]:
                               </strong>
                               <br>{{comment_element.comment}}
                             </p>
@@ -355,7 +334,7 @@
         </table>
       </div>
       <div style="display:flex; align-items: flex-end;flex-direction: row;width:100%">
-        <mat-paginator style="margin-left:auto" [length]="paginatorlength" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
+        <mat-paginator style="margin-left:auto" [length]="reports.length" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
           (page)="onPaginationChange($event)">
         </mat-paginator>
       </div>
@@ -383,8 +362,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button style="color:transparent;border:none" data-dismiss="modal" *ngIf="comment_text"
-          (click)="extract_comment()">
+        <button style="color:transparent;border:none" data-dismiss="modal" *ngIf="comment_text" (click)="extract_comment()">
           <i fa class="fa fa-paper-plane"></i>
         </button>
       </div>
@@ -415,15 +393,14 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-target="#ModalComment"
-          onmouseover="" style="cursor: pointer;" data-dismiss="modal">Ok</button>
-        <button type="button" class="btn btn-danger cancel-btn" data-toggle="modal" data-target="#ModalComment"
-          onmouseover="" style="cursor: pointer;" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-target="#ModalComment" onmouseover="" style="cursor: pointer;"
+          data-dismiss="modal">Ok</button>
+        <button type="button" class="btn btn-danger cancel-btn" data-toggle="modal" data-target="#ModalComment" onmouseover="" style="cursor: pointer;"
+          data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
 </div>
-
 
 <!-----------------------------------DaOts Modal---------------------------------------------->
 <div id="DaOts" class="modal fade" role="dialog">
@@ -447,8 +424,7 @@
 
 <!-----------------------------------Report Tab Modal DDM Configurable------------------------>
 
-<div class="modal fade" id="postLink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div class="modal fade" id="postLink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -466,17 +442,16 @@
             <div>
               <i>*Maximum 25 characters allowed</i>
             </div>
-            <input type="text" class="form-control title-box" [ngModelOptions]="{standalone: true}" id="document-name"
-              maxlength="25" name="documentName" [(ngModel)]='documentName' ngDefaultControl required>
+            <input type="text" class="form-control title-box" [ngModelOptions]="{standalone: true}" id="document-name" maxlength="25"
+              name="documentName" [(ngModel)]='documentName' ngDefaultControl required>
 
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">URL:
               <span style="color: red">*</span>
             </label>
-            <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
-              [ngModelOptions]="{standalone: true}" id="document-url" name="documentUrl" [(ngModel)]='documentUrl'
-              ngDefaultControl required>
+            <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control" [ngModelOptions]="{standalone: true}"
+              id="document-url" name="documentUrl" [(ngModel)]='documentUrl' ngDefaultControl required>
           </div>
         </form>
       </div>
@@ -511,10 +486,8 @@
           </div>
           <div class="col-sm-10 modal-heading">
             <b>Distribution DataMart (DDM) Report Request Confirmation</b>
-            <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Vehicle
-              Event Status</div>
-            <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer
-              Allocation
+            <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Vehicle Event Status</div>
+            <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer Allocation
             </div>
           </div>
           <br>
@@ -535,8 +508,7 @@
             <span>
               <b>Request Date:</b>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <span
-                *ngIf='summary && summary.ddm_rmp_status_date'>{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span>
+              <span *ngIf='summary && summary.ddm_rmp_status_date'>{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span>
             </span>
             <br>
             <span>
@@ -562,42 +534,42 @@
             </div>
             <div class="div-wrap">
               <b>Division(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
+              <span *ngIf='division_dropdown'>{{ division_dropdown }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
               <b>Region(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ region_description }}&nbsp;&nbsp;</span>
+              <span *ngIf='region_description'>{{ region_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
               <b>Zone(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ zone_description }}&nbsp;&nbsp;</span>
+              <span *ngIf='zone_description'>{{ zone_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
               <b>Area(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ area_description }}&nbsp;&nbsp;</span>
+              <span *ngIf='area_description'>{{ area_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
               <b>LMA(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ lma_description }}&nbsp;&nbsp;</span>
+              <span *ngIf='lma_description'>{{ lma_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
               <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ gmma_description }}&nbsp;&nbsp;</span>
+              <span *ngIf='gmma_description'>{{ gmma_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
               <b>BAC(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ bac_description }}&nbsp;&nbsp;</span>
+              <span *ngIf='bac_description'>{{ bac_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
               <b>FAN(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ fan_desc }}&nbsp;&nbsp;</span>
+              <span *ngIf='fan_desc'>{{ fan_desc }}&nbsp;&nbsp;</span>
               <br>
               <br>
             </div>
@@ -611,7 +583,7 @@
             <br>
             <b style="font-size:120%">Special Identifiers</b>
             <div class="div-wrap">
-              <p>{{ special_identifier }}</p>
+              <p *ngIf='special_identifier'> {{ special_identifier }}</p>
             </div>
             <h5>
               <b>Text Notification, when Requests are fulfilled?</b>
@@ -630,32 +602,32 @@
                 <b style="font-size:120%">Order Criteria</b>
                 <br>
                 <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+                <span *ngIf='allocation_group'>{{ allocation_group }}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
                 <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ model_year }}&nbsp;&nbsp;</span>
+                <span *ngIf='model_year'>{{ model_year }}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
                 <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
+                <span *ngIf='vehicle_line_brand'>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
                 <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
+                <span *ngIf='merchandising_model'>{{ merchandising_model }}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
                 <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ order_event }}&nbsp;&nbsp;</span>
+                <span *ngIf='order_event'>{{ order_event }}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
                 <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ order_type }}&nbsp;&nbsp;</span>
+                <span *ngIf='order_type'>{{ order_type }}&nbsp;&nbsp;</span>
                 <br>
                 <br>
                 <br>
@@ -665,7 +637,7 @@
                 <br>
                 <br>
                 <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
-                <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
+                <span *ngIf='checkbox_data'>{{ checkbox_data}} &nbsp;&nbsp;</span>
                 <br>
                 <br>
               </div>
@@ -692,11 +664,11 @@
               <br>
               <div class="div-wrap">
                 <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
-                <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+                <span *ngIf='allocation_group'>{{ allocation_group }}&nbsp;&nbsp;</span>
               </div>
               <div class="div-wrap">
                 <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ model_year }}&nbsp;&nbsp;</span>
+                <span *ngIf='model_year'>{{ model_year }}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
@@ -727,11 +699,10 @@
   </div>
 </div>
 
-
 <!------------------------------------Help Modal------------------------------ -->
 
-<div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
@@ -741,13 +712,11 @@
       <div class="modal-body display-notes-scroll-modal">
         <div class="row">
           <div class="col-9">
-            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
-              style="margin-right:3%">Save</button>
+            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
             <button class="btn btn-danger save-text-ddm" (click)="resetHelpParams()" *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3">
-            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
-              style="background-color:white; border:none;float:right">
+            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()' style="background-color:white; border:none;float:right">
               <a data-toggle="tooltip" title="EDIT">
                 <i id="ic" class="material-icons">mode_edit</i>
               </a>
@@ -755,13 +724,11 @@
           </div>
         </div>
         <div class="quillEditor">
-          <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'
-            (onContentChanged)='textChanged($event)'></quill-editor>
+          <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper' (onContentChanged)='textChanged($event)'></quill-editor>
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="resetHelpParams()"
-          data-dismiss="modal">Close</button>
+        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="resetHelpParams()" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -770,8 +737,8 @@
 <!--                                    <Summary Modal End>                                           -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <button id="errorTrigger" data-toggle="modal" data-target="#errorModalRequest" style="display:none">Error</button>
-<div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true" style="z-index: 10000">
+<div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  style="z-index: 10000">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -812,13 +779,11 @@
             </button>
           </div>
           <div class="col-4" style="padding-left: 30px;">
-            <button class="btn btn-primary" (click)="AssignTBD()" style="padding-right: 17px;padding-left: 17px;">Assign
-              Requestor
+            <button class="btn btn-primary" (click)="AssignTBD()" style="padding-right: 17px;padding-left: 17px;">Assign Requestor
             </button>
           </div>
           <div class="col-4" style="padding-left: 40px;">
-            <button class="btn btn-primary" (click)="Assign_AssignTo()"
-              style="padding-right: 20;padding-left: 18px;">Assign Acceptor</button>
+            <button class="btn btn-primary" (click)="Assign_AssignTo()" style="padding-right: 20;padding-left: 18px;">Assign Acceptor</button>
           </div>
         </div>
       </div>
@@ -849,8 +814,7 @@
         Are you sure you want to cancel the request permanently?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-          (click)="closeCancel_modal()">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancel_modal()">Close</button>
         <button type="button" class="btn btn-success" data-dismiss="modal" (click)="Cancel()">Yes</button>
       </div>
     </div>
@@ -878,8 +842,8 @@
           <h5>Select a user to assign the report to:</h5>
         </div>
         <div class="row" style="padding-left:10px;">
-          <angular4-multiselect [data]="tbddropdownListfinal_report" [(ngModel)]="tbdselectedItems_report"
-            [settings]="tbddropdownSettings_report" style="width:80%;">
+          <angular4-multiselect [data]="tbddropdownListfinal_report" [(ngModel)]="tbdselectedItems_report" [settings]="tbddropdownSettings_report"
+            style="width:80%;">
           </angular4-multiselect>
         </div>
       </div>
@@ -913,16 +877,15 @@
           <h5>Select a user to assign the report to:</h5>
         </div>
         <div class="row" style="padding-left:10px;">
-          <angular4-multiselect [data]="tbddropdownListfinalAssigned" [(ngModel)]="tbdselectedItemsAssigned"
-            [settings]="tbddropdownSettingsAssigned" style="width:80%;">
+          <angular4-multiselect [data]="tbddropdownListfinalAssigned" [(ngModel)]="tbdselectedItemsAssigned" [settings]="tbddropdownSettingsAssigned"
+            style="width:80%;">
           </angular4-multiselect>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" data-dismiss="modal" (click)="TBD_Assigned()">Save Changes
         </button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-          (click)="closeTBD_Assigned()">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTBD_Assigned()">Close</button>
       </div>
     </div>
   </div>
@@ -966,9 +929,10 @@
     </div>
   </div>
 </div>
+
 <!----------------------------------------Distribution List---------------------------------- -->
-<div class="modal fade " id="DistributionListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true" style="z-index: 10000">
+<div class="modal fade " id="DistributionListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  style="z-index: 10000">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -983,8 +947,8 @@
               <br> Click Add.</p>
           </div>
           <div class="col-sm-7 dltext-div">
-            <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control"
-              [(ngModel)]="model" [ngbTypeahead]="searchUserList" [ngModelOptions]="{standalone: true}" />
+            <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control" [(ngModel)]="model" [ngbTypeahead]="searchUserList"
+              [ngModelOptions]="{standalone: true}" />
             <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
           </div>
           <div class="col-sm-2">
@@ -1022,7 +986,7 @@
 </div>
 
 <!-- add url modal -->
-<div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -1038,8 +1002,8 @@
         </div>
       </div>
       <div class="modal-body">
-        <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" placeholder="https://example.com"
-          type="text" class="form-control" />
+        <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" placeholder="https://example.com" type="text"
+          class="form-control" />
         <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
       </div>
       <div class="modal-footer">
@@ -1068,15 +1032,13 @@
         </div>
       </div>
       <div class="modal-body">
-        <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%"
-          id="selectReportStatus">
+        <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%" id="selectReportStatus">
           <option value="Active"> Active </option>
           <option value="Completed"> Completed </option>
         </select>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'"
-          (click)="saveReportStatus()">Save Changes</button>
+        <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'" (click)="saveReportStatus()">Save Changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
       </div>
     </div>
@@ -1093,84 +1055,79 @@
     <h3>Vehicle Event Status</h3>
   </pre>
 <br>
-<br>
 <pre style="width: 100%;float: left;margin-bottom: 10px;">
   <pre class="div-wrap">
       <span> <b>Request Date:</b>
-        &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <span *ngIf='summary && summary.ddm_rmp_status_date'>{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span></span>
   </pre>
 <pre class="div-wrap">
-      <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+      <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;
+        <span *ngIf='summary && summary.ddm_rmp_post_report_id'> {{summary?.ddm_rmp_post_report_id}}</span></span>
   </pre>
 <pre *ngFor="let element of summary?.requestor" class="div-wrap">
-      <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}
+      <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf='element && element.requestor'>{{ element?.requestor }}</span>
   </pre>
 <pre class="div-wrap">
-      <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
+      <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf='element && element.title'>{{summary?.title}}</span></span> <br>
   </pre>
 </pre>
+<br>
 <pre class="Request-summary">
 <b style="font-size:150%">Market Selections</b>
 <pre class="div-wrap">
   <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
     *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
-  <br>
 </pre>
 <pre class="div-wrap">
   <b>Division(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
-  <br>
+  <span *ngIf='division_dropdown'>{{ division_dropdown }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>Region(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ region_description }}&nbsp;&nbsp;</span>
-  <br>
+  <span *ngIf='region_description'>{{ region_description }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>Zone(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ zone_description }}&nbsp;&nbsp;</span>
-  <br>
+  <span *ngIf='zone_description'>{{ zone_description }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>Area(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ area_description }}&nbsp;&nbsp;</span>
-  <br>
+  <span *ngIf='area_description'>{{ area_description }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>LMA(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ lma_description }}&nbsp;&nbsp;</span>
-  <br>
+  <span *ngIf='lma_description'>{{ lma_description }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ gmma_description }}&nbsp;&nbsp;</span>
-  <br>
+  <span *ngIf='gmma_description'>{{ gmma_description }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>BAC(s) Selected:</b> &nbsp;&nbsp;
-              <span>{{ bac_description }}&nbsp;&nbsp;</span>
-              <br>
+  <span *ngIf='bac_description'>{{ bac_description }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>FAN(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ fan_desc }}&nbsp;&nbsp;</span>
-  <br><br>
+  <span *ngIf='fan_desc'>{{ fan_desc }}&nbsp;&nbsp;</span>
+  <br>
 </pre>
 <b style="font-size:120%">Frequency of Reports</b>
 <pre class="div-wrap" *ngIf="!frequency_flag">
-  <span>{{ report_frequency }}&nbsp;&nbsp;</span> <br><br>
+  <span *ngIf='report_frequency'>{{ report_frequency }}&nbsp;&nbsp;</span> <br><br>
 </pre>
 <b style="font-size:120%">Special Identifiers</b>
 <pre class="div-wrap">
-  <p>{{ special_identifier }}</p>
+  <p *ngIf='special_identifier'>{{ special_identifier }}</p>
 </pre>
 <h5>
-  <b>Text Notification, when Requests are fulfilled?</b>
+  <b style="font-size:150%">Text Notification, when Requests are fulfilled?</b>
+  <pre>
+    <p *ngIf='text_notification == ""'>No</p>
+    <p *ngIf='text_notification != ""'>Yes</p>
+  </pre>
 </h5>
-<pre class="div-wrap">
-  <p *ngIf='text_notification == ""'>No</p>
-  <p *ngIf='text_notification != ""'>Yes</p>
-</pre>
+
 <!--                                Order To Sale Start                                    -->
 
 <pre class="div-wrap" *ngIf="summary && summary?.report_type == 'ots'">
@@ -1178,40 +1135,33 @@
 <pre class="div-wrap">
   <b style="font-size:120%">Order Criteria</b><br>
   <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ allocation_group }}&nbsp;&nbsp;</span>
-  <br>
+  <span *ngIf='allocation_group'>{{ allocation_group }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ model_year }}&nbsp;&nbsp;</span>
-  <br>
+  <span *ngIf='model_year'>{{ model_year }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
-  <br>
+  <span *ngIf='vehicle_line_brand'>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
   </pre>
 <pre class="div-wrap">
   <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
-  <br>
+  <span *ngIf='merchandising_model'>{{ merchandising_model }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ order_event }}&nbsp;&nbsp;</span>
-  <br>
+  <span *ngIf='order_event'>{{ order_event }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
-  <span>{{ order_type }}&nbsp;&nbsp;</span>
-  <br><br><br>
+  <span *ngIf='order_type'>{{ order_type }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
-  <b style="font-size:120%">Order Metrics</b><br><br>
+  <b style="font-size:120%">Order Metrics</b><br>
   <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
-  <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
-  <br><br>
-  </pre>
+  <span *ngIf='checkbox_data'>{{ checkbox_data}} &nbsp;&nbsp;</span>
+</pre>
 <pre class="div-wrap">
   <b>Consensus Time and Date:</b> &nbsp;&nbsp;
   <span *ngFor="let element of summary?.ost_data.data_date_range">
@@ -1221,39 +1171,35 @@
 </pre>
 <pre class="div-wrap">
   <b>Additional Requirements:</b> <br>
-  <span>{{summary?.additional_req}}</span>
+  <span *ngIf='summary && summary.additional_req'>{{summary?.additional_req}}</span>
 </pre>
 </pre>
 <pre class="div-wrap">
-  <h5><b>Dealer Allocation Selections</b></h5><br>
+  <h5 style="font-size:150%"><b>Dealer Allocation Selections</b></h5><br>
   <pre class="div-wrap">
     <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
-    <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+    <span *ngIf='allocation_group'>{{ allocation_group }}&nbsp;&nbsp;</span>
   </pre>
 <pre class="div-wrap">
     <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ model_year }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='model_year'>{{ model_year }}&nbsp;&nbsp;</span>
   </pre>
-<pre class="div-wrap"
-  *ngIf='summary && summary.da_data && summary.da_data.concensus_time_date && summary.da_data.concensus_time_date.length > 0'>
+<pre class="div-wrap" *ngIf='summary && summary.da_data && summary.da_data.concensus_time_date && summary.da_data.concensus_time_date.length > 0'>
     <b>Consensus Time and Date:</b> &nbsp;&nbsp;
     <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
       <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
       <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
     </span>
   </pre>
-<pre class="div-wrap"
-  *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
+<pre class="div-wrap" *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
       <b>Consensus Data:</b> &nbsp;&nbsp;
       <span *ngFor="let element of summary?.da_data.concensus_data">
-        {{element?.cd_values}}&nbsp;&nbsp;
+        <span *ngIf='element && element.cd_values'>{{element?.cd_values}}</span>&nbsp;&nbsp;
       </span>
-    <br>
   </pre>
 <pre class="div-wrap">
-      <b>Additional Requirements:</b> <br>
-      <span>{{summary?.additional_req}}</span>
+      <b>Additional Requirements:</b> &nbsp;&nbsp;
+      <span *ngIf='summary && summary.additional_req'>{{summary?.additional_req}}</span>
   </pre>
 </pre>
 </pre>

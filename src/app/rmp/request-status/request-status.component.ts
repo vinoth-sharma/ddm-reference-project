@@ -185,7 +185,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public linkToUrlFlag = true;
 
   // paginator params
-  public paginatorlength = 100;
   public paginatorpageSize = 10;
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
@@ -631,7 +630,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
       this.django.list_of_reports(obj).subscribe(list => {
         this.reports = list["report_list"];
-        this.paginatorlength = this.reports.length;
         Utils.hideSpinner();
         this.finalData = []
       })
@@ -986,6 +984,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       } else {
         this.market_description = [];
       }
+
       if (response["country_region_data"].length) {
         let tempArray = [];
         response["country_region_data"].
@@ -1046,13 +1045,13 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         this.frequency_flag = false;
       }
 
-      if (!response["division_dropdown"].length)
-        this.division_dropdown = []
-      else {
+      if (response["division_dropdown"].length) {
         let tempArray = [];
         response["division_dropdown"].map(element =>
           tempArray.push(element.division_desc));
         this.division_dropdown = tempArray.join(", ");
+      } else {
+        this.division_dropdown = []
       }
 
       if (response["special_identifier_data"].length) {

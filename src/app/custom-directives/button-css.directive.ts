@@ -6,14 +6,15 @@ import { Directive, Output, Input, EventEmitter, HostBinding, HostListener, Elem
 export class ButtonCssDirective {
     private el: ElementRef;
     @Input() cssBtn: any;
-    @Input() paramFlag;
+    // @Input() paramFlag;
+    @Input() disabled;
 
     constructor(el: ElementRef) {
         this.el = el
     }
 
     ngOnChanges() {
-        if (!this.paramFlag) {
+        if (!this.disabled) {
             this.el.nativeElement.style.backgroundColor = this.getBackgroundColor()
             this.el.nativeElement.style.color = 'white'
         }

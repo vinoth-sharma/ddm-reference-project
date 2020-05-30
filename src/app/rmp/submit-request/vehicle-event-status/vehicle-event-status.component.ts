@@ -11,6 +11,8 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 import { SubmitRequestService } from "../submit-request.service";
 import { DataProviderService } from '../../data-provider.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ReviewReqModalComponent } from '../review-req-modal/review-req-modal.component';
 
 const moment = _moment;
 const MY_FORMATS = {
@@ -100,7 +102,10 @@ export class VehicleEventStatusComponent implements OnInit {
     orderEvtToDate: new FormControl()
   }
 
-  public l_lookupTableMD: any = {};
+  l_lookupTableMD: any = {};
+  l_selectedReqData: any = {};
+
+  // private othersDescIds = [5, 8, 15, 54];
   public req_body = {
     dosp_start_date: null,
     dosp_end_date: null,
@@ -126,94 +131,20 @@ export class VehicleEventStatusComponent implements OnInit {
       link_to_results: "",
       link_title: "",
       requestor: "",
-      query_criteria: ""
+      query_criteria: "",
+      is_vin_level_report: null,
+      is_summary_report: null,
+      business_req: ""
     },
     report_id: null,
     other_desc: ""
   }
-
-  public display_message = "";
-
   public user_name = "";
   public user_role = "";
+  display_message = "Create Request to proceed with vehicle event status";
+  messageClass = "red";
 
-  public model_yr_settings = {
-    label: "Models",
-    primary_key: 'ddm_rmp_lookup_dropdown_model_year_id',
-    label_key: 'model_year',
-    title: ""
-  };
-
-  public division_settings = {
-    label: "Division",
-    primary_key: 'ddm_rmp_lookup_division_id',
-    label_key: 'division_desc',
-    title: ""
-  };
-
-  public vehicle_settings = {
-    label: "Vehicle Line Brands",
-    primary_key: 'ddm_rmp_lookup_dropdown_vehicle_line_brand_id',
-    label_key: 'vehicle_line_brand',
-    title: ""
-  };
-
-  public allocation_settings = {
-    label: "Allocation Groups(s)",
-    primary_key: 'ddm_rmp_lookup_dropdown_allocation_group_id',
-    label_key: 'allocation_group',
-    title: ""
-  };
-
-  public merchandising_settings = {
-    label: "Merchandising Model",
-    primary_key: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
-    label_key: 'merchandising_model',
-    title: ""
-  };
-
-
-  public distribution_settings = {
-    label: "Distribution Entities",
-    primary_key: 'ddm_rmp_lookup_ots_type_data_id',
-    label_key: 'type_data_desc',
-    title: ""
-  };
-
-  public orderType_settings = {
-    label: "Order Types",
-    primary_key: 'ddm_rmp_lookup_dropdown_order_type_id',
-    label_key: 'order_type',
-    title: ""
-  };
-
-  public commonly_req_field_settings = {
-    label: "Common fields",
-    primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
-    label_key: 'field_values',
-    title: ""
-  };
-
-  public option_content_avail_settings = {
-    label: "Option Contents",
-    primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
-    label_key: 'field_values',
-    title: ""
-  };
-
-  public order_event_avail_settings = {
-    label: "Order Events",
-    primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
-    label_key: 'field_values',
-    title: ""
-  };
-
-  public keyDataEle_settings = {
-    label: "Key Data Elements",
-    primary_key: 'ddm_rmp_lookup_dropdown_order_event_id',
-    label_key: 'order_event',
-    title: ""
-  }
+  subjectSubscription: Subscription;
 
   constructor(public matDialog: MatDialog,
     private dataProvider: DataProviderService,
@@ -237,39 +168,44 @@ export class VehicleEventStatusComponent implements OnInit {
       this.refillMasterDatatoOptions();
     })
 
-    this.submitService.requestStatusEmitter.subscribe((res: any) => {
-      if (res.type === "src") {
-        this.refillDivisionsMD(res.data.division_selected);
-        // this.req_body.report_detail.status = res.data.status;
-        this.req_body.report_id = res.data.report_id;
-        this.display_message = `<span class="red">Request #${this.req_body.report_id} - Incomplete</span>`
-      }
-      else if (res.type === "srw" && res.data.status === "Incomplete") {
-        this.division_settings.primary_key = "ddm_rmp_lookup_division"
+    this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
+      // console.log(res);
+      if (res.type === "srw") {
+        this.l_selectedReqData = res.data;
+        // this.division_settings.primary_key = "ddm_rmp_lookup_division"
         this.refillDivisionsMD(res.data.division_dropdown);
-        this.req_body.report_id = res.data.ddm_rmp_post_report_id;
-        this.req_body.report_detail.created_on = res.data.report_data.created_on;
-        this.req_body.report_detail.requestor = res.data.report_data.requestor;
-        this.display_message = `<span class="red">Request #${this.req_body.report_id} - Incomplete</span>`
-        // this.refillSelectedRequestData(request.data);
         this.fillReportDetails(res.data)
-      }
-      else if (res.type === "srw" && res.data.status != "Incomplete") {
-        this.division_settings.primary_key = "ddm_rmp_lookup_division"
-        this.refillDivisionsMD(res.data.division_dropdown);
+        this.refillSelectedRequestData(res.data);
+        this.messageClass = "red";
 
-        this.req_body.report_detail.status = res.data.status;
-        this.req_body.report_id = res.data.ddm_rmp_post_report_id;
+        let l_status = res.data.status;
+        let l_reportId = res.data.ddm_rmp_post_report_id;
+        let l_reqType = res.data.report_type;
+        this.display_message = `Request #${l_reportId} (Request type - ${l_reqType === "ots" ? "Vehicle event status" : "Dealer Allocation"})`;
 
-        if (res.data.report_type === "da") {
-          this.display_message = `<span class="green">Request #${this.req_body.report_id} - ${this.req_body.report_detail.status}</span>
-                                . Report Type - Dealer Allocation<br> Though you can submit new vehicle event status`
+        if (res.type === "srw" && (l_status === "Cancelled" || l_status === "Completed")) {
+          this.req_body.report_detail.status = l_status;
+          if (l_status === "Cancelled")
+            this.req_body.report_id = null;
+          else if (l_status === "Completed" && !res.data.frequency_data.some(freq => freq.ddm_rmp_lookup_select_frequency_id === 39))
+            this.req_body.report_id = null;
+          else {
+            this.messageClass = "green";
+            this.req_body.report_id = l_reportId;
+          }
         }
-        else {
-          this.display_message = `<span class="green">Request #${this.req_body.report_id} - ${this.req_body.report_detail.status}</span>`
-          this.refillSelectedRequestData(res.data);
+        else if (res.type === "srw" && l_status === "Incomplete") {
+          this.messageClass = "red";
+          this.req_body.report_id = l_reportId;
+          this.display_message = `Request #${l_reportId} ( ${l_status} )`;
+          this.req_body.report_detail.status = "Pending";
         }
-        this.fillReportDetails(res.data);
+        else if (res.type === "srw" && l_status != "Incomplete") {
+          this.messageClass = "green";
+          this.req_body.report_id = l_reportId;
+          this.req_body.report_detail.status = l_status;
+        }
+        // console.log(this.req_body);
       }
     })
 
@@ -335,7 +271,7 @@ export class VehicleEventStatusComponent implements OnInit {
     this.selected.divisions = divisions;
     this.filtered_MD.divisions = divisions;
     this.filtered_MD.vehicle = this.l_lookupTableMD.vehicle_data;
-    this.multiSelectChange('division')
+    this.multiSelectChange('division');
   }
 
   public multiSelectChange(type) {
@@ -450,10 +386,14 @@ export class VehicleEventStatusComponent implements OnInit {
       let obj = {
         checkboxData: this.getSelectedCheckboxData(),
         l_title: this.req_body.report_detail.title,
-        l_addReq: this.req_body.report_detail.additional_req
+        l_addReq: this.req_body.report_detail.additional_req,
+        l_isVvinReq: this.req_body.report_detail.is_vin_level_report,
+        l_isSummaryReq: this.req_body.report_detail.is_summary_report,
+        l_businessReq: this.req_body.report_detail.business_req
+
       }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
-        data: obj
+        data: obj, disableClose: true
       })
       dialogRef.afterClosed().subscribe(result => {
         // console.log(result);
@@ -498,21 +438,34 @@ export class VehicleEventStatusComponent implements OnInit {
     this.req_body.report_detail.title = result.data.reportTitle;
     this.req_body.report_detail.additional_req = result.data.addReq;
     this.req_body.report_detail.status_date = new Date();
+    this.req_body.report_detail.is_vin_level_report = result.data.isVinLevel;
+    this.req_body.report_detail.is_summary_report = result.data.isSummaryReport;
+    this.req_body.report_detail.business_req = result.data.businessReq;
 
-
-    Utils.showSpinner();
-    this.submitService.submitVehicelEventStatus(this.req_body).subscribe(response => {
-      Utils.hideSpinner();
-      this.ngToaster.success(`Request #${this.req_body.report_id} Updated successfully`);
-      this.submitService.setSubmitOnBehalf("", "");
-      this.router.navigate(["user/request-status"]);
-    }, err => {
-      Utils.hideSpinner();
-      console.log(err);
-    });
+    this.openPreviewModal();
   }
 
-  public refillSelectedRequestData(data) {
+  openPreviewModal() {
+    const dialogRef = this.matDialog.open(ReviewReqModalComponent, {
+      data: {
+        reqBody: this.req_body,
+        selectedReqData: this.l_selectedReqData
+      }, disableClose: true
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log(result);
+      // if (result) {
+      // this.saveVehicleEventStatus();
+      // }
+    })
+  }
+
+  refillSelectedRequestData(data) {
+    //stop the function when ost_data is null 
+    if (!data['ost_data'])
+      return true
+
     let l_data = data.ost_data;
 
     let vehicleIds = l_data.vehicle_line.map(ele => ele.ddm_rmp_lookup_dropdown_vehicle_line_brand);
@@ -544,14 +497,14 @@ export class VehicleEventStatusComponent implements OnInit {
       if (distributionIds.includes(de.ddm_rmp_lookup_ots_type_data_id))
         return de
     })
-    this.distibutionEntityRadio = l_data.distribution_data[0].radio_btn
+    this.distibutionEntityRadio = l_data.distribution_data.length ? l_data.distribution_data[0].radio_btn : "Summary";
 
     let orderIds = l_data.order_type.map(ele => ele.ddm_rmp_lookup_dropdown_order_type);
     this.selected.order_type = this.l_lookupTableMD.order_type.filter(ot => {
       if (orderIds.includes(ot.ddm_rmp_lookup_dropdown_order_type_id))
         return ot
     })
-    this.orderTypeRadio = l_data.order_type.length ? l_data.order_type[0].radio_btn : "Summary";
+    this.orderTypeRadio = l_data.order_type.length ? l_data.order_type[0].display_summary_value : "Summary";
 
     let f_dosp = l_data.data_date_range[0].dosp_start_date
     let t_dsop = l_data.data_date_range[0].dosp_end_date
@@ -559,13 +512,17 @@ export class VehicleEventStatusComponent implements OnInit {
     let t_dataEle = l_data.data_date_range[0].end_date
 
     if (f_dosp) {
+      this.req_body.dosp_start_date = f_dosp;
+      this.req_body.dosp_end_date = t_dsop;
       this.fromDateDOSP.setValue(this.formatedDateToMoment(f_dosp));
-      this.toDateDOSP.setValue(this.formatedDateToMoment(t_dsop))
+      this.toDateDOSP.setValue(this.formatedDateToMoment(t_dsop));
       this.minDateDosp = new Date(f_dosp);
+
     }
     if (f_dataEle) {
-      this.keyDataEle.orderEvtFromDate.setValue(this.formatedDateToMoment(f_dataEle))
-      this.keyDataEle.orderEvtToDate.setValue(this.formatedDateToMoment(t_dataEle))
+      this.req_body.data_date_range = { StartDate: f_dataEle, EndDate: t_dataEle };
+      this.keyDataEle.orderEvtFromDate.setValue(this.formatedDateToMoment(f_dataEle));
+      this.keyDataEle.orderEvtToDate.setValue(this.formatedDateToMoment(t_dataEle));
     }
 
     //reset selected array
@@ -610,6 +567,7 @@ export class VehicleEventStatusComponent implements OnInit {
     if (l_data.order_event.length === 1 && !l_data.order_event[0].ddm_rmp_lookup_dropdown_order_event) {
       this.keyDataEle.others.order_event = l_data.order_event[0].order_event;
       this.keyDataEle.others.checked = true;
+      this.keyDataEle_settings.isDisabled = true;
     }
     else {
       let keyEleIds = l_data.order_event.map(oe => oe.ddm_rmp_lookup_dropdown_order_event)
@@ -620,7 +578,7 @@ export class VehicleEventStatusComponent implements OnInit {
     }
   }
 
-  public formatedDateToMoment(str) {
+  formatedDateToMoment(str) {
     return moment(new Date(str))
   }
 
@@ -634,6 +592,9 @@ export class VehicleEventStatusComponent implements OnInit {
     this.req_body.report_detail.link_title = data.report_data.link_title;
     this.req_body.report_detail.link_to_results = data.report_data.link_to_results;
     this.req_body.report_detail.query_criteria = data.report_data.query_criteria;
+    this.req_body.report_detail.is_vin_level_report = data.report_data.is_vin_level_report;
+    this.req_body.report_detail.is_summary_report = data.report_data.is_summary_report;
+    this.req_body.report_detail.business_req = data.report_data.business_req;
   }
 
   public getSelectedCheckboxData() {
@@ -652,7 +613,14 @@ export class VehicleEventStatusComponent implements OnInit {
     return l_checkbox_data
   }
 
-  public resetCheckboxData() {
+  checkKeyDataEle(event) {
+    if (event.checked)
+      this.keyDataEle_settings.isDisabled = true;
+    else
+      this.keyDataEle_settings.isDisabled = false;
+  }
+
+  resetCheckboxData() {
     for (const key in this.checkBxMD1) {
       if (this.checkBxMD1.hasOwnProperty(key)) {
         this.checkBxMD1[key] = [];
@@ -668,8 +636,99 @@ export class VehicleEventStatusComponent implements OnInit {
         this.checkboxMD2[key] = [];
       }
     }
-
-
   }
 
+  public model_yr_settings = {
+    label: "Models",
+    primary_key: 'ddm_rmp_lookup_dropdown_model_year_id',
+    label_key: 'model_year',
+    title: "",
+    isDisabled: false
+  };
+
+  public division_settings = {
+    label: "Division",
+    primary_key: 'ddm_rmp_lookup_division',
+    label_key: 'division_desc',
+    title: "",
+    isDisabled: true
+  };
+
+  public vehicle_settings = {
+    label: "Vehicle Line Brands",
+    primary_key: 'ddm_rmp_lookup_dropdown_vehicle_line_brand_id',
+    label_key: 'vehicle_line_brand',
+    title: "",
+    isDisabled: false
+  };
+
+  public allocation_settings = {
+    label: "Allocation Groups(s)",
+    primary_key: 'ddm_rmp_lookup_dropdown_allocation_group_id',
+    label_key: 'allocation_group',
+    title: "",
+    isDisabled: false
+  };
+
+  public merchandising_settings = {
+    label: "Merchandising Model",
+    primary_key: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
+    label_key: 'merchandising_model',
+    title: "",
+    isDisabled: false
+  };
+
+
+  public distribution_settings = {
+    label: "Distribution Entities",
+    primary_key: 'ddm_rmp_lookup_ots_type_data_id',
+    label_key: 'type_data_desc',
+    title: "",
+    isDisabled: false
+  };
+
+  public orderType_settings = {
+    label: "Order Types",
+    primary_key: 'ddm_rmp_lookup_dropdown_order_type_id',
+    label_key: 'order_type',
+    title: "",
+    isDisabled: false
+  };
+
+  public commonly_req_field_settings = {
+    label: "Common fields",
+    primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
+    label_key: 'field_values',
+    title: "",
+    isDisabled: false
+  };
+
+  public option_content_avail_settings = {
+    label: "Option Contents",
+    primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
+    label_key: 'field_values',
+    title: "",
+    isDisabled: false
+  };
+
+  public order_event_avail_settings = {
+    label: "Order Events",
+    primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
+    label_key: 'field_values',
+    title: "",
+    isDisabled: false
+  };
+
+  public keyDataEle_settings = {
+    label: "Key Data Elements",
+    primary_key: 'ddm_rmp_lookup_dropdown_order_event_id',
+    label_key: 'order_event',
+    title: "",
+    isDisabled: false
+  }
+
+  ngOnDestroy() {
+    this.subjectSubscription.unsubscribe();
+  }
 }
+

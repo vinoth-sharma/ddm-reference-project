@@ -38,23 +38,29 @@ export class DisclaimerWrapperComponent implements OnInit {
     description: ""
   };
   public l_lookupTableData: any = {};
-  public user_role = "";
+  user_role = "";
 
   constructor(private toaster: NgToasterComponent,
     private django: DjangoService,
     private subReqService: SubmitRequestService,
     private auth_service: AuthenticationService,
     private dialog: MatDialog) { }
+
   public userData;
 
   ngOnInit(): void {
-    Utils.showSpinner();
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"];
       }
     })
 
+    this.updateSubmitRequestDesc();
+
+  }
+
+  updateSubmitRequestDesc(): void {
+    Utils.showSpinner();
     this.subReqService.getHttpLookUpTableData().subscribe(res => {
       this.l_lookupTableData = res.data;
       this.l_lookupTableData.desc_text.forEach(element => {

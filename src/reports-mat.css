@@ -5,9 +5,11 @@
     padding: 0px !important;
 }
 .mat-tooltip{
-    background: #136ab1;
-    font-size: 14px;
+    /* background: #136ab1; */
+    /* font-size: 14px; */
     color: white;
+    /* max-height: 30vh; */
+    /* overflow-y: auto; */
 }
 
 /* snack bar global css */

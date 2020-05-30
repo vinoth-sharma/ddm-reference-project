@@ -11,14 +11,9 @@ import { UserProfileComponent } from './Main/user-profile/user-profile.component
 import { DdmTeamComponent } from './Main/ddm-team/ddm-team.component';
 import { ReferenceDocComponent } from './Main/reference-doc/reference-doc.component';
 import { DdmAdminComponent } from './Main/ddm-admin/ddm-admin.component';
-import { SubmitRequestComponent } from './Submit/submit-request/submit-request.component';
 import { RequestStatusComponent } from './request-status/request-status.component';
 import { ReportsComponent } from './reports/reports.component';
 import { MetricsComponent } from './metrics/metrics.component';
-import { DealerAllocationComponent } from './Submit/dealer-allocation/dealer-allocation.component';
-import { OrderToSaleComponent } from './Submit/order-to-sale/order-to-sale.component';
-import { SelectReportCriteriaComponent } from './Submit/select-report-criteria/select-report-criteria.component';
-import { SubmitLandingPageComponent } from './Submit/submit-landing-page/submit-landing-page.component';
 import { FilterTablePipe } from './filter-table.pipe';
 import { OrderModule } from 'ngx-order-pipe';
 import { RequestOnBehalfComponent } from './request-on-behalf/request-on-behalf.component';
@@ -46,7 +41,6 @@ import { VehicleEventStatusComponent } from './submit-request/vehicle-event-stat
 import { SelectReportCriteriaComp } from "./submit-request/select-report-criteria/select-report-criteria.component";
 import { NgChipsComponent } from './submit-request/sub-components/ng-chips/ng-chips.component';
 import { ReportFrequencyComponent } from './submit-request/sub-components/report-frequency/report-frequency.component';
-import { TopfilterComponent } from "./submit-request/sub-components/topfilter/topfilter.component";
 import { DealerAllocationComp } from "./submit-request/dealer-allocation/dealer-allocation.component";
 import { NgCipsEmailComponent } from './submit-request/sub-components/ng-cips-email/ng-cips-email.component';
 import { AdditionalReqModalComponent } from './submit-request/additional-req-modal/additional-req-modal.component';
@@ -63,14 +57,9 @@ import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
     DdmTeamComponent,
     ReferenceDocComponent,
     DdmAdminComponent,
-    SubmitRequestComponent,
     RequestStatusComponent,
     ReportsComponent,
     MetricsComponent,
-    DealerAllocationComponent,
-    OrderToSaleComponent,
-    SelectReportCriteriaComponent,
-    SubmitLandingPageComponent,
     FilterTablePipe,
     RequestOnBehalfComponent,
     MainMenuLandingPageComponent,
@@ -86,7 +75,6 @@ import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
     SelectReportCriteriaComp,
     NgChipsComponent,
     ReportFrequencyComponent,
-    TopfilterComponent,
     DealerAllocationComp,
     NgCipsEmailComponent,
     AdditionalReqModalComponent,

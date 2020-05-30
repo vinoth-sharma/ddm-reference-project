@@ -2,6 +2,7 @@ import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { SubmitRequestService } from '../../submit-request.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import { Subscription } from 'rxjs';
 
 export interface Dl {
   mail: string;
@@ -16,7 +17,9 @@ export class ReportFrequencyComponent implements OnInit {
   @Output() reportFreqEmitter = new EventEmitter();
   reportFreq: {}[] = [{ label: 'Yes', id: true }, { label: 'No', id: false }];
 
-  public l_lookupData = {
+  l_masterLookUpTableData: any = {};
+
+  l_lookupData = {
     daily_weekly: [],
     monthly_bimonthly: [],
     quaterly: [],
@@ -34,19 +37,18 @@ export class ReportFrequencyComponent implements OnInit {
     dl_list: []
   }
 
-  public visible = true;
-  public selectable = true;
-  public removable = true;
-  public addOnBlur = true;
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  subjectSubscription: Subscription;
 
   constructor(public subReqService: SubmitRequestService,
     public toaster: NgToasterComponent) { }
 
 
   ngOnInit(): void {
-    this.subReqService.requestStatusEmitter.subscribe((res: any) => {
+
+    this.subjectSubscription = this.subReqService.requestStatusEmitter.subscribe((res: any) => {
+      // console.log(res);
       if (res.type === "srw") {
+        this.refillMasterData();
         this.refillSelectedRequestData(res.data);
       }
     })
@@ -102,9 +104,17 @@ export class ReportFrequencyComponent implements OnInit {
     }
   }
 
-  public refillMasterData() {
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+
+
+  refillMasterData() {
+    this.l_masterLookUpTableData = JSON.parse(JSON.stringify(this.lookupTableData));
     this.resetMDdata();
-    let l_lookuptableData_freq = this.lookupTableData.report_frequency.sort(sortFreq);
+    let l_lookuptableData_freq = this.l_masterLookUpTableData.report_frequency.sort(sortFreq);
     l_lookuptableData_freq.forEach(freq => {
       if (freq.ddm_rmp_lookup_report_frequency_id === 1)
         this.l_lookupData.daily_weekly.push(freq)
@@ -126,12 +136,12 @@ export class ReportFrequencyComponent implements OnInit {
       this.selected.monthly_others = false;
   }
 
-  public validateNdSubmit() {
-    if (!this.selected.dl_list.length)
-      this.toaster.error("Please add at least one email in Distribution Lis");
-    else
-      this.submitFrequencyData();
-  }
+  // public validateNdSubmit() {
+  //   if (!this.selected.dl_list.length)
+  //     this.toaster.error("Please add at least one email in Distribution List");
+  //   else
+  //     this.submitFrequencyData();
+  // }
 
   public submitFrequencyData() {
 
@@ -167,17 +177,19 @@ export class ReportFrequencyComponent implements OnInit {
         })
       })
     }
-    if (this.selected.reportFreq_regBasis) {
-      if (!req_body.report_freq.length) {
-        this.toaster.error("Please select atleast one frequency")
-      }
-      else if (req_body.report_freq.every(freq => freq['description'].length))
-        this.reportFreqEmitter.emit(req_body)
-      else
-        this.toaster.error("Please specify the value if selected others")
-    }
-    else
-      this.reportFreqEmitter.emit(req_body)
+
+    // if (this.selected.reportFreq_regBasis) {
+    //   if (!req_body.report_freq.length) {
+    //     this.toaster.error("Please select atleast one frequency")
+    //   }
+    //   else if (req_body.report_freq.every(freq => freq['description']?freq['description'].length:false))
+    //     this.reportFreqEmitter.emit(req_body)
+    //   else
+    //     this.toaster.error("Please specify the value if selected others")
+    // }
+    // else
+
+    this.reportFreqEmitter.emit(req_body);
   }
 
   public emailSelectionDone(event) {
@@ -199,6 +211,10 @@ export class ReportFrequencyComponent implements OnInit {
     else if (o1.ddm_rmp_lookup_select_frequency_id == o2.ddm_rmp_lookup_select_frequency_id)
       return true;
     else return false
+  }
+
+  ngOnDestroy() {
+    this.subjectSubscription.unsubscribe();
   }
 
 }

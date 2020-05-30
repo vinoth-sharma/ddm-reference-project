@@ -1,0 +1,22 @@
+
+.modal-body{
+    max-height: 55vh;
+    overflow: auto;
+}
+.modal-header{
+    /* justify-content: space-between;  */
+    align-items: center;
+    /* background: #747474; */
+    /* padding: 15px; */
+}
+.marLR{
+    margin: auto 1vw;
+}
+.modal-dialog{
+    margin: unset;
+    width: 63vw;
+    max-width: unset;
+}
+.breakWord{
+    word-break: break-all;
+}

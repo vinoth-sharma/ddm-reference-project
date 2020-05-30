@@ -72,10 +72,11 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field appearance="outline" *ngIf="selected.monthly_others">
+                <mat-form-field  *ngIf="selected.monthly_others">
                     <mat-label>Other</mat-label>
                     <input matInput placeholder="others..." [(ngModel)]="selected.monthly_others_decs"
-                    [disabled]="!selected.reportFreq_regBasis">
+                    [matTooltip]="selected.monthly_others_decs"
+                    [disabled]="!selected.reportFreq_regBasis" >
                 </mat-form-field>
             </div>
         </div>
@@ -109,9 +110,10 @@
                            {{ freqDA.select_frequency_values }} </mat-checkbox>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding" *ngIf="freqDA.select_frequency_description"> 
-                        <mat-form-field>
-                            <input matInput [placeholder]="freqDA.ddm_rmp_lookup_select_frequency_id === 33?'Specific Periods':'Other'"
-                                    value="" [(ngModel)]="freqDA['description']" [disabled]="!selected.reportFreq_regBasis">
+                        <mat-form-field *ngIf="freqDA['checked']">
+                            <input matInput [placeholder]="freqDA.ddm_rmp_lookup_select_frequency_id === 33?'Specific Period(s)':'Other'"
+                                    [matTooltip]="freqDA['description']" [(ngModel)]="freqDA['description']" 
+                                    [disabled]="!selected.reportFreq_regBasis" >
                         </mat-form-field>
                     </div>
 
@@ -121,6 +123,8 @@
         </div>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
-        <button type="button" class="btn btn-success savenProceed" (click)="validateNdSubmit()">Save and Proceed</button>
+        <button mat-raised-button
+        [cssBtn]="'ok'"
+        (click)="submitFrequencyData()">Save and Proceed</button>
     </div>
 </div>

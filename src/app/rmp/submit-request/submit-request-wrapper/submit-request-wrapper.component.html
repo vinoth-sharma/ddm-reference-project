@@ -1,13 +1,11 @@
-
-
 <div class="submit-request-wrapper">
     <!-- <div class="submit-request-header" style="height: 80px;">
         <span class="">Submit Request </span>
     </div> -->
     <!-- <p>Selections can be used to generate Vehicle Event Status or Dealer Allocation Requests</p> -->
 
-    <div class="submit-req-body">
-        <select-report-criteria></select-report-criteria>
+    <div class="submit-req-body" *ngIf="refreshWrapper">
+        <select-report-criteria (clearSubmitReqEmitter)="refreshWrapperFunc()"></select-report-criteria>
         <div class="row" style="width: 100%;">
             <mat-tab-group>
                 <mat-tab label="Vehicle Event Status">
@@ -19,12 +17,12 @@
                 <mat-tab disabled>
                     <ng-template mat-tab-label>
                         <div style="font-size: 0.9vw">
-                            <span>*Please select Vehicle Event Status &nbsp;</span><span class="red">OR</span><span>&nbsp;Dealer Allocation</span>
+                            <span>*Please select Vehicle Event Status &nbsp;</span><span
+                                class="red">OR</span><span>&nbsp;Dealer Allocation</span>
                         </div>
                     </ng-template>
                 </mat-tab>
             </mat-tab-group>
         </div>
-     
     </div>
 </div>

@@ -14,7 +14,7 @@
 }
 
 .callout{
-    font-size: 0.7vw;
+    font-size: 0.8em;
     font-style: italic;
     font-weight: normal;
     position: relative;
@@ -94,9 +94,9 @@ mat-form-field{
 .mat-checkbox-layout {
     white-space: normal !important;
 }
-.mat-checkbox-inner-container, .mat-radio-outer-circle, .mat-radio-container, .mat-radio-inner-circle{
-    height: 1vw!important;
-    width: 1vw!important;
+.mat-checkbox-inner-container, .mat-radio-outer-circle, .mat-radio-container, .mat-radio-inner-circle, .mat-pseudo-checkbox{
+    height: 1.1vw !important;
+    width: 1.1vw !important;
     margin-right: 0.5vw!important;
 }
 /* .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate{
@@ -149,3 +149,12 @@ a:hover, a:focus{
 .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate{
     background: #ff4081;
 }
+.modal-header{
+    font-size: 1.4em !important;
+    background-color: rgb(00,34,61);
+    color: white;
+  }
+  .modal-footer{
+    padding: 12px 20px 12px !important;
+    margin-top: unset !important;
+  }

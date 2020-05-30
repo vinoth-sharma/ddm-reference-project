@@ -94,7 +94,7 @@ mat-form-field{
 .mat-checkbox-layout {
     white-space: normal !important;
 }
-.mat-checkbox-inner-container, .mat-radio-outer-circle, .mat-radio-container, .mat-radio-inner-circle{
+.mat-checkbox-inner-container, .mat-radio-outer-circle, .mat-radio-container, .mat-radio-inner-circle, .mat-pseudo-checkbox{
     height: 1.1vw !important;
     width: 1.1vw !important;
     margin-right: 0.5vw!important;
@@ -150,5 +150,11 @@ a:hover, a:focus{
     background: #ff4081;
 }
 .modal-header{
-    font-size: 1.5em !important;
-}
+    font-size: 1.4em !important;
+    background-color: rgb(00,34,61);
+    color: white;
+  }
+  .modal-footer{
+    padding: 12px 20px 12px !important;
+    margin-top: unset !important;
+  }

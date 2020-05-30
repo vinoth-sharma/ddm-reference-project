@@ -28,7 +28,7 @@
     -webkit-tap-highlight-color: transparent;
 }
 #multiInput{
-    margin: 0px 4%;
+    margin: 0px 4% 5px;
     height: 38px;
     border-bottom: 1px solid grey;
     width: 90%;

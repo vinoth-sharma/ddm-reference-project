@@ -693,7 +693,7 @@
           <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf='element && element.requestor'>{{ element?.requestor }}</span>
       </pre>
   <pre class="div-wrap">
-          <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf='element && element.title'>{{summary?.title}}</span></span> <br>
+          <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf='summary && summary.title'>{{summary?.title}}</span></span> <br>
       </pre>
   </pre>
   <br>
@@ -737,7 +737,7 @@
     <br>
   </pre>
   <b style="font-size:120%">Frequency of Reports</b>
-  <pre class="div-wrap" *ngIf="!frequency_flag">
+  <pre class="div-wrap">
     <span *ngIf='report_frequency'>{{ report_frequency }}&nbsp;&nbsp;</span> <br>
   </pre>
   <b style="font-size:120%">Special Identifiers</b>

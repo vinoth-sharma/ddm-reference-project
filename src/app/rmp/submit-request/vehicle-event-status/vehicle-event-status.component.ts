@@ -395,7 +395,7 @@ export class VehicleEventStatusComponent implements OnInit {
 
       }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
-        data: obj
+        data: obj, disableClose: true
       })
       dialogRef.afterClosed().subscribe(result => {
         // console.log(result);
@@ -452,7 +452,7 @@ export class VehicleEventStatusComponent implements OnInit {
       data: {
         reqBody: this.req_body,
         selectedReqData: this.l_selectedReqData
-      }
+      }, disableClose: true
     })
 
     dialogRef.afterClosed().subscribe(result => {

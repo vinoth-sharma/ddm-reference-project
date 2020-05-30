@@ -216,7 +216,7 @@ export class DealerAllocationComp implements OnInit {
         l_businessReq: this.req_body.report_detail.business_req
       }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
-        data: obj
+        data: obj, disableClose: true
       })
       dialogRef.afterClosed().subscribe(result => {
         // this.dialogClosed();
@@ -267,7 +267,7 @@ export class DealerAllocationComp implements OnInit {
       data: {
         reqBody: this.req_body,
         selectedReqData: this.l_selectedReqData
-      }
+      }, disableClose: true
     })
 
     dialogRef.afterClosed().subscribe(result => {

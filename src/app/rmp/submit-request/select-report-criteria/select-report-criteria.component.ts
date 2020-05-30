@@ -438,7 +438,7 @@ export class SelectReportCriteriaComp implements OnInit {
 
   openRequestOnBehalf() {
     this.dialog.open(RequestOnbehalfComp, {
-      data: {}
+      data: {} , disableClose: true
     })
   }
 

@@ -25,7 +25,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
 
   subjectSubscription: Subscription;
   refreshWrapper: boolean = true;
-  clearAll:boolean = false;
+  clearAll: boolean = false;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
@@ -47,13 +47,13 @@ export class SubmitRequestWrapperComponent implements OnInit {
 
   ngOnInit() {
     this.subjectSubscription = this.submitReqService.loadingStatus.subscribe((status: any) => {
-      console.log(status);
+      // console.log(status);
       if (status.comp === "da" && status.status) {
         let requestId = localStorage.getItem("report_id")
         if (requestId) {
           Utils.showSpinner();
           this.submitReqService.getReportDescription(requestId).subscribe(res => {
-            console.log(res);
+            // console.log(res);
             this.submitReqService.updateRequestStatus({ type: "srw", data: res });
             // this.selectedReportData = res;
             Utils.hideSpinner();
@@ -61,12 +61,12 @@ export class SubmitRequestWrapperComponent implements OnInit {
             Utils.hideSpinner();
           })
         }
-        else if(!this.clearAll){
+        else if (!this.clearAll) {
           Utils.showSpinner();
-          this.submitReqService.getUserSelectedData().subscribe(res=>{
-            this.submitReqService.updateRequestStatus({type:"user_selection", data: res})
+          this.submitReqService.getUserSelectedData().subscribe(res => {
+            this.submitReqService.updateRequestStatus({ type: "user_selection", data: res })
             Utils.hideSpinner();
-          },err=>{
+          }, err => {
             Utils.hideSpinner();
           })
         }

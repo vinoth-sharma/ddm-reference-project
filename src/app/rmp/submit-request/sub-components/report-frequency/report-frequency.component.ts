@@ -17,7 +17,7 @@ export class ReportFrequencyComponent implements OnInit {
   @Output() reportFreqEmitter = new EventEmitter();
   reportFreq: {}[] = [{ label: 'Yes', id: true }, { label: 'No', id: false }];
 
-  l_masterLookUpTableData:any = {};
+  l_masterLookUpTableData: any = {};
 
   l_lookupData = {
     daily_weekly: [],
@@ -37,7 +37,7 @@ export class ReportFrequencyComponent implements OnInit {
     dl_list: []
   }
 
-  subjectSubscription : Subscription;
+  subjectSubscription: Subscription;
 
   constructor(public subReqService: SubmitRequestService,
     public toaster: NgToasterComponent) { }
@@ -45,10 +45,9 @@ export class ReportFrequencyComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.subjectSubscription = this.subReqService.requestStatusEmitter.subscribe((res:any)=>{
-      console.log(res);
-      
-      if(res.type === "srw"){
+    this.subjectSubscription = this.subReqService.requestStatusEmitter.subscribe((res: any) => {
+      // console.log(res);
+      if (res.type === "srw") {
         this.refillMasterData();
         this.refillSelectedRequestData(res.data);
       }
@@ -113,7 +112,7 @@ export class ReportFrequencyComponent implements OnInit {
 
 
   refillMasterData() {
-    this.l_masterLookUpTableData = JSON.parse(JSON.stringify(this.lookupTableData)); 
+    this.l_masterLookUpTableData = JSON.parse(JSON.stringify(this.lookupTableData));
     this.resetMDdata();
     let l_lookuptableData_freq = this.l_masterLookUpTableData.report_frequency.sort(sortFreq);
     l_lookuptableData_freq.forEach(freq => {
@@ -178,7 +177,7 @@ export class ReportFrequencyComponent implements OnInit {
         })
       })
     }
-    
+
     // if (this.selected.reportFreq_regBasis) {
     //   if (!req_body.report_freq.length) {
     //     this.toaster.error("Please select atleast one frequency")
@@ -190,7 +189,7 @@ export class ReportFrequencyComponent implements OnInit {
     // }
     // else
 
-      this.reportFreqEmitter.emit(req_body);
+    this.reportFreqEmitter.emit(req_body);
   }
 
   public emailSelectionDone(event) {
@@ -214,7 +213,7 @@ export class ReportFrequencyComponent implements OnInit {
     else return false
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subjectSubscription.unsubscribe();
   }
 

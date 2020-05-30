@@ -60,11 +60,11 @@ export class DisclaimerModalComponent implements OnInit {
       }
     })
     // console.log(this.data);
-    this.subReqService.getHttpLookUpTableData().subscribe(res=>{
+    this.subReqService.getHttpLookUpTableData().subscribe(res => {
       this.l_lookupTableData = res.data;
       this.l_lookupTableData.desc_text.forEach(element => {
-        if(element.ddm_rmp_desc_text_id === 15)
-         this.submitReqDisclaimerObj.description = element.description
+        if (element.ddm_rmp_desc_text_id === 15)
+          this.submitReqDisclaimerObj.description = element.description
       });
       Utils.hideSpinner()
     });
@@ -77,7 +77,7 @@ export class DisclaimerModalComponent implements OnInit {
       this.dialogRef.close(new Date());
       Utils.hideSpinner()
       this.toaster.success("Acknowledged Disclaimers successfull");
-    },err=>{
+    }, err => {
       Utils.hideSpinner()
       this.toaster.success("server error");
     })

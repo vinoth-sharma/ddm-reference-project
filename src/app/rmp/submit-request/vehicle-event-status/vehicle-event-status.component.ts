@@ -169,46 +169,44 @@ export class VehicleEventStatusComponent implements OnInit {
     })
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
-      console.log(res);
-      if(res.type === "srw"){
+      // console.log(res);
+      if (res.type === "srw") {
+        this.l_selectedReqData = res.data;
+        // this.division_settings.primary_key = "ddm_rmp_lookup_division"
+        this.refillDivisionsMD(res.data.division_dropdown);
+        this.fillReportDetails(res.data)
+        this.refillSelectedRequestData(res.data);
+        this.messageClass = "red";
 
-      this.l_selectedReqData = res.data;
+        let l_status = res.data.status;
+        let l_reportId = res.data.ddm_rmp_post_report_id;
+        let l_reqType = res.data.report_type;
+        this.display_message = `Request #${l_reportId} (Request type - ${l_reqType === "ots" ? "Vehicle event status" : "Dealer Allocation"})`;
 
-      // this.division_settings.primary_key = "ddm_rmp_lookup_division"
-      this.refillDivisionsMD(res.data.division_dropdown);
-      this.fillReportDetails(res.data)
-      this.refillSelectedRequestData(res.data);
-      this.messageClass = "red";
-
-      let l_status = res.data.status;
-      let l_reportId = res.data.ddm_rmp_post_report_id;
-      let l_reqType = res.data.report_type;
-      this.display_message = `Request #${l_reportId} (Request type - ${l_reqType === "ots" ? "Vehicle event status" : "Dealer Allocation"})`;
-
-      if (res.type === "srw" && (l_status === "Cancelled" || l_status === "Completed")) {
-        this.req_body.report_detail.status = l_status;
-        if (l_status === "Cancelled")
-          this.req_body.report_id = null;
-        else if (l_status === "Completed" && !res.data.frequency_data.some(freq => freq.ddm_rmp_lookup_select_frequency_id === 39))
-          this.req_body.report_id = null;
-        else {
+        if (res.type === "srw" && (l_status === "Cancelled" || l_status === "Completed")) {
+          this.req_body.report_detail.status = l_status;
+          if (l_status === "Cancelled")
+            this.req_body.report_id = null;
+          else if (l_status === "Completed" && !res.data.frequency_data.some(freq => freq.ddm_rmp_lookup_select_frequency_id === 39))
+            this.req_body.report_id = null;
+          else {
+            this.messageClass = "green";
+            this.req_body.report_id = l_reportId;
+          }
+        }
+        else if (res.type === "srw" && l_status === "Incomplete") {
+          this.messageClass = "red";
+          this.req_body.report_id = l_reportId;
+          this.display_message = `Request #${l_reportId} ( ${l_status} )`;
+          this.req_body.report_detail.status = "Pending";
+        }
+        else if (res.type === "srw" && l_status != "Incomplete") {
           this.messageClass = "green";
           this.req_body.report_id = l_reportId;
+          this.req_body.report_detail.status = l_status;
         }
+        // console.log(this.req_body);
       }
-      else if (res.type === "srw" && l_status === "Incomplete") {
-        this.messageClass = "red";
-        this.req_body.report_id = l_reportId;
-        this.display_message = `Request #${l_reportId} ( ${l_status} )`;
-        this.req_body.report_detail.status = "Pending";
-      }
-      else if (res.type === "srw" && l_status != "Incomplete") {
-        this.messageClass = "green";
-        this.req_body.report_id = l_reportId;
-        this.req_body.report_detail.status = l_status;
-      }
-      console.log(this.req_body);
-    }
     })
 
     this.submitService.updateLoadingStatus({ status: true, comp: "ves" })
@@ -456,7 +454,7 @@ export class VehicleEventStatusComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      // console.log(result);
       // if (result) {
       // this.saveVehicleEventStatus();
       // }
@@ -615,9 +613,8 @@ export class VehicleEventStatusComponent implements OnInit {
     return l_checkbox_data
   }
 
-  checkKeyDataEle(event){
-    console.log(event);
-    if(event.checked)
+  checkKeyDataEle(event) {
+    if (event.checked)
       this.keyDataEle_settings.isDisabled = true;
     else
       this.keyDataEle_settings.isDisabled = false;
@@ -646,7 +643,7 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_dropdown_model_year_id',
     label_key: 'model_year',
     title: "",
-    isDisabled : false
+    isDisabled: false
   };
 
   public division_settings = {
@@ -662,7 +659,7 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_dropdown_vehicle_line_brand_id',
     label_key: 'vehicle_line_brand',
     title: "",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public allocation_settings = {
@@ -670,7 +667,7 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_dropdown_allocation_group_id',
     label_key: 'allocation_group',
     title: "",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public merchandising_settings = {
@@ -678,7 +675,7 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
     label_key: 'merchandising_model',
     title: "",
-    isDisabled : false 
+    isDisabled: false
   };
 
 
@@ -687,7 +684,7 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_ots_type_data_id',
     label_key: 'type_data_desc',
     title: "",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public orderType_settings = {
@@ -695,7 +692,7 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_dropdown_order_type_id',
     label_key: 'order_type',
     title: "",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public commonly_req_field_settings = {
@@ -703,7 +700,7 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
     label_key: 'field_values',
     title: "",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public option_content_avail_settings = {
@@ -711,7 +708,7 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
     label_key: 'field_values',
     title: "",
-    isDisabled : false
+    isDisabled: false
   };
 
   public order_event_avail_settings = {
@@ -719,7 +716,7 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
     label_key: 'field_values',
     title: "",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public keyDataEle_settings = {
@@ -727,7 +724,7 @@ export class VehicleEventStatusComponent implements OnInit {
     primary_key: 'ddm_rmp_lookup_dropdown_order_event_id',
     label_key: 'order_event',
     title: "",
-    isDisabled : false
+    isDisabled: false
   }
 
   ngOnDestroy() {

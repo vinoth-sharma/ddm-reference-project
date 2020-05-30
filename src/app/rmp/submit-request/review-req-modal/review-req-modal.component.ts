@@ -5,7 +5,7 @@ import Utils from 'src/utils';
 import { Router } from '@angular/router';
 import { SubmitRequestService } from '../submit-request.service';
 declare var jsPDF: any;
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'app-review-req-modal',
@@ -50,15 +50,15 @@ export class ReviewReqModalComponent implements OnInit {
   }
 
   dealerAlloc = {
-    consensusProcess : [],
-    startDate : null,
-    endDate:null
+    consensusProcess: [],
+    startDate: null,
+    endDate: null
   }
 
-  l_masterData :any ;
+  l_masterData: any;
 
   ngOnInit(): void {
-    console.log(this.data);
+    // console.log(this.data);
     this.l_masterData = JSON.parse(JSON.stringify(this.data));
 
     this.generateRequestData(this.data);
@@ -70,8 +70,8 @@ export class ReviewReqModalComponent implements OnInit {
       this.generateDealerAllocation(this.data.reqBody)
   }
 
-  submitRequest(){
-    if(this.reqDetails.type === "ots")
+  submitRequest() {
+    if (this.reqDetails.type === "ots")
       this.saveVehicleEventStatus();
     else
       this.saveDealerAllocation();
@@ -94,11 +94,11 @@ export class ReviewReqModalComponent implements OnInit {
   }
 
   //to save dealer allocation for selected request
-  saveDealerAllocation(){
+  saveDealerAllocation() {
     Utils.showSpinner();
     this.submitService.submitDealerAllocation(this.l_masterData.reqBody).subscribe(response => {
       // console.log(response);
-      this.submitService.setSubmitOnBehalf("","");
+      this.submitService.setSubmitOnBehalf("", "");
       this.closeDailog();
       Utils.hideSpinner();
       this.toaster.success(`Request #${this.l_masterData.reqBody.report_id} Updated successfully`);
@@ -203,7 +203,7 @@ export class ReviewReqModalComponent implements OnInit {
 
   }
 
-  generateDealerAllocation(data){
+  generateDealerAllocation(data) {
     if (data.allocation_group.dropdown.length) {
       let obj = {
         label: "Allocation group(s) selection:",
@@ -228,13 +228,13 @@ export class ReviewReqModalComponent implements OnInit {
 
     let l_obj = data.concensus_time_date;
     let obj1 = {
-      label : "Consensus start date:",
-      data : `${l_obj.startM} - ${l_obj.startY} (${l_obj.startCycle})`
+      label: "Consensus start date:",
+      data: `${l_obj.startM} - ${l_obj.startY} (${l_obj.startCycle})`
     }
     this.dealerAlloc.consensusProcess.push(obj1);
     let obj2 = {
-      label : "Consensus end date:",
-      data : `${l_obj.endM} - ${l_obj.endY} (${l_obj.endCycle})`
+      label: "Consensus end date:",
+      data: `${l_obj.endM} - ${l_obj.endY} (${l_obj.endCycle})`
     }
     this.dealerAlloc.consensusProcess.push(obj2);
 
@@ -320,21 +320,19 @@ export class ReviewReqModalComponent implements OnInit {
     }
 
     if (data.special_identifier_data.length) {
-      this.otherReportCriteria.spclIdentifiers = data.special_identifier_data.map(ele =>{
+      this.otherReportCriteria.spclIdentifiers = data.special_identifier_data.map(ele => {
         return {
-          label : ele.spl_desc,
-          data : "Yes"
+          label: ele.spl_desc,
+          data: "Yes"
         }
       })
     }
 
     this.otherReportCriteria.textNotification = data.user_data[0].alternate_number ? "Yes" : "No";
-
-    console.log(this.marketData);
-
+    // console.log(this.marketData);
   }
 
-  downloadSummary(){
+  downloadSummary() {
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
@@ -344,7 +342,7 @@ export class ReviewReqModalComponent implements OnInit {
     // doc.setFont("arial");
     doc.lineHeightProportion = 2;
     doc.fromHTML(
-      $('#summaryView').html() , 15, 15,
+      $('#summaryView').html(), 15, 15,
       { 'width': 170, 'elementHandlers': specialElementHandlers },
       function () { doc.save(`summary-request.pdf`); }
     )

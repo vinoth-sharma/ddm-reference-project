@@ -53,11 +53,11 @@ export class DisclaimerHelpModalComponent implements OnInit {
     })
     // console.log(this.data);
 
-    this.subReqService.getHttpLookUpTableData().subscribe(res=>{
+    this.subReqService.getHttpLookUpTableData().subscribe(res => {
       this.l_lookupTableData = res.data;
       this.l_lookupTableData.desc_text.forEach(element => {
-        if(element.ddm_rmp_desc_text_id === 14)
-         this.submitReqHelpDescObj.description = element.description
+        if (element.ddm_rmp_desc_text_id === 14)
+          this.submitReqHelpDescObj.description = element.description
       });
       Utils.hideSpinner()
     });
@@ -65,7 +65,7 @@ export class DisclaimerHelpModalComponent implements OnInit {
 
   submitReqHelpDesc() {
     Utils.showSpinner();
-    this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqHelpDescObj).subscribe((response:any) => {
+    this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqHelpDescObj).subscribe((response: any) => {
       Utils.hideSpinner();
       this.toaster.success(response.message);
     }, err => {

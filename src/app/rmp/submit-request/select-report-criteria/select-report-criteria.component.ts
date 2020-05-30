@@ -31,7 +31,7 @@ export class SelectReportCriteriaComp implements OnInit {
     other: {}
   }
 
-  l_selectedReqData : any = {};
+  l_selectedReqData: any = {};
 
   selected = {
     market: [],
@@ -99,7 +99,7 @@ export class SelectReportCriteriaComp implements OnInit {
 
   message = "";
 
-  subjectSubscription : Subscription;
+  subjectSubscription: Subscription;
 
   constructor(public djangoService: DjangoService,
     public ngToaster: NgToasterComponent,
@@ -138,14 +138,13 @@ export class SelectReportCriteriaComp implements OnInit {
       }
     })
 
-    this.subjectSubscription =  this.submitService.requestStatusEmitter.subscribe((request:any)=>{
-      console.log(request);
-      
-      if(request.type === "srw"){
+    this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((request: any) => {
+      // console.log(request);
+      if (request.type === "srw") {
         this.l_selectedReqData = request.data;
         this.refillSelectedRequestData(request.data);
       }
-      else if(request.type === "user_selection")
+      else if (request.type === "user_selection")
         this.refillDefaultUserSelectedData(request.data);
     })
     this.submitService.updateLoadingStatus({ status: true, comp: "src" })
@@ -164,7 +163,7 @@ export class SelectReportCriteriaComp implements OnInit {
     })
 
     // to set default values for special identifiers
-    
+
     // this.special_identifiers_obj.bac.forEach(bac=>{
     //   bac['checked'] = "No";
     // });
@@ -248,17 +247,17 @@ export class SelectReportCriteriaComp implements OnInit {
       this.ngToaster.error("Market selection is mandatory")
     else if (!this.selected.division.length)
       this.ngToaster.error("Division selection is mandatory")
-    else if(!req.dl_list.length)
+    else if (!req.dl_list.length)
       this.ngToaster.error("Please add at least one email in Distribution List");
     else if (req.freq === "Recurring") {
-        if (!req.report_freq.length) {
-          this.ngToaster.error("Please select atleast one frequency")
-        }
-        else if (req.report_freq.every(freq => freq['description']?freq['description'].length:false))
-          this.submitReportCriteria(req);
-        else
-          this.ngToaster.error("Please specify the value if selected others")
+      if (!req.report_freq.length) {
+        this.ngToaster.error("Please select atleast one frequency")
       }
+      else if (req.report_freq.every(freq => freq['description'] ? freq['description'].length : false))
+        this.submitReportCriteria(req);
+      else
+        this.ngToaster.error("Please specify the value if selected others")
+    }
     else
       this.submitReportCriteria(req);
   }
@@ -298,28 +297,23 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.status_date = new Date();
     this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
 
-    console.log(this.req_body);
-    
-    if(this.req_body.report_detail.status === "Cancelled")
+    if (this.req_body.report_detail.status === "Cancelled")
       this.req_body.report_detail.status = "Incomplete";
-    else if(this.req_body.report_detail.status === "Completed" && !this.l_selectedReqData.frequency_data.some(freq=>freq.ddm_rmp_lookup_select_frequency_id === 39)){
+    else if (this.req_body.report_detail.status === "Completed" && !this.l_selectedReqData.frequency_data.some(freq => freq.ddm_rmp_lookup_select_frequency_id === 39)) {
       this.req_body.report_detail.status = "Incomplete";
       this.req_body.report_id = null;
       this.req_body.report_detail.report_type = "";
     }
-
-
     // console.log(this.req_body);
-
     Utils.showSpinner();
     this.submitService.submitUserMarketSelection(this.req_body).subscribe(response => {
       // console.log(response);
       Utils.hideSpinner();
-      if(this.req_body.report_id)
-         this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Updated successfully`)
+      if (this.req_body.report_id)
+        this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Updated successfully`)
       else
-          this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Created successfully`)
-        
+        this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Created successfully`)
+
       if (response['report_data']['status'] === "Incomplete")
         this.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
       else
@@ -328,7 +322,7 @@ export class SelectReportCriteriaComp implements OnInit {
       this.req_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
       this.req_body.report_detail.status = response['report_data']['status'];
 
-      localStorage.setItem('report_id',response['report_data']['ddm_rmp_post_report_id'])
+      localStorage.setItem('report_id', response['report_data']['ddm_rmp_post_report_id'])
       this.submitService.updateLoadingStatus({ status: true, comp: "da" });
     }, err => {
       Utils.hideSpinner();
@@ -401,23 +395,21 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.title = reqData.report_data.title;
     this.req_body.report_id = reqData.ddm_rmp_post_report_id;
 
-    this.submitService.setSubmitOnBehalf(this.req_body.report_detail.on_behalf_of,"");
+    this.submitService.setSubmitOnBehalf(this.req_body.report_detail.on_behalf_of, "");
     if (reqData.report_data.status === "Incomplete")
       this.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
-    else if(reqData.report_data.status === "Cancelled"){
-      this.req_body.report_detail.status = reqData.report_data.status;      
+    else if (reqData.report_data.status === "Cancelled") {
+      this.req_body.report_detail.status = reqData.report_data.status;
       this.message = "";
     }
-    else{
-      this.req_body.report_detail.status = reqData.report_data.status;      
+    else {
+      this.req_body.report_detail.status = reqData.report_data.status;
       this.message = "";
     }
   }
 
-  refillDefaultUserSelectedData(data){
-    console.log("refill");
-    console.log(data);
-    if(!data.has_previous_selections)
+  refillDefaultUserSelectedData(data) {
+    if (!data.has_previous_selections)
       return true
 
     this.selected.market = data.market_data;
@@ -438,11 +430,11 @@ export class SelectReportCriteriaComp implements OnInit {
 
   openRequestOnBehalf() {
     this.dialog.open(RequestOnbehalfComp, {
-      data: {} , disableClose: true
+      data: {}, disableClose: true
     })
   }
 
-  clearRequestData(){
+  clearRequestData() {
     this.clearSubmitReqEmitter.emit(true);
   }
 
@@ -451,7 +443,7 @@ export class SelectReportCriteriaComp implements OnInit {
     primary_key: 'ddm_rmp_lookup_market_id',
     label_key: 'market',
     title: "Market Selection<span class='red'>*</span>",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public region_settings = {
@@ -459,7 +451,7 @@ export class SelectReportCriteriaComp implements OnInit {
     primary_key: 'ddm_rmp_lookup_country_region_id',
     label_key: 'region_desc',
     title: "Region Selection",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public zone_settings = {
@@ -467,7 +459,7 @@ export class SelectReportCriteriaComp implements OnInit {
     primary_key: 'ddm_rmp_lookup_region_zone_id',
     label_key: 'zone_desc',
     title: "Zone Selection",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public area_settings = {
@@ -475,7 +467,7 @@ export class SelectReportCriteriaComp implements OnInit {
     primary_key: 'ddm_rmp_lookup_zone_area_id',
     label_key: 'area_desc',
     title: "Area Selection",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public gmma_settings = {
@@ -483,7 +475,7 @@ export class SelectReportCriteriaComp implements OnInit {
     primary_key: 'ddm_rmp_lookup_gmma_id',
     label_key: 'gmma_desc',
     title: "GMMA Selection",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public division_settings = {
@@ -491,7 +483,7 @@ export class SelectReportCriteriaComp implements OnInit {
     primary_key: 'ddm_rmp_lookup_division_id',
     label_key: 'division_desc',
     title: "Division Selection<span class='red'>*</span>",
-    isDisabled : false 
+    isDisabled: false
   };
 
   public lma_settings = {
@@ -499,11 +491,11 @@ export class SelectReportCriteriaComp implements OnInit {
     primary_key: 'ddm_rmp_lookup_lma_id',
     label_key: 'lmg_desc',
     title: "LMA Selection",
-    isDisabled : false 
+    isDisabled: false
   };
 
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subjectSubscription.unsubscribe();
   }
 }

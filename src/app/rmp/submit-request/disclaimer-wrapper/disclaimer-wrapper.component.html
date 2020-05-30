@@ -29,8 +29,7 @@
         <div class="quillEditorSubmit">
             <quill-editor class="quill" [(ngModel)]="submitReqDescObj.description" [modules]="config"
                 [readOnly]="showEditOption"></quill-editor>
-            <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre"
-                *ngIf="!showEditOption">
+            <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre" *ngIf="!showEditOption">
                 <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;"
                     (click)="saveSubmitReqDesc()">Save</button>
                 <button mat-raised-button [cssBtn]="'cancel'" (click)="showEditOption=true">Cancel</button>

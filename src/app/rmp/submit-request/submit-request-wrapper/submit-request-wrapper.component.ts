@@ -8,6 +8,7 @@ import { ReportCriteriaDataService } from '../../services/report-criteria-data.s
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { SubmitRequestService } from '../submit-request.service';
 import Utils from 'src/utils';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-submit-request-wrapper',
@@ -22,13 +23,9 @@ export class SubmitRequestWrapperComponent implements OnInit {
     self_email: ""
   }
 
-  // lookupMasterData = {};
-  // lookupTableMasterData = {};
-
-
-  // request_details: any = {};
-
-  // selectedReportData = null;
+  subjectSubscription: Subscription;
+  refreshWrapper: boolean = true;
+  clearAll: boolean = false;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
@@ -46,41 +43,52 @@ export class SubmitRequestWrapperComponent implements OnInit {
         this.user_details.self_email = role["email"]
       }
     })
-
-    // dataProvider.currentlookupData.subscribe(element => {
-    //   console.log(element);
-    //   this.lookupMasterData = element;
-    // })
-
-    // dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
-    //   console.log(tableDate);
-    //   this.lookupTableMasterData = tableDate ? tableDate.data : {};
-    // })
   }
 
   ngOnInit() {
-  this.submitReqService.loadingStatus.subscribe((status: any) => {
-    // console.log(status);
-    if (status.comp === "da" && status.status) {
-      let requestId = localStorage.getItem("report_id")
-      if (requestId){
-        Utils.showSpinner();
-        this.submitReqService.getReportDescription(requestId).subscribe(res => {
-          // console.log(res);
-          this.submitReqService.updateRequestStatus({type:"srw",data:res});
-          // this.selectedReportData = res;
-          Utils.hideSpinner();
-        }, err => {
-          Utils.hideSpinner();
-        })
-
+    this.subjectSubscription = this.submitReqService.loadingStatus.subscribe((status: any) => {
+      // console.log(status);
+      if (status.comp === "da" && status.status) {
+        let requestId = localStorage.getItem("report_id")
+        if (requestId) {
+          Utils.showSpinner();
+          this.submitReqService.getReportDescription(requestId).subscribe(res => {
+            // console.log(res);
+            this.submitReqService.updateRequestStatus({ type: "srw", data: res });
+            // this.selectedReportData = res;
+            Utils.hideSpinner();
+          }, err => {
+            Utils.hideSpinner();
+          })
+        }
+        else if (!this.clearAll) {
+          Utils.showSpinner();
+          this.submitReqService.getUserSelectedData().subscribe(res => {
+            this.submitReqService.updateRequestStatus({ type: "user_selection", data: res })
+            Utils.hideSpinner();
+          }, err => {
+            Utils.hideSpinner();
+          })
+        }
       }
+    })
+  }
 
-    }
-  }) }
+  refreshWrapperFunc(): void {
+    Utils.showSpinner();
+    this.refreshWrapper = false;
+    this.clearAll = true;
+    setTimeout(() => {
+      this.submitReqService.setSubmitOnBehalf("", "");
+      localStorage.removeItem('report_id');
+      this.refreshWrapper = true;
+      Utils.hideSpinner();
+    }, 0);
+  }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
+    this.submitReqService.setSubmitOnBehalf("", "");
     localStorage.removeItem('report_id');
-    // this.submitReqService.loadingStatus.unsubscribe();
+    this.subjectSubscription.unsubscribe()
   }
 }

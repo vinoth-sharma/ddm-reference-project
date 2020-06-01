@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectReportCriteriaComponent } from './select-report-criteria.component';
+import { SelectReportCriteriaComp } from './select-report-criteria.component';
 
-describe('SelectReportCriteriaComponent', () => {
-  let component: SelectReportCriteriaComponent;
-  let fixture: ComponentFixture<SelectReportCriteriaComponent>;
+describe('SelectReportCriteriaComp', () => {
+  let component: SelectReportCriteriaComp;
+  let fixture: ComponentFixture<SelectReportCriteriaComp>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SelectReportCriteriaComponent ]
+      declarations: [ SelectReportCriteriaComp ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelectReportCriteriaComponent);
+    fixture = TestBed.createComponent(SelectReportCriteriaComp);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

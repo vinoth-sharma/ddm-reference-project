@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RequestOnbehalfComponent } from './request-onbehalf.component';
+import { RequestOnbehalfComp } from './request-onbehalf.component';
 
-describe('RequestOnbehalfComponent', () => {
-  let component: RequestOnbehalfComponent;
-  let fixture: ComponentFixture<RequestOnbehalfComponent>;
+describe('RequestOnbehalfComp', () => {
+  let component: RequestOnbehalfComp;
+  let fixture: ComponentFixture<RequestOnbehalfComp>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RequestOnbehalfComponent ]
+      declarations: [ RequestOnbehalfComp ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RequestOnbehalfComponent);
+    fixture = TestBed.createComponent(RequestOnbehalfComp);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

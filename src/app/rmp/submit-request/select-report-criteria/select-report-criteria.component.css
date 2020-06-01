@@ -3,7 +3,7 @@
     background: #fafafa;
     padding: 5rem 10rem;
     margin-top: 8vh;
-    font-size: 2vh;
+    font-size: inherit;
 }
 .reportCriteria{
     background: white;
@@ -17,7 +17,7 @@
     background: none;
     color: #71bcfc;
     border: 2px solid #71bcfc;
-    font-size: 0.6vw;
+    font-size: 0.7em;
     padding: 1.5vh 2vw;
 }
 .rcTitle{
@@ -28,7 +28,7 @@
     font-size: 0.8em;
 }
 .bacDealers{
-    margin-bottom: 1.5vh;
+    margin-bottom: 0.8em;
     font-size: 1.7vh;
 }
 :host ::ng-deep .mat-radio-label-content{

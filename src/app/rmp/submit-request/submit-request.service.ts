@@ -32,8 +32,15 @@ export class SubmitRequestService {
     return this.lookUpTableData
   }
 
-  public submitUserMarketSelection(req) {
-    return this.djangoService.ddm_rmp_report_market_selection(req).pipe(map((res: any) => {
+  getUserSelectedData(){
+    return this.djangoService.division_selected().pipe(map((res:any) => {
+      return res;
+    }),catchError(this.handleError.bind(this)));
+  }
+
+
+  submitUserMarketSelection(req){
+    return this.djangoService.ddm_rmp_report_market_selection(req).pipe(map((res:any) => {
       return res;
     }), catchError(this.handleError.bind(this)));
   }

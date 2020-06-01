@@ -1,6 +1,6 @@
 .vehEveStatWrapper{
     padding: 1vh 1vw;
-    font-size: 2vh;
+    /* font-size: 2vh; */
 }
 
 :host ::ng-deep .mat-checkbox-label{
@@ -10,6 +10,6 @@
 
 .ordMetsTitle{
     font-size: 1.2em;
-    margin-bottom: 2.5vh;
+    /* margin-bottom: 2.5vh; */
 }
 

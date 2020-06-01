@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RequestOnbehalfComp } from '../request-onbehalf/request-onbehalf.component';
 import { DataProviderService } from '../../data-provider.service';
 import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -23,14 +24,14 @@ export class SelectReportCriteriaComp implements OnInit {
   // @Input() lookupTableMD = {};
 
   // @Input() selectedReqData: any;
-  // @Output() requestCreated = new EventEmitter();
+  @Output() clearSubmitReqEmitter = new EventEmitter();
 
   l_lookup_MD: any = {
     market: {},
     other: {}
   }
 
-  l_lookupMasterData: any = {};
+  l_selectedReqData: any = {};
 
   selected = {
     market: [],
@@ -96,14 +97,9 @@ export class SelectReportCriteriaComp implements OnInit {
     email: ""
   }
 
-  response_body = {
-    division_selected: [],
-    report_id: null,
-    on_behalf_of: "",
-    status: "",
-    message: "",
-    type : "src"
-  }
+  message = "";
+
+  subjectSubscription: Subscription;
 
   constructor(public djangoService: DjangoService,
     public ngToaster: NgToasterComponent,
@@ -142,10 +138,14 @@ export class SelectReportCriteriaComp implements OnInit {
       }
     })
 
-    this.submitService.requestStatusEmitter.subscribe((request:any)=>{
-      if(request.type === "srw"){
+    this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((request: any) => {
+      // console.log(request);
+      if (request.type === "srw") {
+        this.l_selectedReqData = request.data;
         this.refillSelectedRequestData(request.data);
       }
+      else if (request.type === "user_selection")
+        this.refillDefaultUserSelectedData(request.data);
     })
     this.submitService.updateLoadingStatus({ status: true, comp: "src" })
   }
@@ -161,6 +161,15 @@ export class SelectReportCriteriaComp implements OnInit {
       else
         this.special_identifiers_obj.fan.push(si)
     })
+
+    // to set default values for special identifiers
+
+    // this.special_identifiers_obj.bac.forEach(bac=>{
+    //   bac['checked'] = "No";
+    // });
+    // this.special_identifiers_obj.fan.forEach(fan=>{
+    //   fan['checked'] = "Yes";
+    // })
 
   }
 
@@ -238,6 +247,17 @@ export class SelectReportCriteriaComp implements OnInit {
       this.ngToaster.error("Market selection is mandatory")
     else if (!this.selected.division.length)
       this.ngToaster.error("Division selection is mandatory")
+    else if (!req.dl_list.length)
+      this.ngToaster.error("Please add at least one email in Distribution List");
+    else if (req.freq === "Recurring") {
+      if (!req.report_freq.length) {
+        this.ngToaster.error("Please select atleast one frequency")
+      }
+      else if (req.report_freq.every(freq => freq['description'] ? freq['description'].length : false))
+        this.submitReportCriteria(req);
+      else
+        this.ngToaster.error("Please specify the value if selected others")
+    }
     else
       this.submitReportCriteria(req);
   }
@@ -277,31 +297,33 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.status_date = new Date();
     this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
 
+    if (this.req_body.report_detail.status === "Cancelled")
+      this.req_body.report_detail.status = "Incomplete";
+    else if (this.req_body.report_detail.status === "Completed" && !this.l_selectedReqData.frequency_data.some(freq => freq.ddm_rmp_lookup_select_frequency_id === 39)) {
+      this.req_body.report_detail.status = "Incomplete";
+      this.req_body.report_id = null;
+      this.req_body.report_detail.report_type = "";
+    }
     // console.log(this.req_body);
-
     Utils.showSpinner();
     this.submitService.submitUserMarketSelection(this.req_body).subscribe(response => {
       // console.log(response);
       Utils.hideSpinner();
-      this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Updated successfully`)
-      this.response_body.division_selected = response.division_data;
-      this.response_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
-      this.response_body.status = response['report_data']['status'];
-      this.response_body.on_behalf_of = response['report_data']['on_behalf_of'];
+      if (this.req_body.report_id)
+        this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Updated successfully`)
+      else
+        this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Created successfully`)
 
       if (response['report_data']['status'] === "Incomplete")
-        this.response_body.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
-      else if (response['report_data']['status'] === "Pending")
-        this.response_body.message = `<span> Request status - ${this.response_body.status} </span>`
+        this.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
       else
-        this.response_body.message = ""
+        this.message = "";
 
       this.req_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
       this.req_body.report_detail.status = response['report_data']['status'];
 
-      // this.requestCreated.emit(this.response_body)
-      if(this.response_body.status === "Incomplete")
-         this.submitService.updateRequestStatus({type:"src",data:this.response_body})
+      localStorage.setItem('report_id', response['report_data']['ddm_rmp_post_report_id'])
+      this.submitService.updateLoadingStatus({ status: true, comp: "da" });
     }, err => {
       Utils.hideSpinner();
       console.log(err);
@@ -370,75 +392,110 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.query_criteria = reqData.report_data.query_criteria;
     this.req_body.report_detail.report_type = reqData.report_data.report_type;
     this.req_body.report_detail.requestor = reqData.report_data.requestor;
-    this.req_body.report_detail.status = reqData.report_data.status;
     this.req_body.report_detail.title = reqData.report_data.title;
     this.req_body.report_id = reqData.ddm_rmp_post_report_id;
 
-    this.submitService.setSubmitOnBehalf(this.req_body.report_detail.on_behalf_of,"");
-    this.response_body.report_id = this.req_body.report_id;
-    this.response_body.status = this.req_body.report_detail.status;
-    if (this.req_body.report_detail.status === "Incomplete")
-      this.response_body.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
-    else if (this.req_body.report_detail.status === "Pending")
-      this.response_body.message = `<span> Request status - ${this.response_body.status}</span>`
-    else
-      this.response_body.message = ""
+    this.submitService.setSubmitOnBehalf(this.req_body.report_detail.on_behalf_of, "");
+    if (reqData.report_data.status === "Incomplete")
+      this.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request</span>"
+    else if (reqData.report_data.status === "Cancelled") {
+      this.req_body.report_detail.status = reqData.report_data.status;
+      this.message = "";
+    }
+    else {
+      this.req_body.report_detail.status = reqData.report_data.status;
+      this.message = "";
+    }
+  }
 
+  refillDefaultUserSelectedData(data) {
+    if (!data.has_previous_selections)
+      return true
+
+    this.selected.market = data.market_data;
+    this.multiSelectChange({}, "market");
+    this.selected.region = data.country_region_data;
+    this.multiSelectChange({}, "region");
+    this.selected.zone = data.region_zone_data;
+    this.multiSelectChange({}, "zone");
+    this.selected.area = data.zone_area_data;
+
+    this.selected.division = data.division_data;
+    this.selected.gmma = data.gmma_data;
+    this.selected.lma = data.lma_data;
+
+    this.selected.bac = data.bac_data[0].bac_desc;
+    this.selected.fan = data.fan_data[0].fan_data;
   }
 
   openRequestOnBehalf() {
     this.dialog.open(RequestOnbehalfComp, {
-      data: {}
+      data: {}, disableClose: true
     })
+  }
+
+  clearRequestData() {
+    this.clearSubmitReqEmitter.emit(true);
   }
 
   public market_settings = {
     label: "Market",
     primary_key: 'ddm_rmp_lookup_market_id',
     label_key: 'market',
-    title: "Market Selection<span class='red'>*</span>"
+    title: "Market Selection<span class='red'>*</span>",
+    isDisabled: false
   };
 
   public region_settings = {
     label: "Region",
     primary_key: 'ddm_rmp_lookup_country_region_id',
     label_key: 'region_desc',
-    title: "Region Selection"
+    title: "Region Selection",
+    isDisabled: false
   };
 
   public zone_settings = {
     label: "Zone",
     primary_key: 'ddm_rmp_lookup_region_zone_id',
     label_key: 'zone_desc',
-    title: "Zone Selection"
+    title: "Zone Selection",
+    isDisabled: false
   };
 
   public area_settings = {
     label: "Area",
     primary_key: 'ddm_rmp_lookup_zone_area_id',
     label_key: 'area_desc',
-    title: "Area Selection"
+    title: "Area Selection",
+    isDisabled: false
   };
 
   public gmma_settings = {
     label: "GMMA",
     primary_key: 'ddm_rmp_lookup_gmma_id',
     label_key: 'gmma_desc',
-    title: "GMMA Selection"
+    title: "GMMA Selection",
+    isDisabled: false
   };
 
   public division_settings = {
     label: "Division",
     primary_key: 'ddm_rmp_lookup_division_id',
     label_key: 'division_desc',
-    title: "Division Selection<span class='red'>*</span>"
+    title: "Division Selection<span class='red'>*</span>",
+    isDisabled: false
   };
 
   public lma_settings = {
     label: "LMA",
     primary_key: 'ddm_rmp_lookup_lma_id',
     label_key: 'lmg_desc',
-    title: "LMA Selection"
+    title: "LMA Selection",
+    isDisabled: false
   };
 
+
+  ngOnDestroy() {
+    this.subjectSubscription.unsubscribe();
+  }
 }

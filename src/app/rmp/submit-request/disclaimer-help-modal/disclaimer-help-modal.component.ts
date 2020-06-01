@@ -45,22 +45,28 @@ export class DisclaimerHelpModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+    Utils.showSpinner();
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
       }
     })
-    this.l_lookupTableData = this.subReqService.getLookUpTableData();
-    this.l_lookupTableData.desc_text.forEach(element => {
-      if (element.ddm_rmp_desc_text_id === 14)
-        this.submitReqHelpDescObj.description = element.description
+    // console.log(this.data);
+
+    this.subReqService.getHttpLookUpTableData().subscribe(res => {
+      this.l_lookupTableData = res.data;
+      this.l_lookupTableData.desc_text.forEach(element => {
+        if (element.ddm_rmp_desc_text_id === 14)
+          this.submitReqHelpDescObj.description = element.description
+      });
+      Utils.hideSpinner()
     });
   }
 
   submitReqHelpDesc() {
     Utils.showSpinner();
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqHelpDescObj).subscribe((response: any) => {
-      Utils.hideSpinner()
+      Utils.hideSpinner();
       this.toaster.success(response.message);
     }, err => {
       Utils.hideSpinner()

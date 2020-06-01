@@ -1,1 +1,185 @@
-<p>review-req-modal works!</p>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content borRad" style="border: unset;">
+        <div class="modal-header borTopRad alignCenter" style="">
+            <div class="modal-title ">
+                <div class="">Review Report Request </div>
+            </div>
+            <div class="alignCenter">
+                <mat-icon style="margin-right: 15px;cursor:pointer;" matTooltip="Download Summary"
+                    (click)="downloadSummary()">get_app</mat-icon>
+                <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
+            </div>
+        </div>
+        <div class="modal-body" id="summaryView">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Request Date
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ reqDetails.reqDate | date: 'dd-MMM-yyyy' }}
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Request Number
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ reqDetails.reqId }}
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Title
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ reqDetails.title }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom ">
+                        Market Selections:
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let market of marketData">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ market.label }}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                            {{ market.data.toString() }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Frequency of Reports:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                            {{ otherReportCriteria.freq }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom"
+                    *ngIf="otherReportCriteria.spclIdentifiers.length">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Special Identifiers:
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
+                        *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ spcl.label }}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ spcl.data.toString() }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Would you need Text Notifications when Requests are fulfilled?
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ otherReportCriteria.textNotification }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom" *ngIf="reqDetails.type === 'ots'">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom ">
+                        Vehicle Event Status Selections:
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom">
+                            Order Criteria
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
+                        *ngFor="let ele of vehicleEvent.orderCriteria">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ ele.label }}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                            {{ ele.data.toString() }}
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom">
+                            Order Metrics
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
+                        *ngFor="let metrics of vehicleEvent.orderMetrics">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{  metrics.label }}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                            {{  metrics.data.toString() }}
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="vehicleEvent.keyData_start">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
+                            Key Data Elemet Date Range:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
+                                <span class="bold">Start:&nbsp;</span>
+                                {{ vehicleEvent.keyData_start | date: 'dd-MMM-yyyy' }}
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
+                                <span class="bold">End:&nbsp;</span>
+                                {{ vehicleEvent.keyData_end | date: 'dd-MMM-yyyy' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="vehicleEvent.dosp_start">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
+                            DOSP Date Range:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
+                                <span class="bold">Start:&nbsp;</span>
+                                {{ vehicleEvent.dosp_start | date: 'dd-MMM-yyyy' }}
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
+                                <span class="bold">End:&nbsp;</span> {{ vehicleEvent.dosp_end | date: 'dd-MMM-yyyy' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom" *ngIf="reqDetails.type === 'da'">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom ">
+                        Dealer Allocation Selections:
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
+                        *ngFor="let ele of dealerAlloc.consensusProcess">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ ele.label }}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                            {{ ele.data.toString() }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight bold">
+                        Additional Requirements
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            {{ reqDetails.addReq }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button mat-raised-button [cssBtn]="'ok'" (click)="submitRequest()">Reviewed and Submitting</button>
+        </div>
+    </div>
+</div>

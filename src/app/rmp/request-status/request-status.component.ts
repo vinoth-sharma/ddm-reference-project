@@ -732,6 +732,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         if ($(".report_id_checkboxes:checkbox:checked").length) {
           Utils.showSpinner();
           this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
+          this.accept_report.accept_reports = [];
           this.accept_report.accept_reports.push(
             {
               'report_id': this.finalData[0]['ddm_rmp_post_report_id'],

@@ -38,7 +38,7 @@ export class DisclaimerWrapperComponent implements OnInit {
     description: ""
   };
   public l_lookupTableData: any = {};
-  public user_role = "";
+  user_role = "";
 
   constructor(private toaster: NgToasterComponent,
     private django: DjangoService,
@@ -46,38 +46,58 @@ export class DisclaimerWrapperComponent implements OnInit {
     private auth_service: AuthenticationService,
     private dialog: MatDialog) { }
 
+  public userData;
+
   ngOnInit(): void {
-    Utils.showSpinner();
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
-        this.user_role = role["role"]
+        this.user_role = role["role"];
       }
     })
 
+    this.updateSubmitRequestDesc();
+
+  }
+
+  updateSubmitRequestDesc(): void {
+    Utils.showSpinner();
     this.subReqService.getHttpLookUpTableData().subscribe(res => {
       this.l_lookupTableData = res.data;
       this.l_lookupTableData.desc_text.forEach(element => {
         if (element.ddm_rmp_desc_text_id === 3)
           this.submitReqDescObj.description = element.description
       });
+      this.userData = this.l_lookupTableData['users_list'].find(item => item.users_table_id === this.l_lookupTableData.user);
       Utils.hideSpinner();
     }, err => {
       Utils.hideSpinner();
     })
   }
 
+  ngAfterViewInit() {
+    if (this.user_role != "Admin" && !this.userData.disclaimer_ack) {
+      this.openDisclaimerModal()
+    }
+  }
+
+  // open disclaimer modal
   openDisclaimerModal() {
-    this.dialog.open(DisclaimerModalComponent, {
-      data: ""
+    let dialogRef = this.dialog.open(DisclaimerModalComponent, {
+      data: "", disableClose: true
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      this.userData.disclaimer_ack = result
     })
   }
 
+  // open disclaimer help modal
   openDisclaimerHelpModal() {
     this.dialog.open(DisclaimerHelpModalComponent, {
-      data: ""
+      data: "", disableClose: true
     })
   }
 
+  // save description
   saveSubmitReqDesc() {
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDescObj).subscribe(response => {
       Utils.hideSpinner()

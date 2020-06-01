@@ -18,7 +18,7 @@ export class RequestOnbehalfComp implements OnInit {
   constructor(public dialogRef: MatDialogRef<RequestOnbehalfComp>,
     private subReqService: SubmitRequestService,
     private toaster: NgToasterComponent,
-    private dataProvider : DataProviderService,
+    private dataProvider: DataProviderService,
     private django: DjangoService) { }
 
   dl_list = [];
@@ -42,22 +42,22 @@ export class RequestOnbehalfComp implements OnInit {
 
     // let lookTableData = this.subReqService.getLookUpTableData();
     this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
-    let l_dl_list = tableDate['data']['users_list'];
-    this.dl_list = l_dl_list.map(ele => {
-      return {
-        fullName: ele.first_name + ' ' + ele.last_name,
-        nameLabel: ele.first_name + ' ' + ele.last_name + ' (' + ele.email + ')',
-        emailId: ele.email,
-        users_table_id: ele.users_table_id
+      let l_dl_list = tableDate['data']['users_list'];
+      this.dl_list = l_dl_list.map(ele => {
+        return {
+          fullName: ele.first_name + ' ' + ele.last_name,
+          nameLabel: ele.first_name + ' ' + ele.last_name + ' (' + ele.email + ')',
+          emailId: ele.email,
+          users_table_id: ele.users_table_id
+        }
+      })
+      let userSaved = this.subReqService.getSubmitOnBehalf();
+      if (userSaved.length) {
+        let user = this.dl_list.find(dl => dl.fullName.trim() === userSaved.trim())
+        if (user)
+          this.myControl.setValue(user)
       }
-    })
-    let userSaved = this.subReqService.getSubmitOnBehalf();
-    if(userSaved.length){
-      let user = this.dl_list.find(dl=>dl.fullName.trim() === userSaved.trim())
-      if(user)
-        this.myControl.setValue(user)
-    }
-  });
+    });
   }
 
   confirmUser() {
@@ -66,10 +66,10 @@ export class RequestOnbehalfComp implements OnInit {
     }
     else if (this.myControl.value) {
       let selected = this.myControl.value.fullName === "None" ? null : this.myControl.value;
-      if(selected)
-        this.subReqService.setSubmitOnBehalf(selected.fullName,selected.emailId);
+      if (selected)
+        this.subReqService.setSubmitOnBehalf(selected.fullName, selected.emailId);
       else
-        this.subReqService.setSubmitOnBehalf("","");
+        this.subReqService.setSubmitOnBehalf("", "");
       let msg = this.myControl.value.fullName === "None" ? "User selected on behalf of has been removed" : `Proceed to create report on Behalf of ${selected.fullName}`;
       this.toaster.success(msg)
       this.closeDailog();

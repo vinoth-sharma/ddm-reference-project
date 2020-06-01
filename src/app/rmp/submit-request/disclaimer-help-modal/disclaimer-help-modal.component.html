@@ -7,7 +7,7 @@
     <div class="quillEditorSubmit">
       <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre">
         <button mat-icon-button style="margin-right: 15px;" matTooltip="edit"
-          *ngIf="showEditOption && user_role==='Admin'" (click)="showEditOption=!showEditOption">
+          *ngIf="showEditOption && (user_role ==='Admin')" (click)="showEditOption=!showEditOption">
           <mat-icon class="notification-icon">edit</mat-icon>
         </button>
         <ng-container *ngIf="!showEditOption">

@@ -12,7 +12,7 @@
         <div class="col">
           <div class="icons">
             <div class="press">
-              <button data-toggle="modal" data-target="#helpModal"
+              <button data-toggle="modal" data-backdrop="static" data-target="#helpModal"
                 style="background-color:white; border:none;padding-right:0px;">
                 <a data-toggle="tooltip" title="HELP">
                   <i id="ic" class="material-icons">help_outline</i>
@@ -33,7 +33,7 @@
               <th (click)="sort('favorites')">
                 <div style="width: 70px!important;">
                   <div class="alignLeft">
-                    <div>Favourites</div>
+                    <div>Favorites</div>
                     <div *ngIf="!reports['favorites']">&#8593;</div>
                     <div *ngIf="reports['favorites']">&#8595;</div>
                   </div>
@@ -165,7 +165,7 @@
                 <div class="report-name-edit" *ngIf="element.clicked ">
                   <input style="max-width:110px" maxlength="50" placeholder="Name max 50 characters"
                     [(ngModel)]="element.report_name" [value]="element.report_name?element.report_name:''"
-                    (change)="changeReportName($event , element)">
+                    >
                   <div>
 
                     <a data-toggle="tooltip" title="Save" (click)="changeReportName($event , element)"
@@ -199,13 +199,14 @@
                     style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                     Url&nbsp;&nbsp;&#10145;
                   </button>
-                  <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addUrl"
-                    (click)="addLinkUrl(element,'create')" *ngIf="element.link_to_results == ''&& user_role =='Admin'"
+                  <button class="btn btn-outline-primary" data-toggle="modal" data-backdrop="static"
+                    data-target="#addUrl" (click)="addLinkUrl(element,'create')"
+                    *ngIf="element.link_to_results == ''&& user_role =='Admin'"
                     style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                     Add Url
                   </button>
                   <button *ngIf="element.link_to_results != '' && user_role =='Admin'" class="btn btn-primary"
-                    style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
+                    style="margin-left: 15px;" data-toggle="modal" data-backdrop="static" data-target="#addUrl"
                     (click)="addLinkUrl(element,'edit')">
                     Edit
                   </button>
@@ -216,7 +217,7 @@
                 <div>
                   <button class="btn btn-outline-primary"
                     (click)="query_criteria_report(element.ddm_rmp_post_report_id)" data-toggle="modal"
-                    data-target="#queryCriteriaReport">
+                    data-backdrop="static" data-target="#queryCriteriaReport">
                     QueryCriteria
                   </button>
                 </div>
@@ -226,7 +227,7 @@
         </table>
       </div>
       <div style="padding-top: 0.7%;">
-        <mat-paginator [length]="paginatorlength" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
+        <mat-paginator [length]="reports.length" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
           (page)="onPaginationChange($event)">
         </mat-paginator>
       </div>
@@ -678,7 +679,8 @@
   </div>
 
   <!-- add url modal -->
-  <div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal fade" id="addUrl" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false"
+    data-backdrop="static">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -699,8 +701,8 @@
           <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save
-            Changes</button>
+          <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save Changes
+          </button>
           <button type="button" class="btn btn-secondary" id="close_url_modal" data-dismiss="modal"
             (click)="closeTBD_Assigned()">Close</button>
         </div>
@@ -719,71 +721,73 @@
       <h3>Vehicle Event Status</h3>
     </pre>
   <br>
+  <pre style="width: 100%;float: left;margin-bottom: 10px;">
+      <pre class="div-wrap">
+          <span> <b>Request Date:</b>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <span *ngIf='summary && summary.ddm_rmp_status_date'>{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span></span>
+      </pre>
+  <pre class="div-wrap">
+          <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;
+            <span *ngIf='summary && summary.ddm_rmp_post_report_id'> {{summary?.ddm_rmp_post_report_id}}</span></span>
+      </pre>
+  <pre *ngFor="let element of summary?.requestor" class="div-wrap">
+          <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf='element && element.requestor'>{{ element?.requestor }}</span>
+      </pre>
+  <pre class="div-wrap">
+          <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf='summary && summary.title'>{{summary?.title}}</span></span> <br>
+      </pre>
+  </pre>
   <br>
-  <pre class="Request-summary" *ngIf='summary'>
-    <span> <b>Request Date:</b>
-      &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
-    <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
-    <pre class="div-wrap" *ngFor="let element of summary?.requestor">
-        <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}
-        <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
-    </pre>
+  <pre class="Request-summary">
   <b style="font-size:150%">Market Selections</b>
   <pre class="div-wrap">
     <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
       *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
-    <br>
   </pre>
   <pre class="div-wrap">
     <b>Division(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='division_dropdown'>{{ division_dropdown }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Region(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ region_description }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='region_description'>{{ region_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Zone(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ zone_description }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='zone_description'>{{ zone_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Area(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ area_description }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='area_description'>{{ area_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>LMA(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ lma_description }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='lma_description'>{{ lma_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ gmma_description }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='gmma_description'>{{ gmma_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>BAC(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ bac_description }}&nbsp;&nbsp;</span>
-                <br>
+    <span *ngIf='bac_description'>{{ bac_description }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>FAN(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ fan_desc }}&nbsp;&nbsp;</span>
-    <br><br>
+    <span *ngIf='fan_desc'>{{ fan_desc }}&nbsp;&nbsp;</span>
+    <br>
   </pre>
   <b style="font-size:120%">Frequency of Reports</b>
-  <pre class="div-wrap" *ngIf="!frequency_flag">
-    <span>{{ report_frequency }}&nbsp;&nbsp;</span> <br><br>
+  <pre class="div-wrap">
+    <span *ngIf='report_frequency'>{{ report_frequency }}&nbsp;&nbsp;</span> <br>
   </pre>
   <b style="font-size:120%">Special Identifiers</b>
   <pre class="div-wrap">
-    <p>{{ special_identifier }}</p>
+    <p *ngIf='special_identifier'>{{ special_identifier }}</p>
   </pre>
   <h5>
-    <b>Text Notification, when Requests are fulfilled?</b>
+    <b style="font-size:150%">Text Notification, when Requests are fulfilled?</b>
   </h5>
   <pre class="div-wrap">
     <p *ngIf='text_notification == ""'>No</p>
@@ -792,43 +796,36 @@
   <!--                                Order To Sale Start                                    -->
 
   <pre class="div-wrap" *ngIf="summary?.report_type == 'ots'">
-    <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
+    <b style="font-size:150%">Vehicle Event Status Data</b><br>
   <pre class="div-wrap">
     <b style="font-size:120%">Order Criteria</b><br>
     <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ allocation_group }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='allocation_group'>{{ allocation_group }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ model_year }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='model_year'>{{ model_year }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='vehicle_line_brand'>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
     </pre>
   <pre class="div-wrap">
     <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='merchandising_model'>{{ merchandising_model }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ order_event }}&nbsp;&nbsp;</span>
-    <br>
+    <span *ngIf='order_event'>{{ order_event }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
-    <span>{{ order_type }}&nbsp;&nbsp;</span>
-    <br><br><br>
+    <span *ngIf='order_type'>{{ order_type }}&nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
-    <b style="font-size:120%">Order Metrics</b><br><br>
+    <b style="font-size:120%">Order Metrics</b><br>
     <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
-    <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
-    <br><br>
+    <span *ngIf='checkbox_data'>{{ checkbox_data}} &nbsp;&nbsp;</span>
   </pre>
   <pre class="div-wrap">
     <b>Consensus Time and Date:</b> &nbsp;&nbsp;
@@ -837,21 +834,16 @@
       <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
     </span>
   </pre>
-  <pre class="div-wrap">
-    <b>Additional Requirements:</b> <br>
-    <span>{{summary?.additional_req}}</span>
-  </pre>
   </pre>
   <pre class="div-wrap">
-    <h5><b>Dealer Allocation Selections</b></h5><br>
+    <h5><b style="font-size:150%">Dealer Allocation Selections</b></h5><br>
     <pre class="div-wrap">
       <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
-      <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+      <span *ngIf='allocation_group'>{{ allocation_group }}&nbsp;&nbsp;</span>
     </pre>
   <pre class="div-wrap">
       <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-      <span>{{ model_year }}&nbsp;&nbsp;</span>
-      <br>
+      <span *ngIf='model_year'>{{ model_year }}&nbsp;&nbsp;</span>
     </pre>
   <pre class="div-wrap"
     *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
@@ -865,13 +857,12 @@
     *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
         <b>Consensus Data:</b> &nbsp;&nbsp;
         <span *ngFor="let element of summary?.da_data.concensus_data">
-          {{element?.cd_values}}&nbsp;&nbsp;
+          <span *ngIf='element && element.cd_values'>{{element?.cd_values}}</span>&nbsp;&nbsp;
         </span>
-      <br>
     </pre>
   <pre class="div-wrap">
-        <b>Additional Requirements:</b> <br>
-        <span>{{summary?.additional_req}}</span>
+        <b>Additional Requirements:</b>
+        <span *ngIf='summary && summary.additional_req'>{{summary?.additional_req}}</span>
     </pre>
   </pre>
   </pre>

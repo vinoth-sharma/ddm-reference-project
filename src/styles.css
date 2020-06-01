@@ -19,11 +19,6 @@ body:not(.modal-open){
   cursor: pointer;
 }
 
-.modal-header{
-  background-color: rgb(00,34,61);
-  color: white;
-}
-
 .modal .modal-header .close{
   color: #ffffff;
   outline: transparent;

@@ -1,14 +1,13 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 vehEveStatWrapper">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <h5 class="bold">Order Criteria</h5>
+        <div class="bold" style="font-size: 1.2em;">Order Criteria</div>
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="req_body.report_id"
-        style="margin: 0px 0px 15px;font-size: 1.3em;font-weight: 600;">
-        <div [innerHTML]="display_message"></div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin: 0px 0px 15px;font-weight: 600;">
+        <div [innerHTML]="display_message" [ngClass]="messageClass"></div>
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="!req_body.report_id">
+    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="!req_body.report_id">
         <div class="red">Create Request to proceed with vehicle event status</div>
-    </div>
+    </div> -->
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
         <app-mat-multiselect [data]="filtered_MD.divisions" [settings]="division_settings"
             [(inputModel)]="selected.divisions" (selectionDone)="multiSelectChange('division')"></app-mat-multiselect>
@@ -164,7 +163,7 @@
                 Other Key Data Elements<span class="red">*</span>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 alignCenter">
-                <mat-checkbox [(ngModel)]="keyDataEle.others.checked"></mat-checkbox>
+                <mat-checkbox [(ngModel)]="keyDataEle.others.checked" (change)="checkKeyDataEle($event)"></mat-checkbox>
                 <mat-form-field style="width: 100%">
                     <mat-label>Please enter other Key Data Elements</mat-label>
                     <input matInput placeholder="Please enter other Key Data Elements" value=""
@@ -202,18 +201,19 @@
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 borderLeft borderRight">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding bold ordMetsTitle">Order Metrics</div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding ">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold">
+            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold">
                 Order Events available for display
-            </div>
+            </div> -->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold" style="padding-bottom: 4px;">
                     Sales and Availability (Event Progression)
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <ng-container *ngFor="let sales of checkboxMD2.sales_avail">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-                                <mat-checkbox [(ngModel)]="sales['checked']"> {{ sales.field_values }} </mat-checkbox>
+                                <mat-checkbox [(ngModel)]="sales['checked']" [matTooltip]="sales['tooltip']">
+                                    {{ sales.field_values }} </mat-checkbox>
                             </div>
                         </ng-container>
                     </div>
@@ -221,7 +221,7 @@
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold">
                         Days Supply
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -232,8 +232,8 @@
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                                     <mat-checkbox *ngFor="let daysSupply of checkboxMD2.days_supply1"
-                                        [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;">
-                                        {{ daysSupply.label }} </mat-checkbox>
+                                        [matTooltip]="daysSupply['tooltip']" [(ngModel)]="daysSupply['checked']"
+                                        style="margin-right: 5px;"> {{ daysSupply.label }} </mat-checkbox>
                                 </div>
                             </div>
                         </div>
@@ -244,8 +244,8 @@
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                                     <mat-checkbox *ngFor="let daysSupply of checkboxMD2.days_supply2"
-                                        [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;">
-                                        {{ daysSupply.label }} </mat-checkbox>
+                                        [matTooltip]="daysSupply['tooltip']" [(ngModel)]="daysSupply['checked']"
+                                        style="margin-right: 5px;"> {{ daysSupply.label }} </mat-checkbox>
                                 </div>
                             </div>
                         </div>
@@ -256,8 +256,8 @@
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                                     <mat-checkbox *ngFor="let daysSupply of checkboxMD2.days_supply3"
-                                        [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;">
-                                        {{ daysSupply.label }} </mat-checkbox>
+                                        [matTooltip]="daysSupply['tooltip']" [(ngModel)]="daysSupply['checked']"
+                                        style="margin-right: 5px;"> {{ daysSupply.label }} </mat-checkbox>
                                 </div>
                             </div>
                         </div>
@@ -268,8 +268,8 @@
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                                     <mat-checkbox *ngFor="let daysSupply of checkboxMD2.days_supply4"
-                                        [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;">
-                                        {{ daysSupply.label }} </mat-checkbox>
+                                        [matTooltip]="daysSupply['tooltip']" [(ngModel)]="daysSupply['checked']"
+                                        style="margin-right: 5px;"> {{ daysSupply.label }} </mat-checkbox>
                                 </div>
                             </div>
                         </div>
@@ -278,46 +278,47 @@
                 </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold">
                     Penetration
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding"
                         *ngFor="let penetration of checkboxMD2.penetration">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <mat-checkbox [(ngModel)]="penetration['checked']"> {{ penetration.field_values }}
+                            <mat-checkbox [(ngModel)]="penetration['checked']" [matTooltip]="penetration['tooltip']">
+                                {{ penetration.field_values }}
                             </mat-checkbox>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold">
                     Time to Turn
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
                             *ngFor="let time2turn of checkboxMD2.time_to_turn">
-                            <mat-checkbox [(ngModel)]="time2turn['checked']"> {{ time2turn.field_values }}
-                            </mat-checkbox>
+                            <mat-checkbox [(ngModel)]="time2turn['checked']" [matTooltip]="time2turn['tooltip']">
+                                {{ time2turn.field_values }} </mat-checkbox>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold">
                     Turn Rate
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                     <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                         <div>Using Sales of</div>
                     </div>
                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <mat-checkbox *ngFor="let daysSupply of checkboxMD2.turn_rate"
-                                [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;"> {{ daysSupply.label }}
-                            </mat-checkbox>
+                                [(ngModel)]="daysSupply['checked']" style="margin-right: 5px;"
+                                [matTooltip]="daysSupply['tooltip']"> {{ daysSupply.label }} </mat-checkbox>
                         </div>
                     </div>
                 </div>
@@ -356,8 +357,7 @@
     </div>
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignRight">
-        <button [cssBtn]="'ok'" mat-raised-button (click)="openAdditionalReqModal();" [disabled]="!req_body.report_id"
-            [paramFlag]="!req_body.report_id?true:false">Continue</button>
-
+        <button [cssBtn]="'ok'" mat-raised-button (click)="openAdditionalReqModal();"
+            [disabled]="!req_body.report_id">Continue</button>
     </div>
 </div>

@@ -116,7 +116,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public selectedRequestId: any;
   public reportContainer: any;
   public searchObj: any;
-
   public reportTitle: any;
   public reportName: any;
   public reportRequestNumber: any;
@@ -157,7 +156,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     ]
   };
   // paginator params
-  public paginatorlength = 100;
   public paginatorpageSize = 10;
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
@@ -168,7 +166,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public frequencySelections = ['One Time', 'Recurring']
   public selectedNewFrequency: string = "";
   public isRecurringFrequencyHidden: boolean = false;
-
   public toolbarTooltips = {
     'font': 'Select a font',
     'size': 'Select a font size',
@@ -281,18 +278,24 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    */
   public changeReportName(event: any, reportObject) {
     const changedReport = {};
-    changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
-    changedReport['report_name'] = reportObject.report_name;
-    this.django.update_rmpReports_DDMName(changedReport)
-      .subscribe(
-        resp => {
-          reportObject.clicked = false;
-          reportObject.report_name = changedReport['report_name'];
-        }
-        ,
-        () => {
-        },
+
+    if (!reportObject.report_name.length) {
+      reportObject.report_name = reportObject.report_name_old;
+      this.toasterService.error('Cannot save empty name');
+      reportObject.clicked = false;
+    } else {
+      changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
+      changedReport['report_name'] = reportObject.report_name;
+      this.django.update_rmpReports_DDMName(changedReport)
+        .subscribe(
+          resp => {
+            reportObject.clicked = false;
+            reportObject.report_name = changedReport['report_name'];
+            this.toasterService.success('Successfuly Changed');
+          }
+
       );
+    }
   }
 
   /**
@@ -427,6 +430,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           if (ele['frequency_data_filtered']) {
             ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");
           }
+          ele['report_name_old'] = ele['report_name'];
           ele['clicked'] = false;
         })
         this.reportContainer.sort((a, b) => {
@@ -436,7 +440,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           return b['favorites'] > a['favorites'] ? 1 : -1
         })
         this.reports = this.reportContainer;
-        this.paginatorlength = this.reports.length
         this.reportsOriginal = this.reportContainer.slice();
         Utils.hideSpinner();
       }
@@ -773,7 +776,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   // open change-frequency modal
   public showChangeFrequencyModal() {
-    $('#change-Frequency').modal('show');
+    $('#change-Frequency').modal({backdrop:"static",keyboard:true,show:true});
   }
 
   //-------------------------frequency update--------------------------------------------

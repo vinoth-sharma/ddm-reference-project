@@ -58,7 +58,7 @@
   </div>
 
   <div class="icons">
-    <div *ngIf="user_role=='Admin'" class="press">
+    <div *ngIf="user_role =='Admin'" class="press">
       <a data-toggle="tooltip" title="EDIT" style="cursor: pointer;" (click)="editTrue()">
         <i id="ic" class="material-icons">mode_edit</i>
       </a>
@@ -72,17 +72,8 @@
   </div>
 </div>
 <div class="main-tool-body-content">
-  <div class="information">
+  <div class="information" [style.height]="editMode ? '85%' : '100%'">
     <div id="editable">
-      <div class="container-fluid" *ngIf="editMode">
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
-          data-backdrop="static" (click)="NewDoc()">
-          Add a Reference Document
-        </button>
-        <br>
-        <br>
-      </div>
-
       <div class="ref-styling row" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
         <div class="col-7">
           <a [id]="'ref_doc'+element.ddm_rmp_desc_text_reference_documents_id" target="_blank" data-toggle="tooltip"
@@ -119,6 +110,16 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="container-fluid" *ngIf="editMode" >
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
+        data-backdrop="static" (click)="NewDoc()">
+        <span class="icon-cont"> <i style="position: absolute;
+        top: -4px;
+        font-size: 24px;" class="material-icons">add_circle_outline</i></span>
+        &nbsp;
+        <span> Add a Reference Material</span>
+      </button>
   </div>
 </div>
 

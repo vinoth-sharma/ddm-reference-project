@@ -442,14 +442,15 @@ export class VehicleEventStatusComponent implements OnInit {
     this.req_body.report_detail.is_summary_report = result.data.isSummaryReport;
     this.req_body.report_detail.business_req = result.data.businessReq;
 
-    this.openPreviewModal();
+    this.openPreviewModal(result);
   }
 
-  openPreviewModal() {
+  openPreviewModal(result) {
     const dialogRef = this.matDialog.open(ReviewReqModalComponent, {
       data: {
         reqBody: this.req_body,
-        selectedReqData: this.l_selectedReqData
+        selectedReqData: this.l_selectedReqData,
+        selectedFile : result.data.selectedFile
       }, disableClose: true
     })
 

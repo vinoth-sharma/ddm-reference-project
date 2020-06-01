@@ -4,6 +4,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 import Utils from 'src/utils';
 import { Router } from '@angular/router';
 import { SubmitRequestService } from '../submit-request.service';
+import { DjangoService } from '../../django.service';
 declare var jsPDF: any;
 declare var $: any;
 
@@ -17,6 +18,7 @@ export class ReviewReqModalComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<ReviewReqModalComponent>,
     private toaster: NgToasterComponent,
     public dialog: MatDialog,
+    public django : DjangoService,
     private router: Router,
     public submitService: SubmitRequestService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
@@ -58,7 +60,7 @@ export class ReviewReqModalComponent implements OnInit {
   l_masterData: any;
 
   ngOnInit(): void {
-    // console.log(this.data);
+    console.log(this.data);
     this.l_masterData = JSON.parse(JSON.stringify(this.data));
 
     this.generateRequestData(this.data);
@@ -82,6 +84,7 @@ export class ReviewReqModalComponent implements OnInit {
     Utils.showSpinner();
     this.submitService.submitVehicelEventStatus(this.l_masterData.reqBody).subscribe(response => {
       // console.log(response);
+      this.submitFile();
       this.submitService.setSubmitOnBehalf("", "");
       this.closeDailog();
       Utils.hideSpinner();
@@ -98,6 +101,7 @@ export class ReviewReqModalComponent implements OnInit {
     Utils.showSpinner();
     this.submitService.submitDealerAllocation(this.l_masterData.reqBody).subscribe(response => {
       // console.log(response);
+      this.submitFile();
       this.submitService.setSubmitOnBehalf("", "");
       this.closeDailog();
       Utils.hideSpinner();
@@ -107,6 +111,13 @@ export class ReviewReqModalComponent implements OnInit {
       Utils.hideSpinner();
       console.log(err);
     });
+  }
+
+  submitFile(){
+    if(this.data.selectedFile)
+      this.django.ddm_rmp_file_data(this.data.selectedFile).subscribe(response => {
+      }, err => {
+      });
   }
 
   generateRequestData(data) {

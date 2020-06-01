@@ -258,15 +258,16 @@ export class DealerAllocationComp implements OnInit {
     this.req_body.concensus_time_date.endY = to.year();
 
     // console.log(this.req_body);
-    this.openPreviewModal();
+    this.openPreviewModal(result);
 
   }
 
-  openPreviewModal() {
+  openPreviewModal(result) {
     const dialogRef = this.matDialog.open(ReviewReqModalComponent, {
       data: {
         reqBody: this.req_body,
-        selectedReqData: this.l_selectedReqData
+        selectedReqData: this.l_selectedReqData,
+        selectedFile : result.data.selectedFile
       }, disableClose: true
     })
 

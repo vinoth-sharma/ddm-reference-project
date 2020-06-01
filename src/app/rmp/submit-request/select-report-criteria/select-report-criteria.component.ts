@@ -87,7 +87,10 @@ export class SelectReportCriteriaComp implements OnInit {
       assigned_to: "",
       link_to_results: "",
       query_criteria: "",
-      link_title: ""
+      link_title: "",
+      is_vin_level_report: null,
+      is_summary_report : null,
+      business_req : ""
     }
   }
 
@@ -393,6 +396,9 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.report_type = reqData.report_data.report_type;
     this.req_body.report_detail.requestor = reqData.report_data.requestor;
     this.req_body.report_detail.title = reqData.report_data.title;
+    this.req_body.report_detail.is_vin_level_report = reqData.report_data.is_vin_level_report;
+    this.req_body.report_detail.is_summary_report = reqData.report_data.is_summary_report;
+    this.req_body.report_detail.business_req = reqData.report_data.business_req;
     this.req_body.report_id = reqData.ddm_rmp_post_report_id;
 
     this.submitService.setSubmitOnBehalf(this.req_body.report_detail.on_behalf_of, "");

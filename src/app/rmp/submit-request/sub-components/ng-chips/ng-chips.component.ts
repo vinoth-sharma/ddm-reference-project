@@ -49,7 +49,7 @@ export class NgChipsComponent {
     if (input) {
       input.value = '';
     }
-    // this.inputModelChange.emit(this.chipsEntered);
+    this.inputModelChange.emit(this.chipsEntered);
   }
 
   remove(fruit: Fruit): void {
@@ -58,7 +58,7 @@ export class NgChipsComponent {
     if (index >= 0) {
       this.chipsEntered.splice(index, 1);
     }
-    // this.inputModelChange.emit(this.chipsEntered);
+    this.inputModelChange.emit(this.chipsEntered);
   }
 
   textEntered(event){

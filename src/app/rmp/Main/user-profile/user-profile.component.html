@@ -128,13 +128,11 @@
   </div>
   <div class="row mb-0">
     <div class="col-xs-6 bac-padding">
-      <app-ng-chips title="If more granular information is required, please mention it in Additional Requirements"
-        [custom_placeholder]="'Add BAC'" [(inputModel)]="bacselectedItems" (inputModelChange)="changeSaveSettings()">
+      <app-ng-chips [custom_placeholder]="'Add BAC'" [(inputModel)]="bacselectedItems" (inputModelChange)="changeSaveSettings()">
       </app-ng-chips>
     </div>
     <div class="col-xs-6 fan-padding">
-      <app-ng-chips title="If more granular information is required, please mention it in Additional Requirements"
-        class="chips-height" [custom_placeholder]="'Add FAN'" [(inputModel)]="fanselectedItems"
+      <app-ng-chips class="chips-height" [custom_placeholder]="'Add FAN'" [(inputModel)]="fanselectedItems"
         (inputModelChange)="changeSaveSettings()">
       </app-ng-chips>
     </div>

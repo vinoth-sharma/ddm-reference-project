@@ -165,19 +165,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   };
 
   public config = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-      [{ 'size': ['small', false, 'large', 'huge'] }],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean'],
-      ['image']
-    ]
+    toolbar: null
   };
 
   public toolbarTooltips = {
@@ -316,6 +304,12 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
+        if (this.user_role == 'Admin') {
+          this.config.toolbar = this.toolbarTooltips;
+        }
+        else {
+          this.config.toolbar = false;
+        }
       }
     })
     dataProvider.currentlookUpTableData.subscribe(element => {
@@ -481,7 +475,6 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
 
   // enable  a few input field based on checkbox selection
   public enableNotificationBox() {
-    this.changed_settings = true;
     $("#notification_yes").prop("checked", "true")
     $("#phone").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");

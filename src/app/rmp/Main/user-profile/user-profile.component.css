@@ -45,6 +45,7 @@ td.col-9 {
 .save-button {
     padding-left: 1.5vw;
     padding-right: 1.5vw;
+    margin-left: 13vw;
 }
 
 .text-notifications {
@@ -121,6 +122,8 @@ td.col-9 {
     margin-left: 5px;
     -webkit-text-security: disc;
     display: inline-block;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
 }
 
 .input-group i {
@@ -130,7 +133,7 @@ td.col-9 {
 }
 
 .right-alignment {
-    padding-left: 10vw;
+    padding-left: 12vw;
 }
 
 .row {
@@ -157,13 +160,18 @@ hr {
 }
 
 .bac-padding {
-    padding-left: 2vw;
+    padding-left: 1vw;
 }
 
 .fan-padding {
     padding-right: 2vw;    
+    padding-left: 1vw;
 }
 
 .message-padding{
-    padding-left : 2vw; 
+    padding-left : 1vw; 
+}
+
+::ng-deep .main-tool-body-content .information .quill .ql-container .ql-editor {
+    border: lightgray solid 1px;
 }

@@ -1,17 +1,10 @@
 .page-position {
     display: grid;
-    margin-left: 2.5vh;
-}
-
-p {
-    width : 16vw;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin-left: 3.5vh;
 }
 
 .inter-spacing {
-    max-height: 24vw;
+    max-height: 26vw;
     overflow: auto;
 }
 
@@ -21,7 +14,11 @@ p {
     overflow: auto;
 }
 
-.ddm-report-name {
+.ddm-report-name-lhs {
+    width: 75vw;
+}
+
+.ddm-report-name-rhs {
     width: 75vw;
 }
 
@@ -51,7 +48,7 @@ th {
 }
 
 .heading {
-    margin-left: 2.5vh;
+    margin-left: 3.5vh;
 }
 
 .mat-card-subtitle {
@@ -78,6 +75,11 @@ tbody {
     border: solid 1px #000;
 }
 
+thead { 
+    color: #495057;
+    background-color: #d3d3d3;
+}
+
 .delete-disabled {
     color: #808080;
 }
@@ -90,6 +92,7 @@ tbody {
 
 .search-width {
     width: 40vw;
+    padding-bottom: 1vh;
 }
 
 .input-width {
@@ -104,6 +107,23 @@ tbody {
     min-width: 18vw;
 }
 
-.max-length-display {
-/* do not delete */
+p {
+    width : 16vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.text-width-lhs {
+    max-width : 16vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.text-width-rhs {
+    max-width : 75%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

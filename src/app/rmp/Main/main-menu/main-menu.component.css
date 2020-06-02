@@ -36,8 +36,9 @@ body {
     width: 100vw;
     background: white;
     height: calc(100% - 50px);
-    margin: 25px;
+    margin: 3vh;
     box-shadow: 3px 3px 8px 2px #c3c3c3;
+    padding: 3vh 1.5vw 3vh 1.5vw;
 }
 
 .left-tabs {

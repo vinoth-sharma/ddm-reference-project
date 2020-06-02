@@ -5,19 +5,16 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import * as _moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'src/app/authentication.service';
-import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { SubmitRequestService } from "../submit-request.service";
-import { Router } from '@angular/router';
-
-import { default as _rollupMoment, Moment } from 'moment';
+import { Moment } from 'moment';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { AdditionalReqModalComponent } from '../additional-req-modal/additional-req-modal.component';
 import { DataProviderService } from '../../data-provider.service';
 import { Subscription } from 'rxjs';
 import { ReviewReqModalComponent } from '../review-req-modal/review-req-modal.component';
 
-const moment = _rollupMoment || _moment;
+const moment = _moment;
 
 export const MY_FORMATS = {
   parse: {
@@ -114,7 +111,6 @@ export class DealerAllocationComp implements OnInit {
     public ngToaster: NgToasterComponent,
     public submitService: SubmitRequestService,
     private dataProvider: DataProviderService,
-    private router: Router,
     public auth_service: AuthenticationService) { }
 
   ngOnInit(): void {
@@ -131,7 +127,6 @@ export class DealerAllocationComp implements OnInit {
     })
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
-
       // console.log(res);
       if (res.type === "srw") {
         this.l_selectedReqData = res.data;
@@ -170,7 +165,6 @@ export class DealerAllocationComp implements OnInit {
         }
       }
     })
-
     this.submitService.updateLoadingStatus({ status: true, comp: "da" })
   }
 
@@ -219,8 +213,6 @@ export class DealerAllocationComp implements OnInit {
         data: obj, disableClose: true
       })
       dialogRef.afterClosed().subscribe(result => {
-        // this.dialogClosed();
-        // console.log(result);
         if (result) {
           this.openReviewModal(result);
         }
@@ -230,7 +222,6 @@ export class DealerAllocationComp implements OnInit {
   }
 
   openReviewModal(result) {
-    // console.log(this.selected);
     this.req_body.allocation_group.dropdown = this.selected.allocation_groups;
     this.req_body.model_year.dropdown = this.selected.model_years;
     this.req_body.concensus_data = this.selected.consensus.map(cons => {
@@ -257,9 +248,7 @@ export class DealerAllocationComp implements OnInit {
     this.req_body.concensus_time_date.endM = to.format("MMMM");
     this.req_body.concensus_time_date.endY = to.year();
 
-    // console.log(this.req_body);
     this.openPreviewModal(result);
-
   }
 
   openPreviewModal(result) {
@@ -272,16 +261,13 @@ export class DealerAllocationComp implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(result);
-      // if (result) {
-      // this.saveVehicleEventStatus();
-      // }
+      //doesnt do anything
     })
   }
 
   refillSelectedRequestData(data) {
 
-    //stop the function when da data is null 
+    //stop the function when da_data is null 
     if (!data['da_data'])
       return true
 
@@ -350,7 +336,6 @@ export class DealerAllocationComp implements OnInit {
     this.consensusStartDate.setValue(from);
     if (from) {
       this.minDate = new Date(from.toISOString());
-      // this.minOrderEventDate = new Date(ctrlValue.year(), ctrlValue.month(), ctrlValue.date());
       if (this.consensusEndDate.value) {
         to = +to >= +from ? to : "";
         this.consensusEndDate = +to >= +from ? this.consensusEndDate : new FormControl(moment(this.minDate));

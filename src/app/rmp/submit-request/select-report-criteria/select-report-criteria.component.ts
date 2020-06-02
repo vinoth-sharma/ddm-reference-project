@@ -441,7 +441,8 @@ export class SelectReportCriteriaComp implements OnInit {
   }
 
   clearRequestData() {
-    this.clearSubmitReqEmitter.emit(true);
+    let l_res = this.req_body.report_id?"NewRequest":"clear";
+    this.clearSubmitReqEmitter.emit(l_res);
   }
 
   public market_settings = {

@@ -74,10 +74,14 @@ export class SubmitRequestWrapperComponent implements OnInit {
     })
   }
 
-  refreshWrapperFunc(): void {
+  refreshWrapperFunc(event): void {
     Utils.showSpinner();
     this.refreshWrapper = false;
-    this.clearAll = true;
+    if (event === "clear")
+      this.clearAll = true;
+    else
+      this.clearAll = false;
+
     setTimeout(() => {
       this.submitReqService.setSubmitOnBehalf("", "");
       localStorage.removeItem('report_id');

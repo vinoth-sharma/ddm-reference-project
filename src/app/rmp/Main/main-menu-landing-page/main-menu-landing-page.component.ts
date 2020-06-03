@@ -37,7 +37,6 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   public user_role: string = '';
   public readOnlyContentHelper: boolean = true;
   public enableUpdateData: boolean = false;
-  public info
   public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
@@ -160,7 +159,6 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
         Utils.hideSpinner();
       }
     })
-    this.getCurrentLookUpTable()
   }
 
   ngAfterViewInit() {
@@ -430,21 +428,6 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // to open important notes popup
-  public openAddNotes() {
-    this.dialog.open(NotesWrapperComponent, {
-      data: this.info.data.admin_note, disableClose: true
-    })
-  }
-
-  // to read lookup data from currentlookUpTableData observable
-  public getCurrentLookUpTable() {
-    this.dataProvider.currentlookUpTableData.subscribe(element => {
-      if (element) {
-        this.info = element;
-      }
-    })
-  }
 
 }
 

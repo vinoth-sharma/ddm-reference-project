@@ -1,17 +1,17 @@
 <div class="main-tool-body-header">
   <div class="heading">
-    <div class="caption-style">
+    <div class="col-xs-9 pl-0">
       <h3><b>DDM Team Contact List</b></h3>
     </div>
-  </div>
-  <div class="icons">
-    <div *ngIf="user_role == 'Admin'" class="press" style="padding-top: 6px;">
-      <a data-toggle="tooltip" title="EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
-    </div>
-    <div class="press help-icon">
-      <button data-toggle="modal" data-target="#helpModal" data-backdrop="static" style="padding-right:0px;">
-        <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
-      </button>
+    <div class="icons">
+      <div *ngIf="user_role == 'Admin'" class="press">
+        <a data-toggle="tooltip" title="EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
+      </div>
+      <div class="press help-icon">
+        <button data-toggle="modal" data-target="#helpModal" data-backdrop="static" style="padding-right:0px;">
+          <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -19,10 +19,8 @@
   <div class="information info-quill">
     <button [cssBtn]="'ok'" class="btn save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>
     <button [cssBtn]="'cancel'" class="btn save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button>
-
     <quill-editor class="quill" [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContent'
       (onContentChanged)='textChanged($event)'></quill-editor>
-
   </div>
 </div>
 
@@ -53,7 +51,6 @@
           <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'
             (onContentChanged)='textChanged($event)'></quill-editor>
         </div>
-
       </div>
       <div class="modal-footer modal-footer-pad">
         <button [cssBtn]="'mid'" id="modal_close_button" class="btn" (click)="edit_True()"

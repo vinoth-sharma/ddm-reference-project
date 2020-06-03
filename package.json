@@ -1,6 +1,6 @@
 {
   "name": "ddm",
-  "version": "1.9.7a",
+  "version": "1.9.7",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

@@ -1,14 +1,15 @@
 .main-tool-body-header {
     height: 10%;
-    width: 95%;
-    margin-left: 2.5%;
+    width: 99%;
+    margin-left: 1.5vw;
 }
 
 .heading {
-    width: 50%;
+    width: 91.5vw;
     float: left;
     height: 100%;
-    padding-top: 4vh;
+    padding-bottom: 2vh;
+    padding-top: 1vh;
 }
 
 .caption-style {
@@ -17,15 +18,9 @@
 }
 
 .icons {
-    width: 50%;
     height: 100%;
     float: right;
     align-content: center;
-    padding-left: 5%;
-    padding-top: 2%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
 }
 
 .buffer {
@@ -88,9 +83,9 @@ a:active {
 
 .main-tool-body-content {
     overflow-y: auto;
-    width: 99.9%;
-    height: 61vh;
-    padding-left:42px;
+    width: 98.5%;
+    height: 58vh;
+    padding-left:1.5vw;
     padding-bottom: 15px;
     overflow-x: hidden;
 }
@@ -115,8 +110,6 @@ a:active {
     font-size: 10px;
 }
 
-
-
-
-
-
+h3 {
+    margin-top: 0vh;
+}

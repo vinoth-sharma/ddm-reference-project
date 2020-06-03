@@ -1,9 +1,9 @@
 <div class="body-content">
-  <div class="row">
-    <div class="col-xs-10">
+  <div class="heading">
+    <div class="col-xs-9 pl-0">
       <h3 class="mt-0"><b>User Profile</b></h3>
     </div>
-    <div class="col-xs-2 right-alignment">
+    <div class="right-alignment">
       <div class="press">
         <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;">
           <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
@@ -11,6 +11,21 @@
       </div>
     </div>
   </div>
+  <!-- <div class="heading">
+    <div class="col-xs-9 pl-0">
+      <h3><b>DDM Team Contact List</b></h3>
+    </div>
+    <div class="icons">
+      <div *ngIf="user_role == 'Admin'" class="press">
+        <a data-toggle="tooltip" title="EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
+      </div>
+      <div class="press help-icon">
+        <button data-toggle="modal" data-target="#helpModal" data-backdrop="static" style="padding-right:0px;">
+          <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
+        </button>
+      </div>
+    </div>
+  </div> -->
   <div class="row">
     <div class="col-xs-3">
       <i>
@@ -92,56 +107,59 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-xs-3 pl-0">
-      <app-mat-multiselect [data]="dropdownList" [settings]="market_settings" [(inputModel)]="selected.market_data"
-        (selectionDone)="onMarketItemSelect()">
-      </app-mat-multiselect>
+
+  <div class="market-selections-main">
+    <div class="row">
+      <div class="col-xs-3 pl-0">
+        <app-mat-multiselect [data]="dropdownList" [settings]="market_settings" [(inputModel)]="selected.market_data"
+          (selectionDone)="onMarketItemSelect()">
+        </app-mat-multiselect>
+      </div>
+      <div class="col-xs-3 pl-0">
+        <app-mat-multiselect [data]="divisiondropdownListfinal" [settings]="division_settings"
+          [(inputModel)]="selected.division_data">
+        </app-mat-multiselect>
+      </div>
+      <div class="col-xs-3 pl-0">
+        <app-mat-multiselect [data]="regiondropdownListfinal" [settings]="region_settings"
+          [(inputModel)]="selected.country_region_data" (selectionDone)="onRegionItemSelect()">
+        </app-mat-multiselect>
+      </div>
+      <div class="col-xs-3 pl-0">
+        <app-mat-multiselect [data]="zonedropdownListfinal" [settings]="zone_settings"
+          [(inputModel)]="selected.region_zone_data" (selectionDone)="onZoneItemSelect()">
+        </app-mat-multiselect>
+      </div>
+      <div class="col-xs-3 pl-0">
+        <app-mat-multiselect [data]="areadropdownListfinal" [settings]="area_settings"
+          [(inputModel)]="selected.zone_area_data">
+        </app-mat-multiselect>
+      </div>
+      <div class="col-xs-3 pl-0">
+        <app-mat-multiselect [data]="gmmadropdownListfinal" [settings]="gmma_settings"
+          [(inputModel)]="selected.gmma_data">
+        </app-mat-multiselect>
+      </div>
+      <div class="col-xs-3 pl-0">
+        <app-mat-multiselect [data]="lmadropdownListfinal" [settings]="lma_settings" [(inputModel)]="selected.lma_data">
+        </app-mat-multiselect>
+      </div>
     </div>
-    <div class="col-xs-3 pl-0">
-      <app-mat-multiselect [data]="divisiondropdownListfinal" [settings]="division_settings"
-        [(inputModel)]="selected.division_data">
-      </app-mat-multiselect>
+    <div class="row mb-0">
+      <div class="col-xs-6 bac-padding">
+        <app-ng-chips [custom_placeholder]="'Add BAC'" [(inputModel)]="bacselectedItems"
+          (inputModelChange)="changeSaveSettings()">
+        </app-ng-chips>
+      </div>
+      <div class="col-xs-6 fan-padding">
+        <app-ng-chips class="chips-height" [custom_placeholder]="'Add FAN'" [(inputModel)]="fanselectedItems"
+          (inputModelChange)="changeSaveSettings()">
+        </app-ng-chips>
+      </div>
     </div>
-    <div class="col-xs-3 pl-0">
-      <app-mat-multiselect [data]="regiondropdownListfinal" [settings]="region_settings"
-        [(inputModel)]="selected.country_region_data" (selectionDone)="onRegionItemSelect()">
-      </app-mat-multiselect>
+    <div class="row message-padding">
+      <b><i>*If more granular information is required, please mention it in Additional Requirements</i></b>
     </div>
-    <div class="col-xs-3 pl-0">
-      <app-mat-multiselect [data]="zonedropdownListfinal" [settings]="zone_settings"
-        [(inputModel)]="selected.region_zone_data" (selectionDone)="onZoneItemSelect()">
-      </app-mat-multiselect>
-    </div>
-    <div class="col-xs-3 pl-0">
-      <app-mat-multiselect [data]="areadropdownListfinal" [settings]="area_settings"
-        [(inputModel)]="selected.zone_area_data">
-      </app-mat-multiselect>
-    </div>
-    <div class="col-xs-3 pl-0">
-      <app-mat-multiselect [data]="gmmadropdownListfinal" [settings]="gmma_settings"
-        [(inputModel)]="selected.gmma_data">
-      </app-mat-multiselect>
-    </div>
-    <div class="col-xs-3 pl-0">
-      <app-mat-multiselect [data]="lmadropdownListfinal" [settings]="lma_settings" [(inputModel)]="selected.lma_data">
-      </app-mat-multiselect>
-    </div>
-  </div>
-  <div class="row mb-0">
-    <div class="col-xs-6 bac-padding">
-      <app-ng-chips [custom_placeholder]="'Add BAC'" [(inputModel)]="bacselectedItems"
-        (inputModelChange)="changeSaveSettings()">
-      </app-ng-chips>
-    </div>
-    <div class="col-xs-6 fan-padding">
-      <app-ng-chips class="chips-height" [custom_placeholder]="'Add FAN'" [(inputModel)]="fanselectedItems"
-        (inputModelChange)="changeSaveSettings()">
-      </app-ng-chips>
-    </div>
-  </div>
-  <div class="row message-padding">
-    <b><i>*If more granular information is required, please mention it in Additional Requirements</i></b>
   </div>
 
   <!------------------------------------Help Modal------------------------------ -->

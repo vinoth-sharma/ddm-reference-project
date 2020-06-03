@@ -1,19 +1,19 @@
 <div class="main-tool-body-header">
-  <div class="heading" style="display: flex;">
-    <div class="caption-style" style="width: 60%;">
-      <h3><b>What is DDM ?</b></h3>
+  <div class="heading">
+    <div class="col-xs-9 pl-0">
+      <h3><b>What is DDM?</b></h3>
     </div>
-  </div>
-  <div class="icons">
-    <div *ngIf="user_role == 'Admin'" class="press">
-      <a data-toggle="tooltip" title="EDIT" (click)="editTrue()">
-        <i id="ic" class="material-icons">mode_edit</i>
-      </a>
-    </div>
-    <div class="press help-icon">
-      <button data-toggle="modal" data-target="#helpModal" data-backdrop="static" style="padding-right:0px;">
-        <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
-      </button>
+    <div class="icons">
+      <div *ngIf="user_role == 'Admin'" class="press">
+        <a data-toggle="tooltip" title="EDIT" (click)="editTrue()">
+          <i id="ic" class="material-icons">mode_edit</i>
+        </a>
+      </div>
+      <div class="press">
+        <button data-toggle="modal" data-target="#helpModal" data-backdrop="static" style="padding-right:0px;">
+          <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
+        </button>
+      </div>
     </div>
   </div>
 </div>

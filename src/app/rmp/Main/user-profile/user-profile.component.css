@@ -1,10 +1,18 @@
 .body-content {
-    padding: 20px;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
 }
 
 .header {
     font-size: 150%;
     font-weight: bold;
+}
+
+.heading {
+    width: 91.5vw;
+    float: left;
+    height: 100%;
+    padding-top: 1vh;
 }
 
 select {
@@ -133,7 +141,9 @@ td.col-9 {
 }
 
 .right-alignment {
-    padding-left: 12vw;
+    height: 100%;
+    float: right;
+    align-content: center;
 }
 
 .row {
@@ -174,4 +184,10 @@ hr {
 
 ::ng-deep .main-tool-body-content .information .quill .ql-container .ql-editor {
     border: lightgray solid 1px;
+}
+
+.market-selections-main {
+    max-height: 32vh;
+    overflow-y: auto;
+    overflow-x: hidden
 }

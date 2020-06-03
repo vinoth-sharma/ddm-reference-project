@@ -35,12 +35,12 @@
         <div class="col-2 sub-title">
           <h3>Request Status</h3>
         </div>
-        <div class="col-4">
+        <div class="col-5">
           <input placeholder="Search by Request Number/Requestor/Title/Status" class="form-control"
             style="margin-left:5vw" [(ngModel)]="filters.global" name="global" (input)="filterData()"
             [ngModelOptions]="{standalone: true}">
         </div>
-        <div class="col-6" style="padding-right:0%;">
+        <div class="col-5" style="padding-right:0%;">
           <div class="icons">
             <div class="press">
               <button *ngIf="user_role=='Admin'" [cssBtn]="'mid'" mat-raised-button data-toggle="modal"
@@ -982,7 +982,7 @@
       <div class="modal-header">
         <h3>Modify Distribution List</h3>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="height:275px">
         <div class="row">
           <div class="col-sm-3 dl-top-text">
             <h5>Add Emails to Distribution List:</h5>

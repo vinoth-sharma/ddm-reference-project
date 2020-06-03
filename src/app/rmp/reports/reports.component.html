@@ -1,8 +1,8 @@
 <div class="flex-container row tool-body">
   <div *ngIf="reports" class="main-tool-body">
-    <div class="wrapper" style="height:100%">
+    <div class="wrapper" style="height:100%;padding: 0 1vw 0 1vw;">
       <div class="row" style="width:100%">
-        <div class="col-2 center-content" style="justify-content: flex-start;margin-top:-5px;padding-left:25px;">
+        <div class="col-2 center-content" style="justify-content: flex-start;margin-top:-5px;">
           <h3>Reports</h3>
         </div>
         <div class="col-4">
@@ -16,7 +16,7 @@
                 <i id="ic" class="material-icons">get_app</i>
               </a>
               <button data-toggle="modal" data-backdrop="static" data-target="#helpModal"
-                style="background-color:white; border:none;padding-right:0px;margin-left: 3px;">
+                style="background-color:white; border:none;padding-right:0px;margin-left: 8px;">
                 <a data-toggle="tooltip" title="HELP" style="margin-top:5px">
                   <i id="ic" class="material-icons">help_outline</i>
                 </a>
@@ -125,7 +125,7 @@
                 </div>
               </th>
               <th style="text-align:center">
-                <div style="width: 60px !important;">Links To Result</div>
+                <div>Links To Result</div>
               </th>
               <th>
                 <div style="width: 150px !important;">Query Criteria</div>
@@ -259,7 +259,7 @@
               <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="edit_True()"
                 *ngIf="editModes">Cancel</button>
             </div>
-            <div class="col-3" style="padding-left:12%;">
+            <div class="col-3" class="center-content" style="justify-content: flex-end !important;width: 100%;padding-right: 1.5vw;">
               <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)='editEnable()'
                 style="background-color:white;border: none;">
                 <a data-toggle="tooltip" title="EDIT">

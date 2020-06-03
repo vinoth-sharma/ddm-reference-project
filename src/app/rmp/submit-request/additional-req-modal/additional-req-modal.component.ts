@@ -9,6 +9,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 })
 export class AdditionalReqModalComponent implements OnInit {
 
+  public supportedFiles = ["csv","odt","ods","doc","docx","xlsx"];
   public radioOpt = [{ label: "Yes", value: true }, { label: "No", value: false }]
   public report_title = "";
   public additional_req = "";
@@ -22,7 +23,8 @@ export class AdditionalReqModalComponent implements OnInit {
     addReq: "",
     isVinLevel: null,
     isSummaryReport: null,
-    businessReq: ""
+    businessReq: "",
+    selectedFile : null
   }
 
   constructor(public dialogRef: MatDialogRef<AdditionalReqModalComponent>,
@@ -31,7 +33,6 @@ export class AdditionalReqModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    // console.log(this.data);
     this.l_CB_data = this.data.checkboxData;
     this.responseData.reportTitle = this.data.l_title;
     this.responseData.addReq = this.data.l_addReq;
@@ -41,11 +42,11 @@ export class AdditionalReqModalComponent implements OnInit {
   }
 
   reviewRequest(): void {
-
     this.responseData.cb = [...this.l_CB_data];
     this.responseData.reportTitle = this.responseData.reportTitle.trim();
     this.responseData.addReq = this.responseData.addReq.trim();
     this.responseData.businessReq = this.responseData.businessReq ? this.responseData.businessReq.trim() : "";
+    this.responseData.selectedFile = this.getFile();
 
     let l_data_validation = this.responseData.cb.filter(ele => {
       if (ele.description && [1, 2].includes(ele.ddm_rmp_ots_checkbox_group_id)) { return ele }
@@ -59,8 +60,39 @@ export class AdditionalReqModalComponent implements OnInit {
     else if (!l_data_validation.every(ele => ele['desc'])) {
       this.toaster.error("Please enter the values if others selected")
     }
+    else if(!this.validateFile()){
+      this.toaster.error(`Please upload file with valid format (${this.supportedFiles})`)
+    }
     else
       this.dialogRef.close({ data: this.responseData });
+  }
+
+  validateFile(){
+    let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files[0];
+    if(l_file){
+      let extension = l_file.name.split(".").pop(); 
+      if(this.supportedFiles.includes(extension))
+        return true
+      else
+        return false
+    }
+    else
+      return true
+  }
+
+  public getFile() {
+    let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files[0];
+    if(l_file){
+        let formData = new FormData();
+        formData.append('file_upload', l_file);
+        // formData.append('uploaded_file_name', document_title);
+        formData.append('flag', "is_req");
+        formData.append('type', 'rmp');
+        return formData
+    }
+    else{
+      return ""
+    }    
   }
 
   closeDialog() {

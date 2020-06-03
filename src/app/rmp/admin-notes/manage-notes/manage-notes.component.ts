@@ -7,7 +7,6 @@ import { DjangoService } from '../../django.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import Utils from '../../../../utils';
 
-
 const moment = _moment;
 const MY_FORMATS = {
   parse: {
@@ -20,8 +19,6 @@ const MY_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
-
-// Angular Component developed by Vinoth Sharma Veeramani
 
 @Component({
   selector: 'app-manage-notes',
@@ -54,15 +51,16 @@ export class ManageNotesComponent implements OnInit {
   }
 
   minFromDate: Date = null;
+  minToDate: Date = null;
 
   ngOnInit() {
+    this.minFromDate = new Date();
     if (this.existingNote.length) {
       let obj = this.existingNote[0];
       obj.notes_start_date = new Date(this.existingNote[0].notes_start_date)
       obj.notes_end_date = new Date(this.existingNote[0].notes_end_date)
       this.updateExistingNoteData(obj);
     }
-    this.minFromDate = new Date();
   }
 
   updateExistingNoteData(data) {
@@ -76,7 +74,15 @@ export class ManageNotesComponent implements OnInit {
       + ":" + (data.notes_end_date.getMinutes()).toString().padStart(2, "0");
   }
 
-  dateSelectionDone(event: any) {
+  dateSelectionDone(event: any, type) {
+    if (type === "from") {
+      let l_from = this.admin_note_obj.displayFromDate.value;
+      let l_to = this.admin_note_obj.displayToDate.value;
+      if (+new Date(l_from.toISOString()) > +new Date(l_to.toISOString())) {
+        this.admin_note_obj.displayToDate.setValue(l_from)
+      }
+      this.minToDate = new Date(l_from.toISOString());
+    }
   }
 
   checkNoteFormValid() {
@@ -87,7 +93,6 @@ export class ManageNotesComponent implements OnInit {
     else
       this.toastr.error("Please fill in all the mandatory fields");
     return false
-
   }
 
   timeSelected(event, type) {

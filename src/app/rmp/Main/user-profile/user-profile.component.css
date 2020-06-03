@@ -43,8 +43,9 @@ td.col-9 {
 }
 
 .save-button {
-    margin-left: 20%;
-    float: right;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
+    margin-left: 13vw;
 }
 
 .text-notifications {
@@ -52,7 +53,6 @@ td.col-9 {
     width: 90%;
     border-radius: 5%;
     padding-left: 9px;
-    /* padding-top: 0px; */
     padding-bottom: 8px;
     float: left;
     margin-left: 25px;
@@ -68,14 +68,16 @@ td.col-9 {
 }
 
 .market-sel {
-    height: 67%;
+    height: 54%;
     width: 102%;
+    max-height: 40vh;
     overflow-y: scroll;
 }
 
 .press{
     font-size: 3rem;
 }
+
 .press button {
     background: transparent;
     border: none;
@@ -102,9 +104,11 @@ td.col-9 {
 }
 
 .carrier{
-    width: 75%;
+    width: 10vw;
     border-radius: 3px;
+    padding: 0 0.25vw 0 0.25vw;
 }
+
 .market-static{
     margin-top:15px;
 }
@@ -114,15 +118,60 @@ td.col-9 {
 }
 
 .input-group input{
-    margin-right: 10px;
-    width: 35%;
+    width: 8vw;
     margin-left: 5px;
     -webkit-text-security: disc;
     display: inline-block;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
 }
 
 .input-group i {
     cursor: pointer;
     font-size: 2.5rem;
     display: inline-block;
+}
+
+.right-alignment {
+    padding-left: 12vw;
+}
+
+.row {
+    margin-bottom: 1vh;
+}
+
+.btn-position { 
+    margin-top: 3vh;
+}
+
+hr {
+    margin-top: 0vh;
+    margin-bottom: 1vh;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+.req-fields {
+    padding-top: 0.5vh;
+}
+
+.title-position{
+    margin-top: 0vh;
+}
+
+.bac-padding {
+    padding-left: 1vw;
+}
+
+.fan-padding {
+    padding-right: 2vw;    
+    padding-left: 1vw;
+}
+
+.message-padding{
+    padding-left : 1vw; 
+}
+
+::ng-deep .main-tool-body-content .information .quill .ql-container .ql-editor {
+    border: lightgray solid 1px;
 }

@@ -1,7 +1,4 @@
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { FormControl } from '@angular/forms';
 import { DjangoService } from "../../django.service";
 import { SubmitRequestService } from "../submit-request.service";
 import Utils from 'src/utils';
@@ -10,7 +7,6 @@ import { AuthenticationService } from 'src/app/authentication.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RequestOnbehalfComp } from '../request-onbehalf/request-onbehalf.component';
 import { DataProviderService } from '../../data-provider.service';
-import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 
@@ -20,10 +16,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./select-report-criteria.component.css']
 })
 export class SelectReportCriteriaComp implements OnInit {
-  // @Input() lookupMasterData = {};
-  // @Input() lookupTableMD = {};
-
-  // @Input() selectedReqData: any;
   @Output() clearSubmitReqEmitter = new EventEmitter();
 
   l_lookup_MD: any = {
@@ -87,7 +79,10 @@ export class SelectReportCriteriaComp implements OnInit {
       assigned_to: "",
       link_to_results: "",
       query_criteria: "",
-      link_title: ""
+      link_title: "",
+      is_vin_level_report: null,
+      is_summary_report : null,
+      business_req : ""
     }
   }
 
@@ -119,8 +114,6 @@ export class SelectReportCriteriaComp implements OnInit {
 
   ngOnInit() {
     this.dataProvider.currentlookupData.subscribe(element => {
-      // console.log(element);
-      // this.lookupMasterData = element;
       this.l_lookup_MD.market = element;
       if (this.l_lookup_MD.market) {
         this.filtered_master_data.market = this.l_lookup_MD.market.market_data;
@@ -128,8 +121,6 @@ export class SelectReportCriteriaComp implements OnInit {
     })
 
     this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
-      // console.log(tableDate);
-      // this.lookupTableMasterData = tableDate ? tableDate.data : {};
       this.l_lookup_MD.other = tableDate ? JSON.parse(JSON.stringify(tableDate.data)) : {};
       if (this.l_lookup_MD.other) {
         this.special_identifiers_obj.bac = []
@@ -139,7 +130,6 @@ export class SelectReportCriteriaComp implements OnInit {
     })
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((request: any) => {
-      // console.log(request);
       if (request.type === "srw") {
         this.l_selectedReqData = request.data;
         this.refillSelectedRequestData(request.data);
@@ -154,7 +144,7 @@ export class SelectReportCriteriaComp implements OnInit {
   }
 
   refillLookupTableData() {
-    //master data of bac/fan radio button
+    // master data of bac/fan radio button
     this.l_lookup_MD.other.special_identifiers.forEach(si => {
       if ([1, 5].includes(si.ddm_rmp_lookup_special_identifiers))
         this.special_identifiers_obj.bac.push(si)
@@ -163,14 +153,12 @@ export class SelectReportCriteriaComp implements OnInit {
     })
 
     // to set default values for special identifiers
-
     // this.special_identifiers_obj.bac.forEach(bac=>{
     //   bac['checked'] = "No";
     // });
     // this.special_identifiers_obj.fan.forEach(fan=>{
     //   fan['checked'] = "Yes";
     // })
-
   }
 
   refillDropdownMasterData() {
@@ -242,7 +230,6 @@ export class SelectReportCriteriaComp implements OnInit {
 
 
   repFreqChange(req) {
-    // console.log(req);
     if (!this.selected.market.length)
       this.ngToaster.error("Market selection is mandatory")
     else if (!this.selected.division.length)
@@ -304,10 +291,9 @@ export class SelectReportCriteriaComp implements OnInit {
       this.req_body.report_id = null;
       this.req_body.report_detail.report_type = "";
     }
-    // console.log(this.req_body);
+
     Utils.showSpinner();
     this.submitService.submitUserMarketSelection(this.req_body).subscribe(response => {
-      // console.log(response);
       Utils.hideSpinner();
       if (this.req_body.report_id)
         this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Updated successfully`)
@@ -360,7 +346,6 @@ export class SelectReportCriteriaComp implements OnInit {
     });
     this.multiSelectChange({}, "zone");
 
-
     let areaIds = reqData.zone_area_data.map(ele => ele.ddm_rmp_lookup_zone_area);
     this.selected.area = this.l_lookup_MD.market.area_data.filter(area => {
       if (areaIds.includes(area.ddm_rmp_lookup_zone_area_id))
@@ -393,6 +378,9 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.report_type = reqData.report_data.report_type;
     this.req_body.report_detail.requestor = reqData.report_data.requestor;
     this.req_body.report_detail.title = reqData.report_data.title;
+    this.req_body.report_detail.is_vin_level_report = reqData.report_data.is_vin_level_report;
+    this.req_body.report_detail.is_summary_report = reqData.report_data.is_summary_report;
+    this.req_body.report_detail.business_req = reqData.report_data.business_req;
     this.req_body.report_id = reqData.ddm_rmp_post_report_id;
 
     this.submitService.setSubmitOnBehalf(this.req_body.report_detail.on_behalf_of, "");
@@ -435,7 +423,8 @@ export class SelectReportCriteriaComp implements OnInit {
   }
 
   clearRequestData() {
-    this.clearSubmitReqEmitter.emit(true);
+    let l_res = this.req_body.report_id?"NewRequest":"clear";
+    this.clearSubmitReqEmitter.emit(l_res);
   }
 
   public market_settings = {

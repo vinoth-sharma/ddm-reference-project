@@ -2,6 +2,7 @@
     height: 15%;
     width: 95%;
     margin-left: 1.5vw;
+    margin-bottom: 0.5vh;
 }
 
 .main-tool-body-content {
@@ -35,6 +36,7 @@
     float: left;
     height: 6.5vh;
     width: 91vw;
+    padding-top: 0.5vh;
 }
  
 .information{

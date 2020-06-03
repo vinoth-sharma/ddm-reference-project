@@ -18,6 +18,7 @@
     width: 91.5vw;
     float: left;
     height: 100%;
+    padding-top: 1vh;
 }
 
 .caption-style {
@@ -184,5 +185,5 @@ h3 {
 }
 
 .information {
-    margin-top: 1vh;
+    margin-top: 0.5vh;
 }

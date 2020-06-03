@@ -8,6 +8,13 @@
     font-weight: bold;
 }
 
+.heading {
+    width: 91.5vw;
+    float: left;
+    height: 100%;
+    padding-top: 1vh;
+}
+
 select {
     width: 100%;
 }
@@ -134,7 +141,9 @@ td.col-9 {
 }
 
 .right-alignment {
-    padding-left: 12vw;
+    height: 100%;
+    float: right;
+    align-content: center;
 }
 
 .row {

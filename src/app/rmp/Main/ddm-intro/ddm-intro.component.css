@@ -28,8 +28,9 @@
 }
 
 .information {
-    padding-top: 6.5vh;
+    padding-top: 7vh;
 }
+
 .editButton {
     background: transparent;
     border: none;
@@ -42,6 +43,7 @@
     float: left;
     height: 100%;
     padding-left: 1vw;
+    padding-top: 1vh;
 }
 
 .caption-style {

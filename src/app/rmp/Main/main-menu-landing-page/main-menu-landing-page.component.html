@@ -27,8 +27,8 @@
     </div>
   </div>
   <div class="main-tool-body-content" id="print-content">
-    <button *ngIf="enable_edit" type="button" id="create-new-element" class="btn btn-success" data-toggle="modal"
-      data-backdrop="static" data-target="#mainMenuModal" (click)="content_new()">Create a new element</button>
+    <button *ngIf="enable_edit" mat-button id="create-new-element" color='primary' data-toggle="modal"
+      data-backdrop="static" data-target="#mainMenuModal" (click)="content_new()">+Create a new element</button>
     <ng-container *ngFor="let element of main_menu_content;let i = index;">
       <div class="row card-group" *ngIf="i%3==0" style="margin-top:2%;margin-right: 0;">
         <ng-container *ngIf="main_menu_content[i]">
@@ -131,13 +131,13 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
             <h3 class="modal-title" id="mainMenuDescriptionTitle">Create New Element | Main Menu</h3>
             <button type="button" id="modal_close_button-1" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+                <span aria-hidden="true">&times;</span>
+              </button>
           </div>
-          <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p>
+          <p _ngcontent-c1="" class="mandatory-fields" style="float:left;font-style: italic;padding: 20px 20px 0px 20px;">
+            *Required Fields</p>
           <div class="modal-body">
             <form [formGroup]="contentForm">
               <div class="form-group">
@@ -158,34 +158,41 @@
               <div formArrayName="link_title_url">
                 <ng-container *ngFor="let item of LinkTitleURL.controls; let pointIndex=index"
                   [formGroupName]="pointIndex">
-                  <div>
-                    <label style="width: 40%;">
-                      Title
-                      <span _ngcontent-c1="" class="mandatory-fields">*</span>:
-                      <input class="form-control" formControlName="title" required="true" maxlength="35" />
+                  <div style="width: 40%;display:inline-block;">
+                    <label>
+                        Title
+                        <span _ngcontent-c1="" class="mandatory-fields">*</span>:
+                        <input class="form-control" formControlName="title" required="true" maxlength="35" />
                     </label>
-                    <label style="width: 40%;">
-                      URL<span _ngcontent-c1="" class="mandatory-fields">*</span>:
-                      <span>
-                        <span [id]="pointIndex+'url'" class="error-url">please enter valid URL</span>
-                      </span>
-                      <input class="form-control" formControlName="link" required="true" />
-                    </label>
-                    <button [id]="'form_delete_button_'+pointIndex" type="button"
-                      (click)="deleteLinkTitleURL(pointIndex)">Delete Link
+                  </div>
+                  <div style="width: 40%;display:inline-block;">
+                      <label>
+                          URL<span _ngcontent-c1="" class="mandatory-fields">*</span>:
+                          <span>
+                            <span [id]="pointIndex+'url'" class="error-url">please enter valid URL</span>
+                          </span>
+                          <input class="form-control" formControlName="link" required="true" />
+                        </label>
+                  </div>
+                  <div style="display: inline-block;">
+                    <button [id]="'form_delete_button_'+pointIndex" mat-button
+                      (click)="deleteLinkTitleURL(pointIndex)" color="primary">Delete Link
                     </button>
                   </div>
                 </ng-container>
-                <button [disabled]="!contentForm.valid" id="modal_add_link" type="button"
-                  (click)="addLinkTitleURL()">Add Link</button>
+                <button [disabled]="!contentForm.valid" id="modal_add_link" mat-button
+                  (click)="addLinkTitleURL()" color="primary">Add Link</button>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" id="modal_close_button-2" class="btn btn-secondary"
-              data-dismiss="modal">Close</button>
-            <button [disabled]="!contentForm.valid" id="modal_save_button" type="submit" class="btn btn-success"
-              (click)="saveChanges()">Save changes</button>
+              <button mat-button (click)="edit_True()" 
+                style="background-color: #6c757d;color: white" data-dismiss="modal">
+                  Close
+                </button>
+              <button mat-raised-button color="primary" [disabled]="!contentForm.valid" (click)="saveChanges()" style="margin-right: 10px;">
+                Save changes
+              </button>
           </div>
         </div>
       </div>
@@ -197,7 +204,6 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
             <h5 class="modal-title" id="mainMenuDescriptionDeleteTitle">Delete Element</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -224,15 +230,15 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
-        <img class="logo" src="/assets/OFT_Logo.jpg">
         <h5 class="modal-title help-title">Help</h5>
       </div>
       <div class="modal-body display-notes-scroll-modal">
         <div class="row">
           <div class="col-9">
-            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
-              style="margin-right:3%">Save</button>
-            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+              <span *ngIf="editModes">
+                  <button mat-raised-button color="primary" (click)="content_edits()" style="margin-right: 10px;">Save</button>
+                  <button mat-raised-button color="warn" (click)="edit_True()">Clear</button>
+                </span>
           </div>
           <div class="col-3">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
@@ -251,8 +257,10 @@
 
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_True()"
-          data-dismiss="modal">Close</button>
+          <button mat-button (click)="edit_True()" 
+            style="background-color: #6c757d;color: white" data-dismiss="modal">
+            Close
+          </button>
       </div>
     </div>
   </div>

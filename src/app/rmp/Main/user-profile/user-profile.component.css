@@ -1,5 +1,6 @@
 .body-content {
-    padding: 20px;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
 }
 
 .header {
@@ -174,4 +175,10 @@ hr {
 
 ::ng-deep .main-tool-body-content .information .quill .ql-container .ql-editor {
     border: lightgray solid 1px;
+}
+
+.market-selections-main {
+    max-height: 32vh;
+    overflow-y: auto;
+    overflow-x: hidden
 }

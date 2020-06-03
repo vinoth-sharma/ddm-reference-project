@@ -11,6 +11,7 @@
     height: 10%;
     width: 95%;
     margin-left: 2.5%;
+    margin-bottom: 1vh;
     -webkit-print-color-adjust: exact
 }
 
@@ -24,7 +25,7 @@
  /* changes done Ganesha */
 ::ng-deep .main-tool-body-content .information .quill .ql-container .ql-editor {
         overflow-y: auto;
-        max-height: 395px;
+        max-height: 51vh;
 }
 
 .editButton {
@@ -33,7 +34,6 @@
     float: right;
     padding-right:0px;
 }
-
 
 .heading {
     width: 60%;
@@ -107,7 +107,7 @@ a:active {
 }
 
 .save-text-ddm {
-    margin: 1% 0% 1% 2%;
+    margin: 0 1vw 2vh 0;
 }
 
 .press button {
@@ -119,4 +119,8 @@ a:active {
     .noprint {
         display: none
     }
+}
+
+.help-icon {
+    padding-top: 1.5vh;
 }

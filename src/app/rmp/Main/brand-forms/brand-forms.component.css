@@ -1,10 +1,10 @@
 .page-position {
     display: grid;
-    margin-left: 3.5vh;
+    margin-left: 3vh;
 }
 
 .inter-spacing {
-    max-height: 26vw;
+    max-height: 22vw;
     overflow: auto;
 }
 
@@ -35,20 +35,20 @@ th {
     background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
     color: white;
     max-width: 50vh;
-    margin-left: 5vw;
-    margin-top: 2vw;
+    margin-left: 1.5vw;
+    margin-top: 1vw;
 }
 
 .card-alignment-disabled {
     max-width: 50vh;
     margin-left: 5vw;
-    margin-top: 2vw;
+    margin-top: 1vw;
     background-color: #808080;
     color: white;
 }
 
 .heading {
-    margin-left: 3.5vh;
+    margin-left: 3vh;
 }
 
 .mat-card-subtitle {
@@ -85,7 +85,7 @@ thead {
 }
 
 .complete-table {
-    padding-left: 16vw;
+    padding-left: 24vw;
     width: 40vw;
     min-width: 56vw;
 }
@@ -126,4 +126,16 @@ p {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+h3 {
+    margin-top: 0vh;
+}
+
+h4 {
+    margin-top: 2vh;
+}
+
+.brand-form-name {
+    padding: 0 0 1vh 0;
 }

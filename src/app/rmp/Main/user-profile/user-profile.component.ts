@@ -1,5 +1,5 @@
 // migration  was done by : Bharath S
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, EventEmitter } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service'
 import { DatePipe } from '@angular/common';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
@@ -54,7 +54,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public changed_settings: boolean;
 
   public dropdownList = [];
-  public selectedItems = [];
+  public marketselectedItems = [];
   public dropdownSettings = {};
 
   public regiondropdownList = [];
@@ -131,7 +131,6 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public cellPhone: any;
   public date: any;
   public lookup;
-  public marketselections;
   public contact_flag = true;
   public content;
   public enable_edits = false
@@ -149,21 +148,24 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public user_role: string;
   public readOnlyContentHelper = true;
   public enableUpdateData = false;
-  public errorModalMessage: string = '';
+
+  public marketselections: any = {
+    bac_data: [],
+    fan_data: [],
+    country_region_data: [],
+    gmma_data: [],
+    lma_data: [],
+    market_data: [],
+    region_zone_data: [],
+    zone_area_data: [],
+    division_data: [],
+    has_previous_selections: false,
+    user_text_notification_data: {},
+    alternate_number: "5657645765"
+  };
+
   public config = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-      [{ 'size': ['small', false, 'large', 'huge'] }],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean'],
-      ['image']
-    ]
+    toolbar: null
   };
 
   public toolbarTooltips = {
@@ -227,6 +229,74 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public carriers = [];
   public user_disc_ack: any;
 
+  public marketselectionsTemp = {
+    'market': [{ ddm_rmp_lookup_market_id: 2, market: "Canada" },
+    { ddm_rmp_lookup_market_id: 3, market: "Export" },
+    { ddm_rmp_lookup_market_id: 1, market: "US" }
+    ]
+  }
+
+  public market_settings = {
+    label: "Market",
+    primary_key: 'ddm_rmp_lookup_market_id',
+    label_key: 'market',
+    title: "Market Selection<span class='red'>*</span>"
+  };
+
+  public region_settings = {
+    label: "Region",
+    primary_key: 'ddm_rmp_lookup_country_region_id',
+    label_key: 'region_desc',
+    title: "Region Selection"
+  };
+
+  public zone_settings = {
+    label: "Zone",
+    primary_key: 'ddm_rmp_lookup_region_zone_id',
+    label_key: 'zone_desc',
+    title: "Zone Selection"
+  };
+
+  public area_settings = {
+    label: "Area",
+    primary_key: 'ddm_rmp_lookup_zone_area_id',
+    label_key: 'area_desc',
+    title: "Area Selection"
+  };
+
+  public gmma_settings = {
+    label: "GMMA",
+    primary_key: 'ddm_rmp_lookup_gmma_id',
+    label_key: 'gmma_desc',
+    title: "GMMA Selection"
+  };
+
+  public division_settings = {
+    label: "Division",
+    primary_key: 'ddm_rmp_lookup_division_id',
+    label_key: 'division_desc',
+    title: "Division Selection<span class='red'>*</span>"
+  };
+
+  public lma_settings = {
+    label: "LMA",
+    primary_key: 'ddm_rmp_lookup_lma_id',
+    label_key: 'lmg_desc',
+    title: "LMA Selection"
+  };
+
+  public selected = {
+    market_data: [],
+    division_data: [],
+    country_region_data: [],
+    region_zone_data: [],
+    zone_area_data: [],
+    gmma_data: [],
+    lma_data: []
+  }
+
+  @Input() inputModelChange = new EventEmitter();
+
   constructor(private django: DjangoService,
     public DatePipe: DatePipe, private auth_service: AuthenticationService, private spinner: NgLoaderService, private dataProvider: DataProviderService,
     private toastr: NgToasterComponent, private report_id_service: GeneratedReportService) {
@@ -234,6 +304,12 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
+        if (this.user_role == 'Admin') {
+          this.config.toolbar = this.toolbarTooltips;
+        }
+        else {
+          this.config.toolbar = false;
+        }
       }
     })
     dataProvider.currentlookUpTableData.subscribe(element => {
@@ -311,11 +387,15 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       this.user_department = this.user_info['department']
       this.user_email = this.user_info['email']
       this.user_contact = this.user_info['contact_no']
-      if (this.user_info['alternate_number'] != ""
-        && this.user_info['alternate_number'] != null)
-        this.text_number = this.user_info['alternate_number']
-      else
+      this.text_notification = this.user_info['alternate_number']
+      if (this.text_notification != "" && this.text_notification != null) {
+
+        this.te_number = this.text_notification.split(/[-]/);
+        this.text_number = this.te_number[1];
+      }
+      else {
         this.text_number = ""
+      }
       this.marketselections = response
       if (this.user_info['carrier'] == "") {
         this.disableNotificationBox()
@@ -395,12 +475,17 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
 
   // enable  a few input field based on checkbox selection
   public enableNotificationBox() {
-    this.changed_settings = true;
     $("#notification_yes").prop("checked", "true")
     $("#phone").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");
-    if (this.user_info["alternate_number"] != null && this.user_info["alternate_number"] != "") {
-      this.text_number = this.user_info["alternate_number"];
+    if (this.marketselections["user_text_notification_data"]["alternate_number"] != null && this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
+      let cellPhoneHolder = this.marketselections["user_text_notification_data"]['alternate_number'];
+      this.te_number = cellPhoneHolder.split(/[-]/);
+      this.text_number = this.te_number[1];
+
+      if ((<HTMLInputElement>document.getElementById("phone"))) {
+        ((<HTMLInputElement>document.getElementById("phone")).value) = this.text_number;
+      }
       let selectedCellular = this.marketselections["user_text_notification_data"]["carrier"]
       this.carrier_selected = selectedCellular
       $("#carrier option:eq(0)").prop("selected", "true")
@@ -415,21 +500,24 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       $("#notification_yes").prop("checked", "true")
       $("#phone").removeAttr("disabled");
       $("#carrier").removeAttr("disabled");
-      this.text_number = '';
+      if ((<HTMLInputElement>document.getElementById("phone"))) {
+        ((<HTMLInputElement>document.getElementById("phone")).value) = "";
+      }
       $("#carrier option[value = '']").prop("selected", "true")
     }
   }
 
   // disable  a few input field based on checkbox selection
   public disableNotificationBox() {
-    this.text_number = '';
+    (<HTMLTextAreaElement>(document.getElementById("phone"))).value = "";
     $("#carrier option[value = '']").prop("selected", "true")
     this.carrier_selected = ""
     $("#notification_no").prop("checked", "true")
     $("#phone").prop("disabled", "disabled");
     $("#carrier").prop("disabled", "disabled");
   }
-  // setting a few properties of component from lookup
+
+  // setting a few properties of component from lookup on load of the page
   public getUserMarketInfo() {
     this.spinner.show()
     this.dropdownList = this.lookup['market_data'].sort((a, b) => a.market > b.market ? 1 : -1);
@@ -581,13 +669,14 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.changed_settings = false
     if (this.marketselections['has_previous_selections']) {
       this.market_selection = this.marketselections
-      this.selectedItems = this.market_selection["market_data"]
-      this.divisionselectedItems = this.market_selection["division_data"]
-      this.regionselectedItems = this.market_selection["country_region_data"]
-      this.zoneselectedItems = this.market_selection["region_zone_data"]
-      this.areaselectedItems = this.market_selection["zone_area_data"]
-      this.gmmaselectedItems = this.market_selection["gmma_data"]
-      this.lmaselectedItems = this.market_selection["lma_data"]
+      this.selected.market_data = this.market_selection["market_data"]
+      this.selected.division_data = this.market_selection["division_data"]
+      this.selected.country_region_data = this.market_selection["country_region_data"]
+      this.selected.region_zone_data = this.market_selection["region_zone_data"]
+      this.selected.zone_area_data = this.market_selection["zone_area_data"]
+      this.selected.gmma_data = this.market_selection["gmma_data"]
+      this.selected.lma_data = this.market_selection["lma_data"]
+
       if (this.market_selection["bac_data"].length != 0) {
         this.bacselectedItems = this.market_selection["bac_data"][0]['bac_desc']
       }
@@ -600,21 +689,21 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
         this.fanselectedItems = []
       }
 
-      this.selectedItems.map(element => {
+      this.selected.market_data.map(element => {
         if (!(this.marketindex.includes(element["ddm_rmp_lookup_market_id"]))) {
           this.marketindex.push(element["ddm_rmp_lookup_market_id"])
         }
       })
       this.MarketDependencies(this.marketindex)
 
-      this.regionselectedItems.map(element => {
+      this.selected.country_region_data.map(element => {
         if (!(this.regionindex.includes(element["ddm_rmp_lookup_country_region_id"]))) {
           this.regionindex.push(element["ddm_rmp_lookup_country_region_id"])
         }
       })
       this.regionSelection(this.regionindex)
 
-      this.zoneselectedItems.map(element => {
+      this.selected.region_zone_data.map(element => {
         if (!(this.zoneindex.includes(element["ddm_rmp_lookup_region_zone_id"]))) {
           this.zoneindex.push(element["ddm_rmp_lookup_region_zone_id"])
         }
@@ -637,8 +726,8 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public getSelectedMarkets() {
     this.report_id_service.changeSaved(true);
 
-    if (this.selectedItems.length < 1 || this.divisionselectedItems.length < 1) {
-      this.errorModalMessage = "Select atleast one market and division to proceed forward";
+    if (this.selected.market_data.length < 1 || this.selected.division_data.length < 1) {
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select at least one market and division to proceed forward</h5>";
       document.getElementById("errorTrigger").click()
       this.spinner.hide();
     }
@@ -647,14 +736,14 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       let jsonfinal = {}
       this.date = "";
 
-      jsonfinal["market_selection"] = this.selectedItems
-      jsonfinal["division_selection"] = this.divisionselectedItems
-      jsonfinal["country_region_selection"] = this.regionselectedItems
-      jsonfinal["region_zone_selection"] = this.zoneselectedItems
-      jsonfinal["zone_area_selection"] = this.areaselectedItems
+      jsonfinal["market_selection"] = this.selected.market_data
+      jsonfinal["division_selection"] = this.selected.division_data
+      jsonfinal["country_region_selection"] = this.selected.country_region_data
+      jsonfinal["region_zone_selection"] = this.selected.region_zone_data
+      jsonfinal["zone_area_selection"] = this.selected.zone_area_data
       jsonfinal["bac_selection"] = this.bacselectedItems
-      jsonfinal["gmma_selection"] = this.gmmaselectedItems
-      jsonfinal["lma_selection"] = this.lmaselectedItems
+      jsonfinal["gmma_selection"] = this.selected.gmma_data
+      jsonfinal["lma_selection"] = this.bacselectedItems
       jsonfinal["fan_selection"] = this.fanselectedItems
 
       this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
@@ -679,10 +768,23 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // called when an item is selected/deselected in market-data
+  public onMarketItemSelect(item: any) {
+    this.changed_settings = true
+    // marketselections
+    this.marketindex = [];
+    this.selected.market_data.map(element => {
+      if (!(this.marketindex.includes(element.ddm_rmp_lookup_market_id))) {
+        this.marketindex.push(element.ddm_rmp_lookup_market_id)
+      }
+    })
+    this.MarketDependencies(this.marketindex)
+  }
+
   // called when an item is selected in multi select dropdown
   public onItemSelect(item: any) {
     this.changed_settings = true
-    this.selectedItems.map(element => {
+    this.selected.market_data.map(element => {
       if (!(this.marketindex.includes(element.ddm_rmp_lookup_market_id))) {
         this.marketindex.push(element.ddm_rmp_lookup_market_id)
       }
@@ -696,19 +798,19 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.marketindex.splice(this.marketindex.indexOf(item.ddm_rmp_lookup_market_id), 1)
     this.MarketDependencies(this.marketindex)
     this.MarketDependenciesDeselect(this.marketindex)
-    if (this.selectedItems.length == 0) {
+    if (this.selected.market_data.length == 0) {
       this.bacselectedItems = []
     }
   }
 
   // deselect all marked dependencies
   public MarketDependenciesDeselect(marketindex: any) {
-    this.regionselectedItems = this.regionselectedItems.filter(element => {
+    this.selected.country_region_data = this.selected.country_region_data.filter(element => {
       return this.marketindex.includes(element.ddm_rmp_lookup_market)
     })
     this.regionindex = []
-    if (this.regionselectedItems) {
-      this.regionselectedItems.map(element => {
+    if (this.selected.country_region_data) {
+      this.selected.country_region_data.map(element => {
         if (!(this.regionindex.includes(element["ddm_rmp_lookup_country_region_id"]))) {
           this.regionindex.push(element["ddm_rmp_lookup_country_region_id"])
         }
@@ -718,8 +820,8 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.regionSelection(this.regionindex)
 
     this.zoneindex = []
-    if (this.zoneselectedItems) {
-      this.zoneselectedItems.map(element => {
+    if (this.selected.region_zone_data) {
+      this.selected.region_zone_data.map(element => {
         if (!(this.zoneindex.includes(element["ddm_rmp_lookup_region_zone_id"]))) {
           this.zoneindex.push(element["ddm_rmp_lookup_region_zone_id"])
         }
@@ -728,13 +830,13 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.zoneDeSelection(this.zoneindex)
     this.zoneSelection(this.zoneindex)
 
-    this.gmmaselectedItems = this.gmmaselectedItems.filter(element => {
+    this.selected.gmma_data = this.selected.gmma_data.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
-    this.divisionselectedItems = this.divisionselectedItems.filter(element => {
+    this.selected.division_data = this.selected.division_data.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
-    this.lmaselectedItems = this.lmaselectedItems.filter(element => {
+    this.selected.lma_data = this.selected.lma_data.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
   }
@@ -752,7 +854,12 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.lmadropdownListfinal = this.lmadropdownList.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
-
+    this.zonedropdownListfinal = this.zonedropdownList.filter(element => {
+      return this.marketindex.includes(element.ddm_rmp_lookup_country_region)
+    })
+    this.areadropdownListfinal = this.areadropdownList.filter(element => {
+      return this.marketindex.includes(element.ddm_rmp_lookup_region_zone)
+    })
   }
 
   // select all marked dependencies
@@ -771,15 +878,27 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.marketindex = []
     this.MarketDependencies(this.marketindex)
     this.MarketDependenciesDeselect(this.marketindex)
-    this.regiononItemDeSelectAll(this.regionselectedItems)
-    this.zoneonDeSelectAll(this.zoneselectedItems)
+    this.regiononItemDeSelectAll(this.selected.country_region_data)
+    this.zoneonDeSelectAll(this.selected.region_zone_data)
     this.bacselectedItems = []
+  }
+
+  // called when an item is selected/deselected in region-data
+  public onRegionItemSelect() {
+    this.changed_settings = true
+    this.regionindex = [];
+    this.selected.country_region_data.map(element => {
+      if (!(this.regionindex.includes(element.ddm_rmp_lookup_country_region_id))) {
+        this.regionindex.push(element.ddm_rmp_lookup_country_region_id)
+      }
+    })
+    this.regionSelection(this.regionindex)
   }
 
   // select region item selected
   public regiononItemSelect(item: any) {
     this.changed_settings = true
-    this.regionselectedItems.map(element => {
+    this.selected.country_region_data.map(element => {
       if (!(this.regionindex.includes(element.ddm_rmp_lookup_country_region_id))) {
         this.regionindex.push(element.ddm_rmp_lookup_country_region_id)
       }
@@ -794,8 +913,8 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.regionSelection(this.regionindex)
     this.regionDeselection(this.regionindex)
     this.zoneindex = []
-    if (this.zoneselectedItems) {
-      this.zoneselectedItems.map(element => {
+    if (this.selected.region_zone_data) {
+      this.selected.region_zone_data.map(element => {
         if (!(this.zoneindex.includes(element["ddm_rmp_lookup_region_zone_id"]))) {
           this.zoneindex.push(element["ddm_rmp_lookup_region_zone_id"])
         }
@@ -822,7 +941,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.regionindex = []
     this.regionSelection(this.regionindex)
     this.regionDeselection(this.regionindex)
-    this.zoneonDeSelectAll(this.zoneselectedItems)
+    this.zoneonDeSelectAll(this.selected.region_zone_data)
   }
 
   // filter zone dropdown
@@ -834,15 +953,27 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
 
   // filter zone selection
   public regionDeselection(regionindex: any) {
-    this.zoneselectedItems = this.zoneselectedItems.filter(element => {
+    this.selected.region_zone_data = this.selected.region_zone_data.filter(element => {
       return this.regionindex.includes(element.ddm_rmp_lookup_country_region)
     })
+  }
+
+  //called when an item is selected/deselected in zone
+  public onZoneItemSelect(item: any) {
+    this.changed_settings = true
+    this.zoneindex = []
+    this.selected.region_zone_data.map(element => {
+      if (!(this.zoneindex.includes(element.ddm_rmp_lookup_region_zone_id))) {
+        this.zoneindex.push(element.ddm_rmp_lookup_region_zone_id)
+      }
+    })
+    this.zoneSelection(this.zoneindex)
   }
 
   // add selected zone
   public zoneonItemSelect(item: any) {
     this.changed_settings = true
-    this.zoneselectedItems.map(element => {
+    this.selected.region_zone_data.map(element => {
       if (!(this.zoneindex.includes(element.ddm_rmp_lookup_region_zone_id))) {
         this.zoneindex.push(element.ddm_rmp_lookup_region_zone_id)
       }
@@ -886,7 +1017,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
 
   // filter zones
   public zoneDeSelection(zoneindex: any) {
-    this.areaselectedItems = this.areaselectedItems.filter(element => {
+    this.selected.zone_area_data = this.selected.zone_area_data.filter(element => {
       return this.zoneindex.includes(element.ddm_rmp_lookup_region_zone)
     })
   }
@@ -930,19 +1061,18 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
         this.toastr.error("Connection error");
       })
     }
-
     else if (this.text_number == "" && this.carrier_selected == "") {
-      this.errorModalMessage = "Please enter a valid number and select a carrier";
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter a valid number and select a carrier</h5>";
       document.getElementById("errorTrigger").click()
       return
     }
     else if (this.text_number == "") {
-      this.errorModalMessage = "Number field cannot be blank";
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Number field cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
       return
     }
     else if (this.carrier_selected == "") {
-      this.errorModalMessage = "Please select a carrier";
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please select a carrier</h5>";
       document.getElementById("errorTrigger").click()
       return
     }
@@ -961,11 +1091,15 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
         })
       }
       else {
-        this.errorModalMessage = "Please enter valid number(strictly numbers without special characters)";
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter valid number(strictly numbers without special characters)</h5>";
         document.getElementById("errorTrigger").click()
         this.spinner.hide();
         return
       }
     }
+  }
+
+  public changeSaveSettings() {
+    this.changed_settings = true;
   }
 }

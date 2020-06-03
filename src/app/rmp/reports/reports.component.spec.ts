@@ -23,7 +23,7 @@ import { NgCustomSpinnerComponent } from 'src/app/custom-directives/ng-custom-sp
 import Utils from 'src/utils';
 declare var $: any;
 
-fdescribe('ReportsComponent', () => {
+describe('ReportsComponent', () => {
   let component: ReportsComponent;
   let fixture: ComponentFixture<ReportsComponent>;
   let reportData = {
@@ -90,7 +90,7 @@ fdescribe('ReportsComponent', () => {
       declarations: [ReportsComponent, OrderByPipe, NgCustomSpinnerComponent, FilterTablePipe, NgToasterComponent],
       imports: [FormsModule, MaterialModule, BrowserAnimationsModule,
         HttpClientTestingModule, RouterTestingModule, QuillModule.forRoot({})],
-      providers: [DatePipe,Utils]
+      providers: [DatePipe, Utils]
     })
       .compileComponents();
   }));
@@ -191,7 +191,7 @@ fdescribe('ReportsComponent', () => {
     component.description_texts = { description: "", module_name: "", ddm_rmp_desc_text_id: 6 }
     component.namings = "namings"
     component.content_edits();
-    
+
     expect(component.editModes).toBeFalsy();
     expect(component.readOnlyContentHelper).toBeTruthy();
     expect(component.description_texts.description).toEqual("namings");
@@ -218,21 +218,6 @@ fdescribe('ReportsComponent', () => {
     expect(component.namings).toBe("original_contents");
   })
 
- 
-
-  it("startOnDemandScheduling(), should set a few properties and call getScheduleReportData", fakeAsync(() => {
-    let scheduleService = TestBed.inject(ScheduleService)
-    let data = { scheduleId: [1] }
-    let serverData = { data: { key: "res", schedule_for_date: "", schedule_for_time: "", request_id: "", created_by: "", modified_by: "", confirmation: true, type: "On Demand" } };
-    let toster = TestBed.inject(NgToasterComponent);
-    component.userId = 1;
-    let scheduleServiceSpy = spyOn(scheduleService, "getScheduleReportData").and.returnValue(of(serverData))
-    component.reports = reportData.data;
-    component.startOnDemandScheduling(data);
-    tick();
-    expect(component.onDemandScheduleData).toEqual(serverData.data)
-    expect(scheduleServiceSpy).toHaveBeenCalled()
-  }))
 
   xit(" should select and set frequency of component ", () => {
     let data = [
@@ -326,7 +311,7 @@ fdescribe('ReportsComponent', () => {
     let djangoService = TestBed.inject(DjangoService);
     spyOn(djangoService, "get_report_description").and.returnValue(of(serverData));
     spyOn(component, "showChangeFrequencyModal")
-    spyOn(component,"FrequencySelection")
+    spyOn(component, "FrequencySelection")
     component.changeFreq(requestId, title, date, frequency);
     expect(component.changeFrequency).toEqual(frequency);
     expect(component.changeFreqId).toEqual(requestId);
@@ -377,7 +362,7 @@ fdescribe('ReportsComponent', () => {
     expect(typeof (component.filters)).toEqual("object")
   })
 
-  
+
 
   it("should get data from get_report_description and assegin values to a few properties", () => {
     let djangoService = TestBed.inject(DjangoService)
@@ -493,6 +478,5 @@ fdescribe('ReportsComponent', () => {
       expect(component.isRecurringFrequencyHidden).toEqual(true)
     })
   });
-
 
 });

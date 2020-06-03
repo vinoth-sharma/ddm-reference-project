@@ -1,221 +1,198 @@
-<div class="body-content" style="height:73%">
-  <div class="row" style="height: 50%;">
-    <div class="col-4">
-      <i>
-        <b>
-          {{ user_name }}
-          <br>
-        </b>
-        {{ user_designation }} <br>
-        {{ user_department }} <br>
-        {{ user_email }} <br>
-        <span *ngIf="user_role != 'Admin'"> Disclaimer Acknowledge: {{ user_disc_ack | date: 'dd-MMM-yyyy'}}</span>
-      </i>
+<div class="body-content">
+  <div class="row">
+    <div class="col-xs-10">
+      <h3 class="mt-0"><b>User Profile</b></h3>
     </div>
-    <div class="col-2">
-      <i>
-        {{ user_office_address }}
-      </i>
-    </div>
-    <div class="col-5">
-      <div class="text-notifications">
-        <div class="row">
-          <strong>Text Notification(Available for U.S. only)</strong>
-          <br>
-          <i>when requests are fulfilled?</i>
-          <br>
-        </div>
-        <div class="row">
-          <input id="notification_yes" type="radio" name="notification" (click)="enableNotificationBox()">
-          <strong>Yes</strong> &nbsp;&nbsp;
-          <input id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()">
-          <strong>No</strong>
-        </div>
-        <div class="row input-group">
-          <p> Enter valid 10 digit phone number(For Ex: (555) 555-1234 should be 5555551234)</p>
-          <input type="text" id="phone" name="phone" [(ngModel)]='text_number' title="Phone No."
-            (keypress)='numberOnly($event)' [maxLength]='10'>
-          <i class="material-icons" (click)="showPassword()">
-            remove_red_eye
-          </i>
-        </div>
-        <div class="row" style="margin-top: 5px;">
-          <select class="carrier" name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>
-            <option value="">Select Carrier for text notification</option>
-            <option *ngFor="let element of carriers_pair" value={{element.carrierValue}}>{{element.carrierName}}
-            </option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="row">
-        <div class="icons" style="margin-left: 74%;">
-          <div class="press">
-            <button data-toggle="modal" data-backdrop="static" data-target="#helpModal" style="padding-right:0px;">
-              <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row market-static" style="position: relative;">
-    <div class="col-6">
-      <h4 class="header">Market Selections</h4>
-      <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p>
-    </div>
-    <div class="col4" style="margin-top: 20px;margin-left: 35px;">
-      <button class="save-button btn btn-success" (click)="getNotificationInformation()">Save Notifications</button>
-    </div>
-    <div class="col-2">
-      <div class="row" style="margin-top: 20px;margin-left: 120px;">
-        <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save
-          Settings
+    <div class="col-xs-2 right-alignment">
+      <div class="press">
+        <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;">
+          <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
         </button>
       </div>
     </div>
   </div>
-
-  <div class="row market-sel">
-    <div class="col-12" id="dropdownHolder">
-      <div>{{dropdownSettings["text"]}}
-        <span _ngcontent-c1="" class="mandatory-fields">*</span>
-      </div>
-      <angular4-multiselect [data]="dropdownList" [(ngModel)]="selectedItems" [settings]="dropdownSettings"
-        (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-        (onDeSelectAll)="onDeSelectAll($event)">
-      </angular4-multiselect>
-      <br>
-
-      <div>{{divisiondropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="divisiondropdownListfinal" [(ngModel)]="divisionselectedItems"
-        [settings]="divisiondropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-        (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect>
-      <br>
-
-      <div>{{regiondropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="regiondropdownListfinal" [(ngModel)]="regionselectedItems"
-        [settings]="regiondropdownSettings" (onSelect)="regiononItemSelect($event)"
-        (onDeSelect)="regiononItemDeSelect($event)" (onSelectAll)="regiononSelectAll($event)"
-        (onDeSelectAll)="regiononItemDeSelectAll($event)">
-      </angular4-multiselect>
-
-      <br>
-
-      <div>{{zonedropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="zonedropdownListfinal" [(ngModel)]="zoneselectedItems"
-        [settings]="zonedropdownSettings" (onSelect)="zoneonItemSelect($event)"
-        (onDeSelect)="zoneonItemDeSelect($event)" (onSelectAll)="zoneonSelectAll($event)"
-        (onDeSelectAll)="zoneonDeSelectAll($event)">
-      </angular4-multiselect>
-
-      <br>
-      <div>{{areadropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="areadropdownListfinal" [(ngModel)]="areaselectedItems"
-        [settings]="areadropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-        (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect>
-
-      <br>
-      <div>{{gmmadropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="gmmadropdownListfinal" [(ngModel)]="gmmaselectedItems"
-        [settings]="gmmadropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-        (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect>
-
-      <br>
-      <div>{{lmadropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="lmadropdownListfinal" [(ngModel)]="lmaselectedItems"
-        [settings]="lmadropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-        (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect>
-
-      <br>
-      <div>BAC : </div>
-      <tag-input [(ngModel)]='bacselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect($event)"
-        (onRemove)="saveTriggeronItemSelect($event)" [validators]="validators" [errorMessages]='errorMessages'
-        [placeholder]="'Type & press Enter to add'" [secondaryPlaceholder]="'Type & press Enter to add'"
-        theme='bootstrap'></tag-input>
-
-      <br>
-      <div>FAN : </div>
-      <tag-input [(ngModel)]='fanselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect($event)"
-        (onRemove)="saveTriggeronItemSelect($event)" [validators]="validators" [errorMessages]='errorMessages'
-        [placeholder]="'Type & press Enter to add'" [secondaryPlaceholder]="'Type & press Enter to add'"
-        theme='bootstrap'></tag-input>
-      <br>
-      <b>
-        <i>*If more granular information is required, please mention it in Additional Requirements</i>
-      </b>
-      <br>
-      <br>
-
+  <div class="row">
+    <div class="col-xs-3">
+      <i>
+        <b>
+          {{ user_name }}<br>
+        </b>
+        {{ user_designation }} <br>
+        {{ user_department }} <br>
+        {{ user_email }} <br>
+        {{ user_office_address || 'Cant fetch address' }} <br>
+        <span *ngIf="user_role != 'Admin'"> Disclaimer Acknowledge: {{ user_disc_ack | date: 'dd-MMM-yyyy'}}</span>
+      </i>
     </div>
-  </div>
-
-</div>
-
-
-<!------------------------------------Help Modal------------------------------ -->
-
-<div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="justify-content: flex-start;">
-        <img class="logo" src="/assets/OFT_Logo.jpg">
-        <h5 class="modal-title help-title">Help</h5>
-      </div>
-      <div class="modal-body display-notes-scroll-modal">
+    <div class="col-xs-6">
+      <div class="text-notifications">
+        <div class="row" title="After requests are fulfilled">
+          <div class="col-xs-8"><strong>Text Notification(Available for U.S. only) :</strong></div>
+          <div class="col-xs-2 pl-0">
+            <mat-radio-button id="notification_yes" type="radio" name="notification" (click)="enableNotificationBox()">
+              <strong>Yes</strong>
+            </mat-radio-button>
+          </div>
+          <div class="col-xs-2 pl-0">
+            <mat-radio-button id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()">
+              <strong>No</strong>
+            </mat-radio-button>
+          </div>
+        </div>
+        <div class="row input-group" title="(For Ex: (555) 555-1234 should be 5555551234)">
+          <div class="col-xs-8">
+            <p><b>Enter valid 10 digit phone number : </b></p>
+          </div>
+          <div class="col-xs-4">
+            <div class="col-xs-8 pl-0">
+              <input class="form-control" type="text" id="phone" name="phone" title="Phone No."
+                (keypress)='numberOnly($event)' [value]="text_number" [maxLength]='10'>
+            </div>
+            <div class="col-xs-4">
+              <i class="material-icons" (click)="showPassword()">
+                remove_red_eye
+              </i>
+            </div>
+          </div>
+        </div>
         <div class="row">
-          <div class="col-9">
-            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
-              style="margin-right:3%">Save</button>
-            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+          <div class="col-xs-8">
+            <p><b>Select Carrier for text notification :</b></p>
           </div>
-          <div class="col-3" style="padding-left:12%;">
-            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="editEnable()">
-              <a data-toggle="tooltip" title="EDIT">
-                <i id="ic" class="material-icons">mode_edit</i>
-              </a>
-            </button>
+          <div class="col-xs-4 pl-0">
+            <select class="carrier form-control" name="Year" id="carrier" (change)="carrier($event.target.value)">
+              <option *ngFor="let element of carriers_pair" value={{element.carrierValue}}>{{element.carrierName}}
+              </option>
+            </select>
           </div>
-        </div>
-        <div class="quillEditor">
-          <quill-editor class="quill" [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContentHelper'
-            (onContentChanged)='textChanged($event)'>
-          </quill-editor>
         </div>
       </div>
-      <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_True()"
-          data-dismiss="modal">Close</button>
+    </div>
+    <div class="col-xs-3">
+      <div class="row btn-position">
+        <button [cssBtn]="'ok'" class="btn" (click)="getNotificationInformation()">Save Notifications</button>
       </div>
     </div>
   </div>
-</div>
-<button id="errorTrigger" data-toggle="modal" data-backdrop="static" data-target="#errorModal"
-  style="display:none">Error</button>
-<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true" style="z-index: 10000">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Alert!</h3>
+  <hr>
+  <div class="market-selections">
+    <div class="row market-static">
+      <div class="col-9">
+        <div class="col-xs-3 pl-0">
+          <h3 class="title-position"><strong>Market Selections</strong></h3>
+        </div>
+        <div class="col-xs-8 pl-0 req-fields">
+          <p _ngcontent-c1="" class="mandatory-fields">(<span style="color: red;">*</span>Required Fields)</p>
+        </div>
       </div>
-      <div class="modal-body">
-        <h5>{{errorModalMessage}}</h5>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <div class="col-xs-3 pl-0">
+        <button [cssBtn]="'ok'" class="save-button btn" (click)="getSelectedMarkets()"
+          [disabled]="!changed_settings">Save
+          Settings</button>
       </div>
     </div>
   </div>
-</div>
+  <div class="row">
+    <div class="col-xs-3 pl-0">
+      <app-mat-multiselect [data]="dropdownList" [settings]="market_settings" [(inputModel)]="selected.market_data"
+        (selectionDone)="onMarketItemSelect($event,'market')">
+      </app-mat-multiselect>
+    </div>
+    <div class="col-xs-3 pl-0">
+      <app-mat-multiselect [data]="divisiondropdownListfinal" [settings]="division_settings"
+        [(inputModel)]="selected.division_data">
+      </app-mat-multiselect>
+    </div>
+    <div class="col-xs-3 pl-0">
+      <app-mat-multiselect [data]="regiondropdownListfinal" [settings]="region_settings"
+        [(inputModel)]="selected.country_region_data" (selectionDone)="onRegionItemSelect($event,'region')">
+      </app-mat-multiselect>
+    </div>
+    <div class="col-xs-3 pl-0">
+      <app-mat-multiselect [data]="zonedropdownListfinal" [settings]="zone_settings"
+        [(inputModel)]="selected.region_zone_data" (selectionDone)="onZoneItemSelect($event,'zone')">
+      </app-mat-multiselect>
+    </div>
+    <div class="col-xs-3 pl-0">
+      <app-mat-multiselect [data]="areadropdownListfinal" [settings]="area_settings"
+        [(inputModel)]="selected.zone_area_data">
+      </app-mat-multiselect>
+    </div>
+    <div class="col-xs-3 pl-0">
+      <app-mat-multiselect [data]="gmmadropdownListfinal" [settings]="gmma_settings"
+        [(inputModel)]="selected.gmma_data">
+      </app-mat-multiselect>
+    </div>
+    <div class="col-xs-3 pl-0">
+      <app-mat-multiselect [data]="lmadropdownListfinal" [settings]="lma_settings" [(inputModel)]="selected.lma_data">
+      </app-mat-multiselect>
+    </div>
+  </div>
+  <div class="row mb-0">
+    <div class="col-xs-6 bac-padding">
+      <app-ng-chips [custom_placeholder]="'Add BAC'" [(inputModel)]="bacselectedItems"
+        (inputModelChange)="changeSaveSettings()">
+      </app-ng-chips>
+    </div>
+    <div class="col-xs-6 fan-padding">
+      <app-ng-chips class="chips-height" [custom_placeholder]="'Add FAN'" [(inputModel)]="fanselectedItems"
+        (inputModelChange)="changeSaveSettings()">
+      </app-ng-chips>
+    </div>
+  </div>
+  <div class="row message-padding">
+    <b><i>*If more granular information is required, please mention it in Additional Requirements</i></b>
+  </div>
+
+  <!------------------------------------Help Modal------------------------------ -->
+  <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content: flex-start;">
+          <img class="logo" src="/assets/OFT_Logo.jpg">
+          <h5 class="modal-title help-title">Help</h5>
+        </div>
+        <div class="modal-body display-notes-scroll-modal">
+          <div class="row">
+            <div class="col-9">
+              <button [cssBtn]="'ok'" class="btn save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+                style="margin-right:3%">Save</button>
+              <button [cssBtn]="'cancel'" class="btn save-text-ddm" (click)="edit_True()"
+                *ngIf="editModes">Cancel</button>
+            </div>
+            <div class="col-3" style="padding-left:12%;">
+              <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="editEnable()">
+                <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+              </button>
+            </div>
+          </div>
+          <div class="quillEditor">
+            <quill-editor class="quill" [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContentHelper'
+              (onContentChanged)='textChanged($event)'>
+            </quill-editor>
+          </div>
+        </div>
+        <div class="modal-footer modal-footer-pad">
+          <button [cssBtn]="'mid'" type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_True()"
+            data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
+  <div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style="z-index: 10000">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Alert!</h3>
+        </div>
+        <div class="modal-body" id="errorModalMessage">
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="modal_close_button" class="btn" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

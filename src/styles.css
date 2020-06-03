@@ -398,3 +398,8 @@ button.btn.btn-link.ngb-dp-arrow-btn{
   background-color: #f921217d;
   margin-bottom: 2px;
 }
+
+.mat-chip-list-wrapper {
+  max-height: 11vh;
+  overflow-y: auto;
+}

@@ -8,11 +8,11 @@
 }
 
 .main-tool-body-content {
-    height: 62.5vh;
+    height: 77%;
     width: 95%;
     border: 1px solid rgb(175, 175, 175);
     margin-left: 2.5%;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 
@@ -32,10 +32,9 @@
 }
 
 .icons {
-    widows: 30%;
     height: 100%;
     float: right;
-    align-content: center;
+    text-align: right;
 }
 
 .buffer {
@@ -67,10 +66,9 @@ b {
 }
 
 .information{
-    padding: 1%;
-    padding-left: 2%;
-    padding-right: 5%;
-    height: 500px;
+    padding: 2%;
+    height: 85%;
+    overflow-y:auto;
 }
 
 .main-style {
@@ -100,7 +98,11 @@ a:active {
 
 .container-fluid {
     margin: auto;
-    text-align: center
+    text-align: left;
+    padding:0 0 0 2%;
+    display: flex;
+    align-items: center;
+    height: 15%;
 }
 
 .ref-styling {
@@ -133,4 +135,10 @@ a:active {
 .press button {
     background: transparent;
     border: none;
+}
+.icon-cont{
+    display: inline-block;
+    height: 100%;
+    position: relative;
+    width: 17px;
 }

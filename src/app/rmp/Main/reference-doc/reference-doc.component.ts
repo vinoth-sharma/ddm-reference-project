@@ -39,6 +39,19 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     "description": ""
   }
   public enableUpdateData = false;
+  public quillToolBarDisplay = [
+    ['bold', 'italic', 'underline', 'strike'],
+    ['blockquote'],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'script': 'sub' }, { 'script': 'super' }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+    ['clean'],
+    ['image']
+  ];
 
   public filesList;
   public contents;
@@ -54,19 +67,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
   };
   public readOnlyContentHelper = true;
   public config = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-      [{ 'size': ['small', false, 'large', 'huge'] }],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean'],
-      ['image']
-    ]
+    toolbar: null
   };
   public toolbarTooltips = {
     'font': 'Select a font',
@@ -129,6 +130,8 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
+        if(this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
+        else this.config.toolbar = false;
       }
     })
   }
@@ -298,7 +301,6 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
 
   public doc() {
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     this.url();
     if (upload_doc != null) {
       $("#document-url").attr('disabled', 'disabled');

@@ -1,16 +1,18 @@
-<div *ngIf="content">
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div *ngIf="content" style="height: 100%;">
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" style="overflow: hidden" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <img class="logo" src="/assets/OFT_Logo.jpg">
           <h4 class="modal-title" id="exampleModalLabel">Add Document Name and its url</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true" style="position: relative;top:-5px">&times;</span>
           </button>
         </div>
-        <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p>
+        <p _ngcontent-c1="" class="mandatory-fields" style="margin:18px">*Required Fields</p>
         <div class="modal-body">
           <form>
             <div class="form-group">
@@ -35,9 +37,10 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="close_modal" data-dismiss="modal">Close</button>
+          <button type="button" [cssBtn]="'cancel'" mat-raised-button id="close_modal"
+            data-dismiss="modal">Close</button>
           <ng-container>
-            <button type="button" class="btn btn-success" (click)="addDocument()">Save changes
+            <button type="button" [cssBtn]="'ok'" mat-raised-button (click)="addDocument()">Save changes
             </button>
           </ng-container>
         </div>
@@ -57,27 +60,20 @@
     <div class="icons">
       <div class="press" *ngIf="user_role == 'Admin'">
         <a data-toggle="tooltip" title="EDIT" (click)="editTrue()">
-          <i id="ic" class="material-icons">mode_edit</i>
+          <i id="ic" style="margin-top:-6px" class="material-icons">mode_edit</i>
         </a>
       </div>
       <div class="press">
-        <button data-target="#helpModal" data-toggle="modal" data-backdrop="static" style="padding-right:0px;">
+        <button data-target="#helpModal" data-toggle="modal" data-backdrop="static"
+          style="padding-right:0px;margin-top: 59%;">
           <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
         </button>
       </div>
     </div>
   </div>
   <div class="main-tool-body-content">
-    <div class="information">
+    <div class="information" [style.height]="editMode ? '85%' : '100%'">
       <div id="editable">
-        <div class="container-fluid" *ngIf="editMode">
-          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
-            data-backdrop="static" (click)="NewDoc()">
-            Add a Reference Material
-          </button>
-          <br>
-          <br>
-        </div>
         <div class="ref-styling row" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
           <div class="col-7">
             <a [id]="'ref_doc'+element.ddm_rmp_desc_text_admin_documents_id" data-toggle="tooltip"
@@ -112,6 +108,15 @@
         </div>
       </div>
     </div>
+    <div class="container-fluid" *ngIf="editMode">
+      <button type="button" [cssBtn]="'mid'" mat-raised-button data-toggle="modal" data-target="#exampleModal"
+        data-backdrop="static" (click)="NewDoc()">
+        <span class="icon-cont"> <i style="position: absolute;
+        font-size: 24px;" class="material-icons">add_circle_outline</i></span>
+        &nbsp;
+        <span> Add a Reference Material</span>
+      </button>
+    </div>
   </div>
 
   <!------------------------------------Help Modal------------------------------ -->
@@ -120,15 +125,15 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header" style="justify-content: flex-start;">
-          <img class="logo" src="/assets/OFT_Logo.jpg">
           <h5 class="modal-title help-title">Help</h5>
         </div>
         <div class="modal-body display-notes-scroll-modal">
           <div class="row">
             <div class="col-9">
-              <button class="btn btn-success save-text-ddm" (click)="content_edits()" id="admin-save" *ngIf="editModes"
-                style="margin-right:3%">Saves</button>
-              <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+              <button [cssBtn]="'ok'" mat-raised-button class="save-text-ddm" (click)="content_edits()" id="admin-save"
+                *ngIf="editModes" style="margin-right:3%">Saves</button>
+              <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="edit_True()"
+                *ngIf="editModes">Cancel</button>
             </div>
             <div class="col-3" style="padding-left:12%;">
               <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="editEnable()">
@@ -144,7 +149,7 @@
           </div>
         </div>
         <div class="modal-footer modal-footer-pad">
-          <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_true()"
+          <button type="button" id="modal_close_button" [cssBtn]="'cancel'" mat-raised-button (click)="edit_true()"
             data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -166,7 +171,8 @@
       <div class="modal-body" id="errorModalMessage">
       </div>
       <div class="modal-footer">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="modal_close_button" [cssBtn]="'cancel'" mat-raised-button
+          data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

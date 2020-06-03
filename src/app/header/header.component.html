@@ -5,7 +5,7 @@
       Order Fulfillment Distribution Data Mart
     </div>
   </div>
-  <div style="" class="menu-container">
+  <div class="menu-container">
     <ng-container *ngFor="let routeEle of routerObj">
       <a *ngIf="routeEle.isVisible" [routerLink]="routeEle.routerVal" routerLinkActive="active">
         <button mat-button [ngClass]="{'active': routeEle.isActive }">{{ routeEle.label }}</button>
@@ -13,10 +13,11 @@
     </ng-container>
   </div>
   <div class="header-cont-part" style="justify-content: flex-end;">
-    <button mat-icon-button style="margin-right: 55px;" [matMenuTriggerFor]="notifcations">
-      <mat-icon *ngIf="notification_number != 0"  [matBadge]="notification_number" matBadgeColor="warn" class="notification-icon">notifications_active
+    <button mat-icon-button style="margin-right: 55px;" [matMenuTriggerFor]="notifcations" title="Notifications">
+      <mat-icon *ngIf="notification_number != 0" [matBadge]="notification_number" matBadgeColor="warn"
+        class="notification-icon">notifications_active
       </mat-icon>
-      <mat-icon *ngIf="notification_number == 0"   matBadgeColor="warn" class="notification-icon">notifications_active
+      <mat-icon *ngIf="notification_number == 0" matBadgeColor="warn" class="notification-icon">notifications_active
       </mat-icon>
     </button>
     <mat-menu #notifcations="matMenu" class="notification-list">
@@ -40,8 +41,9 @@
     </mat-menu>
 
     <div class="user-data-container">
-      <div>
-        <mat-icon [matMenuTriggerFor]="menu" style="font-size: 6.4vh;color: white;cursor: pointer;">perm_identity
+      <div style="padding-top:5px">
+        <mat-icon [matMenuTriggerFor]="menu" title="User Image" style="font-size: 4.6vh;color: white;cursor: pointer;">
+          perm_identity
         </mat-icon>
       </div>
       <div id="role-text" class="user-details">

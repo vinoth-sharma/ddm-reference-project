@@ -554,6 +554,7 @@ angular4-multiselect > div.c-btn {
 }
 .sub-title{
   justify-content: flex-start !important;
+  padding:0 0 0 1.5vw;
 }
 
 .top-bar > div:last-child{

@@ -12,23 +12,27 @@
 
     <div class="icons">
       <div class="press">
+        <button mat-stroked-button color="primary" style="top:-10px;border:.5px solid #00000038" (click)="openAddNotes()">
+          Add Important Notes
+        </button>
         <button *ngIf="user_role=='Admin'" (click)="notifyChildren()" id="main-edit">
           <a data-toggle="tooltip" title="EDIT">
             <i id="ic" class="material-icons">mode_edit</i>
           </a>
         </button>
         <button data-target="#helpModal" data-toggle="modal" data-backdrop="static" id="main-help">
-          <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
-        </button>
-        <button mat-stroked-button color="primary" style="top:-10px" (click)="openAddNotes()">
-          Add Important Notes
+          <a data-toggle="tooltip" title="HELP">
+            <i id="ic" class="material-icons">help_outline</i>
+          </a>
         </button>
       </div>
     </div>
   </div>
   <div class="main-tool-body-content" id="print-content">
-    <button *ngIf="enable_edit" type="button" id="create-new-element" class="btn btn-success" data-toggle="modal"
-      data-backdrop="static" data-target="#mainMenuModal" (click)="content_new()">Create a new element</button>
+    <button *ngIf="enable_edit" mat-stroked-button id="create-new-element" color='primary' style="border:.5px solid #00000038"
+      data-toggle="modal" data-backdrop="static" data-target="#mainMenuModal" (click)="content_new()">
+      +Create a new element
+    </button>
     <ng-container *ngFor="let element of main_menu_content;let i = index;">
       <div class="row card-group" *ngIf="i%3==0" style="margin-top:2%;margin-right: 0;">
         <ng-container *ngIf="main_menu_content[i]">
@@ -38,8 +42,7 @@
               <p class="card-text" [id]="'answer'+i">{{main_menu_content[i].answer}}</p>
               <ng-container *ngIf="main_menu_content[i].link_title_url.length != 0">
                 <p>
-                  <button type="button" class="btn btn-outline-primary" (click)="route_url(link['link'])"
-                    *ngFor="let link of main_menu_content[i].link_title_url">
+                  <button type="button" class="btn btn-outline-primary" (click)="route_url(link['link'])" *ngFor="let link of main_menu_content[i].link_title_url">
                     {{link["title"]}}
                   </button>
                 </p>
@@ -48,13 +51,11 @@
               <div class="row">
                 <div class="col-sm-7"></div>
                 <div class="col-sm-5">
-                  <button *ngIf="enable_edit" [id]="'edit-list-'+i" class="btn btn-outline-primary" data-toggle="modal"
-                    data-target="#mainMenuModal"
+                  <button *ngIf="enable_edit" [id]="'edit-list-'+i" class="btn btn-outline-primary" data-toggle="modal" data-target="#mainMenuModal"
                     (click)="content_edit(main_menu_content[i].ddm_rmp_main_menu_description_text_id)">
                     <i id="ic" class="material-icons">edit</i>
                   </button>
-                  <button *ngIf="enable_edit" [id]="'delete-list-'+i" class="btn btn-outline-primary"
-                    data-toggle="modal" data-target="#deleteModal"
+                  <button *ngIf="enable_edit" [id]="'delete-list-'+i" class="btn btn-outline-primary" data-toggle="modal" data-target="#deleteModal"
                     (click)="content_delete(main_menu_content[i].ddm_rmp_main_menu_description_text_id)">
                     <i id="ic" class="material-icons">delete_forever</i>
                   </button>
@@ -70,8 +71,7 @@
               <p class="card-text" [id]="'answer'+(i+1)">{{main_menu_content[i+1].answer}}</p>
               <ng-container *ngIf="main_menu_content[i+1].link_title_url.length != 0">
                 <p>
-                  <button type="button" class="btn btn-outline-primary" (click)="route_url(link['link'])"
-                    *ngFor="let link of main_menu_content[i+1].link_title_url">
+                  <button type="button" class="btn btn-outline-primary" (click)="route_url(link['link'])" *ngFor="let link of main_menu_content[i+1].link_title_url">
                     {{link["title"]}}
                   </button>
                 </p>
@@ -79,14 +79,14 @@
               <div class="row">
                 <div class="col-sm-7"></div>
                 <div class="col-sm-5">
-                  <button *ngIf="enable_edit" [id]="'edit-list-'+(i+1)" class="btn btn-outline-primary"
-                    data-toggle="modal" data-backdrop="static" data-target="#mainMenuModal"
-                    (click)="content_edit(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)"><i id="ic"
-                      class="material-icons">edit</i></button>
-                  <button *ngIf="enable_edit" [id]="'delete-list-'+(i+1)" class="btn btn-outline-primary"
-                    data-toggle="modal" data-target="#deleteModal" data-backdrop="static"
-                    (click)="content_delete(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)"><i id="ic"
-                      class="material-icons">delete_forever</i></button>
+                  <button *ngIf="enable_edit" [id]="'edit-list-'+(i+1)" class="btn btn-outline-primary" data-toggle="modal" data-backdrop="static"
+                    data-target="#mainMenuModal" (click)="content_edit(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)">
+                    <i id="ic" class="material-icons">edit</i>
+                  </button>
+                  <button *ngIf="enable_edit" [id]="'delete-list-'+(i+1)" class="btn btn-outline-primary" data-toggle="modal" data-target="#deleteModal"
+                    data-backdrop="static" (click)="content_delete(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)">
+                    <i id="ic" class="material-icons">delete_forever</i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -99,8 +99,7 @@
               <p class="card-text" [id]="'answer'+(i+2)">{{main_menu_content[i+2].answer}}</p>
               <ng-container *ngIf="main_menu_content[i+2].link_title_url.length != 0">
                 <p>
-                  <button type="button" class="btn btn-outline-primary" (click)="route_url(link['link'])"
-                    *ngFor="let link of main_menu_content[i+2].link_title_url">
+                  <button type="button" class="btn btn-outline-primary" (click)="route_url(link['link'])" *ngFor="let link of main_menu_content[i+2].link_title_url">
                     {{link["title"]}}
                   </button>
                 </p>
@@ -108,14 +107,14 @@
               <div class="row">
                 <div class="col-sm-7"></div>
                 <div class="col-sm-5">
-                  <button *ngIf="enable_edit" [id]="'edit-list-'+(i+2)" class="btn btn-outline-primary"
-                    data-toggle="modal" data-target="#mainMenuModal" data-backdrop="static"
-                    (click)="content_edit(main_menu_content[i+2].ddm_rmp_main_menu_description_text_id)"><i id="ic"
-                      class="material-icons">edit</i></button>
-                  <button *ngIf="enable_edit" [id]="'delete-list-'+(i+2)" class="btn btn-outline-primary"
-                    data-toggle="modal" data-target="#deleteModal" data-backdrop="static"
-                    (click)="content_delete(main_menu_content[i+2].ddm_rmp_main_menu_description_text_id)"><i id="ic"
-                      class="material-icons">delete_forever</i></button>
+                  <button *ngIf="enable_edit" [id]="'edit-list-'+(i+2)" class="btn btn-outline-primary" data-toggle="modal" data-target="#mainMenuModal"
+                    data-backdrop="static" (click)="content_edit(main_menu_content[i+2].ddm_rmp_main_menu_description_text_id)">
+                    <i id="ic" class="material-icons">edit</i>
+                  </button>
+                  <button *ngIf="enable_edit" [id]="'delete-list-'+(i+2)" class="btn btn-outline-primary" data-toggle="modal" data-target="#deleteModal"
+                    data-backdrop="static" (click)="content_delete(main_menu_content[i+2].ddm_rmp_main_menu_description_text_id)">
+                    <i id="ic" class="material-icons">delete_forever</i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -126,78 +125,80 @@
     </ng-container>
 
     <!-- Modal -->
-    <div class="modal fade " id="mainMenuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal fade " id="mainMenuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+      data-keyboard="false" data-backdrop="static">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
             <h3 class="modal-title" id="mainMenuDescriptionTitle">Create New Element | Main Menu</h3>
             <button type="button" id="modal_close_button-1" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p>
+          <p _ngcontent-c1="" class="mandatory-fields" style="float:left;font-style: italic;padding: 20px 20px 0px 20px;margin-bottom: 0px;font-size: 10px;">
+            *Required Fields</p>
           <div class="modal-body">
             <form [formGroup]="contentForm">
               <div class="form-group">
-                <label>Question
+                <label style="font-size: 10px;">Question
                   <span _ngcontent-c1="" class="mandatory-fields">*</span>:
                   <br>(max. 500 letters)
                 </label>
-                <textarea class="form-control" formControlName="question" rows="4" required="true"
-                  maxlength="500"></textarea>
+                <textarea class="form-control" formControlName="question" rows="4" required="true" maxlength="500"></textarea>
                 <br>
-                <label>Answer
+                <label style="font-size: 10px;">Answer
                   <span _ngcontent-c1="" class="mandatory-fields">*</span>:
                   <br>(max. 1000 letters)
                 </label>
-                <textarea class="form-control" formControlName="answer" rows="4" required="true"
-                  maxlength="1000"></textarea>
+                <textarea class="form-control" formControlName="answer" rows="4" required="true" maxlength="1000"></textarea>
               </div>
               <div formArrayName="link_title_url">
-                <ng-container *ngFor="let item of LinkTitleURL.controls; let pointIndex=index"
-                  [formGroupName]="pointIndex">
-                  <div>
-                    <label style="width: 40%;">
+                <ng-container *ngFor="let item of LinkTitleURL.controls; let pointIndex=index" [formGroupName]="pointIndex">
+                  <div style="width: 40%;display:inline-block;">
+                    <label>
                       Title
                       <span _ngcontent-c1="" class="mandatory-fields">*</span>:
                       <input class="form-control" formControlName="title" required="true" maxlength="35" />
                     </label>
-                    <label style="width: 40%;">
-                      URL<span _ngcontent-c1="" class="mandatory-fields">*</span>:
+                  </div>
+                  <div style="width: 40%;display:inline-block;">
+                    <label>
+                      URL
+                      <span _ngcontent-c1="" class="mandatory-fields">*</span>:
                       <span>
                         <span [id]="pointIndex+'url'" class="error-url">please enter valid URL</span>
                       </span>
                       <input class="form-control" formControlName="link" required="true" />
                     </label>
-                    <button [id]="'form_delete_button_'+pointIndex" type="button"
-                      (click)="deleteLinkTitleURL(pointIndex)">Delete Link
+                  </div>
+                  <div style="display: inline-block;">
+                    <button [id]="'form_delete_button_'+pointIndex" mat-stroked-button (click)="deleteLinkTitleURL(pointIndex)" color="primary"
+                      style="border:.5px solid #00000038">Delete Link
                     </button>
                   </div>
                 </ng-container>
-                <button [disabled]="!contentForm.valid" id="modal_add_link" type="button"
-                  (click)="addLinkTitleURL()">Add Link</button>
+                <button [disabled]="!contentForm.valid" id="modal_add_link" mat-stroked-button (click)="addLinkTitleURL()" style="border:.5px solid #00000038"
+                  color="primary">Add Link</button>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" id="modal_close_button-2" class="btn btn-secondary"
-              data-dismiss="modal">Close</button>
-            <button [disabled]="!contentForm.valid" id="modal_save_button" type="submit" class="btn btn-success"
-              (click)="saveChanges()">Save changes</button>
+            <button mat-button (click)="edit_True()" style="background-color: #6c757d;color: white" data-dismiss="modal">
+              Close
+            </button>
+            <button mat-raised-button color="primary" [disabled]="!contentForm.valid" (click)="saveChanges()" style="margin-right: 10px;">
+              Save changes
+            </button>
           </div>
         </div>
       </div>
     </div>
 
     <!--                     Confirm Modal                   -->
-    <div class="modal fade " id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
+    <div class="modal fade " id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
             <h5 class="modal-title" id="mainMenuDescriptionDeleteTitle">Delete Element</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -219,24 +220,23 @@
 </div>
 <!------------------------------------Help Modal------------------------------ -->
 
-<div class="modal fade" style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
-        <img class="logo" src="/assets/OFT_Logo.jpg">
         <h5 class="modal-title help-title">Help</h5>
       </div>
       <div class="modal-body display-notes-scroll-modal">
         <div class="row">
           <div class="col-9">
-            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
-              style="margin-right:3%">Save</button>
-            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            <span *ngIf="editModes">
+              <button mat-raised-button color="primary" (click)="content_edits()" style="margin-right: 10px;">Save</button>
+              <button mat-raised-button color="warn" (click)="edit_True()">Clear</button>
+            </span>
           </div>
           <div class="col-3">
-            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
-              style="padding-right:0px;">
+            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()' style="padding-right:0px;">
               <a data-toggle="tooltip" title="EDIT">
                 <i id="ic" class="material-icons">mode_edit</i>
               </a>
@@ -244,15 +244,15 @@
           </div>
         </div>
         <div class="quillEditor">
-          <quill-editor class="quill" [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContentHelper'
-            (onContentChanged)='textChanged($event)'>
+          <quill-editor class="quill" [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContentHelper' (onContentChanged)='textChanged($event)'>
           </quill-editor>
         </div>
 
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_True()"
-          data-dismiss="modal">Close</button>
+        <button mat-button (click)="edit_True()" style="background-color: #6c757d;color: white" data-dismiss="modal">
+          Close
+        </button>
       </div>
     </div>
   </div>

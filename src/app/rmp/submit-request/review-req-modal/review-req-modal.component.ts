@@ -52,17 +52,13 @@ export class ReviewReqModalComponent implements OnInit {
   }
 
   dealerAlloc = {
-    consensusProcess: [],
-    startDate: null,
-    endDate: null
+    consensusProcess: []
   }
 
   l_masterData: any;
 
   ngOnInit(): void {
-    console.log(this.data);
     this.l_masterData = JSON.parse(JSON.stringify(this.data));
-
     this.generateRequestData(this.data);
     this.generateMarketData(this.data.selectedReqData);
     if (this.data.reqBody.report_detail.report_type === "ots") {
@@ -83,7 +79,6 @@ export class ReviewReqModalComponent implements OnInit {
   saveVehicleEventStatus() {
     Utils.showSpinner();
     this.submitService.submitVehicelEventStatus(this.l_masterData.reqBody).subscribe(response => {
-      // console.log(response);
       this.submitFile();
       this.submitService.setSubmitOnBehalf("", "");
       this.closeDailog();
@@ -100,7 +95,6 @@ export class ReviewReqModalComponent implements OnInit {
   saveDealerAllocation() {
     Utils.showSpinner();
     this.submitService.submitDealerAllocation(this.l_masterData.reqBody).subscribe(response => {
-      // console.log(response);
       this.submitFile();
       this.submitService.setSubmitOnBehalf("", "");
       this.closeDailog();
@@ -109,7 +103,7 @@ export class ReviewReqModalComponent implements OnInit {
       this.router.navigate(["user/request-status"]);
     }, err => {
       Utils.hideSpinner();
-      console.log(err);
+      // console.log(err);
     });
   }
 
@@ -249,8 +243,6 @@ export class ReviewReqModalComponent implements OnInit {
     }
     this.dealerAlloc.consensusProcess.push(obj2);
 
-    // this.dealerAlloc.startDate = `${l_obj.startM} - ${l_obj.startY} (${l_obj.startCycle})`
-    // this.dealerAlloc.endDate = `${l_obj.endM} - ${l_obj.endY} (${l_obj.endCycle})`
   }
 
   generateMarketData(data) {
@@ -340,7 +332,6 @@ export class ReviewReqModalComponent implements OnInit {
     }
 
     this.otherReportCriteria.textNotification = data.user_data[0].alternate_number ? "Yes" : "No";
-    // console.log(this.marketData);
   }
 
   downloadSummary() {
@@ -350,7 +341,6 @@ export class ReviewReqModalComponent implements OnInit {
       }
     };
     var doc = new jsPDF();
-    // doc.setFont("arial");
     doc.lineHeightProportion = 2;
     doc.fromHTML(
       $('#summaryView').html(), 15, 15,

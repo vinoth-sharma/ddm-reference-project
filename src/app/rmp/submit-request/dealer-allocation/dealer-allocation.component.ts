@@ -127,7 +127,6 @@ export class DealerAllocationComp implements OnInit {
     })
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
-      // console.log(res);
       if (res.type === "srw") {
         this.l_selectedReqData = res.data;
         this.refillDivisionMD(res.data.division_dropdown);

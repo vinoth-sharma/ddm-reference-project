@@ -169,10 +169,8 @@ export class VehicleEventStatusComponent implements OnInit {
     })
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
-      // console.log(res);
       if (res.type === "srw") {
         this.l_selectedReqData = res.data;
-        // this.division_settings.primary_key = "ddm_rmp_lookup_division"
         this.refillDivisionsMD(res.data.division_dropdown);
         this.fillReportDetails(res.data)
         this.refillSelectedRequestData(res.data);
@@ -205,7 +203,6 @@ export class VehicleEventStatusComponent implements OnInit {
           this.req_body.report_id = l_reportId;
           this.req_body.report_detail.status = l_status;
         }
-        // console.log(this.req_body);
       }
     })
 
@@ -455,10 +452,7 @@ export class VehicleEventStatusComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(result);
-      // if (result) {
-      // this.saveVehicleEventStatus();
-      // }
+      //Don't do anything
     })
   }
 

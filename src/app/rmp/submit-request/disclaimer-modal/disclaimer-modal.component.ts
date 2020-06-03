@@ -59,7 +59,7 @@ export class DisclaimerModalComponent implements OnInit {
         this.user_role = role["role"]
       }
     })
-    // console.log(this.data);
+
     this.subReqService.getHttpLookUpTableData().subscribe(res => {
       this.l_lookupTableData = res.data;
       this.l_lookupTableData.desc_text.forEach(element => {
@@ -134,5 +134,4 @@ export class DisclaimerModalComponent implements OnInit {
   closeDailog(): void {
     this.dialogRef.close();
   }
-
 }

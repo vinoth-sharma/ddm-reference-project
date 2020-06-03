@@ -33,7 +33,6 @@ export class AdditionalReqModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    // console.log(this.data);
     this.l_CB_data = this.data.checkboxData;
     this.responseData.reportTitle = this.data.l_title;
     this.responseData.addReq = this.data.l_addReq;
@@ -43,7 +42,6 @@ export class AdditionalReqModalComponent implements OnInit {
   }
 
   reviewRequest(): void {
-
     this.responseData.cb = [...this.l_CB_data];
     this.responseData.reportTitle = this.responseData.reportTitle.trim();
     this.responseData.addReq = this.responseData.addReq.trim();

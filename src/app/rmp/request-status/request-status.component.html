@@ -11,7 +11,7 @@
           data-keyboard="false">Edit Distribution List</button>
       </a>
       <a>
-        <button class="btn btn-danger" data-toggle="modal" data-backdrop="static"
+        <button class="btn btn-primary" data-toggle="modal" data-backdrop="static"
           (click)="CheckCancel()">Cancel/Reassign</button>
       </a>
       <a>
@@ -30,60 +30,65 @@
   </div>
   <!--                            Main Body Content                         -->
   <div *ngIf="reports" class="main-tool-body" style="height:100%">
-    <div class="row" style="margin: 0%;height:100%;">
-      <div class="col-4">
-        <h3>Request Status</h3>
-      </div>
-      <div class="col-4">
-        <input placeholder="Search by Request Number/Requestor/Title/Status" class="form-control"
-          [(ngModel)]="filters.global" name="global" (input)="filterData()" [ngModelOptions]="{standalone: true}">
-      </div>
-      <div class="col-4" style="padding-right:0%;">
-        <div class="icons">
-          <div class="press">
-            <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
-              data-backdrop="static" data-keyboard="false">
-              User Details
-            </button>
-            <button data-target="#helpModal" data-toggle="modal" data-backdrop="static" class="press-button">
-              <a data-toggle="tooltip" title="HELP">
-                <i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i>
-              </a>
-            </button>
-            <button class="press-button" (click)="xlsxJson()">
-              <a data-toggle="tooltip" title="Download">
-                <i id="ic" class="material-icons">get_app</i>
-              </a>
-            </button>
+    <div class="row " style="margin: 0%;height:100%;">
+      <div class="row top-bar">
+        <div class="col-2 sub-title">
+          <h3>Request Status</h3>
+        </div>
+        <div class="col-4">
+          <input placeholder="Search by Request Number/Requestor/Title/Status" class="form-control"
+            style="margin-left:5vw" [(ngModel)]="filters.global" name="global" (input)="filterData()"
+            [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col-6" style="padding-right:0%;">
+          <div class="icons">
+            <div class="press">
+              <button *ngIf="user_role=='Admin'" [cssBtn]="'mid'" mat-raised-button data-toggle="modal"
+                data-target="#UserDetails" data-backdrop="static" data-keyboard="false">
+                User Details
+              </button>
+              <button class="press-button" (click)="xlsxJson()">
+                <a data-toggle="tooltip" title="Download">
+                  <i id="ic" class="material-icons" style="margin-top:2px">get_app</i>
+                </a>
+              </button>
+              <button data-target="#helpModal" data-toggle="modal" data-backdrop="static" class="press-button">
+                <a data-toggle="tooltip" title="HELP">
+                  <i id="ic" class="material-icons">help_outline</i>
+                </a>
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
       <div class="tableFixHead">
-        <table *ngIf="reports" class="table report_table " style="overflow:-moz-hidden-unscrollable">
+        <table *ngIf="reports" class="table report_table table-bordered table-hover"
+          style="overflow:-moz-hidden-unscrollable">
           <thead class="thead">
             <tr>
               <th>
                 <div style="margin-bottom: 40px;">Select</div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('ddm_rmp_post_report_id')" style="width: 70px !important;">
+                <div class="alignLeft" (click)="sort('ddm_rmp_post_report_id')">
                   <div>Request Number</div>
                   <div *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
                   <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                 </div>
-                <div style="width: 70px !important;">
+                <div>
                   <input (input)="filterData()" placeholder="Search" class="form-control"
                     [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id"
                     [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('created_on')" style="width: 70px !important;">
+                <div class="alignLeft" (click)="sort('created_on')">
                   <div>Created On</div>
                   <div *ngIf="!reports['created_on']">&#8593;</div>
                   <div *ngIf="reports['created_on']">&#8595;</div>
                 </div>
-                <div style="width: 70px !important;">
+                <div>
                   <input (input)="filterData()" placeholder="Search" class="form-control"
                     [(ngModel)]="filters.created_on" name="filters.created_on" [ngModelOptions]="{standalone: true}">
                 </div>
@@ -153,24 +158,24 @@
                 </div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('ddm_rmp_status_date')" style="width: 70px !important;">
+                <div class="alignLeft" (click)="sort('ddm_rmp_status_date')">
                   <div>Status Date</div>
                   <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
                   <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                 </div>
-                <div style="width: 70px !important;">
+                <div>
                   <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
                     class="form-control" [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
                 </div>
               </th>
               <th style="text-align:center">
-                <div style="margin-bottom: 40px;width: 50px !important;">Links To Result</div>
+                <div style="margin-bottom: 40px;width: auto !important;">Links To Result</div>
               </th>
               <th>
-                <div style="margin-bottom: 40px;width: 80px !important;">Query Criteria</div>
+                <div style="margin-bottom: 40px;width: auto !important;">Query Criteria</div>
               </th>
               <th>
-                <div style="margin-bottom: 40px;">Generate Report</div>
+                <div style="margin-bottom: 40px;width: auto !important;">Generate Report</div>
               </th>
             </tr>
           </thead>
@@ -185,22 +190,20 @@
               </tr>
               <tr class="row">&nbsp;</tr>
               <tr class="row">
-                <button class="btn-sm btn-primary medium-btn"
+                <button [cssBtn]="'mid'" mat-raised-button class="table-buttons"
                   (click)="set_report_comments(element.ddm_rmp_post_report_id)" data-toggle="collapse"
-                  [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id"
-                  style="padding: 0px 0px 0px 4px;font-size: 12px">Comments
-                  <i id="ic" class="material-icons comment-sec"
-                    style="padding-left:0px;font-size:1.5rem;">expand_more</i>
+                  [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id">Comments <span
+                    class="material-icons" style="font-size: 100%;color: white;">keyboard_arrow_down</span>
                 </button>
               </tr>
               </td>
               <td>
-                <div style="width: 70px !important;">
+                <div>
                   {{element.ddm_rmp_post_report_id}}
                 </div>
               </td>
               <td>
-                <div style="width: 70px !important;">
+                <div>
                   {{element.created_on| date: 'dd-MMM-yyyy' }}
                 </div>
               </td>
@@ -208,8 +211,8 @@
                 <div *ngIf="element.requestor == 'TBD'">
                   {{ element.requestor }}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary" data-toggle="modal" data-target="#tbdModal"
-                      data-backdrop="static" (click)="TBD(element)">
+                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" data-toggle="modal"
+                      data-target="#tbdModal" data-backdrop="static" (click)="TBD(element)">
                       Assign Owner
                     </button>
                   </div>
@@ -237,8 +240,8 @@
                 <div *ngIf="element.assigned_to == 'TBD'">
                   {{ element.assigned_to }}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary" data-toggle="modal" data-target="#tbdModalAssigned"
-                      data-backdrop="static" (click)="TBD(element)">
+                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" data-toggle="modal"
+                      data-target="#tbdModalAssigned" data-backdrop="static" (click)="TBD(element)">
                       Assign Owner
                     </button>
                   </div>
@@ -255,57 +258,65 @@
                 <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary" (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
+                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons"
+                      (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
                       Mark as Complete
                     </button>
                   </div>
                 </div>
                 <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
                   {{element.status}}
-                  <div *ngIf="user_role=='Admin'">
-                    <button class="btn-sm btn-primary medium-btn" style="margin-left: 15px;" data-toggle="modal"
-                      data-backdrop="static" data-target="#changeStatusModal" (click)="openEditStatusModal(element)">
-                      Edit
+                  <div *ngIf="user_role=='Admin'" style="margin-top:5px">
+                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" style="margin-left: 15px;"
+                      data-toggle="modal" data-backdrop="static" data-target="#changeStatusModal"
+                      (click)="openEditStatusModal(element)">
+                      <span>Edit <span class="material-icons" style="font-size: 100%;color:white;position: relative;
+                        top: 7px;">create</span></span>
                     </button>
                   </div>
                 </div>
               </td>
               <td>
-                <div style="width: 70px !important;">
+                <div>
                   {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
                 </div>
               </td>
-              <td style="position: relative;">
-                <button class="btn btn-outline-primary" [title]="element.link_to_results"
-                  (click)="openNewWindow(element.link_to_results)"
-                  *ngIf="element.link_to_results != '' && element.status=='Completed'"
-                  style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
-                  Url&nbsp;&nbsp;&#10145;
-                </button>
-                <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addUrl" data-backdrop="static"
-                  (click)="addLinkUrl(element,'create')"
-                  *ngIf="element.link_to_results == '' && element.status=='Completed' && user_role =='Admin'"
-                  style="width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
-                  Add Url
-                </button>
-                <button *ngIf="element.link_to_results != '' && element.status=='Completed' && user_role =='Admin'"
-                  class="btn-sm btn-primary" style="margin-left: 15px;" data-toggle="modal" data-target="#addUrl"
-                  data-backdrop="static" (click)="addLinkUrl(element,'edit')">
-                  Edit
-                </button>
+              <td>
+                <div style="flex-direction: column;height: 100%;" class="center-content">
+                  <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" [title]="element.link_to_results"
+                    style="margin-bottom: 7px;width:80px" (click)="openNewWindow(element.link_to_results)"
+                    *ngIf="element.link_to_results != '' && element.status=='Completed'">
+                    Url&nbsp;<span class="material-icons" style="font-size: 100%;color:white;position: relative;
+                    top: -2px;font-weight: 1000;">arrow_forward</span>
+                  </button>
+
+                  <button [cssBtn]="'ok'" mat-raised-button class="table-buttons" data-toggle="modal"
+                    data-target="#addUrl" data-backdrop="static" (click)="addLinkUrl(element,'create')"
+                    *ngIf="element.link_to_results == '' && element.status=='Completed' && user_role =='Admin'">
+                    <span> Url <span class="material-icons" style="font-size: 100%;color:white;position: relative;
+                      top: 7px;font-weight: 1000;">add</span></span>
+                  </button>
+                  <button *ngIf="element.link_to_results != '' && element.status=='Completed' && user_role =='Admin'"
+                    style="border:80px" [cssBtn]="'mid'" mat-raised-button class="table-buttons" data-toggle="modal"
+                    data-target="#addUrl" data-backdrop="static" (click)="addLinkUrl(element,'edit')">
+                    <span>Edit <span class="material-icons" style="font-size: 100%;color:white;position: relative;
+                      top: 7px;">create</span></span>
+                  </button>
+                </div>
+
               </td>
               <td *ngIf="element.status != 'Incomplete'">
-                <div style="width: 80px !important;">
-                  <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
-                    data-toggle="modal" data-backdrop="static" data-target="#queryCriteria"
-                    style="    width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
-                    QueryCriteria
+                <div style="width: auto !important;height:100%" class="center-content">
+                  <button [cssBtn]="'mid'" mat-raised-button class="table-buttons"
+                    (click)="query_criteria_click(element.ddm_rmp_post_report_id)" data-toggle="modal"
+                    data-backdrop="static" data-target="#queryCriteria">
+                    QueryCriteria &nbsp;
                   </button>
                 </div>
               </td>
               <td *ngIf="user_role=='Admin' && element.status == 'Active'">
                 <div>
-                  <button class="btn-sm btn-primary pointer" routerLinkActive="active-route"
+                  <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" routerLinkActive="active-route"
                     [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
                     Create Report
                   </button>
@@ -313,7 +324,7 @@
               </td>
               <td *ngIf="user_role=='Non-Admin' && element.status == 'Active'">
                 <div>
-                  <button class="btn-sm btn-primary pointer" routerLinkActive="active-route"
+                  <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" routerLinkActive="active-route"
                     [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
                     Create Report
                   </button>
@@ -386,9 +397,11 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button style="color:transparent;border:none" data-dismiss="modal" *ngIf="comment_text"
-          (click)="extract_comment()">
-          <i fa class="fa fa-paper-plane"></i>
+        <button [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" *ngIf="comment_text" (click)="extract_comment()">
+          Save
+        </button>
+        <button [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal" *ngIf="comment_text">
+          cancel
         </button>
       </div>
     </div>
@@ -420,8 +433,9 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-backdrop="static"
           data-target="#ModalComment" onmouseover="" style="cursor: pointer;" data-dismiss="modal">Ok</button>
-        <button type="button" class="btn btn-danger cancel-btn" data-toggle="modal" data-backdrop="static"
-          data-target="#ModalComment" onmouseover="" style="cursor: pointer;" data-dismiss="modal">Cancel</button>
+        <button type="button" class="cancel-btn" [cssBtn]="'cancel'" mat-raised-button data-toggle="modal"
+          data-backdrop="static" data-target="#ModalComment" onmouseover="" style="cursor: pointer;"
+          data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
@@ -441,7 +455,8 @@
         <button (click)="OrderToSale($event)">Vehicle Event Status</button>
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn btn-danger cancel-btn">Cancel</button>
+        <button type="button" data-dismiss="modal" class="cancel-btn" [cssBtn]="'cancel'"
+          mat-raised-button>Cancel</button>
       </div>
     </div>
   </div>
@@ -488,13 +503,14 @@
             <h6>*Please fill all the fields</h6>
           </i>
         </span>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closePostLink()">Close</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closePostLink()">Close</button>
         <ng-container *ngIf="!changeDoc">
-          <button type="button" class="btn btn-success" (click)="addDocument()">Save changes
+          <button type="button" [cssBtn]="'ok'" mat-raised-button (click)="addDocument()">Save changes
           </button>
         </ng-container>
         <ng-container *ngIf="changeDoc">
-          <button type="button" class="btn btn-success" (click)="editDocument()">Save changes
+          <button type="button" [cssBtn]="'ok'" mat-raised-button (click)="editDocument()">Save changes
           </button>
         </ng-container>
       </div>
@@ -508,9 +524,6 @@
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
         <div class="row modal-title">
-          <div class="col-sm-2">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
           <div class="col-sm-10 modal-heading">
             <b>Distribution DataMart (DDM) Report Request Confirmation</b>
             <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Vehicle
@@ -519,16 +532,15 @@
               Allocation
             </div>
           </div>
-          <br>
-          <div class="col-sm-9"></div>
-          <div class="col-sm-1">
+          <div class="col-sm-2">
+            <i id="ic" class="material-icons download-pdf" data-dismiss="modal">
+              close
+            </i>
             <i id="ic" class="material-icons download-pdf" (click)='captureScreen()'>
               get_app
             </i>
           </div>
-          <div class="col-sm-1">
-            <button type="button" class="close" data-dismiss="modal">x</button>
-          </div>
+
         </div>
       </div>
       <div class="modal-body display-summary-scroll">
@@ -736,15 +748,16 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
-        <img class="logo" src="/assets/OFT_Logo.jpg">
+
         <h5 class="modal-title help-title">Help</h5>
       </div>
       <div class="modal-body display-notes-scroll-modal">
-        <div class="row">
+        <div class="row" style="margin-bottom: 13px;">
           <div class="col-9">
-            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+            <button class="save-text-ddm" [cssBtn]="'ok'" mat-raised-button (click)="content_edits()" *ngIf="editModes"
               style="margin-right:3%">Save</button>
-            <button class="btn btn-danger save-text-ddm" (click)="resetHelpParams()" *ngIf="editModes">Cancel</button>
+            <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="resetHelpParams()"
+              *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
@@ -761,7 +774,7 @@
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="resetHelpParams()"
+        <button type="button" id="modal_close_button" [cssBtn]="'cancel'" mat-raised-button (click)="resetHelpParams()"
           data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -785,7 +798,8 @@
         </h5>
       </div>
       <div class="modal-footer">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="clearOnError()">Close</button>
+        <button type="button" id="modal_close_button" [cssBtn]="'cancel'" mat-raised-button
+          (click)="clearOnError()">Close</button>
       </div>
     </div>
   </div>
@@ -797,10 +811,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="row">
-          <div class="col-sm-2" style="padding-right:0;">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
-          <div class="col-sm-10" style="margin:0;">
+          <div class="col-sm-12" style="margin:0;">
             <h2 class="modal-title" style="margin:0;padding-top: 8px;">
               <b>Cancel Request/ Reassign</b>
             </h2>
@@ -810,23 +821,25 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-4" style="padding-left: 10px">
-            <button class="btn btn-primary" data-toggle="modal" data-backdrop="static"
+            <button [cssBtn]="'cancel'" mat-raised-button data-toggle="modal" data-backdrop="static"
               data-target="#CancelPermanently">Cancel Permanently
             </button>
           </div>
           <div class="col-4" style="padding-left: 30px;">
-            <button class="btn btn-primary" (click)="AssignTBD()" style="padding-right: 17px;padding-left: 17px;">Assign
+            <button [cssBtn]="'mid'" mat-raised-button (click)="AssignTBD()"
+              style="padding-right: 17px;padding-left: 17px;">Assign
               Requestor
             </button>
           </div>
           <div class="col-4" style="padding-left: 40px;">
-            <button class="btn btn-primary" (click)="Assign_AssignTo()"
+            <button [cssBtn]="'mid'" mat-raised-button (click)="Assign_AssignTo()"
               style="padding-right: 20;padding-left: 18px;">Assign Acceptor</button>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancel()">Close</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closeCancel()">Close</button>
       </div>
     </div>
   </div>
@@ -838,10 +851,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="row">
-          <div class="col-sm-2" style="padding-right:0;">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
-          <div class="col-sm-10" style="margin:0;">
+          <div class="col-sm-12" style="margin:0;">
             <h2 class="modal-title" style="margin:0;padding-top: 8px;">
               <b>Cancel Request</b>
             </h2>
@@ -852,9 +862,9 @@
         Are you sure you want to cancel the request permanently?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
           (click)="closeCancel_modal()">Close</button>
-        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="Cancel()">Yes</button>
+        <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" (click)="Cancel()">Yes</button>
       </div>
     </div>
   </div>
@@ -866,17 +876,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="row">
-          <div class="col-sm-2" style="padding-right:0;">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
-          <div class="col-sm-10" style="margin:0;">
+          <div class="col-sm-12" style="margin:0;">
             <h2 class="modal-title" style="margin:0;padding-top: 8px;">
               <b>Assign TBD Owner</b>
             </h2>
           </div>
         </div>
       </div>
-      <div class="modal-body" style="min-height:300px;">
+      <div class="modal-body" style="min-height:300px;padding:30px">
         <div class="row" style="padding-left:10px;">
           <h5>Select a user to assign the report to:</h5>
         </div>
@@ -887,8 +894,10 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="TBDsave()">Save Changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTBD()">Close</button>
+        <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" (click)="TBDsave()">Save
+          Changes</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closeTBD()">Close</button>
       </div>
     </div>
   </div>
@@ -901,10 +910,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="row">
-          <div class="col-sm-2" style="padding-right:0;">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
-          <div class="col-sm-10" style="margin:0;">
+          <div class="col-sm-12" style="margin:0;">
             <h2 class="modal-title" style="margin:0;padding-top: 8px;">
               <b>Assign TBD Owner</b>
             </h2>
@@ -922,9 +928,10 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="TBD_Assigned()">Save Changes
+        <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" (click)="TBD_Assigned()">Save
+          Changes
         </button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
           (click)="closeTBD_Assigned()">Close</button>
       </div>
     </div>
@@ -937,10 +944,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="row">
-          <div class="col-sm-1" style="padding-right:0;">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
-          <div class="col-sm-11" style="margin:0;">
+          <div class="col-sm-12" style="margin:0;">
             <h2 class="modal-title" style="margin:0;padding-top: 8px;">
               <b>List of Users</b>
             </h2>
@@ -964,7 +968,7 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -992,7 +996,7 @@
             <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
           </div>
           <div class="col-sm-2">
-            <button (click)="addContact()" class="button-add">Add</button>
+            <button (click)="addContact()" class="button-add" [cssBtn]="'ok'" mat-raised-button>Add</button>
           </div>
         </div>
         <div class="row dl-bottom">
@@ -1013,13 +1017,13 @@
             </div>
           </div>
           <div class="col-sm-2" (click)="removeContact()">
-            <button class="button-remove">Remove</button>
+            <button class="button-remove" [cssBtn]="'cancel'" mat-raised-button>Remove</button>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="clearOnError()">Close</button>
-        <button type="submit" class="btn btn-success" (click)="updateDL()">Update DL</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button (click)="clearOnError()">Close</button>
+        <button type="submit" [cssBtn]="'ok'" mat-raised-button (click)="updateDL()">Update DL</button>
       </div>
     </div>
   </div>
@@ -1031,10 +1035,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="row">
-          <div class="col-sm-2" style="padding-right:0;">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
-          <div class="col-sm-10" style="margin:0;">
+          <div class="col-sm-12" style="margin:0;">
             <h2 class="modal-title" style="margin:0;padding-top: 8px;">
               <b> {{addUrlTitle}}</b>
             </h2>
@@ -1047,9 +1048,11 @@
         <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save Changes
+        <button type="button" [cssBtn]="'ok'" mat-raised-button [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save
+          Changes
         </button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeLinkUrl()">Close</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closeLinkUrl()">Close</button>
       </div>
     </div>
   </div>
@@ -1061,10 +1064,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="row">
-          <div class="col-sm-2" style="padding-right:0;">
-            <img class="logo" src="/assets/OFT_Logo.jpg">
-          </div>
-          <div class="col-sm-10" style="margin:0;">
+          <div class="col-sm-12" style="margin:0;">
             <h2 class="modal-title" style="margin:0;padding-top: 8px;">
               <b> Edit Status</b>
             </h2>
@@ -1079,9 +1079,10 @@
         </select>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" [disabled]="selectReportStatus != 'Completed'"
+        <button type="button" [cssBtn]="'ok'" mat-raised-button [disabled]="selectReportStatus != 'Completed'"
           (click)="saveReportStatus()">Save Changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closeStatusUrl()">Close</button>
       </div>
     </div>
   </div>

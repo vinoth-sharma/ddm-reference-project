@@ -4,8 +4,6 @@ import { DjangoService } from '../../django.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-// Angular Component developed by Vinoth Sharma Veeramani
-
 @Component({
   selector: 'app-existing-notes-container',
   templateUrl: './existing-notes-container.component.html',

@@ -5,9 +5,6 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin: 0px 0px 15px;font-weight: 600;">
         <div [innerHTML]="display_message" [ngClass]="messageClass"></div>
     </div>
-    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="!req_body.report_id">
-        <div class="red">Create Request to proceed with vehicle event status</div>
-    </div> -->
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
         <app-mat-multiselect [data]="filtered_MD.divisions" [settings]="division_settings"
             [(inputModel)]="selected.divisions" (selectionDone)="multiSelectChange('division')"></app-mat-multiselect>
@@ -115,7 +112,7 @@
                     [(inputModel)]="selected_checkbox.commonly_req_field"></app-mat-multiselect>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding callout lineHeight margBtmLight">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding callout lineHeight margBtmLight" style="margin-top: 12px;">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 lineHeightSmall">
                 *Should you need other type of fields, please clarify in the Additional Requirements area
             </div>
@@ -201,9 +198,6 @@
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 borderLeft borderRight">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding bold ordMetsTitle">Order Metrics</div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding ">
-            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold">
-                Order Events available for display
-            </div> -->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold" style="padding-bottom: 4px;">
                     Sales and Availability (Event Progression)
@@ -273,7 +267,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

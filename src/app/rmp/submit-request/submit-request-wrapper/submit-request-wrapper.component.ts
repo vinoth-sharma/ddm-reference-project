@@ -4,11 +4,10 @@ import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { DataProviderService } from '../../data-provider.service';
 import { GeneratedReportService } from '../../generated-report.service';
-import { ReportCriteriaDataService } from '../../services/report-criteria-data.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { SubmitRequestService } from '../submit-request.service';
 import Utils from 'src/utils';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-submit-request-wrapper',
@@ -47,15 +46,12 @@ export class SubmitRequestWrapperComponent implements OnInit {
 
   ngOnInit() {
     this.subjectSubscription = this.submitReqService.loadingStatus.subscribe((status: any) => {
-      // console.log(status);
       if (status.comp === "da" && status.status) {
         let requestId = localStorage.getItem("report_id")
         if (requestId) {
           Utils.showSpinner();
           this.submitReqService.getReportDescription(requestId).subscribe(res => {
-            // console.log(res);
             this.submitReqService.updateRequestStatus({ type: "srw", data: res });
-            // this.selectedReportData = res;
             Utils.hideSpinner();
           }, err => {
             Utils.hideSpinner();
@@ -74,10 +70,14 @@ export class SubmitRequestWrapperComponent implements OnInit {
     })
   }
 
-  refreshWrapperFunc(): void {
+  refreshWrapperFunc(event): void {
     Utils.showSpinner();
     this.refreshWrapper = false;
-    this.clearAll = true;
+    if (event === "clear")
+      this.clearAll = true;
+    else
+      this.clearAll = false;
+
     setTimeout(() => {
       this.submitReqService.setSubmitOnBehalf("", "");
       localStorage.removeItem('report_id');

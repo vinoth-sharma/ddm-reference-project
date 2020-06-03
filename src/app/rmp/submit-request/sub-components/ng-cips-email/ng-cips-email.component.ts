@@ -8,7 +8,6 @@ import { debounceTime, distinctUntilChanged, mergeMap } from 'rxjs/operators';
 import { DjangoService } from "../../../django.service";
 import { SubmitRequestService } from '../../submit-request.service';
 
-//Angular Component developed by Vinoth Sharma Veeramani
 @Component({
   selector: 'app-ng-cips-email',
   templateUrl: './ng-cips-email.component.html',

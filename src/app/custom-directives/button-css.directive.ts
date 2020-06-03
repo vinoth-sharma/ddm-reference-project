@@ -6,7 +6,6 @@ import { Directive, Output, Input, EventEmitter, HostBinding, HostListener, Elem
 export class ButtonCssDirective {
     private el: ElementRef;
     @Input() cssBtn: any;
-    // @Input() paramFlag;
     @Input() disabled;
 
     constructor(el: ElementRef) {

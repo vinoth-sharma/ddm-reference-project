@@ -1,19 +1,16 @@
 import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { SubmitRequestService } from '../../submit-request.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { Subscription } from 'rxjs';
 
-export interface Dl {
-  mail: string;
-}
+
 @Component({
   selector: 'app-report-frequency',
   templateUrl: './report-frequency.component.html',
   styleUrls: ['./report-frequency.component.css']
 })
 export class ReportFrequencyComponent implements OnInit {
-  @Input() lookupTableData: any = {}
+  @Input() lookupTableData: any = {};
   @Output() reportFreqEmitter = new EventEmitter();
   reportFreq: {}[] = [{ label: 'Yes', id: true }, { label: 'No', id: false }];
 
@@ -44,9 +41,7 @@ export class ReportFrequencyComponent implements OnInit {
 
 
   ngOnInit(): void {
-
     this.subjectSubscription = this.subReqService.requestStatusEmitter.subscribe((res: any) => {
-      // console.log(res);
       if (res.type === "srw") {
         this.refillMasterData();
         this.refillSelectedRequestData(res.data);
@@ -104,13 +99,6 @@ export class ReportFrequencyComponent implements OnInit {
     }
   }
 
-  visible = true;
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-
-
   refillMasterData() {
     this.l_masterLookUpTableData = JSON.parse(JSON.stringify(this.lookupTableData));
     this.resetMDdata();
@@ -135,13 +123,6 @@ export class ReportFrequencyComponent implements OnInit {
     else
       this.selected.monthly_others = false;
   }
-
-  // public validateNdSubmit() {
-  //   if (!this.selected.dl_list.length)
-  //     this.toaster.error("Please add at least one email in Distribution List");
-  //   else
-  //     this.submitFrequencyData();
-  // }
 
   public submitFrequencyData() {
 
@@ -177,17 +158,6 @@ export class ReportFrequencyComponent implements OnInit {
         })
       })
     }
-
-    // if (this.selected.reportFreq_regBasis) {
-    //   if (!req_body.report_freq.length) {
-    //     this.toaster.error("Please select atleast one frequency")
-    //   }
-    //   else if (req_body.report_freq.every(freq => freq['description']?freq['description'].length:false))
-    //     this.reportFreqEmitter.emit(req_body)
-    //   else
-    //     this.toaster.error("Please specify the value if selected others")
-    // }
-    // else
 
     this.reportFreqEmitter.emit(req_body);
   }

@@ -1,6 +1,3 @@
-<!-- Button trigger modal -->
-
-<!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true" style="overflow: hidden;" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" role="document">
@@ -46,27 +43,27 @@
 </div>
 <div class="main-tool-body-header">
   <div class="heading">
-    <div class="buffer"></div>
-    <div class="caption-style">
-      <b>Reference Documents</b>
+    <div class="col-xs-10 pl-0">
+      <div class="col-xs-3 p-0">
+        <h3><b>Reference Documents</b></h3>
+      </div>
+      <div class="col-xs-6 pl-0">
+        <i>(Launch any of the documents below to assist with interpreting data included in DDM queries.Selecting a
+          document will download it to your local directory)</i>
+      </div>
     </div>
-    <div class="buffer">
-      <i>Launch any of the documents below to assist with interpreting data included in DDM queries.
-        <br> Selecting a document will download it to your local directory.</i>
-    </div>
-  </div>
-
-  <div class="icons">
-    <div *ngIf="user_role =='Admin'" class="press">
-      <a data-toggle="tooltip" title="EDIT" style="cursor: pointer;" (click)="editTrue()">
-        <i id="ic" style="margin-top:-6px" class="material-icons">mode_edit</i>
-      </a>
-    </div>
-    <div class="press" style="margin-top:42%;">
-      <button data-target="#helpModal" data-toggle="modal" data-backdrop="static" style="padding-right:0px;">
-        <a data-toggle="tooltip" title="HELP" style="cursor: pointer;"><i id="ic"
-            class="material-icons">help_outline</i></a>
-      </button>
+    <div class="icons">
+      <div *ngIf="user_role =='Admin'" class="press">
+        <a data-toggle="tooltip" title="EDIT" style="cursor: pointer;" (click)="editTrue()">
+          <i id="ic" style="margin-top:-15px" class="material-icons">mode_edit</i>
+        </a>
+      </div>
+      <div class="press">
+        <button data-target="#helpModal" data-toggle="modal" data-backdrop="static" style="padding-right:0px;">
+          <a data-toggle="tooltip" title="HELP" style="cursor: pointer;"><i id="ic"
+              class="material-icons">help_outline</i></a>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -110,13 +107,13 @@
       </div>
     </div>
   </div>
-  <div class="container-fluid" *ngIf="editMode" >
+  <div class="container-fluid" *ngIf="editMode">
     <button type="button" [cssBtn]="'mid'" mat-raised-button data-toggle="modal" data-target="#exampleModal"
-        data-backdrop="static" (click)="NewDoc()">
-        <span class="icon-cont"> <i style="font-size: 24px;" class="material-icons">add_circle_outline</i></span>
-        &nbsp;
-        <span> Add a Reference Material</span>
-      </button>
+      data-backdrop="static" (click)="NewDoc()">
+      <span class="icon-cont"> <i style="font-size: 24px;" class="material-icons">add_circle_outline</i></span>
+      &nbsp;
+      <span> Add a Reference Material</span>
+    </button>
   </div>
 </div>
 
@@ -134,7 +131,8 @@
           <div class="col-9">
             <button [cssBtn]="'ok'" mat-raised-button class="save-text-ddm" (click)="content_edits()" *ngIf="editModes"
               style="margin-right:3%">Save</button>
-            <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="edit_True()"
+              *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3" style="padding-left:12%;">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="editEnable()">
@@ -150,7 +148,7 @@
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" [cssBtn]="'cancel'" mat-raised-button (click)="edit_True()"
+        <button type="button" id="modal_close_button" [cssBtn]="'mid'" mat-raised-button (click)="edit_True()"
           data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -168,7 +166,8 @@
       <div class="modal-body" id="errorModalMessage">
       </div>
       <div class="modal-footer">
-        <button type="button" id="modal_close_button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal">Close</button>
+        <button type="button" id="modal_close_button" [cssBtn]="'cancel'" mat-raised-button
+          data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

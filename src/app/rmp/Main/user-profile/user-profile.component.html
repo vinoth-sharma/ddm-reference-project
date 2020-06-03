@@ -95,7 +95,7 @@
   <div class="row">
     <div class="col-xs-3 pl-0">
       <app-mat-multiselect [data]="dropdownList" [settings]="market_settings" [(inputModel)]="selected.market_data"
-        (selectionDone)="onMarketItemSelect($event,'market')">
+        (selectionDone)="onMarketItemSelect()">
       </app-mat-multiselect>
     </div>
     <div class="col-xs-3 pl-0">
@@ -105,12 +105,12 @@
     </div>
     <div class="col-xs-3 pl-0">
       <app-mat-multiselect [data]="regiondropdownListfinal" [settings]="region_settings"
-        [(inputModel)]="selected.country_region_data" (selectionDone)="onRegionItemSelect($event,'region')">
+        [(inputModel)]="selected.country_region_data" (selectionDone)="onRegionItemSelect()">
       </app-mat-multiselect>
     </div>
     <div class="col-xs-3 pl-0">
       <app-mat-multiselect [data]="zonedropdownListfinal" [settings]="zone_settings"
-        [(inputModel)]="selected.region_zone_data" (selectionDone)="onZoneItemSelect($event,'zone')">
+        [(inputModel)]="selected.region_zone_data" (selectionDone)="onZoneItemSelect()">
       </app-mat-multiselect>
     </div>
     <div class="col-xs-3 pl-0">

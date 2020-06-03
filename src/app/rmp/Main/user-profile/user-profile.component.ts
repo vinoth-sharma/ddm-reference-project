@@ -769,7 +769,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   }
 
   // called when an item is selected/deselected in market-data
-  public onMarketItemSelect(item: any) {
+  public onMarketItemSelect() {
     this.changed_settings = true
     // marketselections
     this.marketindex = [];
@@ -959,7 +959,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   }
 
   //called when an item is selected/deselected in zone
-  public onZoneItemSelect(item: any) {
+  public onZoneItemSelect() {
     this.changed_settings = true
     this.zoneindex = []
     this.selected.region_zone_data.map(element => {

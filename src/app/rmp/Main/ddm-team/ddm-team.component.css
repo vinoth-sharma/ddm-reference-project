@@ -2,21 +2,20 @@
 
 .main-tool-body-header {
     height: 10%;
-    width: 95%;
-    margin-left: 2.5%;
-    margin-bottom: 1.5vh;
+    width: 92vw;
+    margin-left: 1.5vw;
 }
 
 .main-tool-body-content {
     height: 490px;
-    width: 95%;
-    margin-left: 2.5%;
+    width: 97%;
+    margin-left: 1.5vw;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .heading {
-    width: 60%;
+    width: 91.5vw;
     float: left;
     height: 100%;
 }
@@ -104,7 +103,7 @@ a:active {
 }
 
 ::ng-deep .info-quill .quill .ql-container .ql-editor {
-    max-height: 330px;
+    max-height: 53vh;
 }
 
 @media print {
@@ -118,11 +117,6 @@ a:active {
         border: 1px solid rgb(175, 175, 175);
         margin-left: 2.5%;
         overflow: hidden;
-    }
-    .heading {
-        width: 60%;
-        float: left;
-        height: 100%;
     }
     .caption-style {
         font-size: 150%;
@@ -181,10 +175,14 @@ a:active {
     }
 }
 
-.help-icon{
-    padding-top: 2vh;
-}
-
 .save-text-ddm {
     margin: 0 1vw 2vh 0;
+}
+
+h3 {
+    margin-top: 0vh;
+}
+
+.information {
+    margin-top: 1vh;
 }

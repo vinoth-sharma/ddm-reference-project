@@ -429,7 +429,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   }
 
   public url() {
-    let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
 
     if (link_url != "") {

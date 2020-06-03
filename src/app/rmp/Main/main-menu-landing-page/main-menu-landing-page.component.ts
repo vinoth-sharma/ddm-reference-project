@@ -7,8 +7,6 @@ import { Router } from "@angular/router";
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
-import { MatDialog } from '@angular/material/dialog';
-import { NotesWrapperComponent } from '../../admin-notes/notes-wrapper/notes-wrapper.component';
 declare var $: any;
 
 @Component({
@@ -96,7 +94,7 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private router: Router,
     private toastr: NgToasterComponent,
-    private dialog: MatDialog) {
+    ) {
 
     this.contentForm = this.fb.group({
       question: ['', Validators.required],

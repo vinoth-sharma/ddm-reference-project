@@ -301,7 +301,6 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
 
   public doc() {
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     this.url();
     if (upload_doc != null) {
       $("#document-url").attr('disabled', 'disabled');

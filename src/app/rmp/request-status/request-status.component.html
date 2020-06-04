@@ -255,7 +255,7 @@
                   style="width: 115px !important;">
                   {{element.status}}
                 </div>
-                <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
+                <div *ngIf="element.status == 'Recurring'" style="min-width: 135px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
                     <button [cssBtn]="'mid'" mat-raised-button class="table-buttons"

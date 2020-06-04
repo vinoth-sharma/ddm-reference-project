@@ -19,7 +19,7 @@ export class MainMenuComponent implements OnInit {
     this.authenticationService.myMethod$.subscribe(role => {
       if (role)
         this.user_role = role["role"];
-      else 
+      else
         return;
     })
   }
@@ -38,9 +38,9 @@ export class MainMenuComponent implements OnInit {
 
   selectedTab(tab: any) {
     let listOfTabs = document.getElementsByClassName('left-tabs')[0].children;
-    for(let i=0;i<listOfTabs.length; i++ ) {
-      if( listOfTabs[i]['text'].trim() == tab['target']['innerText'].trim()) {
-          listOfTabs[i]['style']['borderBottom'] = '2px solid #2a6496';
+    for (let i = 0; i < listOfTabs.length; i++) {
+      if (listOfTabs[i]['text'].trim() == tab['target']['innerText'].trim()) {
+        listOfTabs[i]['style']['borderBottom'] = '2px solid #2a6496';
       } else {
         listOfTabs[i]['style']['borderBottom'] = '';
       }

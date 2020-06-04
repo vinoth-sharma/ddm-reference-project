@@ -6,15 +6,15 @@
           <h3>Metrics</h3>
         </div>
         <div class="col">
-          <input (input)="filterData()" placeholder="Insert Keywords/Request Number here " class="form-control"
-            [(ngModel)]="filters.global">
+          <input (input)="filterData()" placeholder="Insert Keywords/Request Number here " class="form-control" [(ngModel)]="filters.global">
         </div>
         <div class="col">
           <div class="icons">
             <div class="press">
-              <button data-toggle="modal" data-backdrop="static" data-target="#helpModal"
-                style="background-color:white; border:none;padding-right:0px;">
-                <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
+              <button data-toggle="modal" data-backdrop="static" data-target="#helpModal" style="background-color:white; border:none;padding-right:0px;">
+                <a data-toggle="tooltip" title="HELP">
+                  <i id="ic" class="material-icons">help_outline</i>
+                </a>
               </button>
               <a (click)="xlsxJson()" style="cursor:pointer">
                 <i id="ic" class="material-icons">get_app</i>
@@ -35,8 +35,7 @@
                     <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Search" [(ngModel)]="filters.ddm_rmp_post_report_id"
-                      class="form-control">
+                    <input (input)="filterData()" placeholder="Search" [(ngModel)]="filters.ddm_rmp_post_report_id" class="form-control">
                   </div>
                 </th>
                 <th>
@@ -46,8 +45,7 @@
                     <div *ngIf="reports['report_count']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Search" [(ngModel)]="filters.report_count"
-                      class="form-control">
+                    <input (input)="filterData()" placeholder="Search" [(ngModel)]="filters.report_count" class="form-control">
                   </div>
                 </th>
                 <th>
@@ -57,8 +55,7 @@
                     <div *ngIf="reports['requestor']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Search" class="form-control"
-                      [(ngModel)]="filters.requestor">
+                    <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.requestor">
                   </div>
                 </th>
                 <th>
@@ -68,8 +65,7 @@
                     <div *ngIf="reports['recipients_count']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Search" class="form-control"
-                      [(ngModel)]="filters.recipients_count">
+                    <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.recipients_count">
                   </div>
                 </th>
                 <th>
@@ -79,8 +75,7 @@
                     <div *ngIf="reports['organization']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Search" class="form-control"
-                      [(ngModel)]="filters.organization">
+                    <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.organization">
                   </div>
                 </th>
                 <th>
@@ -90,8 +85,7 @@
                     <div *ngIf="reports['created_on']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Search" class="form-control"
-                      [(ngModel)]="filters.created_on">
+                    <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.created_on">
                   </div>
                 </th>
                 <th>
@@ -101,8 +95,7 @@
                     <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Search" [(ngModel)]="filters.ddm_rmp_status_date"
-                      class="form-control">
+                    <input (input)="filterData()" placeholder="Search" [(ngModel)]="filters.ddm_rmp_status_date" class="form-control">
                   </div>
                 </th>
                 <th>
@@ -112,14 +105,12 @@
                     <div *ngIf="reports['assigned_to']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Search" class="form-control"
-                      [(ngModel)]="filters.assigned_to">
+                    <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.assigned_to">
                   </div>
                 </th>
                 <th style="width: 12%;">
                   <div class="alignLeft">
-                    <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
-                      [settings]="StatusDropdownSettings" (onSelect)="sort('status');filterData()"
+                    <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter" [settings]="StatusDropdownSettings" (onSelect)="sort('status');filterData()"
                       (onDeSelect)="filterData()" style="width: 100%;">
                     </angular4-multiselect>
                   </div>
@@ -146,15 +137,13 @@
                     <div *ngIf="reports['description']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Search" class="form-control"
-                      [(ngModel)]="filters.description">
+                    <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.description">
                   </div>
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                *ngFor="let element of reports  | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ; let i = index ">
+              <tr *ngFor="let element of reports  | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ; let i = index ">
                 <td scope="col">
                   {{element.ddm_rmp_post_report_id}}
                 </td>
@@ -198,8 +187,7 @@
         </div>
         <div style="width: 100%;">
           <div style="margin-top: 10px;float: right;">
-            <mat-paginator [length]="reports.length" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
-              (page)="onPaginationChange($event)">
+            <mat-paginator [length]="reports.length" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions" (page)="onPaginationChange($event)">
             </mat-paginator>
           </div>
         </div>
@@ -207,8 +195,8 @@
     </div>
 
     <!--------------------HELP------------------------------------ -->
-    <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header" style="justify-content: flex-start;">
@@ -217,14 +205,13 @@
           <div class="modal-bodydisplay-notes-scroll-modal">
             <div class="row" style="display: flex;padding: 10px;">
               <div style="margin-left: 20px;width: 86%;">
-                  <span *ngIf="editModes">
-                      <button mat-raised-button color="primary" (click)="content_edits()" style="margin-right: 10px;">Save</button>
-                      <button mat-raised-button color="warn" (click)="resetHelp()">Clear</button>
-                    </span>
+                <span *ngIf="editModes">
+                  <button mat-raised-button color="primary" (click)="content_edits()" style="margin-right: 10px;">Save</button>
+                  <button mat-raised-button color="warn" (click)="resetHelp()">Clear</button>
+                </span>
               </div>
               <div>
-                <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)='editEnable()'
-                  style="background-color:white;border: none;">
+                <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)='editEnable()' style="background-color:white;border: none;">
                   <a data-toggle="tooltip" title="EDIT">
                     <i id="ic" class="material-icons">mode_edit</i>
                   </a>
@@ -232,14 +219,12 @@
               </div>
             </div>
             <div class="quillEditor">
-              <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'
-                (onContentChanged)='textChanged($event)'></quill-editor>
+              <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper' (onContentChanged)='textChanged($event)'></quill-editor>
             </div>
           </div>
           <div class="modal-footer modal-footer-pad">
-            <button mat-button (click)="resetHelp()" 
-                style="background-color: #6c757d;color: white" data-dismiss="modal">
-                Close
+            <button mat-button (click)="resetHelp()" style="background-color: #6c757d;color: white" data-dismiss="modal">
+              Close
             </button>
           </div>
         </div>

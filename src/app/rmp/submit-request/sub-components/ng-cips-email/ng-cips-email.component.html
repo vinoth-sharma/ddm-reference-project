@@ -1,4 +1,4 @@
-<mat-form-field class="example-chip-list">
+<mat-form-field class="example-chip-list" id="emailChips">
     <mat-chip-list #chipList aria-label="Email selection">
       <mat-chip
         *ngFor="let chip of selectedChips"
@@ -9,8 +9,9 @@
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
       <input
+        (paste)="onPaste($event)"
         placeholder="New Email..."
-        #fruitInput
+        #mailInput
         [formControl]="chipCtrl"
         [matAutocomplete]="auto"
         [matChipInputFor]="chipList"

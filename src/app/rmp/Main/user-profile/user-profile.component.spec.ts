@@ -346,7 +346,7 @@ describe('UserProfileComponent', () => {
     component.UserMarketSelections();
     expect(component.changed_settings).toBeFalsy();
     expect(component.market_selection).toEqual(component.marketselections);
-    expect(component.selectedItems).toEqual(component.market_selection['market_data']);
+    expect(component.marketselectedItems).toEqual(component.market_selection['market_data']);
     expect(component.divisionselectedItems).toEqual(component.market_selection['division_data']);
     expect(component.zoneselectedItems).toEqual(component.market_selection['region_zone_data']);
     expect(component.areaselectedItems).toEqual(component.market_selection['zone_area_data']);
@@ -381,7 +381,7 @@ describe('UserProfileComponent', () => {
 
 
   it("Should set marketindex and call market dependencies", () => {
-    component.selectedItems = [{ ddm_rmp_lookup_market_id: 1 }, { ddm_rmp_lookup_market_id: 2 }, { ddm_rmp_lookup_market_id: 3 }]
+    component.marketselectedItems = [{ ddm_rmp_lookup_market_id: 1 }, { ddm_rmp_lookup_market_id: 2 }, { ddm_rmp_lookup_market_id: 3 }]
     let marketDepSpy = spyOn(component, "MarketDependencies")
     component.onItemSelect({});
     expect(component.changed_settings).toBeTruthy()
@@ -614,7 +614,7 @@ describe('UserProfileComponent', () => {
     let djangoService = TestBed.get(DjangoService)
     let userMarketSpy = spyOn(djangoService, "ddm_rmp_user_market_selections_post_data").and.returnValue(of({}))
     let reportIdSpy = spyOn(djangoService, "user_info_save_setting");
-    component.selectedItems = [1, 2];
+    component.marketselectedItems = [1, 2];
     component.divisionselectedItems = [1, 2]
     let dat = {
       market_selection: ["market_selection"],
@@ -628,7 +628,7 @@ describe('UserProfileComponent', () => {
       fan_selection: ["fan_selection"],
       saved_setting: component.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS'),
     }
-    component.selectedItems = dat.market_selection;
+    component.marketselectedItems = dat.market_selection;
     component.divisionselectedItems = dat.division_selection;
     component.regionselectedItems = dat.country_region_selection;
     component.zoneselectedItems = dat.region_zone_selection;

@@ -12,6 +12,7 @@
 }
 .rcHeadWrapper{
     height: 10vh;
+    margin-bottom: 15px;
 }
 .clearBtn{
     background: none;
@@ -25,7 +26,7 @@
     margin-bottom: 1.5vh;
 }
 .rcCallout{
-    font-size: 0.8em;
+    font-size: 1em;
 }
 .bacDealers{
     margin-bottom: 0.8em;

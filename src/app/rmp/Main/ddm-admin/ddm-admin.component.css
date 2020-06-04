@@ -1,25 +1,24 @@
 /*-----------------Main css------------*/
 
 .main-tool-body-header {
-    height: 15%;
-    width: 95%;
-    margin-left: 2.5%;
-    padding-top: 18px;
+    margin-left: 1.5vw;
 }
 
 .main-tool-body-content {
-    height: 62.5vh;
-    width: 95%;
+    height: 58.5vh;
+    width: 91vw;
     border: 1px solid rgb(175, 175, 175);
-    margin-left: 2.5%;
-    overflow-y: auto;
+    margin-left: 1.5vw;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 
 .heading {
-    width: 70%;
+    width: 91.5vw;
     float: left;
     height: 100%;
+    padding-bottom: 1vh;
+    padding-top: 1vh;
 }
 
 .caption-style {
@@ -32,10 +31,9 @@
 }
 
 .icons {
-    widows: 30%;
     height: 100%;
     float: right;
-    align-content: center;
+    text-align: right;
 }
 
 .buffer {
@@ -67,10 +65,9 @@ b {
 }
 
 .information{
-    padding: 1%;
-    padding-left: 2%;
-    padding-right: 5%;
-    height: 500px;
+    padding: 2%;
+    max-height: 57vh;
+    overflow-y:auto;
 }
 
 .main-style {
@@ -100,7 +97,11 @@ a:active {
 
 .container-fluid {
     margin: auto;
-    text-align: center
+    text-align: left;
+    padding:0 0 0 2%;
+    display: flex;
+    align-items: center;
+    height: 15%;
 }
 
 .ref-styling {
@@ -133,4 +134,14 @@ a:active {
 .press button {
     background: transparent;
     border: none;
+}
+.icon-cont{
+    display: inline-block;
+    height: 100%;
+    position: relative;
+    width: 17px;
+}
+
+h3 {
+    margin-top : 0vh;
 }

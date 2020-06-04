@@ -1,11 +1,11 @@
 .modal-container{
     width: 70vw;
-    height: 70vh;
+    /* height: 70vh; */
     overflow: hidden;
 }
 .modal-body{
-    height: 74%;
-    overflow: hidden;
+    max-height: 60vh;
+    overflow: auto;
     padding: 0px;
 }
 button{

@@ -43,6 +43,19 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   public original_content;
   public namings: string = "Loading";
   public filesList;
+  public quillToolBarDisplay = [
+    ['bold', 'italic', 'underline', 'strike'],
+    ['blockquote'],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'script': 'sub' }, { 'script': 'super' }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+    ['clean'],
+    ['image']
+  ];
 
   public parentsSubject: Rx.Subject<any> = new Rx.Subject();
   public description_text = {
@@ -56,19 +69,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   };
 
   public config = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-      [{ 'size': ['small', false, 'large', 'huge'] }],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean'],
-      ['image']
-    ]
+    toolbar: null
   };
 
   public toolbarTooltips = {
@@ -224,8 +225,9 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   public getUserInfo() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
-
         this.user_role = role["role"]
+        if(this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
+        else this.config.toolbar = false;
       }
     })
   }
@@ -427,7 +429,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   }
 
   public url() {
-    let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
 
     if (link_url != "") {

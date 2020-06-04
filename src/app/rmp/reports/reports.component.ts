@@ -136,24 +136,25 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     frequency: '',
     frequency_data_filtered: '',
   };
+  public quillToolBarDisplay = [
+    ['bold', 'italic', 'underline', 'strike'],
+    ['blockquote'],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'script': 'sub' }, { 'script': 'super' }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+    ['clean'],
+    ['image']
+  ];
   private reportsOriginal = [];
   public frequencyLength: any;
   public changeInFreq: boolean;
   public readOnlyContentHelper = true;
   public config = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-      [{ 'size': ['small', false, 'large', 'huge'] }],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean'],
-      ['image']
-    ]
+    toolbar: null
   };
   // paginator params
   public paginatorpageSize = 10;
@@ -317,6 +318,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role['role'];
+        if(this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
+        else this.config.toolbar = false;
       }
     });
   }

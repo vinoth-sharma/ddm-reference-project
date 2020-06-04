@@ -1,7 +1,7 @@
 .header-container{
     height: 8vh;
     display: flex;
-    background: #283f52;
+    background-image: linear-gradient( rgb(38, 61, 79),rgb(63, 100, 131));
     position: relative;
     z-index: 1;
     box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),
@@ -18,12 +18,10 @@
 }
 .header-title{
     color: white;
-    /* font-size: 1.4em; */
     font-weight: 800;
     margin-left: 20px;
 }
 .header-cont-part{
-    /* width: 50%; */
     display: flex;
     align-items: center;
 }
@@ -31,7 +29,6 @@
     margin-left: 35px;
     color: white;
     width: max-content;
-    /* font-size: 15px; */
 }
 .notification-icon{
     font-size: 30px;
@@ -53,16 +50,15 @@
     align-items: center;
 }
 .menu-container a{
-    color: white;
+    color: rgba(255, 255, 255, 0.815);
 }
 .menu-container a button{
     font-weight: 500;
 }
 .menu-container a button:hover{
-    /* font-weight: 800; */
-    transform: scale(1.2);
+    border:1px solid rgba(255, 255, 255, 0.384);
 }
 .menu-container a button.active{
-    transform: scale(1.2);
     font-weight: 800;
+    color: #fff;
 }

@@ -1,32 +1,28 @@
 <div class="main-tool-body-header">
-  <div class="heading" style="display: flex;">
-    <div class="caption-style" style="width: 60%;">
-      <b>What is DDM ?</b>
+  <div class="heading">
+    <div class="col-xs-9 pl-0">
+      <h3><b>What is DDM?</b></h3>
     </div>
-    <div class="buffer" *ngIf="editMode">
-      <button class="btn btn-success save-text-ddm" (click)="content_edit()">Save</button>
-      <button class="btn btn-danger save-text-ddm" (click)="editTrue()">Cancel</button>
-    </div>
-  </div>
-
-  <div class="icons">
-
-    <div *ngIf="user_role == 'Admin'" class="press" style="padding-top: 12px;">
-      <a data-toggle="tooltip" title="EDIT" (click)="editTrue()">
-        <i id="ic" class="material-icons">mode_edit</i>
-      </a>
-    </div>
-    <div class="press" style="margin-top:20%;">
-      <button data-toggle="modal" data-target="#helpModal" data-backdrop="static" style="padding-right:0px;">
-        <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
-      </button>
+    <div class="icons">
+      <div *ngIf="user_role == 'Admin'" class="press">
+        <a data-toggle="tooltip" title="EDIT" (click)="editTrue()">
+          <i id="ic" class="material-icons">mode_edit</i>
+        </a>
+      </div>
+      <div class="press">
+        <button data-toggle="modal" data-target="#helpModal" data-backdrop="static" style="padding-right:0px;">
+          <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
+        </button>
+      </div>
     </div>
   </div>
 </div>
 <div id="ddm-intro-pdf" class="main-tool-body-content">
   <div class="information" id="JJ">
-    <button class="btn btn-success save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>
-    <button class="btn btn-danger save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button>
+    <button [cssBtn]="'ok'" class="save-text-ddm" mat-raised-button (click)="content_edit()"
+      *ngIf="editMode">Save</button>
+    <button [cssBtn]="'cancel'" class="save-text-ddm" mat-raised-button (click)="editTrue()"
+      *ngIf="editMode">Cancel</button>
     <quill-editor class="quill" [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContent'
       (onContentChanged)='textChanged($event)'>
     </quill-editor>
@@ -37,15 +33,15 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
-        <img class="logo" src="/assets/OFT_Logo.jpg">
-        <h5 class="modal-title help-title">Help</h5>
+        <h4 class="modal-title help-title">Help</h4>
       </div>
       <div class="modal-body display-notes-scroll-modal">
         <div class="row">
           <div class="col-9">
-            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+            <button [cssBtn]="'ok'" mat-raised-button class="save-text-ddm" (click)="content_edits()" *ngIf="editModes"
               style="margin-right:3%">Save</button>
-            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            <button [cssBtn]="'cancel'" mat-raised-button class="save-text-ddm" (click)="edit_True()"
+              *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3" style="padding-left:12%;">
             <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="editEnable()">
@@ -61,7 +57,7 @@
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_True()"
+        <button [cssBtn]="'mid'" mat-raised-button id="modal_close_button" class="btn" (click)="edit_True()"
           data-dismiss="modal">Close</button>
       </div>
     </div>

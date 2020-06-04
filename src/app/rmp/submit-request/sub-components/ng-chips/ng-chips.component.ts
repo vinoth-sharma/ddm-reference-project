@@ -17,9 +17,7 @@ export interface Fruit {
 export class NgChipsComponent {
 
 @Input() custom_placeholder:String = "";
-@Output() chipSelectedEmittor = new EventEmitter();
 @Input() type:String = "";
-
 @Input() inputModel: Array<String> = [];
 @Output() inputModelChange = new EventEmitter();
   public chipsEntered = [];
@@ -33,7 +31,6 @@ export class NgChipsComponent {
   isTextValid:boolean = true;
 
   ngOnChanges(changes: SimpleChanges){
-    // console.log(changes);
     this.chipsEntered = this.inputModel;
   }
 
@@ -49,7 +46,7 @@ export class NgChipsComponent {
     if (input) {
       input.value = '';
     }
-    // this.inputModelChange.emit(this.chipsEntered);
+    this.inputModelChange.emit(this.chipsEntered);
   }
 
   remove(fruit: Fruit): void {
@@ -58,7 +55,7 @@ export class NgChipsComponent {
     if (index >= 0) {
       this.chipsEntered.splice(index, 1);
     }
-    // this.inputModelChange.emit(this.chipsEntered);
+    this.inputModelChange.emit(this.chipsEntered);
   }
 
   textEntered(event){

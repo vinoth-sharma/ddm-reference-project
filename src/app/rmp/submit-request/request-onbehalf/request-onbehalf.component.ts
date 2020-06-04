@@ -40,7 +40,6 @@ export class RequestOnbehalfComp implements OnInit {
         map(name => name ? this._filter(name) : this.dl_list.slice())
       );
 
-    // let lookTableData = this.subReqService.getLookUpTableData();
     this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
       let l_dl_list = tableDate['data']['users_list'];
       this.dl_list = l_dl_list.map(ele => {
@@ -85,7 +84,6 @@ export class RequestOnbehalfComp implements OnInit {
 
   private _filter(name: string) {
     const filterValue = name.toLowerCase();
-
     return this.dl_list.filter((option: any) => option.nameLabel.toLowerCase().indexOf(filterValue) === 0);
   }
 

@@ -4,7 +4,7 @@ h3 {
 
 .tableMetrics { 
     overflow-y: auto; 
-    height: 435px; 
+    height: 58vh; 
     overflow-x: auto;
 }
 
@@ -90,9 +90,10 @@ h3 {
 }
 
 .icons {
-    margin-top: 7%;
-    margin-bottom: 5%;
-    text-align: right
+   height:100%;
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
 }
 
 .alignLeft {
@@ -115,3 +116,8 @@ angular4-multiselect > .c-btn {
     position: relative;
     padding: 3px;
 }
+.center-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

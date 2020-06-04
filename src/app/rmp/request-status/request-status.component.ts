@@ -128,6 +128,19 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     "module_name": "Help_RequestStatus",
     "description": ""
   };
+  public quillToolBarDisplay = [
+    ['bold', 'italic', 'underline', 'strike'],
+    ['blockquote'],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'script': 'sub' }, { 'script': 'super' }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+    ['clean'],
+    ['image']
+  ];
   public user_name: string;
   public notification_list: any[];
   public bac_description: any;
@@ -151,19 +164,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   };
   public searchObj: any;
   public config = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote'],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-      [{ 'size': ['small', false, 'large', 'huge'] }],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean'],
-      ['image']
-    ]
+    toolbar: null
   };
   public errorModalMessageRequest = '';
   public documentName: any = '';
@@ -282,6 +283,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         this.user_name = role["first_name"] + " " + role["last_name"];
         this.user_role = role["role"];
         this.self_email = role["email"];
+        if(this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
+        else this.config.toolbar = false;
       }
     });
   }

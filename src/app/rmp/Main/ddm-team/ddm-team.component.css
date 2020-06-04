@@ -4,6 +4,7 @@
     height: 10%;
     width: 95%;
     margin-left: 2.5%;
+    margin-bottom: 1.5vh;
 }
 
 .main-tool-body-content {
@@ -12,7 +13,6 @@
     margin-left: 2.5%;
     overflow-y: auto;
     overflow-x: hidden;
-    padding-top: 1%;
 }
 
 .heading {
@@ -31,7 +31,6 @@
     height: 100%;
     float: right;
     align-content: center;
-    padding-top: 2%;
 }
 
 .buffer {
@@ -174,13 +173,18 @@ a:active {
     a:active {
         color: rgb(2, 136, 173);
     }
-    .save-text-ddm {
-        margin: 1% 0% 1% 2%;
-    }
 }
 
 @media print {
     .noprint {
         display: none
     }
+}
+
+.help-icon{
+    padding-top: 2vh;
+}
+
+.save-text-ddm {
+    margin: 0 1vw 2vh 0;
 }

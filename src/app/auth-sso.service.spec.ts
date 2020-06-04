@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AuthenticationService } from './authentication.service';
 import { environment } from '../environments/environment';
 import { of } from 'rxjs';
-import { ConstantService } from './constant.service';
 import { CustomPipeModules } from "./custom-directives/custom.pipes.module";
 
 describe('AuthSsoService', () => {
@@ -70,22 +69,6 @@ describe('AuthSsoService', () => {
     service.authLoad();
     tick(1500);
     expect(service.authLoad).toHaveBeenCalled();
-    const req = httpMock.expectOne(`${environment.baseUrl}reports/aggregation_functions`);
-    expect(req.request.method).toBe("GET");
-    req.flush(result);
   }));
 
-  it('should execute getAllFunctions method', fakeAsync(() => {
-    const constantService: ConstantService = TestBed.get(ConstantService);
-    const result = {
-      data: 'checking'
-    };
-    let mySpy = spyOn(constantService, 'getAggregationFunctions').and.returnValues(of(result));
-    spyOn(service, 'getAllFunctions').and.callThrough();
-    service.getAllFunctions();
-    tick(1500);
-    expect(service.getAllFunctions).toHaveBeenCalled();
-    expect(mySpy).toBeDefined();
-    expect(mySpy).toHaveBeenCalledTimes(1);
-  }));
 });

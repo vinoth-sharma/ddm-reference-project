@@ -4,7 +4,6 @@ import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './authentication.service';
-import { ConstantService } from './constant.service';
 import { CustomCookieService } from './custom-directives/ng-custom-cookies-service/custom.cookies.service'
 
 
@@ -18,7 +17,6 @@ export class AuthSsoService {
 
   constructor(private http: HttpClient,
     private authenticationService: AuthenticationService,
-    private constantService: ConstantService,
     private injector: Injector) { }
 
   public get router() {
@@ -36,9 +34,7 @@ export class AuthSsoService {
         this.authenticationService.SetUserDetails();
         this.authenticationService.myMethod(res['usersdetails'], res['usersdetails']['user_id'], res['schema']);
         this.authenticationService.errorMethod(res['usersdetails']['user_id']);
-        this.getAllFunctions();
       }, err => {
-        // console.log(err,'err in login');
       });
   }
 
@@ -70,14 +66,4 @@ export class AuthSsoService {
     this.cookies.delete('session_key');
   }
 
-  public getAllFunctions() {
-    this.constantService.getAggregationFunctions().subscribe(
-      res => {
-        this.constantService.setFunctions(res['data'], 'aggregation');
-      },
-      err => {
-        this.constantService.setFunctions([], 'aggregation');
-      }
-    )
-  }
 }

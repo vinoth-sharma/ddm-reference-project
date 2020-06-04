@@ -24,19 +24,20 @@ export class MainMenuComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
     this.router.navigate(['user', 'main', 'home']);
   }
-  role() {
+  public role() {
     this.isButton = false;
     this.authenticationService.button(this.isButton);
     this.router.navigate(['semantic'])
   }
 
-  selectedTab(tab: any) {
+  // highlighting selected tab button border bottom color of button
+  public selectedTab(tab: any) {
     let listOfTabs = document.getElementsByClassName('left-tabs')[0].children;
     for (let i = 0; i < listOfTabs.length; i++) {
       if (listOfTabs[i]['text'].trim() == tab['target']['innerText'].trim()) {

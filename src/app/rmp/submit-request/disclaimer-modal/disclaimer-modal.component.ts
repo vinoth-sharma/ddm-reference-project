@@ -102,8 +102,10 @@ export class DisclaimerModalComponent implements OnInit {
   submitReqDisclaimerDesc() {
     Utils.showSpinner();
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDisclaimerObj).subscribe((response: any) => {
-      Utils.hideSpinner()
+      this.showEditOption = true;
+      Utils.hideSpinner();
       this.toaster.success(response.message);
+      this.closeDailog();
     }, err => {
       Utils.hideSpinner()
       this.toaster.error("Server Error");

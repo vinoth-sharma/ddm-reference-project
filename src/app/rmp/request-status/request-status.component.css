@@ -13,16 +13,13 @@
   margin-right: 0;
 }
 
-h3 {
-  font-size: 150%;
-  font-weight: bold;
-}
-
 .main-tool-body {
-  width: 80%;
+  width: 97vw;
   background: white;
-  margin-top: 5vh;
-  box-shadow: 3px 3px 8px 2px #c3c3c3;
+  height: 80.5vh;
+  margin-left: 1.5vw;
+  margin-top: 3vh;
+  padding: 3vh 1.5vw 3vh 1.5vw;
 }
 
 .left-tabs {
@@ -47,26 +44,20 @@ h3 {
 }
 
 .tabs {
-  margin-top: 11vh;
-  width: 14.95vw;
-  height: 100%;
-}
-
-.tabs button {
-  display: block;
-  border: 0.5px solid rgb(104, 103, 103);
-  background-color: rgb(221, 221, 221);
-  background-image: linear-gradient(rgb(237, 237, 237), rgb(254, 254, 252));
+  padding: 0.25vh;
+  width: 16vw;
+  border: gray solid;
+  background-color: lightgray;
   color: black;
-  width: 94.7%;
   outline: none;
   text-align: center;
   font-size: 95%;
   cursor: pointer;
+  -webkit-transition: 0.3s;
   transition: 0.3s;
   white-space: normal;
   text-overflow: ellipsis;
-  height: 15%;
+  height: 5vh;
   border-radius: 0;
   overflow: hidden;
   padding: 0px;
@@ -91,9 +82,11 @@ h3 {
 }
 
 .tableFixHead {
-  overflow-y: auto;
-  height: 75%;
-  overflow-x: auto;
+  height: 55vh;
+  overflow: auto;
+  border: lightgray solid;
+  margin-left: 1.5vw;
+  margin-right: 1vw;
 }
 
 .tableFixHead thead th {
@@ -159,11 +152,6 @@ tr {
   width: 100%;
 }
 
-b {
-  height: 100%;
-  font-size: 135%;
-}
-
 .material-icons {
   width: fit-content;
   float: right;
@@ -175,7 +163,7 @@ b {
 }
 
 .press {
-  height: 100%;
+  height: 6vh;
   width: fit-content;
   font-size: 2em;
   float: left;
@@ -250,11 +238,6 @@ b {
 
 .cancel-btn {
   width: 17%;
-}
-
-h3 {
-  margin-left: 5%;
-  margin-top: 8px;
 }
 
 .row {
@@ -594,7 +577,23 @@ table,td{
   align-items: center;
 } 
 
+.title-position {
+  margin-left: 1.5vw;
+}
 
+.title-top-position {
+  margin-top: 1vh;
+}
 
+.search-position {
+  margin-top: 1vh;
+}
 
+.request-tabs-options {
+  margin-left : 1.5vw;
+  padding-left : 5.75vw;
+}
 
+.comment-icon {
+  padding-left: 0vh;
+ }

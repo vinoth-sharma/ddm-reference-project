@@ -1,16 +1,39 @@
 .disclaimer-wrapper{
-    width: calc(100% - 70px);
-    height: calc(100% - 70px);
-    margin: 35px;
-    box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.61), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+    background: white;
+    height: 80.5vh;
+    margin: 3vh;
+    box-shadow: 3px 3px 8px 2px #c3c3c3;
+    padding: 3vh 1.5vw 3vh 1.5vw;
 }
 
 .disclaimer-header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 1.6em;
-    font-weight: 800;
+    width: 94vw;
+    float: left;
+    padding-top: 1vh;
+    padding-left: 1.5vw;
+    padding-bottom: 3vh;
+}
+
+.disclaimer-body {
+    height: 59vh;
+    overflow: auto;
+    padding-left: 1.5vw;
+    padding-right: 1vw;
+}
+.icons {
+    height: 100%;
+    float: right;
+    align-content: center;
+}
+
+.press {
+    height: 100%;
+    width: fit-content;
+    padding-right: 1vw;
+    float: left;
+    cursor: pointer;
+    background: transparent;
+    border: none;
 }
 
 .custom-link{
@@ -21,8 +44,9 @@
 }
 
 ::ng-deep quill-editor .ql-container.ql-snow{
-    height: 160px;
+    min-height: 40vh;
 }
+
 .disclaimer_section{
     width: 50%;
     display: flex;
@@ -30,4 +54,21 @@
     justify-content: center;
     flex-direction: column;
     height: 230px !important;
+}
+
+h3 {
+    margin-top: 0vh;
+}
+
+.help-icon {
+    padding-right: 1vw;
+}
+
+.ds-flex-centre {
+    padding-top: 2vh;
+    justify-content: flex-end;
+}
+
+.disclaimer-footer {
+    margin-left : 41vw;
 }

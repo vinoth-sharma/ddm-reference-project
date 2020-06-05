@@ -1,46 +1,17 @@
 <div *ngIf="reports" class="flex-container row tool-body">
-  <!--                            Left Tabs                                 -->
-  <div *ngIf="reports" class="left-tabs">
-    <div class="tabs">
-      <a>
-        <button class="btn btn-primary" (click)="NewReportOnSelectedCriteria()">New Request Using Selected Criteria /
-          Modify Request</button>
-      </a>
-      <a>
-        <button class="btn btn-primary" onmouseover="" style="cursor: pointer;" (click)="populateDl()"
-          data-keyboard="false">Edit Distribution List</button>
-      </a>
-      <a>
-        <button class="btn btn-primary" data-toggle="modal" data-backdrop="static"
-          (click)="CheckCancel()">Cancel/Reassign</button>
-      </a>
-      <a>
-        <button class="btn btn-primary" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;">Enter
-          Comment
-        </button>
-      </a>
-      <button id="enter_comment_button" data-toggle="modal" data-backdrop="static" data-target="#ModalComment"
-        style="display:none"></button>
-      <a *ngIf="user_role=='Admin'">
-        <button class="btn btn-primary" (click)="Accept()">Accept Assignment</button>
-      </a>
-      <button id="post_link_button" data-toggle="modal" data-backdrop="static" data-target="#postLink"
-        style="display:none"></button>
-    </div>
-  </div>
   <!--                            Main Body Content                         -->
-  <div *ngIf="reports" class="main-tool-body" style="height:100%">
-    <div class="row " style="margin: 0%;height:100%;">
-      <div class="row top-bar">
-        <div class="col-2 sub-title">
-          <h3>Request Status</h3>
+  <div *ngIf="reports" class="main-tool-body">
+    <div>
+      <div class="row" style="height: 8vh;">
+        <div class="col-xs-3 title-top-position">
+          <h3 class="mt-0 title-position"><b>Request Status</b></h3>
         </div>
-        <div class="col-5">
-          <input placeholder="Search by Request Number/Requestor/Title/Status" class="form-control"
+        <div class="col-xs-5 search-position">
+          <input placeholder="Search by Request Number/Requestor/Title/Status" class="mt-0 form-control"
             style="margin-left:5vw" [(ngModel)]="filters.global" name="global" (input)="filterData()"
             [ngModelOptions]="{standalone: true}">
         </div>
-        <div class="col-5" style="padding-right:0%;">
+        <div class="col-xs-4" style="padding-right:0%;">
           <div class="icons">
             <div class="press">
               <button *ngIf="user_role=='Admin'" [cssBtn]="'mid'" mat-raised-button data-toggle="modal"
@@ -62,6 +33,31 @@
         </div>
       </div>
 
+      <div class="request-tabs-options">
+        <a>
+          <button class="btn tabs" (click)="NewReportOnSelectedCriteria()"><b>New Request Using Selected Criteria /
+              Modify Request</b></button>
+        </a>
+        <a>
+          <button class="btn tabs" onmouseover="" style="cursor: pointer;" (click)="populateDl()"
+            data-keyboard="false"><b>Edit Distribution List</b></button>
+        </a>
+        <a>
+          <button class="btn tabs" data-toggle="modal" data-backdrop="static"
+            (click)="CheckCancel()"><b>Cancel/Reassign</b></button>
+        </a>
+        <a>
+          <button class="btn tabs" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;"><b>Enter
+              Comment</b></button>
+        </a>
+        <button id="enter_comment_button" data-toggle="modal" data-backdrop="static" data-target="#ModalComment"
+          style="display:none"></button>
+        <a *ngIf="user_role=='Admin'">
+          <button class="btn tabs" (click)="Accept()"><b>Accept Assignment</b></button>
+        </a>
+        <button id="post_link_button" data-toggle="modal" data-backdrop="static" data-target="#postLink"
+          style="display:none"></button>
+      </div>
       <div class="tableFixHead">
         <table *ngIf="reports" class="table report_table table-bordered table-hover"
           style="overflow:-moz-hidden-unscrollable">
@@ -285,22 +281,25 @@
                 <div style="flex-direction: column;height: 100%;" class="center-content">
                   <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" [title]="element.link_to_results"
                     style="margin-bottom: 7px;width:80px" (click)="openNewWindow(element.link_to_results)"
-                    *ngIf="element.link_to_results != '' && element.status=='Completed'">
-                    Url&nbsp;<span class="material-icons" style="font-size: 100%;color:white;position: relative;
-                    top: -2px;font-weight: 1000;">arrow_forward</span>
+                    *ngIf="element.link_to_results != '' && element.status=='Completed'">Go to Url
+                    <!-- &nbsp;<span class="material-icons" style="font-size: 100%;color:white;position: relative;top: -2px;font-weight: 1000;">arrow_forward</span> -->
                   </button>
 
                   <button [cssBtn]="'ok'" mat-raised-button class="table-buttons" data-toggle="modal"
                     data-target="#addUrl" data-backdrop="static" (click)="addLinkUrl(element,'create')"
                     *ngIf="element.link_to_results == '' && element.status=='Completed' && user_role =='Admin'">
-                    <span> Url <span class="material-icons" style="font-size: 100%;color:white;position: relative;
-                      top: 7px;font-weight: 1000;">add</span></span>
+                    <span>Add Url
+                      <!-- <span class="material-icons" style="font-size: 100%;color:white;position: relative;
+                      top: 7px;font-weight: 1000;">add</span> -->
+                    </span>
                   </button>
                   <button *ngIf="element.link_to_results != '' && element.status=='Completed' && user_role =='Admin'"
                     style="border:80px" [cssBtn]="'mid'" mat-raised-button class="table-buttons" data-toggle="modal"
                     data-target="#addUrl" data-backdrop="static" (click)="addLinkUrl(element,'edit')">
-                    <span>Edit <span class="material-icons" style="font-size: 100%;color:white;position: relative;
-                      top: 7px;">create</span></span>
+                    <span>Edit Url
+                      <!-- <span class="material-icons" style="font-size: 100%;color:white;position: relative;
+                      top: 7px;">create</span> -->
+                    </span>
                   </button>
                 </div>
 
@@ -368,7 +367,7 @@
           </tbody>
         </table>
       </div>
-      <div style="display:flex; align-items: flex-end;flex-direction: row;width:100%">
+      <div style="display:flex; align-items: flex-end;flex-direction: row;width:94vw">
         <mat-paginator style="margin-left:auto" [length]="reports.length" [pageSize]="paginatorpageSize"
           [pageSizeOptions]="paginatorOptions" (page)="onPaginationChange($event)">
         </mat-paginator>
@@ -398,11 +397,14 @@
       </div>
       <div class="modal-footer">
         <button [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" *ngIf="comment_text" (click)="extract_comment()">
-          Save
+          <!-- Save -->
+          <a data-toggle="tooltip" title="Add comment">
+            <i id="ic" class="material-icons comment-icon">comment</i>
+          </a>
         </button>
-        <button [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal" *ngIf="comment_text">
+        <!-- <button [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal" *ngIf="comment_text">
           cancel
-        </button>
+        </button> -->
       </div>
     </div>
   </div>

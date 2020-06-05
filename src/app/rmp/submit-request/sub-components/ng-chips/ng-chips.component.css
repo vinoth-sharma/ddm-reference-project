@@ -1,0 +1,4 @@
+::ng-deep #ngChips .mat-chip-list-wrapper {
+    max-height: 130px;
+    overflow-y: auto;
+}

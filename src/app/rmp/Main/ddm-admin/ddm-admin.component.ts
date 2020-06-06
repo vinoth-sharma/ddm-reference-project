@@ -344,7 +344,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     let dupeFileName = this.isAdmin.docs.find(item => item.uploaded_file_name == link_title)
     if ((duplicateName || dupeFileName)) {
       let eid = duplicateName ? duplicateName['ddm_rmp_desc_text_admin_documents_id'] : undefined;
-      if (eid != this.editid || dupeFileName) {
+      if (eid != this.editid && dupeFileName) {
         document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
         document.getElementById("errorTrigger").click();
         return

@@ -381,14 +381,18 @@ export class MetricsComponent implements OnInit, AfterViewInit {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
+      const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
+      const colA = wb.cell("A2").value(transformedData);
+
       workbook.outputAsync().then(function (blob) {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           window.navigator.msSaveOrOpenBlob(blob,
             fileName + EXCEL_EXTENSION
           );
-        } else {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
+        }
+        else {
+          var url = window.URL.createObjectURL(blob);
+          var a = document.createElement("a");
           document.body.appendChild(a);
           a.href = url;
           a.download = fileName + EXCEL_EXTENSION;

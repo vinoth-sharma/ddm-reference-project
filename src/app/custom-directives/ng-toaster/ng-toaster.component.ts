@@ -1,5 +1,5 @@
-import { Component, OnInit, Injectable } from '@angular/core';
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { Component, OnInit, Injectable, Inject } from '@angular/core';
+import { MatSnackBar, MAT_SNACK_BAR_DATA } from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-ng-toaster',
@@ -41,4 +41,24 @@ export class NgToasterComponent implements OnInit {
     })
   }
 
+  customizedMsg(message){
+    this.toaster.openFromComponent(CustomSnackComponent,{
+      data : message,
+      duration : 2000,
+      verticalPosition : 'top',
+      horizontalPosition : 'right',
+      panelClass : ['custom-bar']
+    })
+  }
+}
+
+
+
+@Component({
+  selector: 'snack-bar-component-example-snack',
+  templateUrl: './ng-toaster.component.html',
+  styleUrls: ['./ng-toaster.component.css']
+})
+export class CustomSnackComponent {
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) { }
 }

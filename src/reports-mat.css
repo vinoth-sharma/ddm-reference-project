@@ -27,6 +27,9 @@
     background-color: #ffff00 !important;
     color: black;
 }
+.custom-bar{
+    background-color: white !important;
+}
 
 #select-report-criteria .mat-checkbox-inner-container,
 #select-report-criteria .mat-radio-container,

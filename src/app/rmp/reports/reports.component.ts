@@ -383,6 +383,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   // get reports list from server
   public getReportList() {
+    Utils.showSpinner();
     this.django.get_report_list().subscribe(list => {
       if (list) {
         this.reportContainer = list['data'];
@@ -710,6 +711,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.jsonfinal['select_frequency'] = [];
       this.changeInFreq = true;
       $('#change-Frequency').modal('hide');
+      this.getReportList();
     }, err => {
       this.spinner.hide();
       this.toasterService.error("Server Error");
@@ -763,13 +765,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       if (this.selectedNewFrequency === 'One Time') {
         this.isRecurringFrequencyHidden = true;
       }
-      else {
-        if ((this.selectedNewFrequency === 'On Demand' || 'On Demand Configurable') && element["frequency_data"].length == 1) {
-          this.isRecurringFrequencyHidden = true;
-        }
-        else {
-          this.isRecurringFrequencyHidden = false;
-        }
+      else if ((this.selectedNewFrequency === 'Recurring') && element["frequency_data"].length >= 1) {
+        this.isRecurringFrequencyHidden = false;
       }
     }, err => {
       this.spinner.hide();

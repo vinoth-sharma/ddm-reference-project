@@ -5,6 +5,10 @@
         <h3><b>Welcome {{ user_name }}!</b></h3>
       </div>
       <div class="icons">
+        <button [cssBtn]="'mid'" class="btn notes-position mat-raised-button" *ngIf="user_role=='Admin'"
+          (click)="openNotesModal()">
+          Add Important Notes
+        </button>
         <div class="press">
           <button *ngIf="user_role=='Admin'" (click)="notifyChildren()" id="main-edit">
             <a data-toggle="tooltip" title="EDIT">

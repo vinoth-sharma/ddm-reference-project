@@ -295,7 +295,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             this.toasterService.success('Successfuly Changed');
           }
 
-      );
+        );
     }
   }
 
@@ -318,7 +318,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role['role'];
-        if(this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
+        if (this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
         else this.config.toolbar = false;
       }
     });
@@ -400,7 +400,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday'))
             if (this.reportContainer[i]['description'] != null) {
               this.reportContainer[i]['description'].forEach(ele => {
-                this.reportContainer[i]['frequency_data_filtered'].push(ele)
+                if (ele != 'Monday' && ele != 'Tuesday' && ele != 'Wednesday' && ele != 'Thursday' && ele != 'Friday') {
+                  this.reportContainer[i]['frequency_data_filtered'].push(ele)
+                  this.reportContainer[i]['description'] = this.reportContainer[i]['frequency_data_filtered'];
+                }
               })
             }
           }
@@ -776,7 +779,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   // open change-frequency modal
   public showChangeFrequencyModal() {
-    $('#change-Frequency').modal({backdrop:"static",keyboard:true,show:true});
+    $('#change-Frequency').modal({ backdrop: "static", keyboard: true, show: true });
   }
 
   //-------------------------frequency update--------------------------------------------

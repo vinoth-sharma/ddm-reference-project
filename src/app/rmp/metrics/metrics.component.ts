@@ -229,6 +229,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
             const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Other'];
             this.reports[i]['frequency_data_filtered'] =
               this.reports[i]['frequency_data'].filter(element => !days.includes(element));
+            this.reports[i]['description'] = this.reports[i]['frequency_data_filtered'];
           }
         }
       }

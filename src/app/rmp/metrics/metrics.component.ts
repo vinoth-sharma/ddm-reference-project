@@ -185,6 +185,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
   public ngOnInit() {
     this.generated_report_service.changeButtonStatus(false);
     // get all admin details
+    Utils.showSpinner();
     this.django.getAllAdmins().subscribe(element => {
       if (element) {
         element['admin_list'].forEach(ele => {
@@ -232,6 +233,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
             this.reports[i]['description'] = this.reports[i]['frequency_data_filtered'];
           }
         }
+        Utils.hideSpinner();
       }
     });
   }

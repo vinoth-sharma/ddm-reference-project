@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, mergeMap } from 'rxjs/operators';
 import { DjangoService } from "../../../django.service";
 import { SubmitRequestService } from '../../submit-request.service';
+import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 
 @Component({
   selector: 'app-ng-cips-email',
@@ -32,6 +33,7 @@ export class NgCipsEmailComponent implements OnInit {
 
   constructor(public djangoService: DjangoService,
     private renderer: Renderer2,
+    public ngToaster : NgToasterComponent,
     public subReqService: SubmitRequestService) {
     this.filteredChips = this.chipCtrl.valueChanges.pipe(
       debounceTime(1000),
@@ -60,9 +62,14 @@ export class NgCipsEmailComponent implements OnInit {
 
     // Add our fruit
     if ((value || '').trim()) {
-      this.selectedChips.push(value.trim());
-      this.selectedChips  = [...new Set([...this.selectedChips,value.trim()])]
-      this.emailSelectionEmitter.emit(this.selectedChips)
+      let l_value = getMailIds(value.trim())
+      if(l_value){
+        this.selectedChips.push(value.trim());
+        this.selectedChips  = [...new Set([...this.selectedChips,value.trim()])]
+        this.emailSelectionEmitter.emit(this.selectedChips)
+      }
+      else
+        this.ngToaster.error("Enter the valid email id")
     }
 
     // Reset the input value

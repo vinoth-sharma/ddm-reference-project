@@ -101,12 +101,23 @@ export class DisclaimerWrapperComponent implements OnInit {
   // save description
   public saveSubmitReqDesc() {
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDescObj).subscribe(response => {
-      Utils.hideSpinner()
+      Utils.hideSpinner();
+      this.showEditOption = true;
       this.toaster.success("Updated Successfully");
+      this.updateSubmitRequestDesc();
     }, err => {
       Utils.hideSpinner()
       this.toaster.error("Server Error");
     })
+  }
+
+  //cancel save desc
+  cancelSubmitReq(){
+    this.l_lookupTableData.desc_text.forEach(element => {
+      if (element.ddm_rmp_desc_text_id === 3)
+        this.submitReqDescObj.description = element.description
+    });
+    this.showEditOption =  true;
   }
 
 }

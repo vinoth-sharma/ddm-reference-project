@@ -371,7 +371,11 @@ export class VehicleEventStatusComponent implements OnInit {
   }
 
   public openAdditionalReqModal() {
-    if (!this.selected.distribution_entity.length)
+    if (!this.selected.model_years.length)
+      this.ngToaster.error("Model year is mandatory")
+    else if (!this.selected.allocation.length)
+      this.ngToaster.error("Allocation Group is mandatory")
+    else if (!this.selected.distribution_entity.length)
       this.ngToaster.error("Distribution Entity is mandatory")
     else if (this.keyDataEle.others.checked && !this.keyDataEle.others.order_event.length) {
       this.ngToaster.error("Please fill the Key Data Elements ")
@@ -447,7 +451,7 @@ export class VehicleEventStatusComponent implements OnInit {
       data: {
         reqBody: this.req_body,
         selectedReqData: this.l_selectedReqData,
-        selectedFile : result.data.selectedFile
+        selectedFile: result.data.selectedFile
       }, disableClose: true
     })
 

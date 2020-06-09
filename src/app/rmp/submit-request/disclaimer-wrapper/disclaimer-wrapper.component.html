@@ -37,13 +37,13 @@
       <div class="quillEditorSubmit">
         <quill-editor class="quill" [(ngModel)]="submitReqDescObj.description" [modules]="config"
           [readOnly]="showEditOption"></quill-editor>
-        <div class="ds-flex-centre" *ngIf="!showEditOption">
-          <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;"
-            (click)="saveSubmitReqDesc()">Save</button>
-          <button mat-raised-button [cssBtn]="'cancel'" (click)="showEditOption=true">Cancel</button>
-        </div>
+      </div>
+      <div class="ds-flex-centre" *ngIf="!showEditOption">
+        <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;" (click)="saveSubmitReqDesc()">Save</button>
+        <button mat-raised-button [cssBtn]="'cancel'" (click)="cancelSubmitReq()">Cancel</button>
       </div>
     </div>
+
     <div class="disclaimer-footer" style="height: 70px;">
       <button mat-raised-button style="background-color: #144214 !important;color: white"
         [disabled]=" !(user_role =='Admin' || userData.disclaimer_ack)" routerLink="../submit-request"

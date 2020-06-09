@@ -113,7 +113,9 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
 
   public readOnlyContentHelper: boolean = true;
 
-  constructor(private django: DjangoService, public auth_service: AuthenticationService, private toastr: NgToasterComponent, private spinner: NgLoaderService, public dataProvider: DataProviderService) {
+  constructor(private django: DjangoService, public auth_service: AuthenticationService,
+    private toastr: NgToasterComponent, private spinner: NgLoaderService,
+    public dataProvider: DataProviderService) {
     this.editMode = false;
     this.getCurrentFiles();
     this.getCurrentTableLookupData();
@@ -234,9 +236,9 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   }
 
   // getting links from server
-  public getLink(index) {
+  public getLink(ele) {
     this.spinner.show();
-    this.django.get_doc_link(index).subscribe(ele => {
+    this.django.get_doc_link(ele.file_id).subscribe(ele => {
       var url = ele['data']['url']
       window.location.href = url
       this.spinner.hide();
@@ -345,7 +347,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     let dupeFileName = this.isAdmin.docs.find(item => item.uploaded_file_name == link_title)
     if ((duplicateName || dupeFileName)) {
       let eid = duplicateName ? duplicateName['ddm_rmp_desc_text_admin_documents_id'] : undefined;
-      if (eid != this.editid || dupeFileName) {
+      if (eid != this.editid && dupeFileName) {
         document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
         document.getElementById("errorTrigger").click();
         return
@@ -442,6 +444,25 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public renameFile(files: FileList) {
+    var reader = new FileReader();
+    reader.readAsText(files.item(0), 'UTF-8');
+    let self = this;
+    reader.onload = function (event) {
+      self.createNewFile(event.target['result'], files.item(0));
+    }
+  }
+
+  public createNewFile(value, file) {
+    let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    if (document_title === '') {
+      document.getElementById("errorModalMessage").innerHTML = "<h5>please enter document name</h5>";
+      document.getElementById("errorTrigger").click()
+    } else {
+      this.file = new File([value], document_title, { type: file.type, lastModified: file.lastModified });
+    }
+  }
+
   // upload file to server
   public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
@@ -486,6 +507,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.toastr.error(this.django.defaultUploadMessage)
     }
   }
+
 
   // setting a few properties of component
   public editDoc(id, val, url, index) {

@@ -468,10 +468,11 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header" style="justify-content: flex-start;">
-          <div class="row modal-title">
+          <div class="row modal-title" style='width:100%;'>
 
             <div class="col-sm-10 modal-heading">
-              <b>Distribution DataMart (DDM) Report Request Confirmation</b>
+              <b style="font-size: 110%;">Distribution DataMart</b><br>
+              <b style="font-size: 110%;">Report Request Confirmation</b>
               <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">
                 Vehicle Event Status</div>
               <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer

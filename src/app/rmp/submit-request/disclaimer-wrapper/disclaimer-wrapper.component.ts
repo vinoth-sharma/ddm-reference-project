@@ -76,14 +76,15 @@ export class DisclaimerWrapperComponent implements OnInit {
 
   ngAfterViewInit() {
     if (this.user_role != "Admin" && !this.userData.disclaimer_ack) {
-      this.openDisclaimerModal()
+      this.openDisclaimerModal(false)
     }
   }
 
   // open disclaimer modal
-  openDisclaimerModal() {
+  openDisclaimerModal(enableCloseButton?) {
+    let enableButtonData = { enableButton: (enableCloseButton == false) ? enableCloseButton : true }
     let dialogRef = this.dialog.open(DisclaimerModalComponent, {
-      data: "", disableClose: true
+      data: enableButtonData, disableClose: true
     })
     dialogRef.afterClosed().subscribe(result => {
       this.userData.disclaimer_ack = result

@@ -42,6 +42,7 @@ export class DisclaimerModalComponent implements OnInit {
     disclaimer_ack: undefined
   }
   public user_role = "";
+  public enableCloseButton = true;
 
   constructor(public dialogRef: MatDialogRef<DisclaimerModalComponent>,
     public subReqService: SubmitRequestService,
@@ -52,11 +53,12 @@ export class DisclaimerModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+    this.enableCloseButton = this.data.enableButton
 
     Utils.showSpinner();
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
-        this.user_role = role["role"]
+        this.user_role = role["role"];
       }
     })
 

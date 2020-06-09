@@ -15,7 +15,7 @@
 }
 
 .disclaimer-body {
-    height: 59vh;
+    height: 60vh;
     overflow: auto;
     padding-left: 1.5vw;
     padding-right: 1vw;
@@ -44,7 +44,7 @@
 }
 
 ::ng-deep quill-editor .ql-container.ql-snow{
-    min-height: 40vh;
+    height: 40vh;
 }
 
 .disclaimer_section{

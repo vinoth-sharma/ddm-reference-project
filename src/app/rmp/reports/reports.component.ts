@@ -277,8 +277,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    */
   public changeReportName(event: any, reportObject) {
     const changedReport = {};
-
-    if (!reportObject.report_name.length) {
+  
+    if (!reportObject.report_name || !reportObject.report_name.length) {
       reportObject.report_name = reportObject.report_name_old;
       this.toasterService.error('Cannot save empty name');
       reportObject.clicked = false;
@@ -304,7 +304,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public toggleShowInput(element) {
     this.ddmReportname = element.report_name
     this.reports.forEach(ele => {
-      if (ele.report_name != element.report_name) {
+      if (ele.ddm_rmp_post_report_id != element.ddm_rmp_post_report_id) {
         ele.clicked = false;
       } else {
         ele.clicked = !ele.clicked;

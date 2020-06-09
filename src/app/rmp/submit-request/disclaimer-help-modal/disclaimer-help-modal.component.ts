@@ -62,18 +62,19 @@ export class DisclaimerHelpModalComponent implements OnInit {
     });
   }
 
-  submitReqHelpDesc() {
+  public submitReqHelpDesc() {
     Utils.showSpinner();
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqHelpDescObj).subscribe((response: any) => {
       Utils.hideSpinner();
       this.toaster.success(response.message);
+      this.closeDailog();
     }, err => {
       Utils.hideSpinner()
       this.toaster.error("Server Error");
     })
   }
 
-  closeDailog(): void {
+  public closeDailog(): void {
     this.dialogRef.close();
   }
 }

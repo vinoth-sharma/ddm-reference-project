@@ -1,4 +1,4 @@
-.disclaimer-wrapper{
+.disclaimer-wrapper {
     background: white;
     height: 80.5vh;
     margin: 3vh;
@@ -6,7 +6,7 @@
     padding: 3vh 1.5vw 3vh 1.5vw;
 }
 
-.disclaimer-header{
+.disclaimer-header {
     width: 94vw;
     float: left;
     padding-top: 1vh;
@@ -36,7 +36,7 @@
     border: none;
 }
 
-.custom-link{
+.custom-link {
     cursor: pointer;
     color: blue !important;
     font-weight: 600;
@@ -47,7 +47,7 @@
     height: 40vh;
 }
 
-.disclaimer_section{
+.disclaimer_section {
     width: 50%;
     display: flex;
     align-items: center;

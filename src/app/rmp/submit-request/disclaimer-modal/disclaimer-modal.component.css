@@ -7,3 +7,7 @@
     height: 74%;
     overflow: hidden;
 }
+.span-error{
+    font-style: italic;
+    color: red;
+}

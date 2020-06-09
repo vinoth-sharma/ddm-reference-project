@@ -1,31 +1,20 @@
-<div class="body-content">
+<div class="body-content" id="body_content" #body_content>
   <div class="heading">
     <div class="col-xs-9 pl-0">
       <h3 class="mt-0"><b>User Profile</b></h3>
     </div>
     <div class="right-alignment">
       <div class="press">
+        <button (click)="downloadMarkedSelection()" style="padding-right:0px;">
+          <a data-toggle="tooltip" title="Download Marked Selection"><i id="ic" class="material-icons">get_app</i></a>
+        </button>
         <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;">
           <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
         </button>
       </div>
     </div>
   </div>
-  <!-- <div class="heading">
-    <div class="col-xs-9 pl-0">
-      <h3><b>DDM Team Contact List</b></h3>
-    </div>
-    <div class="icons">
-      <div *ngIf="user_role == 'Admin'" class="press">
-        <a data-toggle="tooltip" title="EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
-      </div>
-      <div class="press help-icon">
-        <button data-toggle="modal" data-target="#helpModal" data-backdrop="static" style="padding-right:0px;">
-          <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
-        </button>
-      </div>
-    </div>
-  </div> -->
+
   <div class="row">
     <div class="col-xs-3">
       <i>
@@ -214,3 +203,4 @@
       </div>
     </div>
   </div>
+  <div hidden id="dload"></div>

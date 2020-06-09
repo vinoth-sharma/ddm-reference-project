@@ -1,14 +1,15 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { DjangoService } from 'src/app/rmp/django.service';
-import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
-import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { DatePipe } from '@angular/common';
 import * as Rx from 'rxjs';
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
+declare var $: any;
+
+import { DjangoService } from 'src/app/rmp/django.service';
+import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { DataProviderService } from 'src/app/rmp/data-provider.service';
 import Utils from '../../../utils';
-declare var $: any;
 
 @Component({
   selector: 'app-metrics',
@@ -230,6 +231,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
             const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Other'];
             this.reports[i]['frequency_data_filtered'] =
               this.reports[i]['frequency_data'].filter(element => !days.includes(element));
+            this.reports[i]['description'] = this.reports[i]['frequency_data_filtered'];
           }
         }
         Utils.hideSpinner();

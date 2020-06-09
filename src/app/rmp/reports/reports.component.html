@@ -199,21 +199,20 @@
                   <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" [title]="element.link_to_results"
                     (click)="openNewWindow(element.link_to_results)" *ngIf="element.link_to_results != ''"
                     style="margin-bottom: 7px;width:80px">
-                    Url&nbsp;&nbsp;&#10145;
+                    Go to Url
                   </button>
                   <button [cssBtn]="'ok'" style="width:80px" mat-raised-button class="table-buttons" data-toggle="modal"
                     data-backdrop="static" data-target="#addUrl" (click)="addLinkUrl(element,'create')"
                     *ngIf="element.link_to_results == ''&& user_role =='Admin'">
-                    <span> Url <span class="material-icons" style="font-size: 100%;color:white;position: relative;
-                      top: 2px;font-weight: 1000;">add</span></span>
+                    <span>Add Url
+                    </span>
                   </button>
                   <button *ngIf="element.link_to_results != '' && user_role =='Admin'" [cssBtn]="'mid'"
                     mat-raised-button class="table-buttons" style="width:80px" data-toggle="modal"
                     data-backdrop="static" data-target="#addUrl" (click)="addLinkUrl(element,'edit')">
-                    <span>Edit <span class="material-icons" style="font-size: 100%;color:white;position: relative;
-                      top: 2px;">create</span></span>
+                    <span>Edit Url
+                    </span>
                   </button>
-
                 </div>
               </td>
               <td>

@@ -10,6 +10,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 import { MatDialog } from '@angular/material/dialog';
 import { NotesWrapperComponent } from '../../admin-notes/notes-wrapper/notes-wrapper.component';
 declare var $: any;
+import { DisplayNotesComponent } from '../../admin-notes/display-notes/display-notes.component';
 
 @Component({
   selector: 'app-main-menu-landing-page',
@@ -18,6 +19,7 @@ declare var $: any;
 })
 export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   public content;
+  public importantNotes: any = {}
   public enable_edit: boolean = false;
   public content_loaded: boolean = false;
   public textChange: boolean = false;
@@ -38,6 +40,11 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   public readOnlyContentHelper: boolean = true;
   public enableUpdateData: boolean = false;
   public info
+  public admin_notes: any = '';
+  public db_end_date: any;
+  public db_start_date: any;
+  public note_status: boolean;
+  public disclaimer_encounter_flag = 0;
   public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
@@ -158,6 +165,7 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
             this.naming = this.original_content;
           }
         })
+        this.getAdminNotesLatestDetails();
         Utils.hideSpinner();
       }
     })
@@ -473,6 +481,50 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
     })
   }
 
+  // to get the important notes of admin
+  public getAdminNotes() {
+    if (this.importantNotes.data.admin_note[0])
+      this.updateAdminNotesParams(this.importantNotes.data.admin_note[0]);
+  }
+
+  // update admin notes parameter
+  public updateAdminNotesParams(adminNotes) {
+
+    this.db_start_date = adminNotes.notes_start_date;
+    this.db_end_date = adminNotes.notes_end_date;
+    this.admin_notes = adminNotes.notes_content;
+    this.note_status = adminNotes.admin_note_status;
+
+    let today = new Date();
+    let startDate = new Date(this.db_start_date);
+    let endDate = new Date(this.db_end_date);
+
+    if (this.note_status) {
+      if (today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
+        this.dialog.open(DisplayNotesComponent, {
+          data: { notes: adminNotes.notes_content }, disableClose: true
+        })
+    } else
+      $('#display-notes-status').prop("checked", true);
+  }
+
+  // to get full data of rmp landing page
+  public getAdminNotesLatestDetails() {
+    this.dataProvider.currentlookUpTableData.subscribe(element => {
+      if (element) {
+        this.importantNotes = element;
+        this.disclaimer_encounter_flag += 1;
+        if (this.disclaimer_encounter_flag == 1) {
+          this.getAdminNotes();
+        }
+      }
+    })
+  }
+
+  openNotesModal() {
+    this.dialog.open(NotesWrapperComponent, {
+      data: this.importantNotes.data.admin_note, disableClose: true
+    })
+  }
 
 }
-

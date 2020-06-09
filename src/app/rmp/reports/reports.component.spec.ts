@@ -12,7 +12,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { AuthenticationService } from 'src/app/authentication.service';
 import { DataProviderService } from '../data-provider.service';
-import { ScheduleService } from 'src/app/schedule/schedule.service';
 import { of } from 'rxjs';
 import { DjangoService } from '../django.service';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
@@ -127,16 +126,6 @@ describe('ReportsComponent', () => {
     expect(component.changeInFreq).toBeTruthy();
     expect(component.semanticLayerId).toEqual("2")
   })
-
-  it("should read scheduled from scheduled reports", fakeAsync(() => {
-    let scheduleScrvice = TestBed.inject(ScheduleService);
-    let data = { data: { key: "value" } }
-    component.semanticLayerId = 1
-    spyOn(scheduleScrvice, "getScheduledReports").and.returnValue(of(data));
-    component.getScheduledReports();
-    tick()
-    expect(component.reportDataSource).toEqual(data.data)
-  }))
 
   it("getReportList", () => {
     let djangoService = TestBed.get(DjangoService);

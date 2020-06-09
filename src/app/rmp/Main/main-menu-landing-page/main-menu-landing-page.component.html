@@ -5,6 +5,10 @@
         <h3><b>Welcome {{ user_name }}!</b></h3>
       </div>
       <div class="icons">
+        <button [cssBtn]="'mid'" class="btn notes-position mat-raised-button" *ngIf="user_role=='Admin'"
+          (click)="openNotesModal()">
+          Add Important Notes
+        </button>
         <div class="press">
           <button mat-stroked-button [cssBtn]="'mid'" style="top:-10px" (click)="openAddNotes()">
             <span class="icon-cont"> <i style="position: absolute;

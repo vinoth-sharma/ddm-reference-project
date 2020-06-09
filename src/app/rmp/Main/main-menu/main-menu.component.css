@@ -86,11 +86,11 @@ body {
     transition: transform .2s;
 }
 
-.tabs-list-container button:hover{
+.tabs-list-container button:hover {
     transform: scale(1.05);
 }
 
-.tabs-list-container button:disabled{
+.tabs-list-container button:disabled {
     background-color: #c3c3c3;
     color: black;
 }

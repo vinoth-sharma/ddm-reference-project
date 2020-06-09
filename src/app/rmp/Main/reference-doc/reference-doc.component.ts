@@ -1,10 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import * as Rx from "rxjs";
+
 import { DjangoService } from 'src/app/rmp/django.service';
-import Utils from "../../../../utils";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
-import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import Utils from "../../../../utils";
 
 @Component({
   selector: 'app-reference-doc',

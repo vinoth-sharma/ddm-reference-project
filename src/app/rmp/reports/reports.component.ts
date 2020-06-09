@@ -204,6 +204,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     'remove-table': 'Remove selected table',
     'help': 'Show help'
   };
+  public ddmReportname: String
 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service: AuthenticationService,
@@ -214,6 +215,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     public scheduleService: ScheduleService,
     public router: Router,
     private toasterService: NgToasterComponent
+
   ) {
     this.readUserRole();
     this.getLookUptableData();
@@ -295,7 +297,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             this.toasterService.success('Successfuly Changed');
           }
 
-      );
+        );
     }
   }
 
@@ -304,6 +306,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    * @param element the report element which is being clicked
    */
   public toggleShowInput(element) {
+    this.ddmReportname = element.report_name
     this.reports.forEach(ele => {
       if (ele.report_name != element.report_name) {
         ele.clicked = false;
@@ -313,12 +316,17 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  cancelNameEdit(element) {
+    element.report_name = this.ddmReportname
+    element.clicked = false
+  }
+
   // read user role from an observable
   public readUserRole() {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role['role'];
-        if(this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
+        if (this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
         else this.config.toolbar = false;
       }
     });
@@ -702,6 +710,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.jsonfinal['frequency'] = this.selectedNewFrequency;
     this.setFrequency();
     this.django.ddm_rmp_frequency_update(this.jsonfinal).subscribe(element => {
+      this.reports = this.reports.filter(report => report.ddm_rmp_post_report_id != request_id)
       this.spinner.hide();
       this.toasterService.success("Updated Successfully");
       this.jsonfinal['report_id'] = "";
@@ -779,7 +788,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   // open change-frequency modal
   public showChangeFrequencyModal() {
-    $('#change-Frequency').modal({backdrop:"static",keyboard:true,show:true});
+    $('#change-Frequency').modal({ backdrop: "static", keyboard: true, show: true });
   }
 
   //-------------------------frequency update--------------------------------------------

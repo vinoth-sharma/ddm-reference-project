@@ -11,7 +11,6 @@ import Utils from "../../../utils"
 import '../../../assets/debug2.js';
 declare var jsPDF: any;
 declare var $: any;
-import { ScheduleService } from '../../schedule/schedule.service';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 
@@ -110,8 +109,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public userId: any = {};
   public todaysDate: string;
   public semanticLayerId: any;
-  public reportDataSource: any;
-  public onDemandScheduleData: any = {};
   public confirmationValue: any;
   public selectedRequestId: any;
   public reportContainer: any;
@@ -211,7 +208,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     private spinner: NgLoaderService,
     private dataProvider: DataProviderService,
     private DatePipe: DatePipe,
-    public scheduleService: ScheduleService,
     public router: Router,
     private toasterService: NgToasterComponent
   ) {
@@ -351,7 +347,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public ngOnInit() {
     this.getSemanticLayerID()
     Utils.showSpinner();
-    this.getScheduledReports()
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
@@ -366,19 +361,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.semanticLayerId = element.data["semantic_id"];
       }
     });
-  }
-
-  // get scheduled reports from server
-  public getScheduledReports() {
-    if (this.semanticLayerId != undefined && this.semanticLayerId != null) {
-      this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res => {
-        this.reportDataSource = res['data'];
-        Utils.hideSpinner();
-      }, error => {
-        Utils.hideSpinner();
-      }
-      );
-    }
   }
 
   // get reports list from server

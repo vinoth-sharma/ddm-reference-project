@@ -304,7 +304,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    */
   public toggleShowInput(element) {
     this.reports.forEach(ele => {
-      if (ele.report_name != element.report_name) {
+      if (ele.ddm_rmp_post_report_id != element.ddm_rmp_post_report_id) {
         ele.clicked = false;
       } else {
         ele.clicked = !ele.clicked;

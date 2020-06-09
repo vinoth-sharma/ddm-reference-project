@@ -56,7 +56,8 @@ export class NgToasterComponent implements OnInit {
 
 @Component({
   selector: 'snack-bar-component-example-snack',
-  templateUrl: './ng-toaster.component.html',
+  template : `<span class="" [innerHTML]="data">
+              </span>`,
   styleUrls: ['./ng-toaster.component.css']
 })
 export class CustomSnackComponent {

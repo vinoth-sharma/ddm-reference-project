@@ -1,5 +1,5 @@
 // migration  was done by : Bharath S
-import { Component, OnInit, AfterViewInit, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, EventEmitter, ViewChild } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service'
 import { DatePipe } from '@angular/common';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
@@ -10,7 +10,7 @@ import { AuthenticationService } from "src/app/authentication.service";
 import { FormControl } from '@angular/forms';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
-
+import * as html2Canvas from 'html2canvas'
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -27,6 +27,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public code: any;
   public te_number: any;
   public textChange = false;
+  @ViewChild('body_content')imageDiv;
 
   public editorData(arg0: string, editorData: any): any {
     throw new Error("Method not implemented.");
@@ -1101,5 +1102,16 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
 
   public changeSaveSettings() {
     this.changed_settings = true;
+  }
+// to download a img of selected options
+  public downloadMarkedSelection(){
+    let fileName = "user_selection"
+    html2Canvas($('#body_content')[0]).then((canvas)=>{
+     var a = document.createElement('a')
+      a.href = canvas.toDataURL('image/png');
+      a.download = fileName;
+      a.click()
+    })
+
   }
 }

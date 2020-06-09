@@ -165,7 +165,6 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
             this.naming = this.original_content;
           }
         })
-        this.getAdminNotesLatestDetails();
         Utils.hideSpinner();
       }
     })
@@ -506,25 +505,6 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
         })
     } else
       $('#display-notes-status').prop("checked", true);
-  }
-
-  // to get full data of rmp landing page
-  public getAdminNotesLatestDetails() {
-    this.dataProvider.currentlookUpTableData.subscribe(element => {
-      if (element) {
-        this.importantNotes = element;
-        this.disclaimer_encounter_flag += 1;
-        if (this.disclaimer_encounter_flag == 1) {
-          this.getAdminNotes();
-        }
-      }
-    })
-  }
-
-  openNotesModal() {
-    this.dialog.open(NotesWrapperComponent, {
-      data: this.importantNotes.data.admin_note, disableClose: true
-    })
   }
 
 }

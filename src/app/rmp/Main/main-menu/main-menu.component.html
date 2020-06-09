@@ -2,27 +2,29 @@
     <!--                            Main Body Content                         -->
     <div class="main-tool-body">
         <div class="list-of-tabs">
-            <a routerLink="ddm" (click)='selectedTab($event)' routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-button>
+            <a routerLink="ddm" (click)='selectedTab($event)' routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact:true}" mat-button>
                 What is DDM?
             </a>
-            <a routerLink="user-profile" (click)='selectedTab($event)' routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-                mat-button>User Profile</a>
-            <a routerLink="ddm-team" (click)='selectedTab($event)' routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-                mat-button>DDM Team</a>
-            <a routerLink="reference-documents" (click)='selectedTab($event)' routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-                mat-button>Reference Documents</a>
-            <a *ngIf="user_role == 'Admin'" (click)='selectedTab($event)' routerLink="ddm-admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-                mat-button>DDM Administrator</a>
-            <a *ngIf="user_role == 'Admin'" (click)='selectedTab($event)' routerLink="ddm-brand-forms" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
-                mat-button>Go to Reference Data Management
+            <a routerLink="user-profile" (click)='selectedTab($event)' routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact:true}" mat-button>User Profile</a>
+            <a routerLink="ddm-team" (click)='selectedTab($event)' routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact:true}" mat-button>DDM Team</a>
+            <a routerLink="reference-documents" (click)='selectedTab($event)' routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact:true}" mat-button>Reference Documents</a>
+            <a *ngIf="user_role == 'Admin'" (click)='selectedTab($event)' routerLink="ddm-admin"
+                routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-button>DDM Administrator</a>
+            <a *ngIf="user_role == 'Admin'" (click)='selectedTab($event)' routerLink="ddm-brand-forms"
+                routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" mat-button>Go to Reference Data
+                Management
             </a>
-            <a *ngIf="user_role != 'Business-user'" (click)='role()' disabled="true" mat-button>
+            <a title="This tab has been suspended temporarily!" *ngIf="user_role != 'Business-user'"
+                (click)='role()' class="disabled-btn" mat-button>
                 Go To Tool
             </a>
         </div>
         <div style="position: relative;">
             <router-outlet></router-outlet>
         </div>
-
     </div>
 </div>

@@ -1,47 +1,56 @@
-<div class="disclaimer-wrapper">
-    <div class="disclaimer-header" style="height: 80px;padding: 0px 35px;">
-        <span class="">Steps to Submit a Request and View Results</span>
-        <div>
-            <button mat-icon-button style="margin-right: 15px;" matTooltip="edit"
-                *ngIf="showEditOption && (user_role ==='Admin')" (click)="showEditOption=!showEditOption">
-                <mat-icon class="notification-icon">edit</mat-icon>
-            </button>
-            <button mat-icon-button (click)='openDisclaimerHelpModal()' matTooltip="help">
-                <mat-icon class="notification-icon">help</mat-icon>
-            </button>
+<div class="outer-page">
+  <div class="disclaimer-wrapper">
+    <div class="disclaimer-header">
+      <div class="col-xs-9 pl-0">
+        <h3><b>Steps to Submit a Request and View Results</b></h3>
+      </div>
+      <div class="icons">
+        <div class="press" *ngIf="user_role == 'Admin'">
+          <a *ngIf="showEditOption && (user_role ==='Admin')" (click)="showEditOption=!showEditOption" title="EDIT"><i
+              id="ic" class="material-icons">mode_edit</i></a>
         </div>
+        <div class="press help-icon">
+          <a (click)='openDisclaimerHelpModal()' data-toggle="tooltip" title="HELP"><i id="ic"
+              class="material-icons">help_outline</i></a>
+        </div>
+      </div>
     </div>
-    <div class="disclaimer-body" style="height: calc(100% - 150px);overflow: auto;padding: 0px 35px;">
-        <div style="">
-            <p class=""><br>Before you submit a request...<br></p>
-            <p>Read <a class="custom-link" (click)='openDisclaimerModal()' style="cursor:pointer">Disclaimers</a>
-                and click the Acknowledge button when complete
-            </p>
-            <p style="width: 90%;" *ngIf="user_role !='Admin' && userData">
-                <mat-checkbox disabled [checked]="userData.disclaimer_ack"> Disclaimer Acknowledged :
-                    {{userData.disclaimer_ack | date:"dd-MMM-yyyy"}}</mat-checkbox>
-            </p>
-            <p style="width: 90%;" *ngIf="userData">
-                <mat-checkbox disabled [checked]="userData.saved_setting"> Settings Saved :
-                    {{userData.saved_setting | date:"dd-MMM-yyyy"}}</mat-checkbox>
-            </p>
+    <div class="disclaimer-body">
+      <div class="row">
+        <div class="col-xs-6">
+          <p>Before you submit a request,Read <a class="custom-link" (click)='openDisclaimerModal()'
+              style="cursor:pointer">Disclaimers</a>
+            and click the Acknowledge button when complete
+          </p>
+          <p style="width: 90%;" *ngIf="user_role !='Admin' && userData">
+            <mat-checkbox disabled [checked]="userData.disclaimer_ack"> Disclaimer Acknowledged :
+              {{userData.disclaimer_ack | date:"dd-MMM-yyyy"}}</mat-checkbox>
+          </p>
         </div>
-        <div class="quillEditorSubmit">
-            <quill-editor class="quill" [(ngModel)]="submitReqDescObj.description" [modules]="config"
-                [readOnly]="showEditOption"></quill-editor>
-            <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre" *ngIf="!showEditOption">
-                <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;"
-                    (click)="saveSubmitReqDesc()">Save</button>
-                <button mat-raised-button [cssBtn]="'cancel'" (click)="showEditOption=true">Cancel</button>
-            </div>
+        <div class="col-xs-6">
+          <p style="width: 90%;" *ngIf="userData">
+            <mat-checkbox disabled [checked]="userData.saved_setting"> Settings Saved :
+              {{userData.saved_setting | date:"dd-MMM-yyyy"}}</mat-checkbox>
+          </p>
         </div>
+      </div>
+      <div class="quillEditorSubmit">
+        <quill-editor class="quill" [(ngModel)]="submitReqDescObj.description" [modules]="config"
+          [readOnly]="showEditOption"></quill-editor>
+        <div class="ds-flex-centre" *ngIf="!showEditOption">
+          <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;"
+            (click)="saveSubmitReqDesc()">Save</button>
+          <button mat-raised-button [cssBtn]="'cancel'" (click)="showEditOption=true">Cancel</button>
+        </div>
+      </div>
     </div>
-    <div class="disclaimer-footer ds-flex-centre" style="height: 70px;">
-        <button mat-raised-button style="background-color: #144214 !important;color: white"
-            [disabled]=" !(user_role =='Admin' || userData.disclaimer_ack)" routerLink="../submit-request"
-            routerLinkActive="active">
-            Proceed to select report criteria
-        </button>
+    <div class="disclaimer-footer" style="height: 70px;">
+      <button mat-raised-button style="background-color: #144214 !important;color: white"
+        [disabled]=" !(user_role =='Admin' || userData.disclaimer_ack)" routerLink="../submit-request"
+        routerLinkActive="active">
+        Proceed to select report criteria
+      </button>
 
     </div>
+  </div>
 </div>

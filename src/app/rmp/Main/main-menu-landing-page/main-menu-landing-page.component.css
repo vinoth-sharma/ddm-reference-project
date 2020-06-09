@@ -113,3 +113,7 @@ a:active {
 h3 {
     margin-top: 0vh;
 }
+
+.notes-position {
+    float: left;
+}

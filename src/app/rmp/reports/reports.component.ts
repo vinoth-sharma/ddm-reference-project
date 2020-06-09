@@ -11,7 +11,6 @@ import Utils from "../../../utils"
 import '../../../assets/debug2.js';
 declare var jsPDF: any;
 declare var $: any;
-import { ScheduleService } from '../../schedule/schedule.service';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 
@@ -110,8 +109,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public userId: any = {};
   public todaysDate: string;
   public semanticLayerId: any;
-  public reportDataSource: any;
-  public onDemandScheduleData: any = {};
   public confirmationValue: any;
   public selectedRequestId: any;
   public reportContainer: any;
@@ -211,7 +208,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     private spinner: NgLoaderService,
     private dataProvider: DataProviderService,
     private DatePipe: DatePipe,
-    public scheduleService: ScheduleService,
     public router: Router,
     private toasterService: NgToasterComponent
   ) {
@@ -295,7 +291,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             this.toasterService.success('Successfuly Changed');
           }
 
-      );
+        );
     }
   }
 
@@ -318,7 +314,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role['role'];
-        if(this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
+        if (this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
         else this.config.toolbar = false;
       }
     });
@@ -351,7 +347,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public ngOnInit() {
     this.getSemanticLayerID()
     Utils.showSpinner();
-    this.getScheduledReports()
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
@@ -368,21 +363,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // get scheduled reports from server
-  public getScheduledReports() {
-    if (this.semanticLayerId != undefined && this.semanticLayerId != null) {
-      this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res => {
-        this.reportDataSource = res['data'];
-        Utils.hideSpinner();
-      }, error => {
-        Utils.hideSpinner();
-      }
-      );
-    }
-  }
-
   // get reports list from server
   public getReportList() {
+    Utils.showSpinner();
     this.django.get_report_list().subscribe(list => {
       if (list) {
         this.reportContainer = list['data'];
@@ -399,7 +382,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday'))
             if (this.reportContainer[i]['description'] != null) {
               this.reportContainer[i]['description'].forEach(ele => {
-                this.reportContainer[i]['frequency_data_filtered'].push(ele)
+                if (ele != 'Monday' && ele != 'Tuesday' && ele != 'Wednesday' && ele != 'Thursday' && ele != 'Friday') {
+                  this.reportContainer[i]['frequency_data_filtered'].push(ele)
+                  this.reportContainer[i]['description'] = this.reportContainer[i]['frequency_data_filtered'];
+                }
               })
             }
           }
@@ -710,6 +696,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.jsonfinal['select_frequency'] = [];
       this.changeInFreq = true;
       $('#change-Frequency').modal('hide');
+      this.getReportList();
     }, err => {
       this.spinner.hide();
       this.toasterService.error("Server Error");
@@ -763,13 +750,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       if (this.selectedNewFrequency === 'One Time') {
         this.isRecurringFrequencyHidden = true;
       }
-      else {
-        if ((this.selectedNewFrequency === 'On Demand' || 'On Demand Configurable') && element["frequency_data"].length == 1) {
-          this.isRecurringFrequencyHidden = true;
-        }
-        else {
-          this.isRecurringFrequencyHidden = false;
-        }
+      else if ((this.selectedNewFrequency === 'Recurring') && element["frequency_data"].length >= 1) {
+        this.isRecurringFrequencyHidden = false;
       }
     }, err => {
       this.spinner.hide();
@@ -779,7 +761,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   // open change-frequency modal
   public showChangeFrequencyModal() {
-    $('#change-Frequency').modal({backdrop:"static",keyboard:true,show:true});
+    $('#change-Frequency').modal({ backdrop: "static", keyboard: true, show: true });
   }
 
   //-------------------------frequency update--------------------------------------------

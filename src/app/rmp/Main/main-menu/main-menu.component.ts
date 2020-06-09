@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { Router } from '@angular/router';
+
+import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { AuthenticationService } from 'src/app/authentication.service';
 
 @Component({

@@ -29,7 +29,7 @@
               <label for="upload-doc" class="col-form-label">Upload Document
                 <span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
               <input id="attach-file1" name="attach-file1" type="file" style="margin-left: 20px;display:inline;"
-                disabled>
+              (change)='renameFile($event.target.files)' disabled>
             </div>
           </form>
         </div>
@@ -85,9 +85,11 @@
           </div>
         </div>
         <div class="ref-styling row" [id]="'upload_doc'+i" *ngFor='let element of isAdmin.docs;let i = index'>
+          <!-- <a href='https://ecss3-epg.dev.gm.com/epg3246b06f1-5abc-4ee5-9741-a9b2c0757c5d/Nick_login_error_20200522.docx?AWSAccessKeyId=epg35cf75753-9f97-43c0-ae9a-26d99607f80a&Expires=1592308315&Signature=n%2BDPH8W36DeAMOZeYxFQ%2FV5PkEY%3D'
+          target="_blank" download='ganesh'></a> -->
           <div class="col-7">
             <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle="tooltip"
-              title="{{element.uploaded_file_name}}" (click)="getLink(element.file_id)"
+              title="{{element.uploaded_file_name}}" (click)="getLink(element)"
               style="color: blue;cursor:pointer;">
               <u>{{element.uploaded_file_name}}</u>
             </a>

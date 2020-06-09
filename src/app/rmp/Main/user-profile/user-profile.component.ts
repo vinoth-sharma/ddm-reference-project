@@ -744,7 +744,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       jsonfinal["zone_area_selection"] = this.selected.zone_area_data
       jsonfinal["bac_selection"] = this.bacselectedItems
       jsonfinal["gmma_selection"] = this.selected.gmma_data
-      jsonfinal["lma_selection"] = this.bacselectedItems
+      jsonfinal["lma_selection"] = this.selected.lma_data
       jsonfinal["fan_selection"] = this.fanselectedItems
 
       this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')

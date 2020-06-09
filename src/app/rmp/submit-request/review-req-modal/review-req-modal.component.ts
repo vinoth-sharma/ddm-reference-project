@@ -18,7 +18,7 @@ export class ReviewReqModalComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<ReviewReqModalComponent>,
     private toaster: NgToasterComponent,
     public dialog: MatDialog,
-    public django : DjangoService,
+    public django: DjangoService,
     private router: Router,
     public submitService: SubmitRequestService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
@@ -107,8 +107,8 @@ export class ReviewReqModalComponent implements OnInit {
     });
   }
 
-  submitFile(){
-    if(this.data.selectedFile)
+  submitFile() {
+    if (this.data.selectedFile)
       this.django.ddm_rmp_file_data(this.data.selectedFile).subscribe(response => {
       }, err => {
       });
@@ -343,7 +343,7 @@ export class ReviewReqModalComponent implements OnInit {
     var doc = new jsPDF();
     doc.lineHeightProportion = 2;
     doc.fromHTML(
-      $('#summaryView').html(), 15, 15,
+      $('#print').html(), 15, 15,
       { 'width': 170, 'elementHandlers': specialElementHandlers },
       function () { doc.save(`summary-request.pdf`); }
     )

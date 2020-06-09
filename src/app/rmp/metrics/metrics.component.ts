@@ -1,14 +1,15 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { DjangoService } from 'src/app/rmp/django.service';
-import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
-import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { DatePipe } from '@angular/common';
 import * as Rx from 'rxjs';
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
+declare var $: any;
+
+import { DjangoService } from 'src/app/rmp/django.service';
+import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { DataProviderService } from 'src/app/rmp/data-provider.service';
 import Utils from '../../../utils';
-declare var $: any;
 
 @Component({
   selector: 'app-metrics',
@@ -185,6 +186,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
   public ngOnInit() {
     this.generated_report_service.changeButtonStatus(false);
     // get all admin details
+    Utils.showSpinner();
     this.django.getAllAdmins().subscribe(element => {
       if (element) {
         element['admin_list'].forEach(ele => {
@@ -229,8 +231,10 @@ export class MetricsComponent implements OnInit, AfterViewInit {
             const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Other'];
             this.reports[i]['frequency_data_filtered'] =
               this.reports[i]['frequency_data'].filter(element => !days.includes(element));
+            this.reports[i]['description'] = this.reports[i]['frequency_data_filtered'];
           }
         }
+        Utils.hideSpinner();
       }
     });
   }
@@ -381,14 +385,18 @@ export class MetricsComponent implements OnInit, AfterViewInit {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
+      const transformedData = reportBody.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
+      const colA = wb.cell("A2").value(transformedData);
+
       workbook.outputAsync().then(function (blob) {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           window.navigator.msSaveOrOpenBlob(blob,
             fileName + EXCEL_EXTENSION
           );
-        } else {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
+        }
+        else {
+          var url = window.URL.createObjectURL(blob);
+          var a = document.createElement("a");
           document.body.appendChild(a);
           a.href = url;
           a.download = fileName + EXCEL_EXTENSION;

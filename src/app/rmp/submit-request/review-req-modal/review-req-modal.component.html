@@ -6,8 +6,7 @@
                 <div class="">Review Report Request </div>
             </div>
             <div class="alignCenter">
-                <mat-icon style="margin-right: 15px;cursor:pointer;" matTooltip="Download Summary"
-                    (click)="downloadSummary()">get_app</mat-icon>
+                <mat-icon style="margin-right: 15px;cursor:pointer;" matTooltip="Download Summary" (click)="downloadSummary()">get_app</mat-icon>
                 <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
             </div>
         </div>
@@ -62,15 +61,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom"
-                    *ngIf="otherReportCriteria.spclIdentifiers.length">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom" *ngIf="otherReportCriteria.spclIdentifiers.length">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
                             Special Identifiers:
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
-                        *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             {{ spcl.label }}
                         </div>
@@ -98,8 +95,7 @@
                             Order Criteria
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
-                        *ngFor="let ele of vehicleEvent.orderCriteria">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let ele of vehicleEvent.orderCriteria">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             {{ ele.label }}
                         </div>
@@ -112,13 +108,12 @@
                             Order Metrics
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
-                        *ngFor="let metrics of vehicleEvent.orderMetrics">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let metrics of vehicleEvent.orderMetrics">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            {{  metrics.label }}
+                            {{ metrics.label }}
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
-                            {{  metrics.data.toString() }}
+                            {{ metrics.data.toString() }}
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="vehicleEvent.keyData_start">
@@ -156,8 +151,7 @@
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom ">
                         Dealer Allocation Selections:
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
-                        *ngFor="let ele of dealerAlloc.consensusProcess">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let ele of dealerAlloc.consensusProcess">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             {{ ele.label }}
                         </div>
@@ -183,3 +177,99 @@
         </div>
     </div>
 </div>
+
+
+<pre class="container-fluid" style="height: auto;display: none" id="print">
+    <pre>
+        <h1>Review Report Request</h1>
+    </pre>
+<pre style="width: 100%;float: left;margin-bottom: 10px;">
+        <pre class="div-wrap">
+            <b>Request Date:</b> &nbsp;&nbsp;
+            <span>{{ reqDetails.reqDate | date: 'dd-MMM-yyyy' }}&nbsp;&nbsp;</span>
+        </pre>
+<pre class="div-wrap">
+            <b>Request Number:</b> &nbsp;&nbsp;
+            <span>{{ reqDetails.reqId }}&nbsp;&nbsp;</span>
+        </pre>
+<pre class="div-wrap">
+            <b>Title:</b> &nbsp;&nbsp;
+            <span>{{ reqDetails.title }}&nbsp;&nbsp;</span>
+        </pre>
+</pre>
+<pre class="Request-summary">
+        
+    <pre class="div-wrap">
+        <b>Market Selections:</b> &nbsp;&nbsp;
+        <b>Market(s) Selected:</b> &nbsp;&nbsp;
+        <span *ngFor="let market of marketData">
+            {{ market.label }}&nbsp;&nbsp;
+            {{ market.data.toString() }}
+        </span>
+    </pre>
+<pre class="div-wrap">
+            <b>Frequency of Reports:</b> &nbsp;&nbsp;
+            <span>{{ otherReportCriteria.freq }}&nbsp;&nbsp;</span>
+    </pre>
+<pre class="div-wrap">
+            <b>Special Identifiers:</b> &nbsp;&nbsp;
+            <span *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
+                    {{ spcl.label }}&nbsp;&nbsp;
+                    {{ spcl.data.toString() }}
+            </span>
+    </pre>
+<pre class="div-wrap">
+            <b>Would you need Text Notifications when Requests are fulfilled?:</b> &nbsp;&nbsp;
+            <span> {{ otherReportCriteria.textNotification }}&nbsp;&nbsp;</span>
+    </pre>
+
+<pre class="div-wrap" *ngIf="reqDetails.type === 'ots'">
+        <b style="font-size:150%">Vehicle Event Status Data</b>
+        <b style="font-size:150%">Order Criteria</b><br><br>
+        <pre class="div-wrap" *ngFor="let ele of vehicleEvent.orderCriteria">
+            <b>{{ ele.label }}:</b> &nbsp;&nbsp;
+            <span> {{ ele.data.toString() }}&nbsp;&nbsp;</span>
+        </pre>
+<b style="font-size:120%">Order Metrics</b>
+<br>
+<pre class="div-wrap" *ngFor="let metrics of vehicleEvent.orderMetrics">
+                <b>{{  metrics.label }}:</b>  
+                <span>{{  metrics.data.toString() }}&nbsp;&nbsp;</span>
+            </pre>
+<pre class="div-wrap" *ngIf="vehicleEvent.keyData_start">
+                <b> Key Data Elemet Date Range:</b> <br>
+                <pre class="div-wrap">
+                    <b>Start:</b> &nbsp;&nbsp;
+                    <span>{{ vehicleEvent.keyData_start | date: 'dd-MMM-yyyy' }}&nbsp;&nbsp;</span>
+                </pre>
+<pre class="div-wrap">
+                    <b>End:</b> &nbsp;&nbsp;
+                    <span>{{ vehicleEvent.keyData_end | date: 'dd-MMM-yyyy' }}&nbsp;&nbsp;</span>
+                </pre>
+</pre>
+</pre>
+<pre class="div-wrap" *ngIf="vehicleEvent.dosp_start">
+        <b> DOSP Date Range:</b> <br>
+        <pre class="div-wrap">
+            <b>Start:</b> &nbsp;&nbsp;
+            <span>{{ vehicleEvent.dosp_start | date: 'dd-MMM-yyyy' }}&nbsp;&nbsp;</span>
+        </pre>
+<pre class="div-wrap">
+            <b>End:</b> &nbsp;&nbsp;
+            <span>{{ vehicleEvent.dosp_end | date: 'dd-MMM-yyyy' }}&nbsp;&nbsp;</span>
+        </pre>
+</pre>
+<pre class="div-wrap" *ngIf="reqDetails.type === 'da'">
+        <b> Dealer Allocation Selections:</b> <br>
+        <pre *ngFor="let ele of dealerAlloc.consensusProcess">
+            <b>{{ ele.label }}:</b> &nbsp;&nbsp;
+            <span> {{ ele.data.toString() }}&nbsp;&nbsp;</span>
+        </pre>
+</pre>
+
+<pre class="div-wrap">
+        <b>Additional Requirements:</b> &nbsp;&nbsp;
+        <span>{{ reqDetails.addReq }}&nbsp;&nbsp;</span>
+    </pre>
+</pre>
+</pre>

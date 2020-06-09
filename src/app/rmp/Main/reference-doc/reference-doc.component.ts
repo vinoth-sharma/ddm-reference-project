@@ -1,10 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import * as Rx from "rxjs";
+
 import { DjangoService } from 'src/app/rmp/django.service';
-import Utils from "../../../../utils";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
-import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import Utils from "../../../../utils";
 
 @Component({
   selector: 'app-reference-doc',
@@ -130,7 +131,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
-        if(this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
+        if (this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
         else this.config.toolbar = false;
       }
     })
@@ -276,7 +277,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
   public getLink(index) {
     Utils.showSpinner();
     this.django.get_doc_link(index).subscribe(ele => {
-      var url = ele['data']['url']
+      var url = ele['data']['url'];
       Utils.hideSpinner();
       window.location.href = url
     }, err => {
@@ -323,7 +324,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     let dupeFileName = this.isRef.docs.find(item => item.uploaded_file_name == link_title)
     if ((duplicateName || dupeFileName)) {
       let eid = duplicateName ? duplicateName['ddm_rmp_desc_text_reference_documents_id'] : undefined;
-      if (eid != this.editid || dupeFileName) {
+      if (eid != this.editid && dupeFileName) {
         document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
         document.getElementById("errorTrigger").click();
         return
@@ -417,10 +418,29 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     this.upload("")
   }
 
+  public renameFile(files: FileList) {
+    var reader = new FileReader();
+    reader.readAsText(files.item(0), 'UTF-8');
+    let self = this;
+    reader.onload = function (event) {
+      self.createNewFile(event.target['result'], files.item(0));
+    }
+  }
+
+  public createNewFile(value, file) {
+    let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    if (document_title === '') {
+      document.getElementById("errorModalMessage").innerHTML = "<h5>please enter document name</h5>";
+      document.getElementById("errorTrigger").click()
+    } else {
+      this.file = new File([value], document_title, { type: file.type, lastModified: file.lastModified });
+    }
+  }
+
   public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
 
-    if (this.file['type'] == '.csv' || this.file['type'] == '.doc' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
+    if (this.file['type'] == 'text/csv' || this.file['type'] == 'application/msword' || this.file['type'] == 'application/vnd.ms-word.document.macroEnabled.12' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       var formData = new FormData();
       formData.append('file_upload', this.file);

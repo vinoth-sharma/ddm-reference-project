@@ -1,0 +1,4 @@
+::ng-deep #emailChips .mat-chip-list-wrapper {
+    max-height: 360px;
+    overflow-y: auto;
+}

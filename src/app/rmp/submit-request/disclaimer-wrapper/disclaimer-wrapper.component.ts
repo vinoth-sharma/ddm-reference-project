@@ -59,7 +59,7 @@ export class DisclaimerWrapperComponent implements OnInit {
 
   }
 
-  updateSubmitRequestDesc(): void {
+  public updateSubmitRequestDesc(): void {
     Utils.showSpinner();
     this.subReqService.getHttpLookUpTableData().subscribe(res => {
       this.l_lookupTableData = res.data;
@@ -76,14 +76,15 @@ export class DisclaimerWrapperComponent implements OnInit {
 
   ngAfterViewInit() {
     if (this.user_role != "Admin" && !this.userData.disclaimer_ack) {
-      this.openDisclaimerModal()
+      this.openDisclaimerModal(false)
     }
   }
 
   // open disclaimer modal
-  openDisclaimerModal() {
+  public openDisclaimerModal(enableCloseButton?) {
+    let enableButtonData = { enableButton: (enableCloseButton == false) ? enableCloseButton : true }
     let dialogRef = this.dialog.open(DisclaimerModalComponent, {
-      data: "", disableClose: true
+      data: enableButtonData, disableClose: true
     })
     dialogRef.afterClosed().subscribe(result => {
       this.userData.disclaimer_ack = result
@@ -91,21 +92,32 @@ export class DisclaimerWrapperComponent implements OnInit {
   }
 
   // open disclaimer help modal
-  openDisclaimerHelpModal() {
+  public openDisclaimerHelpModal() {
     this.dialog.open(DisclaimerHelpModalComponent, {
       data: "", disableClose: true
     })
   }
 
   // save description
-  saveSubmitReqDesc() {
+  public saveSubmitReqDesc() {
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDescObj).subscribe(response => {
-      Utils.hideSpinner()
+      Utils.hideSpinner();
+      this.showEditOption = true;
       this.toaster.success("Updated Successfully");
+      this.updateSubmitRequestDesc();
     }, err => {
       Utils.hideSpinner()
       this.toaster.error("Server Error");
     })
+  }
+
+  //cancel save desc
+  cancelSubmitReq(){
+    this.l_lookupTableData.desc_text.forEach(element => {
+      if (element.ddm_rmp_desc_text_id === 3)
+        this.submitReqDescObj.description = element.description
+    });
+    this.showEditOption =  true;
   }
 
 }

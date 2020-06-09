@@ -1,22 +1,22 @@
-<div class="flex-container row tool-body">
+<div class="tool-body">
   <div *ngIf="reports" class="main-tool-body">
     <div class="wrapper" style="height:100%;padding: 0 1vw 0 1vw;">
-      <div class="row" style="width:100%">
-        <div class="col-2 center-content" style="justify-content: flex-start;margin-top:-5px;">
-          <h3>Reports</h3>
+      <div class="heading">
+        <div class="col-xs-3 pl-0 title-position">
+          <h3 class="mt-0"><b>Reports</b></h3>
         </div>
-        <div class="col-4">
-          <input (input)="filterData()" placeholder="Insert Keywords/Request Number here " class="form-control"
+        <div class="col-xs-6 search-global">
+          <input (input)="filterData()" placeholder="Insert Keywords/Request Number here " class="form-control m-0"
             [(ngModel)]="filters.global" name="global">
         </div>
-        <div class="col-6">
+        <div class="col-xs-3">
           <div class="icons">
             <div class="press">
               <a (click)="xlsxJson()" style="cursor:pointer">
                 <i id="ic" class="material-icons">get_app</i>
               </a>
               <button data-toggle="modal" data-backdrop="static" data-target="#helpModal"
-                style="background-color:white; border:none;padding-right:0px;margin-left: 8px;">
+                style="background-color:white; border:none;margin-left: 8px;">
                 <a data-toggle="tooltip" title="HELP" style="margin-top:5px">
                   <i id="ic" class="material-icons">help_outline</i>
                 </a>
@@ -47,7 +47,7 @@
                     <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Enter Request no" class="form-control"
+                    <input (input)="filterData()" placeholder="Search" class="form-control"
                       [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id">
                   </div>
                 </div>
@@ -59,7 +59,7 @@
                     <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
                     <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                   </div>
-                  <input (input)="filterData()" placeholder="Enter Date" class="form-control"
+                  <input (input)="filterData()" placeholder="Search" class="form-control"
                     [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
                 </div>
               </th>
@@ -71,8 +71,8 @@
                     <div *ngIf="reports['title']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Enter Title" class="form-control"
-                      [(ngModel)]="filters.title" name="filters.title">
+                    <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.title"
+                      name="filters.title">
                   </div>
                 </div>
               </th>
@@ -84,7 +84,7 @@
                     <div *ngIf="reports['report_name']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Enter DDM Name" class="form-control"
+                    <input (input)="filterData()" placeholder="Search" class="form-control"
                       [(ngModel)]="filters.report_name" name="filters.report_name">
                   </div>
                 </div>
@@ -97,7 +97,7 @@
                     <div *ngIf="reports['frequency']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="filterData()" placeholder="Enter Frequency" class="form-control"
+                    <input (input)="filterData()" placeholder="Search" class="form-control"
                       [(ngModel)]="filters.frequency" name="filters.frequency">
                   </div>
                 </div>
@@ -199,21 +199,20 @@
                   <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" [title]="element.link_to_results"
                     (click)="openNewWindow(element.link_to_results)" *ngIf="element.link_to_results != ''"
                     style="margin-bottom: 7px;width:80px">
-                    Url&nbsp;&nbsp;&#10145;
+                    Go to Url
                   </button>
                   <button [cssBtn]="'ok'" style="width:80px" mat-raised-button class="table-buttons" data-toggle="modal"
                     data-backdrop="static" data-target="#addUrl" (click)="addLinkUrl(element,'create')"
                     *ngIf="element.link_to_results == ''&& user_role =='Admin'">
-                    <span> Url <span class="material-icons" style="font-size: 100%;color:white;position: relative;
-                      top: 2px;font-weight: 1000;">add</span></span>
+                    <span>Add Url
+                    </span>
                   </button>
                   <button *ngIf="element.link_to_results != '' && user_role =='Admin'" [cssBtn]="'mid'"
                     mat-raised-button class="table-buttons" style="width:80px" data-toggle="modal"
                     data-backdrop="static" data-target="#addUrl" (click)="addLinkUrl(element,'edit')">
-                    <span>Edit <span class="material-icons" style="font-size: 100%;color:white;position: relative;
-                      top: 2px;">create</span></span>
+                    <span>Edit Url
+                    </span>
                   </button>
-
                 </div>
               </td>
               <td>
@@ -229,7 +228,7 @@
           </tbody>
         </table>
       </div>
-      <div style="padding-top: 0.7%;">
+      <div>
         <mat-paginator [length]="reports.length" [pageSize]="paginatorpageSize" [pageSizeOptions]="paginatorOptions"
           (page)="onPaginationChange($event)">
         </mat-paginator>
@@ -259,7 +258,8 @@
               <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="edit_True()"
                 *ngIf="editModes">Cancel</button>
             </div>
-            <div class="col-3" class="center-content" style="justify-content: flex-end !important;width: 100%;padding-right: 1.5vw;">
+            <div class="col-3" class="center-content"
+              style="justify-content: flex-end !important;width: 100%;padding-right: 1.5vw;">
               <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)='editEnable()'
                 style="background-color:white;border: none;">
                 <a data-toggle="tooltip" title="EDIT">
@@ -468,10 +468,11 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header" style="justify-content: flex-start;">
-          <div class="row modal-title">
+          <div class="row modal-title" style='width:100%;'>
 
             <div class="col-sm-10 modal-heading">
-              <b>Distribution DataMart (DDM) Report Request Confirmation</b>
+              <b style="font-size: 110%;">Distribution DataMart</b><br>
+              <b style="font-size: 110%;">Report Request Confirmation</b>
               <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">
                 Vehicle Event Status</div>
               <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer

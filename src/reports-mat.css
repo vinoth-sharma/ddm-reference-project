@@ -29,6 +29,7 @@
 }
 .custom-bar{
     background-color: white !important;
+    color: black;
 }
 
 #select-report-criteria .mat-checkbox-inner-container,

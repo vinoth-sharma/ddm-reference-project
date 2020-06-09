@@ -27,7 +27,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public code: any;
   public te_number: any;
   public textChange = false;
-  @ViewChild('body_content')imageDiv;
+  @ViewChild('body_content') imageDiv;
 
   public editorData(arg0: string, editorData: any): any {
     throw new Error("Method not implemented.");
@@ -1103,11 +1103,11 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public changeSaveSettings() {
     this.changed_settings = true;
   }
-// to download a img of selected options
-  public downloadMarkedSelection(){
+  // to download a img of selected options
+  public downloadMarkedSelection() {
     let fileName = "user_selection"
-    html2Canvas($('#body_content')[0]).then((canvas)=>{
-     var a = document.createElement('a')
+    html2Canvas($('#body_content')[0]).then((canvas) => {
+      var a = document.createElement('a')
       a.href = canvas.toDataURL('image/png');
       a.download = fileName;
       a.click()

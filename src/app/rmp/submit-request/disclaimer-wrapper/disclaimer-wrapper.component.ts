@@ -59,7 +59,7 @@ export class DisclaimerWrapperComponent implements OnInit {
 
   }
 
-  updateSubmitRequestDesc(): void {
+  public updateSubmitRequestDesc(): void {
     Utils.showSpinner();
     this.subReqService.getHttpLookUpTableData().subscribe(res => {
       this.l_lookupTableData = res.data;
@@ -81,7 +81,7 @@ export class DisclaimerWrapperComponent implements OnInit {
   }
 
   // open disclaimer modal
-  openDisclaimerModal(enableCloseButton?) {
+  public openDisclaimerModal(enableCloseButton?) {
     let enableButtonData = { enableButton: (enableCloseButton == false) ? enableCloseButton : true }
     let dialogRef = this.dialog.open(DisclaimerModalComponent, {
       data: enableButtonData, disableClose: true
@@ -92,14 +92,14 @@ export class DisclaimerWrapperComponent implements OnInit {
   }
 
   // open disclaimer help modal
-  openDisclaimerHelpModal() {
+  public openDisclaimerHelpModal() {
     this.dialog.open(DisclaimerHelpModalComponent, {
       data: "", disableClose: true
     })
   }
 
   // save description
-  saveSubmitReqDesc() {
+  public saveSubmitReqDesc() {
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDescObj).subscribe(response => {
       Utils.hideSpinner()
       this.toaster.success("Updated Successfully");

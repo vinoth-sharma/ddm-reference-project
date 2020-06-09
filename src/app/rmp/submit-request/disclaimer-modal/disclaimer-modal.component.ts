@@ -72,7 +72,7 @@ export class DisclaimerModalComponent implements OnInit {
     });
   }
 
-  acknowledgeDisclaimer() {
+  public acknowledgeDisclaimer() {
     this.disclaimerAckObj.disclaimer_ack = new Date();
     Utils.showSpinner();
     this.django.user_info_disclaimer(this.disclaimerAckObj).subscribe(response => {
@@ -85,7 +85,7 @@ export class DisclaimerModalComponent implements OnInit {
     })
   }
 
-  confirmDisclaimerSubmit() {
+  public confirmDisclaimerSubmit() {
     let obj = {
       confirmation: false,
       modalTitle: 'Confirmation for changes in Disclaimer',
@@ -101,7 +101,7 @@ export class DisclaimerModalComponent implements OnInit {
     });
   }
 
-  submitReqDisclaimerDesc() {
+  public submitReqDisclaimerDesc() {
     Utils.showSpinner();
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDisclaimerObj).subscribe((response: any) => {
       Utils.hideSpinner()
@@ -113,7 +113,7 @@ export class DisclaimerModalComponent implements OnInit {
     })
   }
 
-  downloadDisclaimer() {
+  public downloadDisclaimer() {
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
@@ -134,7 +134,7 @@ export class DisclaimerModalComponent implements OnInit {
     )
   }
 
-  closeDailog(): void {
+  public closeDailog(): void {
     this.dialogRef.close();
   }
 }

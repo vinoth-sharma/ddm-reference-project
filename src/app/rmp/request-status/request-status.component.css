@@ -597,3 +597,8 @@ table,td{
 .comment-icon {
   padding-left: 0vh;
  }
+
+.table-padding {
+  padding-left: 0.5vw;
+  padding-right: 0.5vw;
+}

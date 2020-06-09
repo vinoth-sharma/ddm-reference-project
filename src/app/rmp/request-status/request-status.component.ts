@@ -283,7 +283,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         this.user_name = role["first_name"] + " " + role["last_name"];
         this.user_role = role["role"];
         this.self_email = role["email"];
-        if(this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
+        if (this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
         else this.config.toolbar = false;
       }
     });
@@ -514,8 +514,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       if (ele.ddm_rmp_post_report_id === element.ddm_rmp_post_report_id) {
         this.finalData = [ele];
         ele.isChecked = event.target.checked;
-        // if (event.target.checked)
-        //   localStorage.setItem('report_id', element.ddm_rmp_post_report_id);
       } else ele.isChecked = false;
     });
   }

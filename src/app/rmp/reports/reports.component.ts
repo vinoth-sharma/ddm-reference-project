@@ -277,7 +277,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    */
   public changeReportName(event: any, reportObject) {
     const changedReport = {};
-  
     if (!reportObject.report_name || !reportObject.report_name.length) {
       reportObject.report_name = reportObject.report_name_old;
       this.toasterService.error('Cannot save empty name');
@@ -459,14 +458,12 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     })
   }
 
-  // // used to set typeval property of reports
-  // public sort(typeVal) {
-  //   console.log(typeVal, 'typeVal----------***********')
-  //   this.param = typeVal;
-  //   this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
-  //   console.log(this.reports[typeVal], 'typeVal---reports==========');
-  //   this.orderType = this.reports[typeVal];
-  // }
+  // used to set typeval property of reports
+  public sort(typeVal) {
+    this.param = typeVal;
+    this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
+    this.orderType = this.reports[typeVal];
+  }
 
   // formating date 
   public dateFormat(str: any) {
@@ -825,7 +822,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   // parsing filters into obj
   public filterData() {
-    console.log(this.filters, 'filters--------------');
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 

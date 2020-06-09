@@ -251,7 +251,7 @@
                   style="width: 115px !important;">
                   {{element.status}}
                 </div>
-                <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
+                <div *ngIf="element.status == 'Recurring'" style="min-width: 135px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
                     <button [cssBtn]="'mid'" mat-raised-button class="table-buttons"
@@ -282,23 +282,18 @@
                   <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" [title]="element.link_to_results"
                     style="margin-bottom: 7px;width:80px" (click)="openNewWindow(element.link_to_results)"
                     *ngIf="element.link_to_results != '' && element.status=='Completed'">Go to Url
-                    <!-- &nbsp;<span class="material-icons" style="font-size: 100%;color:white;position: relative;top: -2px;font-weight: 1000;">arrow_forward</span> -->
                   </button>
 
                   <button [cssBtn]="'ok'" mat-raised-button class="table-buttons" data-toggle="modal"
                     data-target="#addUrl" data-backdrop="static" (click)="addLinkUrl(element,'create')"
                     *ngIf="element.link_to_results == '' && element.status=='Completed' && user_role =='Admin'">
                     <span>Add Url
-                      <!-- <span class="material-icons" style="font-size: 100%;color:white;position: relative;
-                      top: 7px;font-weight: 1000;">add</span> -->
                     </span>
                   </button>
                   <button *ngIf="element.link_to_results != '' && element.status=='Completed' && user_role =='Admin'"
                     style="border:80px" [cssBtn]="'mid'" mat-raised-button class="table-buttons" data-toggle="modal"
                     data-target="#addUrl" data-backdrop="static" (click)="addLinkUrl(element,'edit')">
                     <span>Edit Url
-                      <!-- <span class="material-icons" style="font-size: 100%;color:white;position: relative;
-                      top: 7px;">create</span> -->
                     </span>
                   </button>
                 </div>
@@ -402,9 +397,6 @@
             <i id="ic" class="material-icons comment-icon">comment</i>
           </a>
         </button>
-        <!-- <button [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal" *ngIf="comment_text">
-          cancel
-        </button> -->
       </div>
     </div>
   </div>

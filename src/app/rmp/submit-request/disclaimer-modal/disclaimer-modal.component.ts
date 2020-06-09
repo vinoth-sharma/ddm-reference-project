@@ -42,6 +42,7 @@ export class DisclaimerModalComponent implements OnInit {
     disclaimer_ack: undefined
   }
   public user_role = "";
+  public enableCloseButton = true;
 
   constructor(public dialogRef: MatDialogRef<DisclaimerModalComponent>,
     public subReqService: SubmitRequestService,
@@ -52,11 +53,12 @@ export class DisclaimerModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+    this.enableCloseButton = this.data.enableButton
 
     Utils.showSpinner();
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
-        this.user_role = role["role"]
+        this.user_role = role["role"];
       }
     })
 
@@ -70,7 +72,7 @@ export class DisclaimerModalComponent implements OnInit {
     });
   }
 
-  acknowledgeDisclaimer() {
+  public acknowledgeDisclaimer() {
     this.disclaimerAckObj.disclaimer_ack = new Date();
     Utils.showSpinner();
     this.django.user_info_disclaimer(this.disclaimerAckObj).subscribe(response => {
@@ -83,7 +85,7 @@ export class DisclaimerModalComponent implements OnInit {
     })
   }
 
-  confirmDisclaimerSubmit() {
+  public confirmDisclaimerSubmit() {
     let obj = {
       confirmation: false,
       modalTitle: 'Confirmation for changes in Disclaimer',
@@ -99,18 +101,19 @@ export class DisclaimerModalComponent implements OnInit {
     });
   }
 
-  submitReqDisclaimerDesc() {
+  public submitReqDisclaimerDesc() {
     Utils.showSpinner();
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDisclaimerObj).subscribe((response: any) => {
       Utils.hideSpinner()
       this.toaster.success(response.message);
+      this.closeDailog();
     }, err => {
       Utils.hideSpinner()
       this.toaster.error("Server Error");
     })
   }
 
-  downloadDisclaimer() {
+  public downloadDisclaimer() {
     var specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
@@ -131,7 +134,7 @@ export class DisclaimerModalComponent implements OnInit {
     )
   }
 
-  closeDailog(): void {
+  public closeDailog(): void {
     this.dialogRef.close();
   }
 }

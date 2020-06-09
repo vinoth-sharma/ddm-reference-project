@@ -1,6 +1,7 @@
 .body-content {
     padding-left: 1.5vw;
     padding-right: 1.5vw;
+    width: 100%;
 }
 
 .header {
@@ -82,7 +83,7 @@ td.col-9 {
     overflow-y: scroll;
 }
 
-.press{
+.press {
     font-size: 3rem;
 }
 
@@ -91,7 +92,7 @@ td.col-9 {
     border: none;
 }
 
-.icons{
+.icons {
     float: right;
 }
 
@@ -106,18 +107,18 @@ td.col-9 {
     font-size: 3rem;
 }
 
-.quillEditor{
+.quillEditor {
     position: relative;
     padding: 3px;
 }
 
-.carrier{
+.carrier {
     width: 10vw;
     border-radius: 3px;
     padding: 0 0.25vw 0 0.25vw;
 }
 
-.market-static{
+.market-static {
     margin-top:15px;
 }
 
@@ -125,7 +126,7 @@ td.col-9 {
     margin-bottom: 0px;
 }
 
-.input-group input{
+.input-group input {
     width: 8vw;
     margin-left: 5px;
     -webkit-text-security: disc;
@@ -165,7 +166,7 @@ hr {
     padding-top: 0.5vh;
 }
 
-.title-position{
+.title-position {
     margin-top: 0vh;
 }
 
@@ -178,7 +179,7 @@ hr {
     padding-left: 1vw;
 }
 
-.message-padding{
+.message-padding {
     padding-left : 1vw; 
 }
 

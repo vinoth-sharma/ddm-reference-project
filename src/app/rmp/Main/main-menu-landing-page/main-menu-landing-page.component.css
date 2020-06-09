@@ -94,7 +94,7 @@ a:active {
     height: 100%;
 }
 
-.quillEditor{
+.quillEditor {
     position: relative;
     padding: 4px;
     overflow: hidden;
@@ -114,6 +114,12 @@ h3 {
     margin-top: 0vh;
 }
 
+.icon-cont {
+    display: inline-block;
+    height: 100%;
+    position: relative;
+    width: 17px;
+}
 .notes-position {
     float: left;
 }

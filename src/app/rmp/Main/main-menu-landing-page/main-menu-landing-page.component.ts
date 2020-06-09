@@ -7,10 +7,10 @@ import { Router } from "@angular/router";
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
-declare var $: any;
-import { NotesWrapperComponent } from '../../admin-notes/notes-wrapper/notes-wrapper.component';
-import { DisplayNotesComponent } from '../../admin-notes/display-notes/display-notes.component';
 import { MatDialog } from '@angular/material/dialog';
+import { NotesWrapperComponent } from '../../admin-notes/notes-wrapper/notes-wrapper.component';
+declare var $: any;
+import { DisplayNotesComponent } from '../../admin-notes/display-notes/display-notes.component';
 
 @Component({
   selector: 'app-main-menu-landing-page',
@@ -39,6 +39,7 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   public user_role: string = '';
   public readOnlyContentHelper: boolean = true;
   public enableUpdateData: boolean = false;
+  public info
   public admin_notes: any = '';
   public db_end_date: any;
   public db_start_date: any;
@@ -168,6 +169,7 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
         Utils.hideSpinner();
       }
     })
+    this.getCurrentLookUpTable()
   }
 
   ngAfterViewInit() {
@@ -346,17 +348,17 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
       for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
         let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
         let urlElement = document.getElementById(i + 'url');
-        if (validUrl) {
+        if (this.validURL(this.LinkTitleURL.value[i].link) || validUrl) {
           urlElement.setAttribute('style', 'display: none !important');
-          this.LinkTitleURL.push(this.fb.group({
-            title: ['', Validators.required],
-            link: ['', Validators.required]
-          }));
         }
-        else {
+        else if (urlElement) {
           urlElement.setAttribute('style', 'display: block !important');
         }
       }
+      this.LinkTitleURL.push(this.fb.group({
+        title: ['', Validators.required],
+        link: ['', Validators.required]
+      }));
     } else {
       this.LinkTitleURL.push(this.fb.group({
         title: ['', Validators.required],
@@ -371,7 +373,10 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   }
 
   public route_url(url) {
-    this.router.navigateByUrl(url)
+    let urlList = this.auth_service.getListUrl();
+    let appUrl = urlList.find(link => link === url)
+    if (appUrl) this.router.navigateByUrl(url)
+    else window.open(url)
   }
 
   public saveChanges() {
@@ -380,7 +385,7 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
       for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
         let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
         let urlElement = document.getElementById(i + 'url');
-        if (!validUrl) {
+        if (!this.validURL(this.LinkTitleURL.value[i].link) && !validUrl) {
           return urlElement.setAttribute('style', 'display: block !important');
         }
       }
@@ -435,6 +440,45 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
         this.toastr.error("Server error encountered!");
       })
     }
+  }
+  // validates external linkes
+  validURL(str) {
+    var pattern = new RegExp('^(https?:\\/\\/)' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+    return pattern.test(str);
+  }
+
+  // shows/hides error messages 
+  showUrlError(i) {
+    let urlList = this.auth_service.getListUrl();
+    let urlElement = document.getElementById(i + 'url');
+    let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
+    if (!this.validURL(this.LinkTitleURL.value[i].link) && !validUrl) {
+      return urlElement.setAttribute('style', 'display: block !important');
+    } else {
+      return urlElement.setAttribute('style', 'display: none !important');
+    }
+
+  }
+
+  // to open important notes popup
+  public openAddNotes() {
+    this.dialog.open(NotesWrapperComponent, {
+      data: this.info.data.admin_note, disableClose: true
+    })
+  }
+
+  // to read lookup data from currentlookUpTableData observable
+  public getCurrentLookUpTable() {
+    this.dataProvider.currentlookUpTableData.subscribe(element => {
+      if (element) {
+        this.info = element;
+      }
+    })
   }
 
   // to get the important notes of admin

@@ -278,8 +278,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
    */
   public changeReportName(event: any, reportObject) {
     const changedReport = {};
-
-    if (!reportObject.report_name.length) {
+  
+    if (!reportObject.report_name || !reportObject.report_name.length) {
       reportObject.report_name = reportObject.report_name_old;
       this.toasterService.error('Cannot save empty name');
       reportObject.clicked = false;

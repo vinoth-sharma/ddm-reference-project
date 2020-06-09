@@ -113,3 +113,9 @@ a:active {
 h3 {
     margin-top: 0vh;
 }
+.icon-cont{
+    display: inline-block;
+    height: 100%;
+    position: relative;
+    width: 17px;
+}

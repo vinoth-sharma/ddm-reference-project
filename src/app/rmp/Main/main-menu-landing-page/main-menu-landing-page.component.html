@@ -6,6 +6,11 @@
       </div>
       <div class="icons">
         <div class="press">
+          <button mat-stroked-button [cssBtn]="'mid'" style="top:-10px" (click)="openAddNotes()">
+            <span class="icon-cont"> <i style="position: absolute;
+              font-size: 24px;" class="material-icons">add_circle_outline</i></span>
+            &nbsp; Add Important Notes
+          </button>
           <button *ngIf="user_role=='Admin'" (click)="notifyChildren()" id="main-edit">
             <a data-toggle="tooltip" title="EDIT">
               <i id="ic" class="material-icons">mode_edit</i>
@@ -157,7 +162,7 @@
                 <textarea class="form-control" formControlName="answer" rows="4" required="true"
                   maxlength="1000"></textarea>
               </div>
-              <div formArrayName="link_title_url">
+              <div formArrayName="link_title_url" style="height: 26vh;overflow: auto;">
                 <ng-container *ngFor="let item of LinkTitleURL.controls; let pointIndex=index"
                   [formGroupName]="pointIndex">
                   <div style="width: 40%;display:inline-block;">
@@ -172,9 +177,11 @@
                       URL
                       <span _ngcontent-c1="" class="mandatory-fields">*</span>:
                       <span>
-                        <span [id]="pointIndex+'url'" class="error-url">please enter valid URL</span>
+                        <span [id]="pointIndex+'url'" class="error-url">please enter valid URL <br>eg:"https://abc.com"
+                          or "/user/main/home"</span>
                       </span>
-                      <input class="form-control" formControlName="link" required="true" />
+                      <input class="form-control" (blur)="showUrlError(pointIndex)" formControlName="link"
+                        required="true" />
                     </label>
                   </div>
                   <div style="display: inline-block;">

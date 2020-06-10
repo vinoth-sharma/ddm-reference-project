@@ -31,20 +31,20 @@
     <div class="col-xs-6">
       <div class="text-notifications">
         <div class="row" title="After requests are fulfilled">
-          <div class="col-xs-8"><strong>Text Notification(Available for U.S. only) :</strong></div>
-          <div class="col-xs-2 pl-0">
+          <div class="col-xs-6"><strong>Text Notification(Available for U.S. only) :</strong></div>
+          <div class="col-xs-1 radio-yes-margin pl-0">
             <mat-radio-button id="notification_yes" type="radio" name="notification" (click)="enableNotificationBox()">
               <strong>Yes</strong>
             </mat-radio-button>
           </div>
-          <div class="col-xs-2 pl-0">
+          <div class="col-xs-1 radio-no-margin pl-0">
             <mat-radio-button id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()">
               <strong>No</strong>
             </mat-radio-button>
           </div>
         </div>
         <div class="row input-group" title="(For Ex: (555) 555-1234 should be 5555551234)">
-          <div class="col-xs-8">
+          <div class="col-xs-6">
             <p><b>Enter valid 10 digit phone number : </b></p>
           </div>
           <div class="col-xs-4">
@@ -52,7 +52,7 @@
               <input class="form-control" type="text" id="phone" name="phone" title="Phone No."
                 (keypress)='numberOnly($event)' [value]="text_number" [maxLength]='10'>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-4 visible-btn-padding">
               <i class="material-icons" (click)="showPassword()">
                 remove_red_eye
               </i>
@@ -60,10 +60,10 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-8">
+          <div class="col-xs-6">
             <p><b>Select Carrier for text notification :</b></p>
           </div>
-          <div class="col-xs-4 pl-0">
+          <div class="col-xs-4 minor-padding">
             <select class="carrier form-control" name="Year" id="carrier" (change)="carrier($event.target.value)">
               <option *ngFor="let element of carriers_pair" value={{element.carrierValue}}>{{element.carrierName}}
               </option>

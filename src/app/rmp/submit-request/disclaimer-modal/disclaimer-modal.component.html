@@ -25,7 +25,7 @@
         <button mat-raised-button [cssBtn]="'cancel'" (click)="showEditOption=true">Cancel</button>
       </ng-container>
     </div>
-    <quill-editor class="quill"(onEditorCreated)='check($event)' [(ngModel)]="submitReqDisclaimerObj.description" [modules]='config'
+    <quill-editor class="quill" [(ngModel)]="submitReqDisclaimerObj.description" [modules]='config'
       [readOnly]="showEditOption"></quill-editor>
   </div>
   <div class="modal-footer">

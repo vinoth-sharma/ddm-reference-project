@@ -276,7 +276,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
   public getLink(index) {
     Utils.showSpinner();
     this.django.get_doc_link(index).subscribe(ele => {
-      var url = ele['data']['url']
+      var url = ele['data']['url'];
       Utils.hideSpinner();
       window.location.href = url
     }, err => {
@@ -415,6 +415,25 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     (<HTMLInputElement>document.getElementById('document-url')).value = "";
     (<HTMLInputElement>document.getElementById('uploadCheckbox')).checked = false;
     this.upload("")
+  }
+
+  public renameFile(files: FileList) {
+    var reader = new FileReader();
+    reader.readAsText(files.item(0), 'UTF-8');
+    let self = this;
+    reader.onload = function(event) {
+      self.createNewFile(event.target['result'], files.item(0));
+    }
+  }
+  
+  public createNewFile(value, file) {
+    let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    if(document_title === '') {
+      document.getElementById("errorModalMessage").innerHTML = "<h5>please enter document name</h5>";
+      document.getElementById("errorTrigger").click()
+    } else {
+      this.file = new File([value], document_title, {type:file.type,lastModified: file.lastModified});
+    }
   }
 
   public files() {

@@ -7,12 +7,3 @@
     height: 74%;
     overflow: hidden;
 }
-
-/* ::ng-deep .quillEditor quill-editor .ql-container.ql-snow img{
-     width: 100%;
-} */
-
-.image-style {
-    height: 200px;
-    width: 200px;
-}

@@ -130,7 +130,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
-        if(this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
+        if (this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
         else this.config.toolbar = false;
       }
     })
@@ -421,18 +421,18 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     var reader = new FileReader();
     reader.readAsText(files.item(0), 'UTF-8');
     let self = this;
-    reader.onload = function(event) {
+    reader.onload = function (event) {
       self.createNewFile(event.target['result'], files.item(0));
     }
   }
-  
+
   public createNewFile(value, file) {
     let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-    if(document_title === '') {
+    if (document_title === '') {
       document.getElementById("errorModalMessage").innerHTML = "<h5>please enter document name</h5>";
       document.getElementById("errorTrigger").click()
     } else {
-      this.file = new File([value], document_title, {type:file.type,lastModified: file.lastModified});
+      this.file = new File([value], document_title, { type: file.type, lastModified: file.lastModified });
     }
   }
 

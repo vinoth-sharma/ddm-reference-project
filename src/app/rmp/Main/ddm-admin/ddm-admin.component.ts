@@ -112,9 +112,9 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
 
   public readOnlyContentHelper: boolean = true;
 
-  constructor(private django: DjangoService, public auth_service: AuthenticationService, 
-              private toastr: NgToasterComponent, private spinner: NgLoaderService, 
-              public dataProvider: DataProviderService) {
+  constructor(private django: DjangoService, public auth_service: AuthenticationService,
+    private toastr: NgToasterComponent, private spinner: NgLoaderService,
+    public dataProvider: DataProviderService) {
     this.editMode = false;
     this.getCurrentFiles();
     this.getCurrentTableLookupData();
@@ -228,7 +228,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
-        if(this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
+        if (this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
         else this.config.toolbar = false;
       }
     })
@@ -447,63 +447,63 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     var reader = new FileReader();
     reader.readAsText(files.item(0), 'UTF-8');
     let self = this;
-    reader.onload = function(event) {
+    reader.onload = function (event) {
       self.createNewFile(event.target['result'], files.item(0));
     }
   }
-  
+
   public createNewFile(value, file) {
     let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-    if(document_title === '') {
+    if (document_title === '') {
       document.getElementById("errorModalMessage").innerHTML = "<h5>please enter document name</h5>";
       document.getElementById("errorTrigger").click()
     } else {
-      this.file = new File([value], document_title, {type:file.type,lastModified: file.lastModified});
+      this.file = new File([value], document_title, { type: file.type, lastModified: file.lastModified });
     }
   }
 
- // upload file to server
- public files() {
-  if (this.file['type'] == '.csv' || this.file['type'] == '.doc' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
-    let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-    var formData = new FormData();
-    formData.append('file_upload', this.file);
-    formData.append('uploaded_file_name', document_title);
-    formData.append('flag', "is_admin");
-    formData.append('type', 'rmp');
+  // upload file to server
+  public files() {
+    if (this.file['type'] == '.csv' || this.file['type'] == '.doc' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
+      let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+      var formData = new FormData();
+      formData.append('file_upload', this.file);
+      formData.append('uploaded_file_name', document_title);
+      formData.append('flag', "is_admin");
+      formData.append('type', 'rmp');
 
-    this.spinner.show();
-    this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      this.django.get_files().subscribe(ele => {
-        this.filesList = ele['list'];
-        if (this.filesList) {
-          this.dataProvider.changeFiles(ele)
+      this.spinner.show();
+      this.django.ddm_rmp_file_data(formData).subscribe(response => {
+        this.django.get_files().subscribe(ele => {
+          this.filesList = ele['list'];
+          if (this.filesList) {
+            this.dataProvider.changeFiles(ele)
+          }
+        })
+        $("#document-url").attr('disabled', 'disabled');
+        this.spinner.hide();
+        $('#uploadCheckbox').prop('checked', false);
+        $("#attach-file1").val('');
+        this.toastr.success("Uploaded Successfully");
+        document.getElementById("close_modal").click()
+        if (this.editid) {
+          this.deleteDocument(this.editid, this.deleteIndex)
         }
-      })
-      $("#document-url").attr('disabled', 'disabled');
-      this.spinner.hide();
-      $('#uploadCheckbox').prop('checked', false);
-      $("#attach-file1").val('');
-      this.toastr.success("Uploaded Successfully");
-      document.getElementById("close_modal").click()
-      if (this.editid) {
-        this.deleteDocument(this.editid, this.deleteIndex)
-      }
-    }, err => {
-      this.spinner.hide();
-      $("#document-url").removeAttr('disabled');
-      $("#attach-file1").val('');
-      if (err && err['status'] === 400)
-        this.toastr.error("Submitted file is empty");
-      else
-        this.toastr.error("Server Error");
-      $('#uploadCheckbox').prop('checked', false);
-    });
+      }, err => {
+        this.spinner.hide();
+        $("#document-url").removeAttr('disabled');
+        $("#attach-file1").val('');
+        if (err && err['status'] === 400)
+          this.toastr.error("Submitted file is empty");
+        else
+          this.toastr.error("Server Error");
+        $('#uploadCheckbox').prop('checked', false);
+      });
+    }
+    else {
+      this.toastr.error(this.django.defaultUploadMessage)
+    }
   }
-  else {
-    this.toastr.error(this.django.defaultUploadMessage)
-  }
-}
 
 
   // setting a few properties of component

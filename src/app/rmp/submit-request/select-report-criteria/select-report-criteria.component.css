@@ -101,21 +101,3 @@
 .savenProceed{
     margin-top: 2vh;
 }
-
-.main {
-    padding: 3vh 1.5vw 3vh 1.5vw;
-}
-
-.heading {
-    width: 94.5vw;
-    float: left;
-    height: 100%;
-    padding-top: 1vh;
-    padding-left: 1.5vw;
-}
-
-.icons {
-    margin-left: 18vw;
-    padding-right: 0vw;
-    float: right;
-}

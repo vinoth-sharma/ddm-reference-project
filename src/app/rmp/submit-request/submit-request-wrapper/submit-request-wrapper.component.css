@@ -1,9 +1,12 @@
 
 .submit-request-wrapper{
+    width: calc(100% - 140px);
+    height: calc(100% - 70px);
+    margin: 35px 70px;
     background: white;
-    height: 80.5vh;
-    margin: 3vh;
-    box-shadow: 3px 3px 8px 2px #c3c3c3;
+    font-size: 2vh;
+    box-shadow: 0px 0px 4px lightgrey;
+    padding: 1.5vw;
 }
 .submit-request-header{
     display: flex;
@@ -18,4 +21,7 @@
 }
 :host ::ng-deep .mat-tab-label.mat-tab-disabled{
     color: black;
+}
+:host ::ng-deep .mat-tab-label{
+    font-size: inherit;
 }

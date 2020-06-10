@@ -6,7 +6,8 @@
       </div>
       <div class="icons">
         <div class="press">
-          <button mat-stroked-button [cssBtn]="'mid'" style="top:-10px" (click)="openAddNotes()" *ngIf="user_role=='Admin'">
+          <button mat-stroked-button [cssBtn]="'mid'" style="top:-10px" (click)="openAddNotes()"
+            *ngIf="user_role=='Admin'">
             <span class="icon-cont"> <i style="position: absolute;
               font-size: 24px;" class="material-icons">add_circle_outline</i></span>
             &nbsp; Add Important Notes
@@ -180,8 +181,7 @@
                         <span [id]="pointIndex+'url'" class="error-url">please enter valid URL <br>eg:"https://abc.com"
                           or "/user/main/home"</span>
                       </span>
-                      <input class="form-control" (blur)="showUrlError(pointIndex)" formControlName="link"
-                        required="true" />
+                      <input class="form-control" formControlName="link" required="true" />
                     </label>
                   </div>
                   <div style="display: inline-block;">

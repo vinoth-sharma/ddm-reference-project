@@ -91,8 +91,8 @@
       </div>
       <div class="col-xs-3 pl-0">
         <button [cssBtn]="'ok'" class="save-button btn" (click)="getSelectedMarkets()"
-          [disabled]="!changed_settings">Save
-          Settings</button>
+          [disabled]="!changed_settings">Save Settings
+        </button>
       </div>
     </div>
   </div>
@@ -106,7 +106,7 @@
       </div>
       <div class="col-xs-3 pl-0">
         <app-mat-multiselect [data]="divisiondropdownListfinal" [settings]="division_settings"
-          [(inputModel)]="selected.division_data">
+          [(inputModel)]="selected.division_data" (selectionDone)="changeSaveSettings()">
         </app-mat-multiselect>
       </div>
       <div class="col-xs-3 pl-0">
@@ -121,16 +121,17 @@
       </div>
       <div class="col-xs-3 pl-0">
         <app-mat-multiselect [data]="areadropdownListfinal" [settings]="area_settings"
-          [(inputModel)]="selected.zone_area_data">
+          [(inputModel)]="selected.zone_area_data" (selectionDone)="changeSaveSettings()">
         </app-mat-multiselect>
       </div>
       <div class="col-xs-3 pl-0">
         <app-mat-multiselect [data]="gmmadropdownListfinal" [settings]="gmma_settings"
-          [(inputModel)]="selected.gmma_data">
+          [(inputModel)]="selected.gmma_data" (selectionDone)="changeSaveSettings()">
         </app-mat-multiselect>
       </div>
       <div class="col-xs-3 pl-0">
-        <app-mat-multiselect [data]="lmadropdownListfinal" [settings]="lma_settings" [(inputModel)]="selected.lma_data">
+        <app-mat-multiselect [data]="lmadropdownListfinal" [settings]="lma_settings" [(inputModel)]="selected.lma_data"
+          (selectionDone)="changeSaveSettings()">
         </app-mat-multiselect>
       </div>
     </div>

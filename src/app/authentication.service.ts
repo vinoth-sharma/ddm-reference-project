@@ -73,7 +73,8 @@ export class AuthenticationService {
                 "user/submit-request/order-to-sale",
                 "user/request-status",
                 "user/reports",
-                "user/metrics"
+                "user/metrics",
+                "user/disclaimer"
               ];
     return urls;
   }

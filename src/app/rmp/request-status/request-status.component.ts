@@ -237,6 +237,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     'remove-table': 'Remove selected table',
     'help': 'Show help'
   };
+  public updateDLReportId: number;
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -1281,12 +1282,12 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     if (this.finalData.length == 1 && (this.finalData[0].status != "Cancelled" || this.finalData[0].status != "Completed")) {
       $('#DistributionListModal').modal({ backdrop: "static", keyboard: true, show: true });
       Utils.showSpinner();
-      let reportID = this.finalData[0]['ddm_rmp_post_report_id']
-      this.django.get_report_description(reportID).subscribe(element => {
+      this.updateDLReportId = this.finalData[0]['ddm_rmp_post_report_id']
+      this.django.get_report_description(this.updateDLReportId).subscribe(element => {
         if (element["dl_list"].length) {
           element["dl_list"].map(element => {
             this.contacts.push(element.distribution_list);
-            this.dl_update.request_id = reportID;
+            this.dl_update.request_id = this.updateDLReportId;
             this.dl_update.dl_list = this.contacts;
           })
         }
@@ -1313,6 +1314,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   // update the modified distributiion list
   public updateDL() {
     Utils.showSpinner();
+    this.dl_update.request_id = this.updateDLReportId;
+    this.dl_update.dl_list = this.contacts;
     this.django.report_distribution_list(this.dl_update).
       subscribe(response => {
         this.toastr.success("Distribution List updated");

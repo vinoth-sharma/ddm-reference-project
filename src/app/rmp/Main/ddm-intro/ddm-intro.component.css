@@ -8,27 +8,21 @@
 }
 
 .main-tool-body-header {
-    height: 10%;
-    width: 95%;
-    margin-left: 0.5vw;
-    -webkit-print-color-adjust: exact
-}
-
-.main-tool-body-content {
-    height: 88%;
-    width: 91vw;
+    height: 7vh;
+    margin-top: 2vh;
     margin-left: 1.5vw;
     -webkit-print-color-adjust: exact
 }
 
- /* changes done Ganesha */
-::ng-deep .main-tool-body-content .quill .ql-container .ql-editor {
-        overflow-y: auto;
-        max-height: 53vh;
+.main-tool-body-content {
+    -webkit-print-color-adjust: exact;
+    margin-left: 1.5vw
 }
 
-.information {
-    padding-top: 7vh;
+ /* changes done Ganesha */
+::ng-deep .quill .ql-container .ql-editor {
+        overflow-y: auto;
+        max-height: 50vh;
 }
 
 .editButton {
@@ -36,14 +30,6 @@
     border: none;
     float: right;
     padding-right:0px;
-}
-
-.heading {
-    width: 92vw;
-    float: left;
-    height: 100%;
-    padding-left: 1vw;
-    padding-top: 1vh;
 }
 
 .caption-style {
@@ -55,7 +41,7 @@
     height: 100%;
     float: right;
     align-content: center;
-    padding-left: 18vw;
+    padding-left: 14vw;
     padding-right: 0vw;
 }
 
@@ -81,7 +67,6 @@ b {
 }
 
 .press {
-    height: 100%;
     width: fit-content;
     font-size: 2em;
     float: left;

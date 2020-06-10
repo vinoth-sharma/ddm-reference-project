@@ -100,6 +100,9 @@ export class DisclaimerWrapperComponent implements OnInit {
 
   // save description
   public saveSubmitReqDesc() {
+    if (!this.submitReqDescObj.description)
+      this.submitReqDescObj.description = '<p></p>';
+
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDescObj).subscribe(response => {
       Utils.hideSpinner();
       this.showEditOption = true;

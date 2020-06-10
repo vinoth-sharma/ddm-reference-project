@@ -6,11 +6,9 @@ import * as _moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { AdditionalReqModalComponent } from '../additional-req-modal/additional-req-modal.component';
 import { AuthenticationService } from 'src/app/authentication.service';
-import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { SubmitRequestService } from "../submit-request.service";
 import { DataProviderService } from '../../data-provider.service';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ReviewReqModalComponent } from '../review-req-modal/review-req-modal.component';
 
@@ -26,7 +24,6 @@ const MY_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
-
 
 @Component({
   selector: 'app-vehicle-event-status',
@@ -148,7 +145,6 @@ export class VehicleEventStatusComponent implements OnInit {
   constructor(public matDialog: MatDialog,
     private dataProvider: DataProviderService,
     public ngToaster: NgToasterComponent,
-    private router: Router,
     public submitService: SubmitRequestService,
     public auth_service: AuthenticationService,
     public ngZone: NgZone,
@@ -382,7 +378,7 @@ export class VehicleEventStatusComponent implements OnInit {
     else if (!this.keyDataEle.others.checked && !this.keyDataEle.selected.length) {
       this.ngToaster.error("Please enter the Key Data Elements.")
     }
-    else if(!this.req_body.data_date_range.StartDate){
+    else if (!this.req_body.data_date_range.StartDate) {
       this.ngToaster.error("Please select the date range for Key Data Elements.")
     }
     else {
@@ -731,4 +727,3 @@ export class VehicleEventStatusComponent implements OnInit {
     this.subjectSubscription.unsubscribe();
   }
 }
-

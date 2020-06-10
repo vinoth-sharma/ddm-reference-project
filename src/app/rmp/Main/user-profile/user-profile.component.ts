@@ -11,6 +11,7 @@ import { FormControl } from '@angular/forms';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 import * as html2Canvas from 'html2canvas'
+declare var jsPDF: any;
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -1109,8 +1110,11 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     html2Canvas($('#body_content')[0]).then((canvas) => {
       var a = document.createElement('a')
       a.href = canvas.toDataURL('image/png');
-      a.download = fileName;
-      a.click()
+      var doc = new jsPDF({
+        unit: 'px', format: 'a2'
+      });
+      doc.addImage(canvas.toDataURL('image/png'), 'png', 25, 25)
+      doc.save(fileName)
     })
 
   }

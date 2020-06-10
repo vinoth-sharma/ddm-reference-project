@@ -342,29 +342,10 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
 
   // add new link based on validate previous link
   public addLinkTitleURL() {
-    let urlList = this.auth_service.getListUrl();
-    if (this.LinkTitleURL.value.length > 0) {
-      for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
-        let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
-        let urlElement = document.getElementById(i + 'url');
-        if (this.validURL(this.LinkTitleURL.value[i].link) || validUrl) {
-          urlElement.setAttribute('style', 'display: none !important');
-        }
-        else if (urlElement) {
-          urlElement.setAttribute('style', 'display: block !important');
-        }
-      }
-      this.LinkTitleURL.push(this.fb.group({
-        title: ['', Validators.required],
-        link: ['', Validators.required]
-      }));
-    } else {
-      this.LinkTitleURL.push(this.fb.group({
-        title: ['', Validators.required],
-        link: ['', Validators.required]
-      }));
-    }
-
+    this.LinkTitleURL.push(this.fb.group({
+      title: ['', Validators.required],
+      link: ['', Validators.required]
+    }));
   }
 
   public deleteLinkTitleURL(index) {
@@ -379,16 +360,6 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   }
 
   public saveChanges() {
-    if (this.LinkTitleURL.value.length > 0) {
-      let urlList = this.auth_service.getListUrl();
-      for (let i = 0; i < this.LinkTitleURL.value.length; i++) {
-        let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
-        let urlElement = document.getElementById(i + 'url');
-        if (!this.validURL(this.LinkTitleURL.value[i].link) && !validUrl) {
-          return urlElement.setAttribute('style', 'display: block !important');
-        }
-      }
-    }
     if (!this.newContent) {
       Utils.showSpinner();
       let response_json = {
@@ -439,29 +410,6 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
         this.toastr.error("Server error encountered!");
       })
     }
-  }
-  // validates external linkes
-  validURL(str) {
-    var pattern = new RegExp('^(https?:\\/\\/)' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-    return pattern.test(str);
-  }
-
-  // shows/hides error messages 
-  showUrlError(i) {
-    let urlList = this.auth_service.getListUrl();
-    let urlElement = document.getElementById(i + 'url');
-    let validUrl = urlList.find(url => url === this.LinkTitleURL.value[i].link);
-    if (!this.validURL(this.LinkTitleURL.value[i].link) && !validUrl) {
-      return urlElement.setAttribute('style', 'display: block !important');
-    } else {
-      return urlElement.setAttribute('style', 'display: none !important');
-    }
-
   }
 
   // to open important notes popup

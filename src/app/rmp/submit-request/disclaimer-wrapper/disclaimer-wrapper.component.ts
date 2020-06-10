@@ -87,7 +87,9 @@ export class DisclaimerWrapperComponent implements OnInit {
       data: enableButtonData, disableClose: true
     })
     dialogRef.afterClosed().subscribe(result => {
-      this.userData.disclaimer_ack = result
+      if(result){
+        this.userData.disclaimer_ack = result
+      }
     })
   }
 

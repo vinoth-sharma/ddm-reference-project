@@ -1,13 +1,15 @@
-.modal-container{
+.modal-container {
     width: 60vw;
     height: 70vh;
     overflow: hidden;
 }
-.modal-body{
+
+.modal-body {
     height: 79%;
     overflow: hidden;
 }
-.span-error{
+
+.span-error {
     font-style: italic;
     color: red;
 }

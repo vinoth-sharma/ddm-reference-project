@@ -54,9 +54,7 @@ export class DisclaimerWrapperComponent implements OnInit {
         this.user_role = role["role"];
       }
     })
-
     this.updateSubmitRequestDesc();
-
   }
 
   public updateSubmitRequestDesc(): void {
@@ -87,7 +85,7 @@ export class DisclaimerWrapperComponent implements OnInit {
       data: enableButtonData, disableClose: true
     })
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.userData.disclaimer_ack = result
       }
     })
@@ -114,12 +112,12 @@ export class DisclaimerWrapperComponent implements OnInit {
   }
 
   //cancel save desc
-  cancelSubmitReq(){
+  cancelSubmitReq() {
     this.l_lookupTableData.desc_text.forEach(element => {
       if (element.ddm_rmp_desc_text_id === 3)
         this.submitReqDescObj.description = element.description
     });
-    this.showEditOption =  true;
+    this.showEditOption = true;
   }
 
 }

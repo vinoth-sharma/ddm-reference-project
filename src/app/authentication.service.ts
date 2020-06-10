@@ -63,19 +63,19 @@ export class AuthenticationService {
 
   public getListUrl() {
     let urls = [
-                "user/main/home",
-                "user/main/ddm",
-                "user/main/user-profile",
-                "user/main/reference-documents",
-                "user/main/ddm-admin",
-                "user/submit-request",
-                "user/submit-request/select-report-criteria",
-                "user/submit-request/order-to-sale",
-                "user/request-status",
-                "user/reports",
-                "user/metrics",
-                "user/disclaimer"
-              ];
+      "user/main/home",
+      "user/main/ddm",
+      "user/main/user-profile",
+      "user/main/reference-documents",
+      "user/main/ddm-admin",
+      "user/submit-request",
+      "user/submit-request/select-report-criteria",
+      "user/submit-request/order-to-sale",
+      "user/request-status",
+      "user/reports",
+      "user/metrics",
+      "user/disclaimer"
+    ];
     return urls;
   }
 

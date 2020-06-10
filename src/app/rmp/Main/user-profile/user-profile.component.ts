@@ -12,6 +12,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
 import * as html2Canvas from 'html2canvas'
 declare var jsPDF: any;
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',

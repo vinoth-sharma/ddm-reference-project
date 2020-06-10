@@ -43,7 +43,7 @@
     text-decoration: underline;
 }
 
-::ng-deep quill-editor .ql-container.ql-snow{
+::ng-deep quill-editor .ql-container.ql-snow {
     height: 36vh;
 }
 

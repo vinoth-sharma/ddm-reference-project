@@ -1,4 +1,4 @@
-<mat-form-field class="" style="width: 100%;">
+<mat-form-field class="" style="width: 100%;" id="ngChips">
     <mat-chip-list #chipList aria-label="Fruit selection">
       <mat-chip *ngFor="let chip of chipsEntered" [selectable]="selectable"
                [removable]="removable" (removed)="remove(chip)">

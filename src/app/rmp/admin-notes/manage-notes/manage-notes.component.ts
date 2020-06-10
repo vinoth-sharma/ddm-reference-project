@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -52,6 +52,8 @@ export class ManageNotesComponent implements OnInit {
 
   minFromDate: Date = null;
   minToDate: Date = null;
+  @Output() closeParentWraper = new EventEmitter()
+
 
   ngOnInit() {
     this.minFromDate = new Date();
@@ -114,6 +116,7 @@ export class ManageNotesComponent implements OnInit {
     this.django.ddm_rmp_admin_notes(notes_details).subscribe(response => {
       Utils.hideSpinner();
       this.toastr.success("Admin Notes updated successfully");
+      this.closeParentWraper.emit();
     }, err => {
       Utils.hideSpinner();
       this.toastr.error("Admin note not updated");

@@ -1,8 +1,11 @@
 
 .tableFixHead {
   overflow-y: auto;
-  height: 58vh;
+  height: 60vh;
   overflow-x: auto;
+  border: lightgray solid;
+  margin-left: 0.5vw;
+  margin-right: 0.25vw;
 }
 
 .tableFixHead thead th {
@@ -34,20 +37,21 @@ th {
 }
 
 .tool-body {
-  height: 100%;
-  margin-left: 0;
-  margin-right: 0;
+  height: 80.5vh;
+  margin-left: 1.5vw;
+  margin-top: 3vh;   
 }
 
 h3 {
-  font-size: 150%;
-  font-weight: bold;
+  margin-top: 0vh;
+  margin-left: 0.5vw;
 }
 
 .main-tool-body {
-  width: 96%;
+  padding: 3vh 1.5vw 3vh 1.5vw;
+  width: 97vw;
   background: white;
-  height: 88%;
+  height: 80.5vh;
   box-shadow: 3px 3px 8px 2px #c3c3c3;
 }
 
@@ -67,7 +71,9 @@ h3 {
   display: flex; 
   justify-content: flex-end;
   align-items: center;
-  height:100%
+  height:100%;
+  width: 22vw;
+  padding-top: 1vh;
 }
 
 .left-tabs {
@@ -221,4 +227,29 @@ tr:hover{
 td,th{
   text-align: center !important;
   vertical-align: middle !important;
+}
+
+.wrapper {
+  padding: 3vh 1.5vw 3vh 1.5vw;
+}
+
+.row-changes { 
+  width: 93vw;
+}
+
+.global-search-position {
+  margin-left: 18vw;
+  margin-top: 1vh;
+}
+
+.press {
+  margin-bottom: 2vh;
+}
+
+.search-global {
+  padding-top: 1vh;
+}
+
+.title-position {
+  margin-top: 1vh;
 }

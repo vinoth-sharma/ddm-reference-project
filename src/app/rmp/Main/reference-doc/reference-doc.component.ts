@@ -1,10 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import * as Rx from "rxjs";
+
 import { DjangoService } from 'src/app/rmp/django.service';
-import Utils from "../../../../utils";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
-import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import Utils from "../../../../utils";
 
 @Component({
   selector: 'app-reference-doc',
@@ -439,7 +440,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
   public files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
 
-    if (this.file['type'] == '.csv' || this.file['type'] == '.doc' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
+    if (this.file['type'] == 'text/csv' || this.file['type'] == 'application/msword' || this.file['type'] == 'application/vnd.ms-word.document.macroEnabled.12' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       var formData = new FormData();
       formData.append('file_upload', this.file);

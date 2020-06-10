@@ -226,13 +226,24 @@ export class MetricsComponent implements OnInit, AfterViewInit {
             });
           }
         });
-        for (let i = 0; i < this.reports.length; i++) {
-          if (this.reports[i]['frequency_data']) {
-            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Other'];
-            this.reports[i]['frequency_data_filtered'] =
-              this.reports[i]['frequency_data'].filter(element => !days.includes(element));
-            this.reports[i]['description'] = this.reports[i]['frequency_data_filtered'];
+        for (var i = 0; i < this.reports.length; i++) {
+          if (this.reports[i]['frequency_data'] != null) {
+            this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday'))
+            if (this.reports[i]['description'] != null) {
+              this.reports[i]['description'].forEach(ele => {
+                if (ele != 'Monday' && ele != 'Tuesday' && ele != 'Wednesday' && ele != 'Thursday' && ele != 'Friday') {
+                  if ((ele.length != 0) && (ele != null) && (ele != '')) {
+                    this.reports[i]['frequency_data_filtered'].push(ele)
+                    this.reports[i]['description'] = this.reports[i]['frequency_data_filtered'];
+                  }
+                }
+              })
+            }
           }
+        }
+        for (var i = 0; i < this.reports.length; i++) {
+          if (this.reports[i]['description'] != null)
+            this.reports[i]['description'] = this.reports[i]['description'].filter(Boolean);
         }
         Utils.hideSpinner();
       }

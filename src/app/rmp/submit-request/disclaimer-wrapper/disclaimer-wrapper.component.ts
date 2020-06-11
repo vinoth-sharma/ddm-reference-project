@@ -54,9 +54,7 @@ export class DisclaimerWrapperComponent implements OnInit {
         this.user_role = role["role"];
       }
     })
-
     this.updateSubmitRequestDesc();
-
   }
 
   public updateSubmitRequestDesc(): void {
@@ -87,7 +85,9 @@ export class DisclaimerWrapperComponent implements OnInit {
       data: enableButtonData, disableClose: true
     })
     dialogRef.afterClosed().subscribe(result => {
-      this.userData.disclaimer_ack = result
+      if (result) {
+        this.userData.disclaimer_ack = result
+      }
     })
   }
 

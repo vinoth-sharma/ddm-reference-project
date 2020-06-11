@@ -43,8 +43,8 @@
     text-decoration: underline;
 }
 
-::ng-deep quill-editor .ql-container.ql-snow{
-    height: 40vh;
+::ng-deep quill-editor .ql-container.ql-snow {
+    height: 36vh;
 }
 
 .disclaimer_section {

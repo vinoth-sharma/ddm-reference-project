@@ -444,6 +444,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // selecting of file
   public renameFile(files: FileList) {
     var reader = new FileReader();
     reader.readAsText(files.item(0), 'UTF-8');
@@ -453,6 +454,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // remaing of selected file with document title 
   public createNewFile(value, file) {
     let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     if (document_title === '') {
@@ -465,8 +467,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
 
   // upload file to server
   public files() {
-    this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-
     if (this.file['type'] == 'text/csv' || this.file['type'] == 'application/msword' || this.file['type'] == 'application/vnd.ms-word.document.macroEnabled.12' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       var formData = new FormData();

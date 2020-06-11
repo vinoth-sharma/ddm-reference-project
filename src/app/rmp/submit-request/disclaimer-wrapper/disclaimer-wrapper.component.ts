@@ -100,6 +100,9 @@ export class DisclaimerWrapperComponent implements OnInit {
 
   // save description
   public saveSubmitReqDesc() {
+    if (!this.submitReqDescObj.description)
+      this.submitReqDescObj.description = '<p></p>';
+
     this.django.ddm_rmp_landing_page_desc_text_put(this.submitReqDescObj).subscribe(response => {
       Utils.hideSpinner();
       this.showEditOption = true;
@@ -112,12 +115,12 @@ export class DisclaimerWrapperComponent implements OnInit {
   }
 
   //cancel save desc
-  cancelSubmitReq(){
+  cancelSubmitReq() {
     this.l_lookupTableData.desc_text.forEach(element => {
       if (element.ddm_rmp_desc_text_id === 3)
         this.submitReqDescObj.description = element.description
     });
-    this.showEditOption =  true;
+    this.showEditOption = true;
   }
 
 }

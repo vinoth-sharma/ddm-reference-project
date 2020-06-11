@@ -27,6 +27,7 @@ export class BrandFormsComponent implements OnInit {
   public brandFormName: string = '';
   public filters: any = {}
   public statusFilter: any = [];
+  public deleteRecordData: any = {};
 
   constructor(private brandFormsService: BrandFormsService,
     private toasterService: NgToasterComponent) {
@@ -38,7 +39,7 @@ export class BrandFormsComponent implements OnInit {
   }
 
   // obtaining the brand-form-data
-  public getBrandFormList(msgFlag?: boolean) {
+  public getBrandFormList(msgFlag?: string) {
     if (this.isHomePage) {
       this.isHomePage = !this.isHomePage;
     }
@@ -55,9 +56,13 @@ export class BrandFormsComponent implements OnInit {
           }
         });
 
-        if (msgFlag) {
-          this.toasterService.success('Data updated successfully!');
+        if (msgFlag == 'update') {
+          this.toasterService.success('Data record updated successfully!');
         }
+        else if (msgFlag == 'delete') {
+          this.toasterService.success('Data record deleted successfully!');
+        }
+
         let nullBrands = this.reports.filter(i => { return (i[this.reportDataColumns['mutable']] == null) })
         let nonNullBrands = this.reports.filter(i => { return (i[this.reportDataColumns['mutable']] != null) })
         nonNullBrands.sort((a, b) => (a[this.reportDataColumns['mutable']] > b[this.reportDataColumns['mutable']]) ? 1 : ((b[this.reportDataColumns['mutable']] > a[this.reportDataColumns['mutable']]) ? -1 : 0));
@@ -115,7 +120,7 @@ export class BrandFormsComponent implements OnInit {
     if (this.editDataRecord['brand_value_new'] != this.editDataRecord['brand_value_old']) {
       this.brandFormsService.updateBrandFormsDataRecord(this.editDataRecord).subscribe(res => {
         if (res) {
-          this.getBrandFormList(true);
+          this.getBrandFormList('update');
           this.editDataRecord = {};
         }
       }, err => {
@@ -129,25 +134,28 @@ export class BrandFormsComponent implements OnInit {
     }
   }
 
-  // DO NOT DELETE : Used for future implementation 
-  public deleteRecord(element: any) {
+  // ask for confirmation of modal
+  public confirmDeletion() {
     Utils.showSpinner();
-    let deleteRecord = {}
-    deleteRecord['brand_value'] = element[this.reportDataColumns['mutable']];
-    deleteRecord['alloc_grp_cd_val'] = element[this.reportDataColumns['immutable']];
-    if (deleteRecord['brand_value'] == '' && deleteRecord['brand_value'].length == 0) {
-      delete deleteRecord['brand_value'];
-    }
-
-    this.brandFormsService.deleteBrandFormsDataRecord(deleteRecord).subscribe(res => {
+    this.brandFormsService.deleteBrandFormsDataRecord(this.deleteRecordData).subscribe(res => {
       if (res) {
         this.toasterService.success('Data deleted successfully!');
-        Utils.hideSpinner();
+        this.getBrandFormList('delete');
       }
     }, err => {
       this.toasterService.error('Data deletion failed!');
       Utils.hideSpinner();
     })
+  }
+
+  // DO NOT DELETE : Used for future implementation 
+  public deleteRecordCapture(element: any) {
+    this.deleteRecordData = {}
+    this.deleteRecordData['brand_value'] = element[this.reportDataColumns['mutable']];
+    this.deleteRecordData['alloc_grp_cd_val'] = element[this.reportDataColumns['immutable']];
+    if (this.deleteRecordData['brand_value'] == '' && this.deleteRecordData['brand_value'].length == 0) {
+      this.deleteRecordData['brand_value'];
+    }
   }
 
   // passing filters into obj

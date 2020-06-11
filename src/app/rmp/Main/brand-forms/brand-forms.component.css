@@ -1,6 +1,7 @@
 .page-position {
     display: grid;
     margin-left: 3vh;
+    margin-top: 1vh;
 }
 
 .inter-spacing {
@@ -139,4 +140,8 @@ h4 {
 
 .brand-form-name {
     padding: 0 0 1vh 0;
+}
+
+.modal-content {
+    margin-top: 38vh;
 }

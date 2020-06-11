@@ -375,10 +375,10 @@ export class VehicleEventStatusComponent implements OnInit {
     else if (this.keyDataEle.others.checked && !this.keyDataEle.others.order_event.length) {
       this.ngToaster.error("Please enter the Key Data Elements.")
     }
-    else if (!this.keyDataEle.others.checked && !this.keyDataEle.selected.length) {
-      this.ngToaster.error("Please enter the Key Data Elements.")
+    else if (this.keyDataEle.others.checked && !this.req_body.data_date_range.StartDate) {
+      this.ngToaster.error("Please select the date range for Key Data Elements.")
     }
-    else if (!this.req_body.data_date_range.StartDate) {
+    else if (this.keyDataEle.selected.length && !this.req_body.data_date_range.StartDate) {
       this.ngToaster.error("Please select the date range for Key Data Elements.")
     }
     else {

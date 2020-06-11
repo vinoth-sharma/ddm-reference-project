@@ -148,6 +148,7 @@ export class BrandFormsComponent implements OnInit {
     })
   }
 
+  //capturing the details of the record to be deleted
   public deleteRecordCapture(element: any) {
     this.deleteRecordData = {}
     this.deleteRecordData['brand_value'] = element[this.reportDataColumns['mutable']];

@@ -148,13 +148,12 @@ export class BrandFormsComponent implements OnInit {
     })
   }
 
-  // DO NOT DELETE : Used for future implementation 
   public deleteRecordCapture(element: any) {
     this.deleteRecordData = {}
     this.deleteRecordData['brand_value'] = element[this.reportDataColumns['mutable']];
     this.deleteRecordData['alloc_grp_cd_val'] = element[this.reportDataColumns['immutable']];
     if (this.deleteRecordData['brand_value'] == '' && this.deleteRecordData['brand_value'].length == 0) {
-      this.deleteRecordData['brand_value'];
+      delete this.deleteRecordData['brand_value'];
     }
   }
 

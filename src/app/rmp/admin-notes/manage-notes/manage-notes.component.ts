@@ -56,6 +56,9 @@ export class ManageNotesComponent implements OnInit {
 
 
   ngOnInit() {
+  }
+
+  ngOnChanges(){
     this.minFromDate = new Date();
     if (this.existingNote.length) {
       let obj = this.existingNote[0];

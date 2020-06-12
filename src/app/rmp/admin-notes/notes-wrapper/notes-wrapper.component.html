@@ -6,7 +6,7 @@
   <div class="modal-body">
     <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
       <mat-tab label="Manage Notes">
-        <app-manage-notes (closeParentWraper)="closeDailog()" [existingNote]="data"></app-manage-notes>
+        <app-manage-notes (closeParentWraper)="closeDailog()" [existingNote]="lookuptabledata"></app-manage-notes>
       </mat-tab>
       <mat-tab label="Existing Notes">
         <app-existing-notes-container *ngIf="selected.value === 1"></app-existing-notes-container>

@@ -33,7 +33,7 @@ export class NgCipsEmailComponent implements OnInit {
 
   constructor(public djangoService: DjangoService,
     private renderer: Renderer2,
-    public ngToaster : NgToasterComponent,
+    public ngToaster: NgToasterComponent,
     public subReqService: SubmitRequestService) {
     this.filteredChips = this.chipCtrl.valueChanges.pipe(
       debounceTime(1000),
@@ -60,12 +60,12 @@ export class NgCipsEmailComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
-    // Add our fruit
+    // Add our chip
     if ((value || '').trim()) {
       let l_value = getMailIds(value.trim())
-      if(l_value){
+      if (l_value) {
         this.selectedChips.push(value.trim());
-        this.selectedChips  = [...new Set([...this.selectedChips,value.trim()])]
+        this.selectedChips = [...new Set([...this.selectedChips, value.trim()])]
         this.emailSelectionEmitter.emit(this.selectedChips)
       }
       else
@@ -87,12 +87,13 @@ export class NgCipsEmailComponent implements OnInit {
     this.emailSelectionEmitter.emit(this.selectedChips)
   }
 
-  onPaste(event: ClipboardEvent) {
+  public onPaste(event: ClipboardEvent) {
     let clipboardData = event.clipboardData;
     let pastedText = clipboardData.getData('text');
     let mailIds = getMailIds(pastedText);
-    if(mailIds){
-      this.selectedChips  = [...new Set([...this.selectedChips,...mailIds])]
+    if (mailIds) {
+      this.selectedChips = [...new Set([...this.selectedChips, ...mailIds])];
+      this.emailSelectionEmitter.emit(this.selectedChips);
       event.preventDefault();
     }
   }
@@ -101,11 +102,12 @@ export class NgCipsEmailComponent implements OnInit {
     this.selectedChips.push(event.option.viewValue);
     this.mailInput.nativeElement.value = '';
     this.chipCtrl.setValue(null);
-    this.emailSelectionEmitter.emit(this.selectedChips)
+    this.emailSelectionEmitter.emit(this.selectedChips);
   }
 
 }
 
-function getMailIds( text ){
+//validate email
+function getMailIds(text) {
   return text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
 }

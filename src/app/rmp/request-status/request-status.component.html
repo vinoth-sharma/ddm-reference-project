@@ -14,8 +14,8 @@
         <div class="col-xs-4" style="padding-right:0%;">
           <div class="icons">
             <div class="press">
-              <button *ngIf="user_role=='Admin'" [cssBtn]="'mid'" mat-raised-button data-toggle="modal" data-target="#UserDetails" data-backdrop="static"
-                data-keyboard="false">
+              <button *ngIf="user_role=='Admin'" [cssBtn]="'mid'" mat-raised-button data-toggle="modal"
+                data-target="#UserDetails" data-backdrop="static" data-keyboard="false">
                 User Details
               </button>
               <button class="press-button" (click)="xlsxJson()">
@@ -59,7 +59,8 @@
           style="display:none"></button>
       </div>
       <div class="tableFixHead">
-        <table *ngIf="reports" class="table report_table table-bordered table-hover" style="overflow:-moz-hidden-unscrollable">
+        <table *ngIf="reports" class="table report_table table-bordered table-hover"
+          style="overflow:-moz-hidden-unscrollable">
           <thead class="thead">
             <tr>
               <th>
@@ -72,7 +73,8 @@
                   <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id"
+                  <input (input)="filterData()" placeholder="Search" class="form-control"
+                    [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id"
                     [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
@@ -83,8 +85,8 @@
                   <div *ngIf="reports['created_on']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.created_on" name="filters.created_on"
-                    [ngModelOptions]="{standalone: true}">
+                  <input (input)="filterData()" placeholder="Search" class="form-control"
+                    [(ngModel)]="filters.created_on" name="filters.created_on" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -94,8 +96,8 @@
                   <div *ngIf="reports['requestor']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.requestor" name="filters.requestor"
-                    [ngModelOptions]="{standalone: true}">
+                  <input (input)="filterData()" placeholder="Search" class="form-control"
+                    [(ngModel)]="filters.requestor" name="filters.requestor" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -105,7 +107,8 @@
                   <div *ngIf="reports['on_behalf_of']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.on_behalf_of" name="filters.on_behalf_of"
+                  <input (input)="filterData()" placeholder="Search" class="form-control"
+                    [(ngModel)]="filters.on_behalf_of" name="filters.on_behalf_of"
                     [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
@@ -116,8 +119,8 @@
                   <div *ngIf="reports['title']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.title" name="filters.title"
-                    [ngModelOptions]="{standalone: true}">
+                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.title"
+                    name="filters.title" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -127,8 +130,8 @@
                   <div *ngIf="reports['frequency']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search" class="form-control" [(ngModel)]="filters.frequency"
-                    name="filters.frequency">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
+                    class="form-control" [(ngModel)]="filters.frequency" name="filters.frequency">
                 </div>
               </th>
               <th>
@@ -138,14 +141,15 @@
                   <div *ngIf="reports['assigned_to']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search" class="form-control" [(ngModel)]="filters.assigned_to"
-                    name="filters.assigned_to">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
+                    class="form-control" [(ngModel)]="filters.assigned_to" name="filters.assigned_to">
                 </div>
               </th>
               <th style="min-width: 135px;">
                 <div id="status_dropdown" style="width: 135px !important;">
-                  <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter" [settings]="StatusDropdownSettings" (onSelect)="filterData()"
-                    (onDeSelect)="filterData()" style="font-size: 12px;width:135px; ">
+                  <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
+                    [settings]="StatusDropdownSettings" (onSelect)="filterData()" (onDeSelect)="filterData()"
+                    style="font-size: 12px;width:135px; ">
                   </angular4-multiselect>
                 </div>
               </th>
@@ -156,8 +160,8 @@
                   <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search" class="form-control" [(ngModel)]="filters.ddm_rmp_status_date"
-                    name="filters.ddm_rmp_status_date">
+                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
+                    class="form-control" [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
                 </div>
               </th>
               <th style="text-align:center">
@@ -173,104 +177,107 @@
           </thead>
           <!-- Table body contents -->
           <tbody>
-            <ng-container *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ;">
+            <ng-container
+              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ;">
               <tr class="clickable">
                 <td style="padding:6px;width: 100%;">
-                  <tr class="row">
-                    <input type="checkbox" [checked]="element.isChecked" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id" (click)="Report_request(element, $event)">
-                  </tr>
-                  <tr class="row">&nbsp;</tr>
-                  <tr class="row">
-                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
-                      data-toggle="collapse" [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id">Comments
-                      <span class="material-icons" style="font-size: 100%;color: white;">keyboard_arrow_down</span>
+              <tr class="row">
+                <input type="checkbox" [checked]="element.isChecked" class="report_id_checkboxes"
+                  [id]="element.ddm_rmp_post_report_id" (click)="Report_request(element, $event)">
+              </tr>
+              <tr class="row">&nbsp;</tr>
+              <tr class="row">
+                <button [cssBtn]="'mid'" mat-raised-button class="table-buttons"
+                  (click)="set_report_comments(element.ddm_rmp_post_report_id)" data-toggle="collapse"
+                  [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id">Comments
+                  <span class="material-icons" style="font-size: 100%;color: white;">keyboard_arrow_down</span>
+                </button>
+              </tr>
+              </td>
+              <td>
+                <div>
+                  {{element.ddm_rmp_post_report_id}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.created_on| date: 'dd-MMM-yyyy' }}
+                </div>
+              </td>
+              <td>
+                <div *ngIf="element.requestor == 'TBD'">
+                  {{ element.requestor }}
+                  <div *ngIf="user_role=='Admin'">
+                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" data-toggle="modal"
+                      data-target="#tbdModal" data-backdrop="static" (click)="TBD(element)">
+                      Assign Owner
                     </button>
-                  </tr>
-                </td>
-                <td>
-                  <div>
-                    {{element.ddm_rmp_post_report_id}}
                   </div>
-                </td>
-                <td>
-                  <div>
-                    {{element.created_on| date: 'dd-MMM-yyyy' }}
+                </div>
+                <div *ngIf="element.requestor != 'TBD'">
+                  {{ element.requestor }}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.on_behalf_of}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.title}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.frequency}}
+                </div>
+              </td>
+              <td>
+                <div *ngIf="element.assigned_to == 'TBD'">
+                  {{ element.assigned_to }}
+                  <div *ngIf="user_role=='Admin'">
+                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" data-toggle="modal"
+                      data-target="#tbdModalAssigned" data-backdrop="static" (click)="TBD(element)">
+                      Assign Owner
+                    </button>
                   </div>
-                </td>
-                <td>
-                  <div *ngIf="element.requestor == 'TBD'">
-                    {{ element.requestor }}
-                    <div *ngIf="user_role=='Admin'">
-                      <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" data-toggle="modal"
-                        data-target="#tbdModal" data-backdrop="static" (click)="TBD(element)">
-                        Assign Owner
-                      </button>
-                    </div>
+                </div>
+                <div *ngIf="element.assigned_to != 'TBD'">
+                  {{element.assigned_to}}
+                </div>
+              </td>
+              <td>
+                <div *ngIf="element.status != 'Recurring' && element.status != 'Active'"
+                  style="width: 115px !important;">
+                  {{element.status}}
+                </div>
+                <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
+                  {{element.status}}
+                  <div *ngIf="user_role=='Admin'">
+                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons table-padding"
+                      (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
+                      Mark as Complete
+                    </button>
                   </div>
-                  <div *ngIf="element.requestor != 'TBD'">
-                    {{ element.requestor }}
-                  </div>
-                </td>
-                <td>
-                  <div>
-                    {{element.on_behalf_of}}
-                  </div>
-                </td>
-                <td>
-                  <div>
-                    {{element.title}}
-                  </div>
-                </td>
-                <td>
-                  <div>
-                    {{element.frequency}}
-                  </div>
-                </td>
-                <td>
-                  <div *ngIf="element.assigned_to == 'TBD'">
-                    {{ element.assigned_to }}
-                    <div *ngIf="user_role=='Admin'">
-                      <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" data-toggle="modal"
-                        data-target="#tbdModalAssigned" data-backdrop="static" (click)="TBD(element)">
-                        Assign Owner
-                      </button>
-                    </div>
-                  </div>
-                  <div *ngIf="element.assigned_to != 'TBD'">
-                    {{element.assigned_to}}
-                  </div>
-                </td>
-                <td>
-                  <div *ngIf="element.status != 'Recurring' && element.status != 'Active'"
-                    style="width: 115px !important;">
-                    {{element.status}}
-                  </div>
-                  <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
-                    {{element.status}}
-                    <div *ngIf="user_role=='Admin'">
-                      <button [cssBtn]="'mid'" mat-raised-button class="table-buttons table-padding"
-                        (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
-                        Mark as Complete
-                      </button>
-                    </div>
-                  </div>
-                  <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
-                    {{element.status}}
-                    <div *ngIf="user_role=='Admin'" style="margin-top:5px">
-                      <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" style="margin-left: 15px;"
-                        data-toggle="modal" data-backdrop="static" data-target="#changeStatusModal"
-                        (click)="openEditStatusModal(element)">
-                        <span>Edit <span class="material-icons" style="font-size: 100%;color:white;position: relative;
+                </div>
+                <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
+                  {{element.status}}
+                  <div *ngIf="user_role=='Admin'" style="margin-top:5px">
+                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" style="margin-left: 15px;"
+                      data-toggle="modal" data-backdrop="static" data-target="#changeStatusModal"
+                      (click)="openEditStatusModal(element)">
+                      <span>Edit <span class="material-icons" style="font-size: 100%;color:white;position: relative;
                           top: 7px;">create</span></span>
-                      </button>
-                    </div>
+                    </button>
                   </div>
-                </td>
-                <td>
-                  <div>
-                    {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
-                  </div>
-                </td>
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
+                </div>
+              </td>
               <td>
                 <div style="flex-direction: column;height: 100%;" class="center-content">
                   <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" [title]="element.link_to_results"
@@ -292,35 +299,36 @@
                   </button>
                 </div>
 
-                </td>
-                <td *ngIf="element.status != 'Incomplete'">
-                  <div style="width: auto !important;height:100%" class="center-content">
-                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
-                      data-toggle="modal" data-backdrop="static" data-target="#queryCriteria">
-                      QueryCriteria &nbsp;
-                    </button>
-                  </div>
-                </td>
-                <td *ngIf="user_role=='Admin' && element.status == 'Active'">
-                  <div>
-                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }"
-                      (click)="getRequestId(element)" style="font-size: 12px">
-                      Create Report
-                    </button>
-                  </div>
-                </td>
-                <td *ngIf="user_role=='Non-Admin' && element.status == 'Active'">
-                  <div>
-                    <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }"
-                      (click)="getRequestId(element)" style="font-size: 12px">
-                      Create Report
-                    </button>
-                  </div>
-                </td>
-                <td *ngIf="user_role=='Admin' && element.status != 'Active'">
-                  <div>
-                  </div>
-                </td>
+              </td>
+              <td *ngIf="element.status != 'Incomplete'">
+                <div style="width: auto !important;height:100%" class="center-content">
+                  <button [cssBtn]="'mid'" mat-raised-button class="table-buttons"
+                    (click)="query_criteria_click(element.ddm_rmp_post_report_id)" data-toggle="modal"
+                    data-backdrop="static" data-target="#queryCriteria">
+                    QueryCriteria &nbsp;
+                  </button>
+                </div>
+              </td>
+              <td *ngIf="user_role=='Admin' && element.status == 'Active'">
+                <div>
+                  <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" routerLinkActive="active-route"
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
+                    Create Report
+                  </button>
+                </div>
+              </td>
+              <td *ngIf="user_role=='Non-Admin' && element.status == 'Active'">
+                <div>
+                  <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" routerLinkActive="active-route"
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
+                    Create Report
+                  </button>
+                </div>
+              </td>
+              <td *ngIf="user_role=='Admin' && element.status != 'Active'">
+                <div>
+                </div>
+              </td>
               </tr>
               <tr>
                 <td class="col-sm-12" colspan="12" style="padding: 0;height:auto">
@@ -330,7 +338,8 @@
                         <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
                           <div class="col-sm-5">
                             <p *ngIf="comment_element.users_table == user_id" class="comment bubble_left">
-                              <strong>{{comment_element.commentor}} [{{comment_element.comment_timestamp | date:'yyyy-MM-dd HH:mm:ss'}}]:
+                              <strong>{{comment_element.commentor}}
+                                [{{comment_element.comment_timestamp | date:'yyyy-MM-dd HH:mm:ss'}}]:
                               </strong>
                               <br>{{comment_element.comment}}
                             </p>
@@ -338,7 +347,8 @@
                           <div class="col-sm-2"></div>
                           <div class="col-sm-5">
                             <p *ngIf="comment_element.users_table != user_id" class="comment bubble_right">
-                              <strong>{{comment_element.commentor}} [{{comment_element.comment_timestamp | date:'yyyy-MM-dd HH:mm:ss'}}]:
+                              <strong>{{comment_element.commentor}}
+                                [{{comment_element.comment_timestamp | date:'yyyy-MM-dd HH:mm:ss'}}]:
                               </strong>
                               <br>{{comment_element.comment}}
                             </p>
@@ -416,10 +426,11 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-backdrop="static" data-target="#ModalComment"
-          onmouseover="" style="cursor: pointer;" data-dismiss="modal">Ok</button>
-        <button type="button" class="cancel-btn" [cssBtn]="'cancel'" mat-raised-button data-toggle="modal" data-backdrop="static"
-          data-target="#ModalComment" onmouseover="" style="cursor: pointer;" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-backdrop="static"
+          data-target="#ModalComment" onmouseover="" style="cursor: pointer;" data-dismiss="modal">Ok</button>
+        <button type="button" class="cancel-btn" [cssBtn]="'cancel'" mat-raised-button data-toggle="modal"
+          data-backdrop="static" data-target="#ModalComment" onmouseover="" style="cursor: pointer;"
+          data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
@@ -439,7 +450,8 @@
         <button (click)="OrderToSale($event)">Vehicle Event Status</button>
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="cancel-btn" [cssBtn]="'cancel'" mat-raised-button>Cancel</button>
+        <button type="button" data-dismiss="modal" class="cancel-btn" [cssBtn]="'cancel'"
+          mat-raised-button>Cancel</button>
       </div>
     </div>
   </div>
@@ -447,7 +459,8 @@
 
 <!-----------------------------------Report Tab Modal DDM Configurable------------------------>
 
-<div class="modal fade" id="postLink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="postLink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -465,16 +478,17 @@
             <div>
               <i>*Maximum 25 characters allowed</i>
             </div>
-            <input type="text" class="form-control title-box" [ngModelOptions]="{standalone: true}" id="document-name" maxlength="25"
-              name="documentName" [(ngModel)]='documentName' ngDefaultControl required>
+            <input type="text" class="form-control title-box" [ngModelOptions]="{standalone: true}" id="document-name"
+              maxlength="25" name="documentName" [(ngModel)]='documentName' ngDefaultControl required>
 
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">Add Url:
               <span style="color: red">*</span>
             </label>
-            <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control" [ngModelOptions]="{standalone: true}"
-              id="document-url" name="documentUrl" [(ngModel)]='documentUrl' ngDefaultControl required>
+            <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
+              [ngModelOptions]="{standalone: true}" id="document-url" name="documentUrl" [(ngModel)]='documentUrl'
+              ngDefaultControl required>
           </div>
         </form>
       </div>
@@ -484,7 +498,8 @@
             <h6>*Please fill all the fields</h6>
           </i>
         </span>
-        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal" (click)="closePostLink()">Close</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closePostLink()">Close</button>
         <ng-container *ngIf="!changeDoc">
           <button type="button" [cssBtn]="'ok'" mat-raised-button (click)="addDocument()">Save changes
           </button>
@@ -505,10 +520,12 @@
       <div class="modal-header" style="justify-content: flex-start;">
         <div class="row modal-title">
           <div class="col-sm-10 modal-heading">
-            <b style="font-size: 110%;">Distribution DataMart</b><br>
+            <b style="font-size: 110%;">Order Fulfillment Distribution Data Mart</b><br>
             <b style="font-size: 110%;">Report Request Confirmation</b>
-            <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Vehicle Event Status</div>
-            <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer Allocation
+            <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Vehicle
+              Event Status</div>
+            <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer
+              Allocation
             </div>
           </div>
           <div class="col-sm-2">
@@ -528,7 +545,8 @@
             <span>
               <b>Request Date:</b>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <span *ngIf='summary && summary.ddm_rmp_status_date'>{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span>
+              <span
+                *ngIf='summary && summary.ddm_rmp_status_date'>{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span>
             </span>
             <br>
             <span>
@@ -668,6 +686,13 @@
                   <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
                 </span>
               </div>
+              <div class="div-wrap">
+                  <b>DOSP Time and Date:</b> &nbsp;&nbsp;
+                  <span *ngFor="let element of summary?.ost_data.data_date_range">
+                    <b>Start:</b>&nbsp;{{element?.dosp_start_date| date: 'dd-MMM-yyyy'}}
+                    <b>End:</b>&nbsp;{{element?.dosp_end_date| date: 'dd-MMM-yyyy' }}
+                  </span>
+                </div>
               <div style="width:100%;float:left;padding-top: 20px">
                 <b>Additional Requirements:</b>
                 <br>
@@ -721,8 +746,8 @@
 
 <!------------------------------------Help Modal------------------------------ -->
 
-<div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
@@ -732,11 +757,14 @@
       <div class="modal-body display-notes-scroll-modal">
         <div class="row" style="margin-bottom: 13px;">
           <div class="col-9">
-            <button class="save-text-ddm" [cssBtn]="'ok'" mat-raised-button (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-            <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="resetHelpParams()" *ngIf="editModes">Cancel</button>
+            <button class="save-text-ddm" [cssBtn]="'ok'" mat-raised-button (click)="content_edits()" *ngIf="editModes"
+              style="margin-right:3%">Save</button>
+            <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="resetHelpParams()"
+              *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3">
-            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()' style="background-color:white; border:none;float:right">
+            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
+              style="background-color:white; border:none;float:right">
               <a data-toggle="tooltip" title="EDIT">
                 <i id="ic" class="material-icons">mode_edit</i>
               </a>
@@ -744,11 +772,13 @@
           </div>
         </div>
         <div class="quillEditor">
-          <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper' (onContentChanged)='textChanged($event)'></quill-editor>
+          <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'
+            (onContentChanged)='textChanged($event)'></quill-editor>
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button type="button" id="modal_close_button" [cssBtn]="'cancel'" mat-raised-button (click)="resetHelpParams()" data-dismiss="modal">Close</button>
+        <button type="button" id="modal_close_button" [cssBtn]="'cancel'" mat-raised-button (click)="resetHelpParams()"
+          data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -756,9 +786,10 @@
 
 <!--                                    <Summary Modal End>                                           -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<button id="errorTrigger" data-toggle="modal" data-backdrop="static" data-target="#errorModalRequest" style="display:none">Error</button>
-<div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-  style="z-index: 10000">
+<button id="errorTrigger" data-toggle="modal" data-backdrop="static" data-target="#errorModalRequest"
+  style="display:none">Error</button>
+<div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true" style="z-index: 10000">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -770,7 +801,8 @@
         </h5>
       </div>
       <div class="modal-footer">
-        <button type="button" id="modal_close_button" [cssBtn]="'cancel'" mat-raised-button (click)="clearOnError()">Close</button>
+        <button type="button" id="modal_close_button" [cssBtn]="'cancel'" mat-raised-button
+          (click)="clearOnError()">Close</button>
       </div>
     </div>
   </div>
@@ -792,20 +824,24 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-4" style="padding-left: 10px">
-            <button [cssBtn]="'cancel'" mat-raised-button data-toggle="modal" data-backdrop="static" data-target="#CancelPermanently">Cancel Permanently
+            <button [cssBtn]="'cancel'" mat-raised-button data-toggle="modal" data-backdrop="static"
+              data-target="#CancelPermanently">Cancel Permanently
             </button>
           </div>
           <div class="col-4" style="padding-left: 30px;">
-            <button [cssBtn]="'mid'" mat-raised-button (click)="AssignTBD()" style="padding-right: 17px;padding-left: 17px;">Assign Requestor
+            <button [cssBtn]="'mid'" mat-raised-button (click)="AssignTBD()"
+              style="padding-right: 17px;padding-left: 17px;">Assign Requestor
             </button>
           </div>
           <div class="col-4" style="padding-left: 40px;">
-            <button [cssBtn]="'mid'" mat-raised-button (click)="Assign_AssignTo()" style="padding-right: 20;padding-left: 18px;">Assign Acceptor</button>
+            <button [cssBtn]="'mid'" mat-raised-button (click)="Assign_AssignTo()"
+              style="padding-right: 20;padding-left: 18px;">Assign Acceptor</button>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal" (click)="closeCancel()">Close</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closeCancel()">Close</button>
       </div>
     </div>
   </div>
@@ -828,7 +864,8 @@
         Are you sure you want to cancel the request permanently?
       </div>
       <div class="modal-footer">
-        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal" (click)="closeCancel_modal()">Close</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closeCancel_modal()">Close</button>
         <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" (click)="Cancel()">Yes</button>
       </div>
     </div>
@@ -853,15 +890,16 @@
           <h5>Select a user to assign the report to:</h5>
         </div>
         <div class="row" style="padding-left:10px;">
-          <angular4-multiselect [data]="tbddropdownListfinal_report" [(ngModel)]="tbdselectedItems_report" [settings]="tbddropdownSettings_report"
-            style="width:80%;">
+          <angular4-multiselect [data]="tbddropdownListfinal_report" [(ngModel)]="tbdselectedItems_report"
+            [settings]="tbddropdownSettings_report" style="width:80%;">
           </angular4-multiselect>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" (click)="TBDsave()">Save Changes
         </button>
-        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal" (click)="closeTBD()">Close</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closeTBD()">Close</button>
       </div>
     </div>
   </div>
@@ -886,15 +924,17 @@
           <h5>Select a user to assign the report to:</h5>
         </div>
         <div class="row" style="padding-left:10px;">
-          <angular4-multiselect [data]="tbddropdownListfinalAssigned" [(ngModel)]="tbdselectedItemsAssigned" [settings]="tbddropdownSettingsAssigned"
-            style="width:80%;">
+          <angular4-multiselect [data]="tbddropdownListfinalAssigned" [(ngModel)]="tbdselectedItemsAssigned"
+            [settings]="tbddropdownSettingsAssigned" style="width:80%;">
           </angular4-multiselect>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" (click)="TBD_Assigned()">Save Changes
+        <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" (click)="TBD_Assigned()">Save
+          Changes
         </button>
-        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal" (click)="closeTBD_Assigned()">Close</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closeTBD_Assigned()">Close</button>
       </div>
     </div>
   </div>
@@ -937,36 +977,37 @@
 </div>
 
 <!----------------------------------------Distribution List---------------------------------- -->
-<div class="modal fade " id="DistributionListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-  style="z-index: 10000">
+<div class="modal fade " id="DistributionListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true" style="z-index: 10000">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h3>Modify Distribution List</h3>
       </div>
       <div class="modal-body" style="height:275px">
-        <div class="row">
+        <div class="row row-height">
           <div class="col-sm-3 dl-top-text">
             <h5>Add Emails to Distribution List:</h5>
-            <p>Type email address or name.
-              <br> Use buttons to check/retrieve mail.
-              <br> Click Add.</p>
           </div>
           <div class="col-sm-7 dltext-div">
-            <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control" [(ngModel)]="model" [ngbTypeahead]="searchUserList"
-              [ngModelOptions]="{standalone: true}" />
+            <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control input-margin"
+              [(ngModel)]="model" [ngbTypeahead]="searchUserList" [ngModelOptions]="{standalone: true}" />
             <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
           </div>
           <div class="col-sm-2">
             <button (click)="addContact()" class="button-add" [cssBtn]="'ok'" mat-raised-button>Add</button>
           </div>
         </div>
+        <div class="row note">
+          <p><i>( Type email address or name.Use buttons to check/retrieve mail.Click Add )</i></p>
+        </div>
+        <hr class="hr-margin">
         <div class="row dl-bottom">
           <div class="col-sm-3 dl-bottom-text">
             <h5>Distribution List:</h5>
-            <p>Verify Recipients.
-              <br> Click box next to name and
-              <br> click Remove to delete</p>
+            <p><i>( Verify Recipients.</i>
+              <br> <i>Click box next to name and</i>
+              <br> <i>click Remove to delete )</i></p>
           </div>
           <div class="col-sm-7 dl-add-remove-list">
             <div class="form-check list-group" *ngFor="let contact of contacts">
@@ -1005,14 +1046,16 @@
         </div>
       </div>
       <div class="modal-body">
-        <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" placeholder="https://example.com" type="text"
-          class="form-control" />
+        <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" placeholder="https://example.com"
+          type="text" class="form-control" />
         <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
       </div>
       <div class="modal-footer">
-        <button type="button" [cssBtn]="'ok'" mat-raised-button [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save Changes
+        <button type="button" [cssBtn]="'ok'" mat-raised-button [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save
+          Changes
         </button>
-        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal" (click)="closeLinkUrl()">Close</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closeLinkUrl()">Close</button>
       </div>
     </div>
   </div>
@@ -1032,14 +1075,17 @@
         </div>
       </div>
       <div class="modal-body">
-        <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%" id="selectReportStatus">
+        <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%"
+          id="selectReportStatus">
           <option value="Active"> Active </option>
           <option value="Completed"> Completed </option>
         </select>
       </div>
       <div class="modal-footer">
-        <button type="button" [cssBtn]="'ok'" mat-raised-button [disabled]="selectReportStatus != 'Completed'" (click)="saveReportStatus()">Save Changes</button>
-        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal" (click)="closeStatusUrl()">Close</button>
+        <button type="button" [cssBtn]="'ok'" mat-raised-button [disabled]="selectReportStatus != 'Completed'"
+          (click)="saveReportStatus()">Save Changes</button>
+        <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
+          (click)="closeStatusUrl()">Close</button>
       </div>
     </div>
   </div>
@@ -1184,14 +1230,16 @@
     <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
     <span *ngIf='model_year'>{{ model_year }}&nbsp;&nbsp;</span>
   </pre>
-<pre class="div-wrap" *ngIf='summary && summary.da_data && summary.da_data.concensus_time_date && summary.da_data.concensus_time_date.length > 0'>
+<pre class="div-wrap"
+  *ngIf='summary && summary.da_data && summary.da_data.concensus_time_date && summary.da_data.concensus_time_date.length > 0'>
     <b>Consensus Time and Date:</b> &nbsp;&nbsp;
     <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
       <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
       <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
     </span>
   </pre>
-<pre class="div-wrap" *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
+<pre class="div-wrap"
+  *ngIf='summary && summary.da_data && summary.da_data.concensus_data && summary.da_data.concensus_data.length > 0'>
       <b>Consensus Data:</b> &nbsp;&nbsp;
       <span *ngFor="let element of summary?.da_data.concensus_data">
         <span *ngIf='element && element.cd_values'>{{element?.cd_values}}</span>&nbsp;&nbsp;

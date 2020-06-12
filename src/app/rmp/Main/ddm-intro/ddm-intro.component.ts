@@ -202,7 +202,7 @@ export class DdmIntroComponent implements OnInit, AfterViewInit {
         this.editModes = false;
         this.ngOnInit();
         this.original_contents = this.namings;
-        this.toaster.success("Condition saved successfully")
+        this.toaster.success("Updated successfully")
         Utils.hideSpinner()
       }, err => {
         Utils.hideSpinner()

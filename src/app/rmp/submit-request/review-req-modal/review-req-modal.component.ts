@@ -341,12 +341,18 @@ export class ReviewReqModalComponent implements OnInit {
       }
     };
     var doc = new jsPDF();
-    doc.lineHeightProportion = 2;
+    doc.setFont("arial");
+    let margins = {
+      top: 15,
+      bottom: 0,
+      left: 18,
+      width: 170
+    };
     doc.fromHTML(
-      $('#print').html(), 15, 15,
-      { 'width': 170, 'elementHandlers': specialElementHandlers },
-      function () { doc.save(`summary-request.pdf`); }
-    )
+      $('#print').html(), margins.left, margins.top,
+      { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
+      function () { doc.save(`summary-request.pdf`); }, margins
+    );
   }
 
   closeDailog(): void {

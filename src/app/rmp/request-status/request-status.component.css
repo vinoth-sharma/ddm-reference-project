@@ -40,7 +40,7 @@
 
 .button-add {
   width: 84px;
-  margin-top: 35%;
+  margin-top: 1vh;
 }
 
 .tabs {
@@ -601,4 +601,30 @@ table,td{
 .table-padding {
   padding-left: 0.5vw;
   padding-right: 0.5vw;
+}
+
+.row-height {
+  height: 7vh;
+}
+
+.dl-add-remove-list {
+  max-height: 16vh;
+  overflow-y: auto;
+}
+
+.list-group {
+  margin-bottom: 1vh;
+}
+
+.input-margin {
+  margin-top: 1vh;
+}
+
+.note {
+  margin-left: 0vw;
+  margin-bottom: 2vh;
+}
+
+.hr-margin {
+  margin: 0.25vh 0 2vh 0;
 }

@@ -174,7 +174,7 @@
                       <i id="ic" style="font-size: 100%;position:relative;top:-11px" class="material-icons">save</i>
                     </button>
                     <button data-toggle="tooltip" title="Cancel" mat-mini-fab [cssBtn]="'cancel'"
-                      (click)="toggleShowInput(element)" style="color:#fff;width:20px;height:20px;margin-left: 3px">
+                      (click)="cancelNameEdit(element)" style="color:#fff;width:20px;height:20px;margin-left: 3px">
                       <i id="ic" style="font-size: 100%;position:relative;top:-11px" class="material-icons">cancel</i>
                     </button>
                   </div>
@@ -315,7 +315,7 @@
               </p>
             </div>
           </div>
-          <!--------------------------- Select Report Frequency------------------->
+          <!--------------------------- Select Report Frequency [Edit Frequency feature]------------------->
           <div class="col-sm-12">
             <div class="card">
               <div class="card-header">
@@ -382,7 +382,7 @@
                           <div *ngIf="subelement.select_frequency_description == true">
                             &nbsp;&nbsp;
                             <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
-                              (click)="frequencySelectedDropdown(subelement,$event)"
+                              (click)="frequencySelectedInput(subelement,$event)"
                               value={{subelement.ddm_rmp_lookup_select_frequency_id}}
                               [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                             <br> &nbsp;&nbsp; &nbsp;&nbsp;
@@ -433,7 +433,7 @@
                           <div *ngIf="subelement.select_frequency_description == true">
                             &nbsp;&nbsp;
                             <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
-                              (click)="frequencySelectedDropdown(subelement,$event)"
+                              (click)="frequencySelectedInput(subelement,$event)"
                               value={{subelement.ddm_rmp_lookup_select_frequency_id}}
                               [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                             <br> &nbsp;&nbsp; &nbsp;&nbsp;
@@ -454,8 +454,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" [cssBtn]="'ok'" mat-raised-button (click)="updateFreq(changeFreqId)"
-            [disabled]=changeInFreq>Save
-            changes
+            [disabled]=changeInFreq>Save Changes
           </button>
           <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
             (click)=clearFreq()>Cancel</button>
@@ -471,7 +470,7 @@
           <div class="row modal-title" style='width:100%;'>
 
             <div class="col-sm-10 modal-heading">
-              <b style="font-size: 110%;">Distribution DataMart</b><br>
+              <b style="font-size: 110%;">Order Fulfillment Distribution Data Mart</b><br>
               <b style="font-size: 110%;">Report Request Confirmation</b>
               <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">
                 Vehicle Event Status</div>

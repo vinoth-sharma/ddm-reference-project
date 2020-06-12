@@ -278,7 +278,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public changeReportName(event: any, reportObject) {
     const changedReport = {};
     if (!reportObject.report_name || !reportObject.report_name.length) {
-      reportObject.report_name = reportObject.report_name_old;
+      reportObject.report_name = this.ddmReportname;
       this.toasterService.error('Cannot save empty name');
       reportObject.clicked = false;
     } else {
@@ -802,7 +802,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   // freuency selected through checkbox
-  public frequencySelectedDropdown(val, event) {
+  public frequencySelectedInput(val, event) {
+    this.changeInFreq = false;
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };

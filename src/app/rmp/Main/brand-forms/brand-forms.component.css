@@ -145,3 +145,8 @@ h4 {
 .modal-content {
     margin-top: 38vh;
 }
+
+.data-border {
+    border: black solid 1px;
+    padding: 0.25vw;
+}

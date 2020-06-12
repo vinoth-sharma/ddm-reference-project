@@ -45,7 +45,7 @@ export class NgCipsEmailComponent implements OnInit {
 
   ngOnInit() {
     this.subReqService.emitReqOnBehalfEmail.subscribe((email: string) => {
-      this.selectedChips.push(email);
+      this.selectedChips = [...new Set([...this.selectedChips,email])];
       this.emailSelectionEmitter.emit(this.selectedChips)
     })
   }
@@ -64,7 +64,7 @@ export class NgCipsEmailComponent implements OnInit {
     if ((value || '').trim()) {
       let l_value = getMailIds(value.trim())
       if (l_value) {
-        this.selectedChips = [...new Set([...this.selectedChips, ...l_value])]
+        this.selectedChips = [...new Set([...this.selectedChips, ...l_value])];
         this.emailSelectionEmitter.emit(this.selectedChips)
       }
       else

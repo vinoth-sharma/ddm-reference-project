@@ -23,12 +23,12 @@
             <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
               id="document-url" required>
           </div>
-          <div class="form-group" title="Please upload a file of CSV/WORD/EXCEL format!">
+          <div class="form-group" title="Please upload a file of CSV/PDF/WORD/EXCEL format!">
             <input type="checkbox" id="uploadCheckbox" (click)="upload(isChecked)" [checked]="isChecked">&nbsp;&nbsp;
             <label for="upload-doc" class="col-form-label">Upload Document
               <span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
-            <input id="attach-file1" name="attach-file1" (change)='renameFile($event.target.files)'
-                   type="file" style="margin-left: 20px;display:inline;" disabled>
+            <input id="attach-file1" name="attach-file1" (change)='renameFile($event.target.files)' type="file"
+              style="margin-left: 20px;display:inline;" disabled>
           </div>
         </form>
       </div>
@@ -94,7 +94,7 @@
       <div class="ref-styling row" [id]="'upload_doc'+i" *ngFor='let element of isRef.docs; let i = index'>
         <div class="col-7">
           <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle="tooltip"
-            title="{{element.uploaded_file_name}}" (click)="getLink(element.file_id)" 
+            title="{{element.uploaded_file_name}}" (click)="getLink(element.file_id)"
             style="color: blue;cursor:pointer;">
             <u>{{element.uploaded_file_name}}</u>
           </a>

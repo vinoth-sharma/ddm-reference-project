@@ -21,6 +21,7 @@ declare var jsPDF: any;
 
 export class UserProfileComponent implements OnInit, AfterViewInit {
 
+  public notificationRadioState: boolean = null;
   public full_contact: any;
   public text_notification: any;
   public countryCode_notification: any;
@@ -477,14 +478,14 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   }
 
   // enable  a few input field based on checkbox selection
-  public enableNotificationBox() {
-    $("#notification_yes").prop("checked", "true")
+  public enableNotificationBox(event?: any) {
+    this.notificationRadioState = true;
     $("#phone").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");
     if (this.marketselections["user_text_notification_data"]["alternate_number"] != null && this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
       let cellPhoneHolder = this.marketselections["user_text_notification_data"]['alternate_number'];
       this.te_number = cellPhoneHolder.split(/[-]/);
-      this.text_number = this.te_number[1];
+      this.text_number = this.te_number[0];
 
       if ((<HTMLInputElement>document.getElementById("phone"))) {
         ((<HTMLInputElement>document.getElementById("phone")).value) = this.text_number;
@@ -500,7 +501,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       })
     }
     else {
-      $("#notification_yes").prop("checked", "true")
+      this.notificationRadioState = true;
       $("#phone").removeAttr("disabled");
       $("#carrier").removeAttr("disabled");
       if ((<HTMLInputElement>document.getElementById("phone"))) {
@@ -515,7 +516,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     (<HTMLTextAreaElement>(document.getElementById("phone"))).value = "";
     $("#carrier option[value = '']").prop("selected", "true")
     this.carrier_selected = ""
-    $("#notification_no").prop("checked", "true")
+    this.notificationRadioState = false;
     $("#phone").prop("disabled", "disabled");
     $("#carrier").prop("disabled", "disabled");
   }
@@ -774,7 +775,6 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   // called when an item is selected/deselected in market-data
   public onMarketItemSelect() {
     this.changed_settings = true
-    // marketselections
     this.marketindex = [];
     this.selected.market_data.map(element => {
       if (!(this.marketindex.includes(element.ddm_rmp_lookup_market_id))) {
@@ -1052,10 +1052,10 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.cellPhone = (<HTMLInputElement>document.getElementById("phone")).value;
     this.text_number = (<HTMLInputElement>document.getElementById("phone")).value;
     this.carrier_selected = (<HTMLSelectElement>document.getElementById("carrier")).value;
-    if ($("#notification_no").prop("checked") == true) {
+    if (this.notificationRadioState == true && (this.text_number.length == 10) && this.carrier_selected != "") {
       this.spinner.show()
-      this.jsonNotification.alternate_number = ""
-      this.jsonNotification.carrier = ""
+      this.jsonNotification.alternate_number = this.text_number
+      this.jsonNotification.carrier = this.carrier_selected
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
         this.spinner.hide();
         this.toastr.success("Notification details updated successfully")
@@ -1064,47 +1064,44 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
         this.toastr.error("Connection error");
       })
     }
-    else if (this.text_number == "" && this.carrier_selected == "") {
+    else if (this.text_number == "" && this.carrier_selected == "" && (this.notificationRadioState != false)) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter a valid number and select a carrier</h5>";
       document.getElementById("errorTrigger").click()
       return
     }
-    else if (this.text_number == "") {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Number field cannot be blank</h5>";
+    else if ((this.text_number == "" || this.text_number.length < 10) && this.notificationRadioState != false) {
+      if (this.text_number == "") {
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Number field cannot be blank</h5>";
+      }
+      if (this.text_number.length < 10) {
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter valid 10 digit number(strictly numbers without special characters)</h5>";
+      }
       document.getElementById("errorTrigger").click()
       return
     }
-    else if (this.carrier_selected == "") {
+    else if (this.carrier_selected == "" && this.notificationRadioState != false) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Please select a carrier</h5>";
       document.getElementById("errorTrigger").click()
       return
     }
-
-    else {
-      if ((this.cellPhone.match(phoneno))) {
-        this.spinner.show()
-        this.jsonNotification.alternate_number = this.cellPhone
-        this.jsonNotification.carrier = this.carrier_selected
-        this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-          this.toastr.success("Notification details updated successfully")
-          this.spinner.hide()
-        }, err => {
-          this.spinner.hide();
-          this.toastr.error("Connection error");
-        })
-      }
-      else {
-        document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter valid number(strictly numbers without special characters)</h5>";
-        document.getElementById("errorTrigger").click()
+    else if (this.notificationRadioState == false) {
+      this.spinner.show()
+      this.jsonNotification.alternate_number = this.cellPhone
+      this.jsonNotification.carrier = this.carrier_selected
+      this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
+        this.toastr.success("Notification details updated successfully")
+        this.spinner.hide()
+      }, err => {
         this.spinner.hide();
-        return
-      }
+        this.toastr.error("Connection error");
+      })
     }
   }
 
   public changeSaveSettings() {
     this.changed_settings = true;
   }
+
   // to download a img of selected options
   public downloadMarkedSelection() {
     let fileName = "user_selection"
@@ -1117,6 +1114,5 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       doc.addImage(canvas.toDataURL('image/png'), 'png', 25, 25)
       doc.save(fileName)
     })
-
   }
 }

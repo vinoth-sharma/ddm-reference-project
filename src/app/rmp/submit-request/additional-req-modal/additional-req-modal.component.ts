@@ -9,7 +9,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 })
 export class AdditionalReqModalComponent implements OnInit {
 
-  public supportedFiles = ["csv","odt","ods","doc","docx","xlsx"];
+  public supportedFiles = ["csv","pdf","odt","ods","doc","docx","xlsx"];
   public radioOpt = [{ label: "Yes", value: true }, { label: "No", value: false }]
   public report_title = "";
   public additional_req = "";
@@ -82,10 +82,11 @@ export class AdditionalReqModalComponent implements OnInit {
 
   public getFile() {
     let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files[0];
+    // console.log("l_file",l_file,"l_life.name");    
     if(l_file){
         let formData = new FormData();
         formData.append('file_upload', l_file);
-        // formData.append('uploaded_file_name', document_title);
+        formData.append('uploaded_file_name',l_file.name);
         formData.append('flag', "is_req");
         formData.append('type', 'rmp');
         return formData

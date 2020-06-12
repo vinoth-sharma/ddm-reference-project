@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 export class DjangoService {
   constructor(private httpClient: HttpClient) { }
 
-  public defaultUploadMessage: string = 'Please upload a file of CSV/WORD/EXCEL format!';
+  public defaultUploadMessage: string = 'Please upload a file of CSV/PDF/WORD/EXCEL format!';
 
   // ###############################################################################//
   // <--                             GET Methods                             -->   //

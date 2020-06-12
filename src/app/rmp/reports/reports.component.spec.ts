@@ -332,7 +332,7 @@ describe('ReportsComponent', () => {
     component.frequencyLength = [{ ddm_rmp_lookup_select_frequency_id: 1 }]
     spyOn(component, "ngOnInit")
     fixture.detectChanges();
-    component.frequencySelectedDropdown(val, event);
+    component.frequencySelectedInput(val, event);
     expect(component.frequencyData).toEqual(frequencyData);
     expect(component.jsonfinal.select_frequency).toEqual([frequencyData]);
   })

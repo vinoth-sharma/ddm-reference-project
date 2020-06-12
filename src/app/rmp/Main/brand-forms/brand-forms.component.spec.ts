@@ -8,6 +8,7 @@ import { BrandFormsComponent } from './brand-forms.component';
 import { BrandFormsService } from './brand-forms.service'
 import Utils from 'src/utils';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
+import { ButtonCssDirective } from '../../../custom-directives/button-css.directive';
 import { OrderByPipe } from "../../../custom-directives/filters/order-by.pipe";
 import { FilterTablePipe } from '../../filter-table.pipe';
 
@@ -17,7 +18,7 @@ describe('BrandFormsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BrandFormsComponent, OrderByPipe, FilterTablePipe, NgToasterComponent],
+      declarations: [BrandFormsComponent, OrderByPipe, FilterTablePipe, NgToasterComponent, ButtonCssDirective],
       imports: [MaterialModule, FormsModule, HttpClientModule, ReactiveFormsModule, BrowserAnimationsModule]
     })
       .compileComponents();
@@ -90,15 +91,13 @@ describe('BrandFormsComponent', () => {
 
   it('should test the filterData()', () => {
     component.filters = {}
-
     component.filterData();
-
     expect(component.searchObj).toEqual(JSON.parse(JSON.stringify(component.filters)))
   })
 
   it('should test the getBrandFormList API call and respective variables', () => {
     let testBrandFormsService = TestBed.inject(BrandFormsService);
-    let testDataResult = { key: 'key', value: 'value' }
+    let testDataResult = { keyData: 'key', valueData: 'value' }
     spyOn(Utils, 'hideSpinner');
 
     testBrandFormsService.getBrandFormsData().subscribe(res => {
@@ -109,6 +108,29 @@ describe('BrandFormsComponent', () => {
       expect(component.reports).toEqual(res['data'])
       expect(component.isDataLoaded).toEqual(true)
       expect(Utils.hideSpinner).toHaveBeenCalled();
+    })
+
+  })
+
+  it('should capture the deleteRecordCapture()', () => {
+    let testElement = { testColA: 'testColValueA', testColB: 'testColValueB' }
+    component.reportDataColumns['mutable'] = testElement.testColB
+    component.reportDataColumns['immutable'] = testElement.testColA
+
+    component.deleteRecordCapture(testElement);
+
+    expect(component.deleteRecordData['brand_value']).toEqual(testElement[component.reportDataColumns['mutable']]);
+    expect(component.deleteRecordData['alloc_grp_cd_val']).toEqual(testElement[component.reportDataColumns['immutable']]);
+  })
+
+  it('should test the deletion operation', () => {
+    let testBrandFormsService = TestBed.inject(BrandFormsService);
+    let testDataResult = { keyData: 'key', valueData: 'value' }
+    spyOn(Utils, 'hideSpinner');
+    spyOn(component, "getBrandFormList")
+
+    testBrandFormsService.deleteBrandFormsDataRecord(testDataResult).subscribe(res => {
+      expect(component.getBrandFormList).toHaveBeenCalled();
     })
 
   })

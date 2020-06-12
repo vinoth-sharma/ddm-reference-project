@@ -17,11 +17,11 @@ describe('ReferenceDocComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReferenceDocComponent ],
-      imports : [QuillModule.forRoot(),FormsModule,ReactiveFormsModule,HttpClientTestingModule,MaterialModule,NoopAnimationsModule],
-      providers : [DjangoService]
+      declarations: [ReferenceDocComponent],
+      imports: [QuillModule.forRoot(), FormsModule, ReactiveFormsModule, HttpClientTestingModule, MaterialModule, NoopAnimationsModule],
+      providers: [DjangoService]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe('ReferenceDocComponent', () => {
     component = fixture.componentInstance;
     component.content = mock_data;
     component.isRef.docs = mockIsRef;
-    spyOn(Utils,"showSpinner")
+    spyOn(Utils, "showSpinner")
     fixture.detectChanges();
   });
 
@@ -37,15 +37,15 @@ describe('ReferenceDocComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it("upload func",()=>{
+  it("upload func", () => {
     component.upload(true);
     const nativeElement = fixture.nativeElement;
     const input = nativeElement.querySelector('#document-url');
     expect(input.value).toEqual("");
   })
 
-  it("textChanged func",()=>{
-    component.textChanged({text: "hjh "});
+  it("textChanged func", () => {
+    component.textChanged({ text: "hjh " });
     expect(component.textChange).toEqual(true)
     expect(component.enableUpdateData).toEqual(true)
   })
@@ -66,41 +66,41 @@ describe('ReferenceDocComponent', () => {
     expect(component.namings).toEqual("original");
   });
 
-  it("content_edit func",()=>{
+  it("content_edit func", () => {
     component.content_edit();
     expect(component.editMode).toEqual(false)
   })
 
-  it("editTrue func",()=>{
+  it("editTrue func", () => {
     component.content_edit();
     component.editTrue();
     expect(component.editMode).toEqual(true);
   })
 
-  it("deleteDocument func",()=>{
+  it("deleteDocument func", () => {
     let djangoService = TestBed.inject(DjangoService);
 
-    spyOn(djangoService,"ddm_rmp_reference_documents_delete").and.returnValue(of({data:[],status:200}));
-    spyOn(Utils,"hideSpinner")
-  component.deleteDocument(12,0);
+    spyOn(djangoService, "ddm_rmp_reference_documents_delete").and.returnValue(of({ data: [], status: 200 }));
+    spyOn(Utils, "hideSpinner")
+    component.deleteDocument(12, 0);
     const nativeElement = fixture.nativeElement;
     const ele = nativeElement.querySelector('#editable0');
     // tick();
     expect(ele.style.display).toEqual("none");
   })
 
-  it("delete_upload_file func",()=>{
+  it("delete_upload_file func", () => {
     let djangoService = TestBed.inject(DjangoService);
-    spyOn(djangoService,"delete_upload_doc").and.returnValue(of({data:[],status:200}));
-    spyOn(Utils,"hideSpinner")
-    component.delete_upload_file(12,0);
+    spyOn(djangoService, "delete_upload_doc").and.returnValue(of({ data: [], status: 200 }));
+    spyOn(Utils, "hideSpinner")
+    component.delete_upload_file(12, 0);
     const nativeElement = fixture.nativeElement;
     const ele = nativeElement.querySelector('#upload_doc0');
     expect(ele.style.display).toEqual("none");
   })
 
-  it("editDoc func",()=>{
-    component.editDoc(12,"sample","https://www.google.com");
+  it("editDoc func", () => {
+    component.editDoc(12, "sample", "https://www.google.com", "testIndex");
     const nativeElement = fixture.nativeElement;
     const ele = nativeElement.querySelector('#document-name');
     const ele1 = nativeElement.querySelector('#document-url');
@@ -110,7 +110,7 @@ describe('ReferenceDocComponent', () => {
     expect(ele1.value).toEqual("https://www.google.com")
   })
 
-  it("NewDoc func",()=>{
+  it("NewDoc func", () => {
     const nativeElement = fixture.nativeElement;
     const ele = nativeElement.querySelector('#document-name');
     const ele1 = nativeElement.querySelector('#document-url');
@@ -119,26 +119,28 @@ describe('ReferenceDocComponent', () => {
     expect(ele.value).toEqual("")
     expect(ele1.value).toEqual("")
   })
-  
+
 });
 
 
 
 var mock_data = {
-  message : "success",
-  data : {
-    desc_text : [{ddm_rmp_desc_text_id: 3,
+  message: "success",
+  data: {
+    desc_text: [{
+      ddm_rmp_desc_text_id: 3,
       module_name: "Submit Request",
-      description: "nan"}],
-      desc_text_reference_documents : [{
-        ddm_rmp_desc_text_reference_documents_id : 12,
-        url : "https://www.google.com",
-        title : "sample",
-      }]
+      description: "nan"
+    }],
+    desc_text_reference_documents: [{
+      ddm_rmp_desc_text_reference_documents_id: 12,
+      url: "https://www.google.com",
+      title: "sample",
+    }]
   }
 }
 
 var mockIsRef = [{
-  file_id : 12,
-  uploaded_file_name : "sample",
+  file_id: 12,
+  uploaded_file_name: "sample",
 }]

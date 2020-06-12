@@ -29,7 +29,7 @@
               <label for="upload-doc" class="col-form-label">Upload Document
                 <span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
               <input id="attach-file1" name="attach-file1" type="file" style="margin-left: 20px;display:inline;"
-              (change)='renameFile($event.target.files)' disabled>
+                (change)='renameFile($event.target.files)' disabled>
             </div>
           </form>
         </div>
@@ -89,8 +89,7 @@
           target="_blank" download='ganesh'></a> -->
           <div class="col-7">
             <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle="tooltip"
-              title="{{element.uploaded_file_name}}" (click)="getLink(element)"
-              style="color: blue;cursor:pointer;">
+              title="{{element.uploaded_file_name}}" (click)="getLink(element)" style="color: blue;cursor:pointer;">
               <u>{{element.uploaded_file_name}}</u>
             </a>
           </div>

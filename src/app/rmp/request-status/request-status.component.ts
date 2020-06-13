@@ -586,6 +586,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         $('#CancelRequest').modal('hide');
         this.toastr.success("The request-id : " + this.finalData[0]['ddm_rmp_post_report_id'] + " has been cancelled successfully")
         Utils.hideSpinner();
+        this.comment_text = "Cancelled"
+        this.extract_comment(true);
       },
         err => {
           this.toastr.error("There has been an error in cancelling the request-id : " + this.finalData[0]['ddm_rmp_post_report_id'])
@@ -918,7 +920,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   // adding comment to reports
-  public extract_comment() {
+  public extract_comment(calledFormDeleteReq?) {
     if (!this.comment_text || this.comment_text == "") {
       this.errorModalMessageRequest = "Enter some comment";
       $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
@@ -948,10 +950,14 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           this.django.post_report_comments(report_comment).subscribe(response => {
             this.comment_list.push(response['data']);
             this.comment_text = "";
-            this.toastr.success('Comments for request-id :' + report_comment.ddm_rmp_post_report + ' saved successfully!')
+            if (!calledFormDeleteReq) {
+              this.toastr.success('Comments for request-id :' + report_comment.ddm_rmp_post_report + ' saved successfully!')
+            }
             Utils.hideSpinner();
           }, err => {
-            this.errorModalMessageRequest = "Please post the comment again";
+            if (!calledFormDeleteReq) {
+              this.errorModalMessageRequest = "Please post the comment again";
+            }
             $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
             Utils.hideSpinner();
           })

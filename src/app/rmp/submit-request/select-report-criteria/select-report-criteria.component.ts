@@ -299,10 +299,10 @@ export class SelectReportCriteriaComp implements OnInit {
         this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Updated successfully`)
       else
         this.ngToaster.customizedMsg(`<span class="bold">Request #${response['report_data']['ddm_rmp_post_report_id']} has been initiated.</span><br>
-        <span class="red">Please</span> proceed to 'Dealer Allocation' or 'Vehicle Event Status' to complete the Request.`)
+        <span class="red">Please</span> proceed to 'Vehicle Event Status' or 'Dealer Allocation' to complete the Request.`)
 
       if (response['report_data']['status'] === "Incomplete")
-        this.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' to complete the Request</span>"
+        this.message = "<span class='red'>Please proceed to 'Vehicle Event Status' or 'Dealer Allocation' to complete the Request</span>"
       else
         this.message = "";
 
@@ -386,7 +386,7 @@ export class SelectReportCriteriaComp implements OnInit {
 
     this.submitService.setSubmitOnBehalf(this.req_body.report_detail.on_behalf_of, "");
     if (reqData.report_data.status === "Incomplete")
-      this.message = "<span class='red'>Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' to complete the Request</span>"
+      this.message = "<span class='red'>Please proceed to 'Vehicle Event Status' or 'Dealer Allocation' to complete the Request</span>"
     else if (reqData.report_data.status === "Cancelled") {
       this.req_body.report_detail.status = reqData.report_data.status;
       this.message = "";

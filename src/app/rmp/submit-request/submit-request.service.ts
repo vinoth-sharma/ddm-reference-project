@@ -64,8 +64,7 @@ export class SubmitRequestService {
   }
 
   public setSubmitOnBehalf(user, mail) {
-    if (mail)
-      this.emitReqOnBehalfEmail.next(mail)
+    this.emitReqOnBehalfEmail.next( { currentEmail: mail,previousEmail : this.onBehalfEmail })
     this.onBehalfEmail = mail;
     this.onBehalfUser = user;
   }

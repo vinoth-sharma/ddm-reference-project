@@ -1,38 +1,4 @@
 <app-header></app-header>
-<!-- 
-<div class="body-rmp">
-  <div class="fluid-container holder">
-    <div class="flex-container row tool-header">
-      <div class="default">
-        <button *ngIf="user_role=='Admin'" class="btn btn-primary" (click)="openNotesModal()">
-          Add Important Notes
-        </button>
-      </div>
-      <div class="tab-style">
-        <div class="tab" style="float:left;">
-          <a routerLink="main" routerLinkActive="active"><button class="btn btn-primary main-menu">Main
-              Menu</button></a>
-          <a routerLink="submit-request" routerLinkActive="active"><button class="btn btn-primary">Submit
-              Request</button></a>
-          <a routerLink="request-status" routerLinkActive="active"><button class="btn btn-primary">Request
-              Status</button></a>
-          <a routerLink="reports" routerLinkActive="active"><button class="btn btn-primary">Reports</button></a>
-          <a *ngIf="user_role=='Admin'" routerLink="metrics" routerLinkActive="active"><button
-              class="btn btn-primary">Metrics</button></a>
-        </div>
-        <div style="float:left;" *ngIf="user_role=='Admin'">
-          <button *ngIf=showButton class="btn btn-primary on-behalf-button" data-toggle="modal"
-            data-target="#ModalOnBehalf" data-dismiss="modal" onmouseover="" style="cursor: pointer;">
-            <img id="account" class="on-behalf-image" src="..\assets\account.png">Request On Behalf
-          </button>
-        </div>
-        <app-request-on-behalf></app-request-on-behalf>
-      </div>
-    </div>
-    <router-outlet class="routing-dimensions" style="background:white"></router-outlet>
-  </div>
-</div> -->
-
 <div class="rmp-body">
   <div class="routing-container" >
     <router-outlet></router-outlet>

@@ -16,7 +16,6 @@ import { ReportsComponent } from './reports/reports.component';
 import { MetricsComponent } from './metrics/metrics.component';
 import { FilterTablePipe } from './filter-table.pipe';
 import { OrderModule } from 'ngx-order-pipe';
-import { RequestOnBehalfComponent } from './request-on-behalf/request-on-behalf.component';
 import { MainMenuLandingPageComponent } from './Main/main-menu-landing-page/main-menu-landing-page.component';
 import { AngularMultiSelectModule } from "angular4-multiselect-dropdown/angular4-multiselect-dropdown";
 import { DatePipe } from '@angular/common';
@@ -61,7 +60,6 @@ import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
     ReportsComponent,
     MetricsComponent,
     FilterTablePipe,
-    RequestOnBehalfComponent,
     MainMenuLandingPageComponent,
     NotesWrapperComponent,
     DisplayNotesComponent,

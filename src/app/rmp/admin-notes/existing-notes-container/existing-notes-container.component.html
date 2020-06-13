@@ -1,5 +1,5 @@
 <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" *ngIf="existingData.length > 0">
+  <table mat-table [dataSource]="dataSource" >
 
     <!-- Position Column -->
     <ng-container matColumnDef="notes_start_date">
@@ -24,5 +24,5 @@
   </table>
   <div *ngIf="existingData.length === 0" style="text-align: center;padding: 70px;">No records found</div>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons *ngIf="existingData.length > 0"></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons ></mat-paginator>
 </div>

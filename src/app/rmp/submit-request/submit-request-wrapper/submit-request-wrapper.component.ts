@@ -8,6 +8,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 import { SubmitRequestService } from '../submit-request.service';
 import Utils from 'src/utils';
 import { Subscription } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-submit-request-wrapper',
@@ -25,6 +26,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
   subjectSubscription: Subscription;
   refreshWrapper: boolean = true;
   clearAll: boolean = false;
+  selected = new FormControl(0);
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
@@ -51,6 +53,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
         if (requestId) {
           Utils.showSpinner();
           this.submitReqService.getReportDescription(requestId).subscribe(res => {
+            this.setTabType(res);
             this.submitReqService.updateRequestStatus({ type: "srw", data: res });
             Utils.hideSpinner();
           }, err => {
@@ -70,9 +73,17 @@ export class SubmitRequestWrapperComponent implements OnInit {
     })
   }
 
+  setTabType(res) {
+    if (res.report_type === "da")
+      this.selected.setValue(1)
+    else
+      this.selected.setValue(0)
+  }
+
   refreshWrapperFunc(event): void {
     Utils.showSpinner();
     this.refreshWrapper = false;
+    this.setTabType({ report_type: "" })
     if (event === "clear")
       this.clearAll = true;
     else

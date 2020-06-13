@@ -214,7 +214,8 @@ export class VehicleEventStatusComponent implements OnInit {
     this.keyDataEle.masterData = this.l_lookupTableMD.order_event;
     //refilling checkbox master data
     this.resetCheckboxData();
-    this.l_lookupTableMD.checkbox_data.forEach(l_checkbox => {
+    
+    this.l_lookupTableMD.checkbox_data.sort(sortCheckbox).forEach(l_checkbox => {
       if (l_checkbox.ddm_rmp_ots_checkbox_group_id === 1)
         this.checkBxMD1.commonly_req_field.push(l_checkbox)
       else if (l_checkbox.ddm_rmp_ots_checkbox_group_id === 2)
@@ -289,7 +290,7 @@ export class VehicleEventStatusComponent implements OnInit {
         return ele
       }
     }
-    this.filtered_MD.vehicle = this.l_lookupTableMD.vehicle_data.filter(divisionCBFunc)
+    this.filtered_MD.vehicle = this.l_lookupTableMD.vehicle_data.filter(divisionCBFunc);
     this.selected.vehicle = this.selected.vehicle.filter(divisionCBFunc);
     this.vehicleDependencies();
   }
@@ -301,8 +302,8 @@ export class VehicleEventStatusComponent implements OnInit {
         return ele
       }
     }
-    this.filtered_MD.allocation = this.l_lookupTableMD.allocation_grp.filter(vehicleCBFunc)
-    this.selected.allocation = this.selected.allocation.filter(vehicleCBFunc);
+    this.filtered_MD.allocation = this.l_lookupTableMD.allocation_grp.filter(vehicleCBFunc);
+    this.selected.allocation = this.l_lookupTableMD.allocation_grp.filter(vehicleCBFunc);
     this.allocationDependencies();
   }
 
@@ -313,7 +314,7 @@ export class VehicleEventStatusComponent implements OnInit {
         return ele
       }
     }
-    this.filtered_MD.merchandising = this.l_lookupTableMD.merchandising_data.filter(allocationCBFunc)
+    this.filtered_MD.merchandising = this.l_lookupTableMD.merchandising_data.filter(allocationCBFunc);
     this.selected.merchandising = this.selected.merchandising.filter(allocationCBFunc);
   }
 
@@ -368,17 +369,17 @@ export class VehicleEventStatusComponent implements OnInit {
   public openAdditionalReqModal() {
     if (!this.selected.model_years.length)
       this.ngToaster.error("Model year is mandatory.")
-    else if (!this.selected.allocation.length)
-      this.ngToaster.error("Allocation Group is mandatory.")
+    else if (!this.selected.vehicle.length)
+      this.ngToaster.error("Vehicel line brand is mandatory.")
     else if (!this.selected.distribution_entity.length)
       this.ngToaster.error("Distribution Entity is mandatory.")
     else if (this.keyDataEle.others.checked && !this.keyDataEle.others.order_event.length) {
       this.ngToaster.error("Please enter the Key Data Elements.")
     }
-    else if (!this.keyDataEle.others.checked && !this.keyDataEle.selected.length) {
-      this.ngToaster.error("Please enter the Key Data Elements.")
+    else if (this.keyDataEle.others.checked && !this.req_body.data_date_range.StartDate) {
+      this.ngToaster.error("Please select the date range for Key Data Elements.")
     }
-    else if (!this.req_body.data_date_range.StartDate) {
+    else if (this.keyDataEle.selected.length && !this.req_body.data_date_range.StartDate) {
       this.ngToaster.error("Please select the date range for Key Data Elements.")
     }
     else {
@@ -555,9 +556,9 @@ export class VehicleEventStatusComponent implements OnInit {
       }
     }
     // to trigger change detection
-    this.selected_checkbox.commonly_req_field = [...this.selected_checkbox.commonly_req_field]
-    this.selected_checkbox.opt_content_avail = [...this.selected_checkbox.opt_content_avail]
-    this.selected_checkbox.order_event_avail_ds = [...this.selected_checkbox.order_event_avail_ds]
+    this.selected_checkbox.commonly_req_field = [...this.selected_checkbox.commonly_req_field];
+    this.selected_checkbox.opt_content_avail = [...this.selected_checkbox.opt_content_avail];
+    this.selected_checkbox.order_event_avail_ds = [...this.selected_checkbox.order_event_avail_ds];
 
     // updating Key Data Elements for Date Range
     if (l_data.order_event.length === 1 && !l_data.order_event[0].ddm_rmp_lookup_dropdown_order_event) {
@@ -635,7 +636,7 @@ export class VehicleEventStatusComponent implements OnInit {
   }
 
   public model_yr_settings = {
-    label: "Models",
+    label: "Model Years",
     primary_key: 'ddm_rmp_lookup_dropdown_model_year_id',
     label_key: 'model_year',
     title: "",
@@ -659,7 +660,7 @@ export class VehicleEventStatusComponent implements OnInit {
   };
 
   public allocation_settings = {
-    label: "Allocation Groups(s)",
+    label: "Allocation Groups",
     primary_key: 'ddm_rmp_lookup_dropdown_allocation_group_id',
     label_key: 'allocation_group',
     title: "",
@@ -667,7 +668,7 @@ export class VehicleEventStatusComponent implements OnInit {
   };
 
   public merchandising_settings = {
-    label: "Merchandising Model",
+    label: "Merchandising Models",
     primary_key: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
     label_key: 'merchandising_model',
     title: "",
@@ -692,7 +693,7 @@ export class VehicleEventStatusComponent implements OnInit {
   };
 
   public commonly_req_field_settings = {
-    label: "Common fields",
+    label: "Common Fields",
     primary_key: 'ddm_rmp_lookup_ots_checkbox_values_id',
     label_key: 'field_values',
     title: "",
@@ -726,4 +727,14 @@ export class VehicleEventStatusComponent implements OnInit {
   ngOnDestroy() {
     this.subjectSubscription.unsubscribe();
   }
+}
+
+function sortCheckbox( a, b ){
+  if ( a.ddm_rmp_lookup_ots_checkbox_values_id < b.ddm_rmp_lookup_ots_checkbox_values_id ){
+    return -1;
+  }
+  if ( a.ddm_rmp_lookup_ots_checkbox_values_id > b.ddm_rmp_lookup_ots_checkbox_values_id ){
+    return 1;
+  }
+  return 0;
 }

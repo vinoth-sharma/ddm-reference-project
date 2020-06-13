@@ -11,7 +11,8 @@
             <button mat-flat-button [cssBtn]="'mid'" (click)="clearRequestData()" style="margin-right: 8px;;">
                 {{ req_body.report_id?"New Request":" Clear All" }}
             </button>
-            <button mat-flat-button [cssBtn]="'mid'" (click)="openRequestOnBehalf()">Request on behalf</button>
+            <button mat-flat-button [cssBtn]="'mid'" (click)="openRequestOnBehalf()"
+            *ngIf="userData.userRole === 'Admin'">Request on behalf</button>
         </div>
     </div>
 

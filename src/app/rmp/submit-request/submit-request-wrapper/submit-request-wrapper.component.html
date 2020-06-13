@@ -2,7 +2,7 @@
     <div class="submit-req-body" *ngIf="refreshWrapper">
         <select-report-criteria (clearSubmitReqEmitter)="refreshWrapperFunc($event)"></select-report-criteria>
         <div class="row" style="width: 100%;">
-            <mat-tab-group>
+            <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
                 <mat-tab label="Vehicle Event Status">
                     <app-vehicle-event-status></app-vehicle-event-status>
                 </mat-tab>

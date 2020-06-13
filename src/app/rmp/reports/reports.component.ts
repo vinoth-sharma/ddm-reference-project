@@ -280,7 +280,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (!reportObject.report_name || !reportObject.report_name.length) {
       reportObject.report_name = this.ddmReportname;
       this.toasterService.error('Cannot save empty name');
-      reportObject.clicked = false;
     } else {
       changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
       changedReport['report_name'] = reportObject.report_name;

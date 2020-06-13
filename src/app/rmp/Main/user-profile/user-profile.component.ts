@@ -298,6 +298,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     gmma_data: [],
     lma_data: []
   }
+  public displayPrintDiv = false;
 
   @Input() inputModelChange = new EventEmitter();
 
@@ -711,7 +712,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
         if (!(this.zoneindex.includes(element["ddm_rmp_lookup_region_zone_id"]))) {
           this.zoneindex.push(element["ddm_rmp_lookup_region_zone_id"])
         }
-      })
+      });
       this.zoneSelection(this.zoneindex)
     }
   }
@@ -1104,15 +1105,27 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
 
   // to download a img of selected options
   public downloadMarkedSelection() {
-    let fileName = "user_selection"
-    html2Canvas($('#body_content')[0]).then((canvas) => {
-      var a = document.createElement('a')
-      a.href = canvas.toDataURL('image/png');
-      var doc = new jsPDF({
-        unit: 'px', format: 'a2'
-      });
-      doc.addImage(canvas.toDataURL('image/png'), 'png', 25, 25)
-      doc.save(fileName)
+    this.displayPrintDiv = true;
+    setTimeout(() => {
+      let fileName = "user_selection"
+      html2Canvas($('#user-selection-print-div')[0]).then((canvas) => {
+        var a = document.createElement('a')
+        a.href = canvas.toDataURL('image/png');
+        var doc = new jsPDF({
+          unit: 'px', format: 'a2'
+        });
+        doc.addImage(canvas.toDataURL('image/png'), 'png', 40, 40)
+        doc.save(fileName)
+        this.displayPrintDiv = false;
+      })
+    }, 300)
+  }
+
+  getListOfValues(list: [], key) {
+    let temparr = []
+    list.forEach(item => {
+      temparr.push(item[key])
     })
+    return temparr.join(", ")
   }
 }

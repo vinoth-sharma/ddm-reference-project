@@ -324,7 +324,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     let dupeFileName = this.isRef.docs.find(item => item.uploaded_file_name == link_title)
     if ((duplicateName || dupeFileName)) {
       let eid = duplicateName ? duplicateName['ddm_rmp_desc_text_reference_documents_id'] : undefined;
-      if (eid != this.editid && dupeFileName) {
+      if (eid != this.editid || dupeFileName) {
         document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
         document.getElementById("errorTrigger").click();
         return
@@ -379,11 +379,10 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
       document.getElementById("editable" + index).style.display = "none"
       this.editid = undefined;
       if (this.deleteIndex == undefined) {
-        this.toastr.success("Document deleted");
-      }
+        this.toastr.success("Document deleted successfully");
+      } 
       this.deleteIndex = undefined
       Utils.hideSpinner();
-      this.toastr.success("Document deleted successfully");
     }, err => {
       Utils.hideSpinner();
       this.toastr.error("Server problem encountered");
@@ -408,6 +407,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     this.changeDoc = true;
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
+    (<HTMLInputElement>document.getElementById('uploadCheckbox')).checked = false;
   }
 
   public NewDoc() {
@@ -431,11 +431,12 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
   // remaing of selected file with document title 
   public createNewFile(value, file) {
     let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    let exe = file.name.substr(file.name.lastIndexOf('.') + 1);
     if (document_title === '') {
       document.getElementById("errorModalMessage").innerHTML = "<h5>please enter document name</h5>";
       document.getElementById("errorTrigger").click()
     } else {
-      this.file = new File([value], document_title, { type: file.type, lastModified: file.lastModified });
+      this.file = new File([(<HTMLInputElement>document.getElementById("attach-file1")).files[0]], document_title + "." + exe, { type: file.type, lastModified: file.lastModified });
     }
   }
 

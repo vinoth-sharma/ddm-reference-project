@@ -197,10 +197,6 @@ hr {
     padding-left: 0.5vh;
 }
 
-.radio-no-margin {
-    margin-left: 2.5vw;
-}
-
 .radio-yes-margin {
     margin-left: 0.25vw;
 }
@@ -208,3 +204,43 @@ hr {
 .visible-btn-padding {
     padding-left: 1.25vw;
 }
+.hidden-user-selection{
+    padding:30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cont{
+    width:100%;
+}
+
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden-user-selection .header{
+    height:50px;
+    background-color: lightgray;
+}
+
+.selection-key{
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.selection-val{
+    font-size: 16px;
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.secection-contents{
+    padding:20px;
+}
+
+
+

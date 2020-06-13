@@ -9,7 +9,7 @@ import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toas
 })
 export class AdditionalReqModalComponent implements OnInit {
 
-  public supportedFiles = ["csv","odt","ods","doc","docx","xlsx"];
+  public supportedFiles = ["csv", "pdf", "odt", "ods", "doc", "docx", "xlsx"];
   public radioOpt = [{ label: "Yes", value: true }, { label: "No", value: false }]
   public report_title = "";
   public additional_req = "";
@@ -24,7 +24,7 @@ export class AdditionalReqModalComponent implements OnInit {
     isVinLevel: null,
     isSummaryReport: null,
     businessReq: "",
-    selectedFile : null
+    selectedFile: null
   }
 
   constructor(public dialogRef: MatDialogRef<AdditionalReqModalComponent>,
@@ -41,7 +41,7 @@ export class AdditionalReqModalComponent implements OnInit {
     this.responseData.businessReq = this.data.l_businessReq;
   }
 
-  reviewRequest(): void {
+  public reviewRequest(): void {
     this.responseData.cb = [...this.l_CB_data];
     this.responseData.reportTitle = this.responseData.reportTitle.trim();
     this.responseData.addReq = this.responseData.addReq.trim();
@@ -60,18 +60,18 @@ export class AdditionalReqModalComponent implements OnInit {
     else if (!l_data_validation.every(ele => ele['desc'])) {
       this.toaster.error("Please enter the values if others selected")
     }
-    else if(!this.validateFile()){
+    else if (!this.validateFile()) {
       this.toaster.error(`Please upload file with valid format (${this.supportedFiles})`)
     }
     else
       this.dialogRef.close({ data: this.responseData });
   }
 
-  validateFile(){
+  public validateFile() {
     let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files[0];
-    if(l_file){
-      let extension = l_file.name.split(".").pop(); 
-      if(this.supportedFiles.includes(extension))
+    if (l_file) {
+      let extension = l_file.name.split(".").pop();
+      if (this.supportedFiles.includes(extension))
         return true
       else
         return false
@@ -82,20 +82,20 @@ export class AdditionalReqModalComponent implements OnInit {
 
   public getFile() {
     let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files[0];
-    if(l_file){
-        let formData = new FormData();
-        formData.append('file_upload', l_file);
-        // formData.append('uploaded_file_name', document_title);
-        formData.append('flag', "is_req");
-        formData.append('type', 'rmp');
-        return formData
+    if (l_file) {
+      let formData = new FormData();
+      formData.append('file_upload', l_file);
+      formData.append('uploaded_file_name', l_file.name);
+      formData.append('flag', "is_req");
+      formData.append('type', 'rmp');
+      return formData
     }
-    else{
+    else {
       return ""
-    }    
+    }
   }
 
-  closeDialog() {
+  public closeDialog() {
     this.dialogRef.close();
   }
 

@@ -60,6 +60,14 @@
                             {{ otherReportCriteria.freq }}
                         </div>
                     </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let spcl of otherReportCriteria.frequency_data">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ spcl.label }}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ spcl.data.toString() }}
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom" *ngIf="otherReportCriteria.spclIdentifiers.length">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
@@ -133,7 +141,7 @@
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="vehicleEvent.dosp_start">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
-                            DOSP Date Range:
+                            DOSP - Orders Processed:
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
@@ -210,6 +218,10 @@
 <pre class="div-wrap">
             <b>Frequency of Reports:</b> &nbsp;&nbsp;
             <span>{{ otherReportCriteria.freq }}&nbsp;&nbsp;</span>
+            <span *ngFor="let spcl of otherReportCriteria.frequency_data">
+                {{ spcl.label }}&nbsp;&nbsp;
+                {{ spcl.data.toString() }}
+        </span>
     </pre>
 <pre class="div-wrap">
             <b>Special Identifiers:</b> &nbsp;&nbsp;

@@ -355,7 +355,13 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
   public route_url(url) {
     let urlList = this.auth_service.getListUrl();
     let appUrl = urlList.find(link => link === url)
-    if (appUrl) this.router.navigateByUrl(url)
+    if (appUrl) {
+      if (url == "user/metrics" && this.user_role == "Business-user") {     //restricting business users to access metrics tab
+        this.toastr.error("Access Denied !")
+        return
+      }
+      this.router.navigateByUrl(url)
+    }
     else window.open(url)
   }
 

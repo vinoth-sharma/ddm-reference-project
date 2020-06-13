@@ -163,6 +163,16 @@
                 <textarea class="form-control" formControlName="answer" rows="4" required="true"
                   maxlength="1000"></textarea>
               </div>
+              <div style="display: flex;justify-content: flex-start;margin-bottom: 10px;">
+                <span class="material-icons"
+                  style="display:inline-block;color: rgb(19, 145, 19);font-size: 20px;margin:0 5px 5px 0px">info</span>
+                <span style="color: rgb(19, 145, 19) ;font-style: italic;position: relative;top:3px">Note:For Internal
+                  Links, please add only the part of URL which is placed after " #/ ".
+                  <br>
+                  Eg :For URL "http://localhost:4200/#/user/main/home" add only "user/main/home"
+                </span>
+
+              </div>
               <div formArrayName="link_title_url" style="height: 26vh;overflow: auto;">
                 <ng-container *ngFor="let item of LinkTitleURL.controls; let pointIndex=index"
                   [formGroupName]="pointIndex">

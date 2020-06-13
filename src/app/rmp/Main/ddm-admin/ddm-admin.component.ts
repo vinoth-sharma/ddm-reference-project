@@ -347,7 +347,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     let dupeFileName = this.isAdmin.docs.find(item => item.uploaded_file_name == link_title)
     if ((duplicateName || dupeFileName)) {
       let eid = duplicateName ? duplicateName['ddm_rmp_desc_text_admin_documents_id'] : undefined;
-      if (eid != this.editid && dupeFileName) {
+      if (eid != this.editid || dupeFileName) {
         document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
         document.getElementById("errorTrigger").click();
         return
@@ -408,7 +408,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       document.getElementById("editable" + index).style.display = "none"
       this.editid = undefined;
       if (this.deleteIndex == undefined) {
-        this.toastr.success("Document deleted");
+        this.toastr.success("Document deleted successfully");
       }
       this.deleteIndex = undefined
       this.spinner.hide()
@@ -457,17 +457,18 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   // remaing of selected file with document title 
   public createNewFile(value, file) {
     let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    let exe = file.name.substr(file.name.lastIndexOf('.') + 1);
     if (document_title === '') {
       document.getElementById("errorModalMessage").innerHTML = "<h5>please enter document name</h5>";
       document.getElementById("errorTrigger").click()
     } else {
-      this.file = new File([value], document_title, { type: file.type, lastModified: file.lastModified });
+      this.file = new File([(<HTMLInputElement>document.getElementById("attach-file1")).files[0]], document_title + "." + exe, { type: file.type, lastModified: file.lastModified });
     }
   }
 
   // upload file to server
   public files() {
-    if (this.file['type'] == 'text/csv' || this.file['type'] == 'application/msword' || this.file['type'] == 'application/vnd.ms-word.document.macroEnabled.12' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
+    if (this.file['type'] == 'text/csv' || this.file['type'] == 'application/pdf' || this.file['type'] == 'application/msword' || this.file['type'] == 'application/vnd.ms-word.document.macroEnabled.12' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       var formData = new FormData();
       formData.append('file_upload', this.file);
@@ -516,6 +517,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     this.changeDoc = true;
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
+    (<HTMLInputElement>document.getElementById('uploadCheckbox')).checked = false;
   }
 
   // edit doc and save it

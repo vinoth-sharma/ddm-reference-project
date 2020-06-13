@@ -74,7 +74,7 @@ describe('DdmAdminComponent', () => {
 
   it("should set properties of the comp 1", () => {
     component.original_content = "original_content";
-    component.edit_True();
+    component.edit_true();
     expect(component.editModes).toBeFalsy();
     expect(component.readOnlyContentHelper).toBeTruthy();
     expect(component.namings).toBe("original_content");
@@ -260,7 +260,7 @@ describe('DdmAdminComponent', () => {
     spyOn(component, "ngOnInit");
 
     fixture.detectChanges();
-    component.editDoc(1, "val", "url");
+    component.editDoc(1, "val", "url", "testIndex");
 
     expect(component.editid).toEqual(1);
     expect(component.changeDoc).toBeTruthy();

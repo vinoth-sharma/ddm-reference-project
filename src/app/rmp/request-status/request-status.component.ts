@@ -238,6 +238,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     'help': 'Show help'
   };
   public updateDLReportId: number;
+  public distribution_data: string;
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -333,6 +334,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
             element['created_on'] = this.DatePipe.transform(element['created_on'], 'dd-MMM-yyyy')
             element['ddm_rmp_post_report_id'] = isNaN(+element['ddm_rmp_post_report_id']) ? 99999 : +element['ddm_rmp_post_report_id'];
+            element['ddm_rmp_status_date'] = this.DatePipe.transform(element['ddm_rmp_status_date'], 'dd-MMM-yyyy')
 
             if (element && element.isChecked) element.isChecked = false;
           });
@@ -586,6 +588,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         $('#CancelRequest').modal('hide');
         this.toastr.success("The request-id : " + this.finalData[0]['ddm_rmp_post_report_id'] + " has been cancelled successfully")
         Utils.hideSpinner();
+        this.comment_text = "Cancelled"
+        this.extract_comment(true);
       },
         err => {
           this.toastr.error("There has been an error in cancelling the request-id : " + this.finalData[0]['ddm_rmp_post_report_id'])
@@ -829,7 +833,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         "Title": item["title"],
         "Frequency": item["frequency"],
         "Assigned To": item["assigned_to"],
-        "Status": item[status],
+        "Status": item["status"],
         "Status Date": new Date(item["ddm_rmp_status_date"]).toDateString()
       }
       reportBody.push(obj)
@@ -918,7 +922,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   // adding comment to reports
-  public extract_comment() {
+  public extract_comment(calledFormDeleteReq?) {
     if (!this.comment_text || this.comment_text == "") {
       this.errorModalMessageRequest = "Enter some comment";
       $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
@@ -948,10 +952,14 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           this.django.post_report_comments(report_comment).subscribe(response => {
             this.comment_list.push(response['data']);
             this.comment_text = "";
-            this.toastr.success('Comments for request-id :' + report_comment.ddm_rmp_post_report + ' saved successfully!')
+            if (!calledFormDeleteReq) {
+              this.toastr.success('Comments for request-id :' + report_comment.ddm_rmp_post_report + ' saved successfully!')
+            }
             Utils.hideSpinner();
           }, err => {
-            this.errorModalMessageRequest = "Please post the comment again";
+            if (!calledFormDeleteReq) {
+              this.errorModalMessageRequest = "Please post the comment again";
+            }
             $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
             Utils.hideSpinner();
           })
@@ -1117,6 +1125,13 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           this.merchandising_model = tempArray.join(", ");
         } else {
           this.merchandising_model = [];
+        }
+
+        if (response["ost_data"]['distribution_data'].length) {
+          let tempArray = [];
+          response["ost_data"]["distribution_data"].map(element =>
+            tempArray.push(element.value));
+          this.distribution_data = tempArray.join(',');
         }
 
         if (response["ost_data"]["order_event"].length) {
@@ -1329,10 +1344,12 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
   // Search by Request Number/Requestor/Title/Status
   public filterData() {
-    if (this.statusFilter.length)
+    if (this.statusFilter.length) {
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
-    else
+    }
+    else {
       this.filters.status = '';
+    }
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 

@@ -1,4 +1,4 @@
-<div class="body-content" id="body_content" #body_content>
+ <div class="body-content" id="body_content" #body_content>
   <div class="heading">
     <div class="col-xs-9 pl-0">
       <h3 class="mt-0"><b>User Profile</b></h3>
@@ -31,17 +31,15 @@
     <div class="col-xs-6">
       <div class="text-notifications">
         <div class="row" title="After requests are fulfilled">
-          <div class="col-xs-6"><strong>Text Notification(Available for U.S. only) :</strong></div>
-          <div class="col-xs-1 radio-yes-margin pl-0">
-            <mat-radio-button id="notification_yes" type="radio" name="notification" (click)="enableNotificationBox()">
+          <div class="col-xs-6"><strong>Text Notification&nbsp;(Available for U.S. only) :</strong></div>
+          <mat-radio-group aria-labelledby="notification-radio-btn" [(ngModel)]="notificationRadioState">
+            <mat-radio-button class="radio-yes-margin" [value]="true" (click)="enableNotificationBox()">
               <strong>Yes</strong>
             </mat-radio-button>
-          </div>
-          <div class="col-xs-1 radio-no-margin pl-0">
-            <mat-radio-button id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()">
+            <mat-radio-button [value]="false" (click)="disableNotificationBox()">
               <strong>No</strong>
             </mat-radio-button>
-          </div>
+          </mat-radio-group>
         </div>
         <div class="row input-group" title="(For Ex: (555) 555-1234 should be 5555551234)">
           <div class="col-xs-6">
@@ -65,6 +63,7 @@
           </div>
           <div class="col-xs-4 minor-padding">
             <select class="carrier form-control" name="Year" id="carrier" (change)="carrier($event.target.value)">
+              <option value=""></option>
               <option *ngFor="let element of carriers_pair" value={{element.carrierValue}}>{{element.carrierName}}
               </option>
             </select>
@@ -150,7 +149,7 @@
     <div class="row message-padding">
       <b><i>*If more granular information is required, please mention it in Additional Requirements</i></b>
     </div>
-  </div>
+  </div> 
 
   <!------------------------------------Help Modal------------------------------ -->
   <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
@@ -205,3 +204,58 @@
     </div>
   </div>
   <div hidden id="dload"></div>
+
+  <!-- hidden div to download user selection -->
+  <div *ngIf="displayPrintDiv" style="position: absolute;z-index: -1000;width:100%">
+    <div class="hidden-user-selection" style="padding:30px;display: flex;justify-content: center;align-items: center;width:100%"   id="user-selection-print-div">
+      <div class="cont" style="width: 100%;">
+        <div class="header flex-center" style=" display: flex;justify-content: center;align-items: center; height:50px;background-color: lightgray;">
+          <span style="font-size: 20px;">USER SELECTION</span>
+        </div>
+        <div class="secection-contents" style="padding:20px;">
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Name : </span>
+            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{user_name}}</span>
+          </div>
+          <div class="row" >
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Market Selections : </span>
+            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.market_data,"market")}}</span>
+          </div>
+          <div class="row" >
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Division Selections : </span>
+            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.division_data,"division_desc")}}</span>
+          </div>
+          <div class="row" >
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Region Selections : </span>
+            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.country_region_data,"region_desc")}}</span>
+          </div>
+          <div class="row" >
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Zone Selections : </span>
+            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.region_zone_data,"zone_desc")}}</span>
+          </div>
+          <div class="row" >
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Area Selections : </span>
+            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.zone_area_data,"area_desc")}}</span>
+          </div>
+          <div class="row" >
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">GMMA Selections : </span>
+            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.gmma_data,"gmma_desc")}}</span>
+          </div>
+          <div class="row" >
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">LMA Selections : </span>
+            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.lma_data,"lmg_desc")}}</span>
+          </div>
+          <div class="row" >
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">BAC : </span>
+            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{bacselectedItems.join(', ')}}</span>
+          </div>
+          <div class="row" >
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">FAN: </span>
+            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{fanselectedItems.join(', ')}}</span>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  

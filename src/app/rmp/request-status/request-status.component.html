@@ -659,6 +659,10 @@
                 <br>
               </div>
               <div class="div-wrap">
+                <b>Distribution Entity(s) selection:</b> &nbsp;&nbsp;
+                <span *ngIf='distribution_data'>{{ distribution_data }}&nbsp;&nbsp;</span>
+              </div>
+              <div class="div-wrap">
                 <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
                 <span *ngIf='order_event'>{{ order_event }}&nbsp;&nbsp;</span>
                 <br>
@@ -680,14 +684,14 @@
                 <br>
               </div>
               <div class="div-wrap">
-                <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+                <b>Key Data Elemet Date Range:</b> &nbsp;&nbsp;
                 <span *ngFor="let element of summary?.ost_data.data_date_range">
                   <b>Start:</b>&nbsp;{{element?.start_date| date: 'dd-MMM-yyyy'}}
                   <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
                 </span>
               </div>
               <div class="div-wrap">
-                  <b>DOSP Time and Date:</b> &nbsp;&nbsp;
+                  <b>DOSP - Orders Processed:</b> &nbsp;&nbsp;
                   <span *ngFor="let element of summary?.ost_data.data_date_range">
                     <b>Start:</b>&nbsp;{{element?.dosp_start_date| date: 'dd-MMM-yyyy'}}
                     <b>End:</b>&nbsp;{{element?.dosp_end_date| date: 'dd-MMM-yyyy' }}
@@ -1194,6 +1198,10 @@
 <pre class="div-wrap">
   <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
   <span *ngIf='merchandising_model'>{{ merchandising_model }}&nbsp;&nbsp;</span>
+</pre>
+<pre class="div-wrap">
+  <b>Distribution Entity(s) selection:</b> &nbsp;&nbsp;
+  <span *ngIf='distribution_data'>{{ distribution_data }}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>Order Event(s) Selected:</b> &nbsp;&nbsp;

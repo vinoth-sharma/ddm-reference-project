@@ -68,16 +68,13 @@ export class AuthenticationService {
       "user/main/user-profile",
       "user/main/reference-documents",
       "user/main/ddm-admin",
-      "user/main/ddm-brand-forms",
-      "user/disclaimer",
       "user/submit-request",
       "user/submit-request/select-report-criteria",
       "user/submit-request/order-to-sale",
       "user/request-status",
       "user/reports",
       "user/metrics",
-      "user/disclaimer",
-      "user/main/ddm-team"
+      "user/disclaimer"
     ];
     return urls;
   }

@@ -405,13 +405,19 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   public deleteDocument(id: number, index: number) {
     this.spinner.show()
     this.django.ddm_rmp_admin_documents_delete(id).subscribe(response => {
-      document.getElementById("editable" + index).style.display = "none"
+      this.naming = this.naming.filter(item => item['ddm_rmp_desc_text_admin_documents_id'] != id)
+      let subscription = this.dataProvider.currentlookUpTableData.subscribe(element => {
+        element['data'].desc_text_admin_documents = element['data'].desc_text_admin_documents.filter(item => item.ddm_rmp_desc_text_admin_documents_id != id)
+        console.log(element)
+        setTimeout(()=>{subscription.unsubscribe()
+          this.dataProvider.changelookUpData(element)},100)
+          this.spinner.hide()
+      })
       this.editid = undefined;
       if (this.deleteIndex == undefined) {
         this.toastr.success("Document deleted successfully");
       }
       this.deleteIndex = undefined
-      this.spinner.hide()
     }, err => {
       this.spinner.hide()
       this.toastr.error("Server problem encountered")
@@ -422,7 +428,12 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   public delete_upload_file(id, index) {
     this.spinner.show();
     this.django.delete_upload_doc(id).subscribe(res => {
-      document.getElementById("upload_doc" + index).style.display = "none"
+      this.django.get_files().subscribe(ele => {
+        this.filesList = ele['list'];
+        if (this.filesList) {
+          this.dataProvider.changeFiles(ele)
+        }
+      })
       this.toastr.success("Document deleted");
       this.spinner.hide()
     }, err => {

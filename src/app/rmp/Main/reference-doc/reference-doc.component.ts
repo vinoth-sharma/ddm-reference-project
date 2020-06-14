@@ -376,8 +376,17 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
   public deleteDocument(id: number, index: number) {
     Utils.showSpinner();
     this.django.ddm_rmp_reference_documents_delete(id).subscribe(response => {
-      document.getElementById("editable" + index).style.display = "none"
+      this.naming = this.naming.filter(item => item['ddm_rmp_desc_text_reference_documents_id'] != id )
       this.editid = undefined;
+      let subscription  = this.dataProvider.currentlookUpTableData.subscribe(element => {
+        element['data'].desc_text_reference_documents = element['data'].desc_text_reference_documents.filter(item => item.ddm_rmp_desc_text_reference_documents_id != id)
+        console.log(element)
+        setTimeout(()=>{
+          subscription.unsubscribe()
+          this.dataProvider.changelookUpData(element)
+        },100)
+      })
+      
       if (this.deleteIndex == undefined) {
         this.toastr.success("Document deleted successfully");
       } 
@@ -392,9 +401,15 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
   public delete_upload_file(id, index) {
     Utils.showSpinner();
     this.django.delete_upload_doc(id).subscribe(res => {
-      document.getElementById("upload_doc" + index).style.display = "none"
+      this.django.get_files().subscribe(ele => {
+        this.filesList = ele['list'];
+        if (this.filesList) {
+          this.dataProvider.changeFiles(ele)
+        }
+      })
       Utils.hideSpinner();
       this.toastr.success("Document deleted successfully");
+
     }, err => {
       Utils.hideSpinner();
       this.toastr.error("Server problem encountered");

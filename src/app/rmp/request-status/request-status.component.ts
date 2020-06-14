@@ -238,6 +238,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     'help': 'Show help'
   };
   public updateDLReportId: number;
+  public distribution_data : string;
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -829,7 +830,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         "Title": item["title"],
         "Frequency": item["frequency"],
         "Assigned To": item["assigned_to"],
-        "Status": item[status],
+        "Status": item["status"],
         "Status Date": new Date(item["ddm_rmp_status_date"]).toDateString()
       }
       reportBody.push(obj)
@@ -1117,6 +1118,13 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           this.merchandising_model = tempArray.join(", ");
         } else {
           this.merchandising_model = [];
+        }
+
+        if (response["ost_data"]['distribution_data'].length) {
+          let tempArray = [];
+          response["ost_data"]["distribution_data"].map(element =>
+            tempArray.push(element.value));
+          this.distribution_data = tempArray.join(',');
         }
 
         if (response["ost_data"]["order_event"].length) {

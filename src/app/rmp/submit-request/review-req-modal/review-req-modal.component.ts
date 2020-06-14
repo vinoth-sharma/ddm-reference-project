@@ -14,35 +14,24 @@ declare var $: any;
   styleUrls: ['./review-req-modal.component.css']
 })
 export class ReviewReqModalComponent implements OnInit {
-
-  constructor(public dialogRef: MatDialogRef<ReviewReqModalComponent>,
-    private toaster: NgToasterComponent,
-    public dialog: MatDialog,
-    public django: DjangoService,
-    private router: Router,
-    public submitService: SubmitRequestService,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
-
-  reqDate: string = '11-May-2020';
-  reqNumber: Number = 3671;
-  repTitle: string = 'New Report'
-
-  marketData = [];
-  otherReportCriteria = {
+  public reqDate: string = '11-May-2020';
+  public reqNumber: Number = 3671;
+  public repTitle: string = 'New Report';
+  public marketData = [];
+  public otherReportCriteria = {
     freq: "",
     textNotification: "",
-    spclIdentifiers: []
-  }
-
-  reqDetails = {
+    spclIdentifiers: [],
+    frequency_data: []
+  };
+  public reqDetails = {
     reqId: null,
     reqDate: null,
     title: "",
     addReq: "",
     type: ""
   }
-
-  vehicleEvent = {
+  public vehicleEvent = {
     orderCriteria: [],
     orderMetrics: [],
     dosp_start: null,
@@ -50,13 +39,18 @@ export class ReviewReqModalComponent implements OnInit {
     keyData_start: null,
     keyData_end: null
   }
-
-  dealerAlloc = {
+  public dealerAlloc = {
     consensusProcess: []
-  }
-
-  l_masterData: any;
-
+  };
+  public l_masterData: any;
+  
+  constructor(public dialogRef: MatDialogRef<ReviewReqModalComponent>,
+    private toaster: NgToasterComponent,
+    public dialog: MatDialog,
+    public django: DjangoService,
+    private router: Router,
+    public submitService: SubmitRequestService,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
   ngOnInit(): void {
     this.l_masterData = JSON.parse(JSON.stringify(this.data));
     this.generateRequestData(this.data);
@@ -87,7 +81,6 @@ export class ReviewReqModalComponent implements OnInit {
       this.router.navigate(["user/request-status"]);
     }, err => {
       Utils.hideSpinner();
-      console.log(err);
     });
   }
 
@@ -103,7 +96,6 @@ export class ReviewReqModalComponent implements OnInit {
       this.router.navigate(["user/request-status"]);
     }, err => {
       Utils.hideSpinner();
-      // console.log(err);
     });
   }
 
@@ -162,7 +154,6 @@ export class ReviewReqModalComponent implements OnInit {
       }
       this.vehicleEvent.orderCriteria.push(obj);
     }
-
 
     if (data.order_event.dropdown.length) {
       let obj = {
@@ -320,6 +311,13 @@ export class ReviewReqModalComponent implements OnInit {
       else {
         this.otherReportCriteria.freq = "Recurring"
       }
+
+      this.otherReportCriteria.frequency_data = data.frequency_data.map(ele => {
+        return {
+          label: ele.select_frequency_values,
+          data: "Yes"
+        }
+      })
     }
 
     if (data.special_identifier_data.length) {

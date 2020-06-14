@@ -43,7 +43,7 @@ export class ReviewReqModalComponent implements OnInit {
     consensusProcess: []
   };
   public l_masterData: any;
-  
+
   constructor(public dialogRef: MatDialogRef<ReviewReqModalComponent>,
     private toaster: NgToasterComponent,
     public dialog: MatDialog,
@@ -51,6 +51,7 @@ export class ReviewReqModalComponent implements OnInit {
     private router: Router,
     public submitService: SubmitRequestService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
+    
   ngOnInit(): void {
     this.l_masterData = JSON.parse(JSON.stringify(this.data));
     this.generateRequestData(this.data);

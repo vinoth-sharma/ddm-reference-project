@@ -238,7 +238,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     'help': 'Show help'
   };
   public updateDLReportId: number;
-  public distribution_data : string;
+  public distribution_data: string;
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -334,6 +334,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
             element['created_on'] = this.DatePipe.transform(element['created_on'], 'dd-MMM-yyyy')
             element['ddm_rmp_post_report_id'] = isNaN(+element['ddm_rmp_post_report_id']) ? 99999 : +element['ddm_rmp_post_report_id'];
+            element['ddm_rmp_status_date'] = this.DatePipe.transform(element['ddm_rmp_status_date'], 'dd-MMM-yyyy')
 
             if (element && element.isChecked) element.isChecked = false;
           });
@@ -1337,10 +1338,12 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
   // Search by Request Number/Requestor/Title/Status
   public filterData() {
-    if (this.statusFilter.length)
+    if (this.statusFilter.length) {
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
-    else
+    }
+    else {
       this.filters.status = '';
+    }
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 

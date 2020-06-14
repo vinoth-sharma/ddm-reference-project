@@ -105,7 +105,7 @@ export class NgCipsEmailComponent implements OnInit {
   }
 
   public selected(event: MatAutocompleteSelectedEvent): void {
-    this.selectedChips.push(event.option.viewValue);
+    this.selectedChips = [...new Set([...this.selectedChips,event.option.viewValue])];
     this.mailInput.nativeElement.value = '';
     this.chipCtrl.setValue(null);
     this.emailSelectionEmitter.emit(this.selectedChips);

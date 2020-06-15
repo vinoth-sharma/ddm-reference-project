@@ -1084,7 +1084,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       if (response["special_identifier_data"].length) {
         let tempArray = [];
         response["special_identifier_data"].map(element =>
-          tempArray.push(element.spl_desc));
+          tempArray.push(element.spl_desc + ' - Yes'));
         this.special_identifier = tempArray.join(", ");
       } else {
         this.special_identifier = [];

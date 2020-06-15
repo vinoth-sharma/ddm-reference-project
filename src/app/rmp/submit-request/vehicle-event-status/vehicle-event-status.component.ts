@@ -430,7 +430,7 @@ export class VehicleEventStatusComponent implements OnInit {
       return {
         value: cbEle.field_values,
         id: cbEle.ddm_rmp_lookup_ots_checkbox_values_id,
-        desc: cbEle.desc ? cbEle.desc : ""
+        desc: cbEle.checkbox_desc ? cbEle.checkbox_desc : ""
       }
     });
     this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();

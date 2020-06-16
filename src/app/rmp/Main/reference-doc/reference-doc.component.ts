@@ -375,20 +375,20 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
   public deleteDocument(id: number, index: number) {
     Utils.showSpinner();
     this.django.ddm_rmp_reference_documents_delete(id).subscribe(response => {
-      this.naming = this.naming.filter(item => item['ddm_rmp_desc_text_reference_documents_id'] != id )
+      this.naming = this.naming.filter(item => item['ddm_rmp_desc_text_reference_documents_id'] != id)
       this.editid = undefined;
-      let subscription  = this.dataProvider.currentlookUpTableData.subscribe(element => {
+      let subscription = this.dataProvider.currentlookUpTableData.subscribe(element => {
         element['data'].desc_text_reference_documents = element['data'].desc_text_reference_documents.filter(item => item.ddm_rmp_desc_text_reference_documents_id != id)
         console.log(element)
-        setTimeout(()=>{
+        setTimeout(() => {
           subscription.unsubscribe()
           this.dataProvider.changelookUpData(element)
-        },100)
+        }, 100)
       })
-      
+
       if (this.deleteIndex == undefined) {
         this.toastr.success("Document deleted successfully");
-      } 
+      }
       this.deleteIndex = undefined
       Utils.hideSpinner();
     }, err => {
@@ -533,12 +533,12 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     }
   }
 
-// route to internal and external links
-  routeToUrl(url){
+  // route to internal and external links
+  routeToUrl(url) {
     let urlList = this.auth_service.getListUrl();
     let appUrl = urlList.find(link => link === url)
-    if (appUrl) {
-      if (this.validateRestictedUrl(url) && this.user_role == "Business-user") {     //restricting business users to access metrics tab
+    if (appUrl) {                                                              //restricting business users to access metrics tab
+      if (this.validateRestictedUrl(url) && this.user_role == "Business-user") {    
         this.toastr.error("Access Denied !")
         return
       }
@@ -547,11 +547,11 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     else window.open(url)
 
   }
- // validate weather the url is ristricted or not
-  validateRestictedUrl(url){
-    let restricedUrl =  this.auth_service.restrictedUrls()
+  // validate weather the url is ristricted or not
+  validateRestictedUrl(url) {
+    let restricedUrl = this.auth_service.restrictedUrls()
     let urlFinder = restricedUrl.filter(item => item == url)
-    if(urlFinder.length > 0) return true
+    if (urlFinder.length > 0) return true
     else return false
   }
 

@@ -115,7 +115,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   public readOnlyContentHelper: boolean = true;
 
   constructor(private django: DjangoService, public auth_service: AuthenticationService,
-    private toastr: NgToasterComponent, private spinner: NgLoaderService,private router: Router,
+    private toastr: NgToasterComponent, private spinner: NgLoaderService, private router: Router,
     public dataProvider: DataProviderService) {
     this.editMode = false;
     this.getCurrentFiles();
@@ -409,10 +409,11 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.naming = this.naming.filter(item => item['ddm_rmp_desc_text_admin_documents_id'] != id)
       let subscription = this.dataProvider.currentlookUpTableData.subscribe(element => {
         element['data'].desc_text_admin_documents = element['data'].desc_text_admin_documents.filter(item => item.ddm_rmp_desc_text_admin_documents_id != id)
-        console.log(element)
-        setTimeout(()=>{subscription.unsubscribe()
-          this.dataProvider.changelookUpData(element)},100)
-          this.spinner.hide()
+        setTimeout(() => {
+          subscription.unsubscribe()
+          this.dataProvider.changelookUpData(element)
+        }, 100)
+        this.spinner.hide()
       })
       this.editid = undefined;
       if (this.deleteIndex == undefined) {
@@ -568,7 +569,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   }
 
   // route to internal and external links
-  routeToUrl(url){
+  routeToUrl(url) {
     let urlList = this.auth_service.getListUrl();
     let appUrl = urlList.find(link => link === url)
     if (appUrl) {
@@ -582,10 +583,10 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   }
 
   // validate weather the url is ristricted or not
-  validateRestictedUrl(url){
-    let restricedUrl =  this.auth_service.restrictedUrls()
+  validateRestictedUrl(url) {
+    let restricedUrl = this.auth_service.restrictedUrls()
     let urlFinder = restricedUrl.filter(item => item == url)
-    if(urlFinder.length > 0) return true
+    if (urlFinder.length > 0) return true
     else return false
   }
 }

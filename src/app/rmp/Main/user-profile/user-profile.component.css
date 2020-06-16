@@ -103,7 +103,7 @@ td.col-9 {
     padding-right:0px;    
 }
 
-.material-icons{
+.material-icons {
     font-size: 3rem;
 }
 
@@ -205,41 +205,41 @@ hr {
     padding-left: 1.25vw;
 }
 
-.hidden-user-selection{
+.hidden-user-selection {
     padding:30px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.cont{
+.cont {
     width:100%;
 }
 
-.flex-center{
+.flex-center {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.hidden-user-selection .header{
+.hidden-user-selection .header {
     height:50px;
     background-color: lightgray;
 }
 
-.selection-key{
+.selection-key {
     font-size: 16px;
     font-weight: bold;
     display: inline-block;
 }
 
-.selection-val{
+.selection-val {
     font-size: 16px;
     display: inline-block;
     margin-left: 20px;
 }
 
-.secection-contents{
+.secection-contents {
     padding:20px;
 }
 

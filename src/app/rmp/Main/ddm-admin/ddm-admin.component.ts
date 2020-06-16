@@ -6,6 +6,7 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
+import { Router } from '@angular/router';
 
 // Angular component migration by Bharath S
 @Component({
@@ -114,7 +115,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   public readOnlyContentHelper: boolean = true;
 
   constructor(private django: DjangoService, public auth_service: AuthenticationService,
-    private toastr: NgToasterComponent, private spinner: NgLoaderService,
+    private toastr: NgToasterComponent, private spinner: NgLoaderService,private router: Router,
     public dataProvider: DataProviderService) {
     this.editMode = false;
     this.getCurrentFiles();
@@ -566,5 +567,28 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
         this.toastr.error("Server problem encountered")
       });
     }
+  }
+
+  // route to internal and external links
+  routeToUrl(url){
+    let urlList = this.auth_service.getListUrl();
+    let appUrl = urlList.find(link => link === url)
+    if (appUrl) {
+      if (this.validateRestictedUrl(url) && this.user_role == "Business-user") {     //restricting business users to access unauthorised tab
+        this.toastr.error("Access Denied !")
+        return
+      }
+      this.router.navigateByUrl(url)
+    }
+    else window.open(url)
+
+  }
+
+  // validate weather the url is ristricted or not
+  validateRestictedUrl(url){
+    let restricedUrl =  this.auth_service.restrictedUrls()
+    let urlFinder = restricedUrl.filter(item => item == url)
+    if(urlFinder.length > 0) return true
+    else return false
   }
 }

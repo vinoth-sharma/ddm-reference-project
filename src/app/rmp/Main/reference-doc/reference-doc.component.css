@@ -155,3 +155,9 @@ a:active {
 h3 {
     margin-top: 0vh;
 }
+
+.url_link{
+    color: blue !important;
+    cursor: pointer;
+    text-decoration: underline !important;
+}

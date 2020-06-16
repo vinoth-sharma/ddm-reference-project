@@ -6,6 +6,7 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from "../../../../utils";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reference-doc',
@@ -111,7 +112,7 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
 
   constructor(private django: DjangoService, private auth_service: AuthenticationService,
     private toastr: NgToasterComponent,
-    private dataProvider: DataProviderService) {
+    private dataProvider: DataProviderService, private router: Router) {
     this.editMode = false;
 
     dataProvider.currentFiles.subscribe(ele => {
@@ -532,6 +533,28 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
         this.toastr.error("Server problem encountered");
       });
     }
+  }
+
+// route to internal and external links
+  routeToUrl(url){
+    let urlList = this.auth_service.getListUrl();
+    let appUrl = urlList.find(link => link === url)
+    if (appUrl) {
+      if (this.validateRestictedUrl(url) && this.user_role == "Business-user") {     //restricting business users to access metrics tab
+        this.toastr.error("Access Denied !")
+        return
+      }
+      this.router.navigateByUrl(url)
+    }
+    else window.open(url)
+
+  }
+ // validate weather the url is ristricted or not
+  validateRestictedUrl(url){
+    let restricedUrl =  this.auth_service.restrictedUrls()
+    let urlFinder = restricedUrl.filter(item => item == url)
+    if(urlFinder.length > 0) return true
+    else return false
   }
 
 }

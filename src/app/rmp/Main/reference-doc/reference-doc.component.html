@@ -9,6 +9,15 @@
         </button>
       </div>
       <p _ngcontent-c1="" class="mandatory-fields" style="margin:18px">*Required Fields</p>
+      <div style="display: flex;justify-content: flex-start;margin-bottom: 10px;padding-left:10px">
+        <span class="material-icons"
+          style="display:inline-block;color: rgb(19, 145, 19);font-size: 20px;margin:0 5px 5px 0px">info</span>
+        <span style="color: rgb(19, 145, 19) ;font-style: italic;position: relative;top:3px">Note:For Internal
+          Links, please add only the part of URL which is placed after " #/ ".
+          <br>
+          Eg :For URL "http://localhost:4200/#/user/main/home" add only "user/main/home"
+        </span>
+      </div>
       <div class="modal-body">
         <form>
           <div class="form-group">
@@ -74,7 +83,7 @@
       <div class="ref-styling row" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
         <div class="col-7">
           <a [id]="'ref_doc'+element.ddm_rmp_desc_text_reference_documents_id" target="_blank" data-toggle="tooltip"
-            title="{{element.url}}" href="{{element.url}}">
+            class="url_link" title="{{element.url}}" (click)="routeToUrl(element.url)">
             {{element.title}}
           </a>
         </div>

@@ -10,6 +10,15 @@
           </button>
         </div>
         <p _ngcontent-c1="" class="mandatory-fields" style="margin:18px">*Required Fields</p>
+        <div style="display: flex;justify-content: flex-start;margin-bottom: 10px;padding-left:10px">
+          <span class="material-icons"
+            style="display:inline-block;color: rgb(19, 145, 19);font-size: 20px;margin:0 5px 5px 0px">info</span>
+          <span style="color: rgb(19, 145, 19) ;font-style: italic;position: relative;top:3px">Note:For Internal
+            Links, please add only the part of URL which is placed after " #/ ".
+            <br>
+            Eg :For URL "http://localhost:4200/#/user/main/home" add only "user/main/home"
+          </span>
+        </div>
         <div class="modal-body">
           <form>
             <div class="form-group">
@@ -68,8 +77,8 @@
       <div id="editable">
         <div class="ref-styling row" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
           <div class="col-7">
-            <a [id]="'ref_doc'+element.ddm_rmp_desc_text_admin_documents_id" data-toggle="tooltip"
-              title="{{element.url}}" target="_blank" href="{{element.url}}">
+            <a [id]="'ref_doc'+element.ddm_rmp_desc_text_admin_documents_id" data-toggle="tooltip" class="url_link"
+              title="{{element.url}}" target="_blank" (click)="routeToUrl(element.url)">
               {{element.title}}
             </a>
           </div>
@@ -84,9 +93,8 @@
             </a>
           </div>
         </div>
+
         <div class="ref-styling row" [id]="'upload_doc'+i" *ngFor='let element of isAdmin.docs;let i = index'>
-          <!-- <a href='https://ecss3-epg.dev.gm.com/epg3246b06f1-5abc-4ee5-9741-a9b2c0757c5d/Nick_login_error_20200522.docx?AWSAccessKeyId=epg35cf75753-9f97-43c0-ae9a-26d99607f80a&Expires=1592308315&Signature=n%2BDPH8W36DeAMOZeYxFQ%2FV5PkEY%3D'
-          target="_blank" download='ganesh'></a> -->
           <div class="col-7">
             <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle="tooltip"
               title="{{element.uploaded_file_name}}" (click)="getLink(element)" style="color: blue;cursor:pointer;">
@@ -124,7 +132,7 @@
           <div class="row">
             <div class="col-9">
               <button [cssBtn]="'ok'" mat-raised-button class="save-text-ddm" (click)="content_edits()" id="admin-save"
-                *ngIf="editModes" style="margin-right:3%">Saves</button>
+                *ngIf="editModes" style="margin-right:3%">Save</button>
               <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="edit_True()"
                 *ngIf="editModes">Cancel</button>
             </div>

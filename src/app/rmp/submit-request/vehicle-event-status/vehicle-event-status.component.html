@@ -181,7 +181,10 @@
                         <mat-form-field style="width: 95%; margin-left: 0.5vw;">
                             <mat-label>Start Date</mat-label>
                             <input matInput [matDatepicker]="fromOrderEvent" [formControl]="keyDataEle.orderEvtFromDate"
-                                textEditable="false" (dateChange)="onOrderEventdateSelection()">
+                                textEditable="false" (dateChange)="onOrderEventdateSelection()"
+                                [readonly]="!(keyDataEle.others.checked || keyDataEle.selected.length)"
+                                [disabled]="!(keyDataEle.others.checked || keyDataEle.selected.length)"
+                                name="Start Date">
                             <mat-datepicker-toggle matSuffix [for]="fromOrderEvent"></mat-datepicker-toggle>
                             <mat-datepicker #fromOrderEvent></mat-datepicker>
                         </mat-form-field>
@@ -190,8 +193,11 @@
                         <mat-form-field style="width: 95%; margin-left: 0.5vw;">
                             <mat-label>End Date</mat-label>
                             <input matInput [matDatepicker]="toOrderEvent" [formControl]="keyDataEle.orderEvtToDate"
-                                [disabled]="!keyDataEle.orderEvtFromDate.value" [min]="minOrderEventDate"
-                                textEditable="false" (dateChange)="onOrderEventdateSelection()">
+                                [readonly]="!keyDataEle.orderEvtFromDate.value || !(keyDataEle.others.checked || keyDataEle.selected.length)"
+                                [disabled]="!keyDataEle.orderEvtFromDate.value || !(keyDataEle.others.checked || keyDataEle.selected.length)"
+                                [min]="minOrderEventDate"
+                                textEditable="false" (dateChange)="onOrderEventdateSelection()"
+                                name="End Date">
                             <mat-datepicker-toggle matSuffix [for]="toOrderEvent"></mat-datepicker-toggle>
                             <mat-datepicker #toOrderEvent></mat-datepicker>
                         </mat-form-field>

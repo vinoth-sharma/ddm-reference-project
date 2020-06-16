@@ -392,6 +392,9 @@ export class VehicleEventStatusComponent implements OnInit {
         l_businessReq: this.req_body.report_detail.business_req
 
       }
+      if(!(this.keyDataEle.others.checked || this.keyDataEle.selected.length)){
+          this.req_body.data_date_range = { StartDate: null, EndDate: null };
+      }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
         data: obj, disableClose: true
       })

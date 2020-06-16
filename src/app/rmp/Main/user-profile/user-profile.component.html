@@ -256,7 +256,7 @@
             <span class="selection-val"
               style="font-size: 16px;display: inline-block;margin-left: 20px;">{{user_office_address || 'Cant fetch address' }}</span>
           </div>
-          <div class="row">
+          <div class="row" *ngIf="user_role != 'Admin'">
             <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Disclaimer
               Acknowledge : </span>
             <span class="selection-val"

@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as Rx from "rxjs";
-
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
@@ -114,7 +113,6 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     private toastr: NgToasterComponent,
     private dataProvider: DataProviderService, private router: Router) {
     this.editMode = false;
-
     dataProvider.currentFiles.subscribe(ele => {
       if (ele) {
         this.isRef['docs'] = []

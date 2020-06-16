@@ -543,12 +543,10 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
       this.document_detailsEdit["ddm_rmp_desc_text_admin_documents_id"] = this.editid;
       this.document_detailsEdit["title"] = document_title;
       this.document_detailsEdit["url"] = document_url;
-
       this.django.ddm_rmp_admin_documents_put(this.document_detailsEdit).subscribe(response => {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
@@ -581,7 +579,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.router.navigateByUrl(url)
     }
     else window.open(url)
-
   }
 
   // validate weather the url is ristricted or not

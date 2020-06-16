@@ -537,8 +537,10 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
   routeToUrl(url) {
     let urlList = this.auth_service.getListUrl();
     let appUrl = urlList.find(link => link === url)
-    if (appUrl) {                                                              //restricting business users to access metrics tab
-      if (this.validateRestictedUrl(url) && this.user_role == "Business-user") {    
+
+    if (appUrl) {
+      //restricting business users to access metrics tab
+      if (this.validateRestictedUrl(url) && this.user_role == "Business-user") {
         this.toastr.error("Access Denied !")
         return
       }

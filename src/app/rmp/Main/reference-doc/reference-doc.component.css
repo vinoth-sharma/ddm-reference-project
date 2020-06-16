@@ -25,7 +25,6 @@
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
-
 }
 
 .docs :hover{
@@ -49,6 +48,7 @@
     font-size: 150%;  
     font-weight: bold;
 }
+
 .press button {
     background: transparent;
     border: none;
@@ -145,6 +145,7 @@ a:active {
     margin-bottom: auto;
     margin-top: auto;
 }
+
 .icon-cont{
     display: inline-block;
     height: 100%;
@@ -154,4 +155,10 @@ a:active {
 
 h3 {
     margin-top: 0vh;
+}
+
+.url_link{
+    color: blue !important;
+    cursor: pointer;
+    text-decoration: underline !important;
 }

@@ -9,6 +9,15 @@
         </button>
       </div>
       <p _ngcontent-c1="" class="mandatory-fields" style="margin:18px">*Required Fields</p>
+      <div style="display: flex;justify-content: flex-start;margin-bottom: 10px;padding-left:10px">
+        <span class="material-icons"
+          style="display:inline-block;color: rgb(19, 145, 19);font-size: 20px;margin:0 5px 5px 0px">info</span>
+        <span style="color: rgb(19, 145, 19) ;font-style: italic;position: relative;top:3px">Note:For Internal
+          Links, please add only the part of URL which is placed after " #/ ".
+          <br>
+          Eg :For URL "http://localhost:4200/#/user/main/home" add only "user/main/home"
+        </span>
+      </div>
       <div class="modal-body">
         <form>
           <div class="form-group">
@@ -74,11 +83,10 @@
       <div class="ref-styling row" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
         <div class="col-7">
           <a [id]="'ref_doc'+element.ddm_rmp_desc_text_reference_documents_id" target="_blank" data-toggle="tooltip"
-            title="{{element.url}}" href="{{element.url}}">
+            class="url_link" title="{{element.url}}" (click)="routeToUrl(element.url)">
             {{element.title}}
           </a>
         </div>
-
         <div class="col-2" style="padding-bottom: 6px;display:flex;justify-content: start;">
           <a [id]="'delete'+element.ddm_rmp_desc_text_reference_documents_id"
             (click)="deleteDocument(element.ddm_rmp_desc_text_reference_documents_id,i)" *ngIf="editMode">
@@ -90,7 +98,6 @@
           </a>
         </div>
       </div>
-
       <div class="ref-styling row" [id]="'upload_doc'+i" *ngFor='let element of isRef.docs; let i = index'>
         <div class="col-7">
           <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle="tooltip"
@@ -99,7 +106,6 @@
             <u>{{element.uploaded_file_name}}</u>
           </a>
         </div>
-
         <div class="col-2" style="padding-bottom: 6px;display:flex;justify-content: start;">
           <a [id]="'delete'+element.file_id" (click)="delete_upload_file(element.file_id,i)" *ngIf="editMode">
             <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>

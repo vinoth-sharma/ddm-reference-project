@@ -1,11 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as Rx from "rxjs";
-
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
 import { AuthenticationService } from "src/app/authentication.service";
 import Utils from "../../../../utils";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reference-doc',
@@ -111,9 +111,8 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
 
   constructor(private django: DjangoService, private auth_service: AuthenticationService,
     private toastr: NgToasterComponent,
-    private dataProvider: DataProviderService) {
+    private dataProvider: DataProviderService, private router: Router) {
     this.editMode = false;
-
     dataProvider.currentFiles.subscribe(ele => {
       if (ele) {
         this.isRef['docs'] = []
@@ -376,20 +375,20 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
   public deleteDocument(id: number, index: number) {
     Utils.showSpinner();
     this.django.ddm_rmp_reference_documents_delete(id).subscribe(response => {
-      this.naming = this.naming.filter(item => item['ddm_rmp_desc_text_reference_documents_id'] != id )
+      this.naming = this.naming.filter(item => item['ddm_rmp_desc_text_reference_documents_id'] != id)
       this.editid = undefined;
-      let subscription  = this.dataProvider.currentlookUpTableData.subscribe(element => {
+      let subscription = this.dataProvider.currentlookUpTableData.subscribe(element => {
         element['data'].desc_text_reference_documents = element['data'].desc_text_reference_documents.filter(item => item.ddm_rmp_desc_text_reference_documents_id != id)
         console.log(element)
-        setTimeout(()=>{
+        setTimeout(() => {
           subscription.unsubscribe()
           this.dataProvider.changelookUpData(element)
-        },100)
+        }, 100)
       })
-      
+
       if (this.deleteIndex == undefined) {
         this.toastr.success("Document deleted successfully");
-      } 
+      }
       this.deleteIndex = undefined
       Utils.hideSpinner();
     }, err => {
@@ -532,6 +531,30 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
         this.toastr.error("Server problem encountered");
       });
     }
+  }
+
+  // route to internal and external links
+  routeToUrl(url) {
+    let urlList = this.auth_service.getListUrl();
+    let appUrl = urlList.find(link => link === url)
+
+    if (appUrl) {
+      //restricting business users to access metrics tab
+      if (this.validateRestictedUrl(url) && this.user_role == "Business-user") {
+        this.toastr.error("Access Denied !")
+        return
+      }
+      this.router.navigateByUrl(url)
+    }
+    else window.open(url)
+
+  }
+  // validate weather the url is ristricted or not
+  validateRestictedUrl(url) {
+    let restricedUrl = this.auth_service.restrictedUrls()
+    let urlFinder = restricedUrl.filter(item => item == url)
+    if (urlFinder.length > 0) return true
+    else return false
   }
 
 }

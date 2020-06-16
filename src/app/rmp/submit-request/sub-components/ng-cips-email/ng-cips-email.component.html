@@ -18,7 +18,6 @@
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         (matChipInputTokenEnd)="add($event)"
         name="emailInput">
-
     </mat-chip-list>
     <mat-hint>*Email can either be added by selecting from the available list in dropdown or free text followed by pressing 'Enter' key</mat-hint>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">

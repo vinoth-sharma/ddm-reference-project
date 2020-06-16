@@ -356,13 +356,22 @@ export class MainMenuLandingPageComponent implements OnInit, AfterViewInit {
     let urlList = this.auth_service.getListUrl();
     let appUrl = urlList.find(link => link === url)
     if (appUrl) {
-      if (url == "user/metrics" && this.user_role == "Business-user") {     //restricting business users to access metrics tab
+      if (this.validateRestictedUrl(url) && this.user_role == "Business-user") {     //restricting business users to access unauthorised tab
         this.toastr.error("Access Denied !")
         return
       }
       this.router.navigateByUrl(url)
     }
     else window.open(url)
+
+  }
+
+  // validate weather the url is ristricted or not
+  validateRestictedUrl(url) {
+    let restricedUrl = this.auth_service.restrictedUrls()
+    let urlFinder = restricedUrl.filter(item => item == url)
+    if (urlFinder.length > 0) return true
+    else return false
   }
 
   public saveChanges() {

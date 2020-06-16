@@ -4,7 +4,7 @@
 <mat-form-field>
     <mat-label>{{ l_db.length?settings.label:"" }}</mat-label>
     <mat-select multiple [(ngModel)]="selectAll" [formControl]="toppings" [matTooltip]="l_db.length?getTitle():''"
-    [disabled]="settings['isDisabled']">
+    [disabled]="settings['isDisabled']" [panelClass]="settings.label === 'Available Consensus'?'consensus-panel':''">
         <mat-select-trigger>
             {{ selectAll.length === 2 ? getTitle() : getTitle() }}
         </mat-select-trigger>

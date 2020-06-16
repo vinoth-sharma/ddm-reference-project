@@ -1,17 +1,10 @@
 .custom-checkbox-opt{
     font-size: inherit;
     line-height: 3em;
-    /* height: 3em; */
     padding: 2px 0px;
 }
 .custom-checkbox-opt mat-checkbox{
-    /* white-space: nowrap; */
-    /* overflow: hidden; */
-    /* text-overflow: ellipsis; */
     display: block;
-    /* line-height: 48px; */
-    /* height: 48px; */
-
     word-break: break-all;
     padding: 0 16px;
     text-align: left;
@@ -33,19 +26,6 @@
     border-bottom: 1px solid grey;
     width: 90%;
 }
-
-/* ::ng-deep .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element, .mat-checkbox:active:not(.mat-checkbox-disabled).mat-accent .mat-ripple-element{
-    background: #ff4081;
-}
-::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
-::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
-    background-color: #ff4081 ;
-} */
-
-/* ::ng-deep .mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate{
-    background-color: #ff4081;
-} */
-
 .topFilterTitle{
     padding: 1vh 0;
     font-weight: bold;

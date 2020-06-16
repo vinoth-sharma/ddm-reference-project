@@ -109,8 +109,6 @@ mat-form-field {
 .mat-radio-container,
 .mat-radio-inner-circle,
 .mat-pseudo-checkbox {
-  /* height: 1.1vw !important; */
-  /* width: 1.1vw !important; */
   margin-right: 0.5vw !important;
 }
 mat-icon {

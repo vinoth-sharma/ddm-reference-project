@@ -204,9 +204,6 @@ export class VehicleEventStatusComponent implements OnInit {
     this.submitService.updateLoadingStatus({ status: true, comp: "ves" })
   }
 
-  ngOnChanges(simpleChanges: SimpleChanges) {
-  }
-
   public refillMasterDatatoOptions() {
     this.filtered_MD.model_years = this.l_lookupTableMD.model_year;
     this.filtered_MD.distribution_entity = this.l_lookupTableMD.type_data;

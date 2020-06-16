@@ -13,7 +13,7 @@
             [(inputModel)]="selected.divisions"></app-mat-multiselect>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
-                Model Years
+                Model Years<span class="red">*</span>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="filtered_MD.model_years" [settings]="model_yr_settings"
@@ -22,7 +22,7 @@
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding alignCenter">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
-                Allocation Groups
+                Allocation Groups<span class="red">*</span>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <app-mat-multiselect [data]="filtered_MD.allocation_groups" [settings]="allocation_settings"
@@ -32,7 +32,7 @@
     </div>
     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold">
-            Consensus Range
+            Consensus Range<span class="red">*</span>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alignCenter">
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Start Date</div>
@@ -80,7 +80,7 @@
         </div>
         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 alignCenter">
             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 noPadding bold">
-                Consensus Data Available
+                Consensus Data Available<span class="red">*</span>
             </div>
             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 bold">
                 <app-mat-multiselect [data]="filtered_MD.consensus" [settings]="consensus_settings"

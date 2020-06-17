@@ -239,6 +239,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   };
   public updateDLReportId: number;
   public distribution_data: string;
+  public dl_list: any = [];
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -1083,9 +1084,13 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
       if (response["special_identifier_data"].length) {
         let tempArray = [];
-        response["special_identifier_data"].map(element =>
-          tempArray.push(element.spl_desc));
-        this.special_identifier = tempArray.join(", ");
+        response["special_identifier_data"].map(element => {
+          tempArray.push({
+            label: element.spl_desc,
+            value: 'Yes'
+          })
+        });
+        this.special_identifier = tempArray;
       } else {
         this.special_identifier = [];
       }
@@ -1153,15 +1158,19 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         }
 
         if (response["ost_data"]["checkbox_data"].length) {
-          let tempArray = [];
-          response["ost_data"]["checkbox_data"].map(element => {
-            if (element.description_text != '') {
-              tempArray.push(element.checkbox_description + "-" + element.description_text)
-            } else {
-              tempArray.push(element.checkbox_description)
-            }
-          });
-          this.checkbox_data = tempArray.join(", ");
+          let group = response["ost_data"]["checkbox_data"].reduce((r, a) => {
+            r[a.description_text] = [...r[a.description_text] || [], a.checkbox_description];
+            return r;
+          }, {});
+          let orderMetrics = [];
+          for (let ele in group) {
+            group[ele] = group[ele].join(',');
+            orderMetrics.push({
+              label: ele,
+              values: group[ele]
+            })
+          }
+          this.checkbox_data = orderMetrics;
         } else {
           this.checkbox_data = [];
         }
@@ -1200,8 +1209,12 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       if (response["bac_data"].length) {
         if (response["bac_data"][0]["bac_desc"] == null)
           this.bac_description = []
-        else
-          this.bac_description = (response["bac_data"][0].bac_desc).join(", ");
+        else {
+          let bacData = []
+          response["bac_data"][0]["bac_desc"].map(d => bacData.push("'" + d + "'"));
+          this.bac_description = bacData.join(", ");
+        }
+
       }
       else {
         this.bac_description = []
@@ -1210,10 +1223,19 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       if (response["fan_data"].length) {
         if (response["fan_data"][0]["fan_data"] == null)
           this.fan_desc = []
-        else
-          this.fan_desc = response["fan_data"][0].fan_data.join(", ");
+        else {
+          let fanData = [];
+          response["fan_data"][0]["fan_data"].map(d => fanData.push("'" + d + "'"));
+          this.fan_desc = fanData.join(", ");
+        }
       } else {
         this.fan_desc = []
+      }
+
+      if (response['dl_list'].length) {
+        let list = [];
+        response['dl_list'].map(element => list.push(element['distribution_list']))
+        this.dl_list = list;
       }
       this.text_notification = response["user_data"][0]['alternate_number'];
       this.summary = response;

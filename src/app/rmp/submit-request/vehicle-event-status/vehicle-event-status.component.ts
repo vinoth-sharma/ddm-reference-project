@@ -211,7 +211,7 @@ export class VehicleEventStatusComponent implements OnInit {
     this.keyDataEle.masterData = this.l_lookupTableMD.order_event;
     //refilling checkbox master data
     this.resetCheckboxData();
-    
+
     this.l_lookupTableMD.checkbox_data.sort(sortCheckbox).forEach(l_checkbox => {
       if (l_checkbox.ddm_rmp_ots_checkbox_group_id === 1)
         this.checkBxMD1.commonly_req_field.push(l_checkbox)
@@ -729,11 +729,11 @@ export class VehicleEventStatusComponent implements OnInit {
   }
 }
 
-function sortCheckbox( a, b ){
-  if ( a.ddm_rmp_lookup_ots_checkbox_values_id < b.ddm_rmp_lookup_ots_checkbox_values_id ){
+function sortCheckbox(a, b) {
+  if (a.ddm_rmp_lookup_ots_checkbox_values_id < b.ddm_rmp_lookup_ots_checkbox_values_id) {
     return -1;
   }
-  if ( a.ddm_rmp_lookup_ots_checkbox_values_id > b.ddm_rmp_lookup_ots_checkbox_values_id ){
+  if (a.ddm_rmp_lookup_ots_checkbox_values_id > b.ddm_rmp_lookup_ots_checkbox_values_id) {
     return 1;
   }
   return 0;

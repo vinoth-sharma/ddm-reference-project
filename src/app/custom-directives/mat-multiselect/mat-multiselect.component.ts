@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
-import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 declare var document: any;
 
@@ -10,24 +9,21 @@ declare var document: any;
   styleUrls: ['./mat-multiselect.component.css']
 })
 export class MatMultiselect implements OnInit {
-
-
   @Input() data: Array<{}>;
   @Input() settings: any;
 
   @Input() inputModel: Array<{}>;
   @Output() inputModelChange = new EventEmitter();
   @Output() selectionDone = new EventEmitter();
-  // @ViewChild("") private multiInput: MatOption;
 
   @ViewChild(MatSelect) matSelect: MatSelect;
   toppings = new FormControl();
-  // searchUserForm: FormGroup;
-  // selected;
+
   l_data = [];
   searched_data = [];
   selectAll = [2];
   l_db = [];
+  sortApplicableArr = ["Region","Zone","Area","GMMA","LMA"];
 
   constructor(private fb: FormBuilder) { }
 
@@ -51,11 +47,11 @@ export class MatMultiselect implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data || changes.inputModel) {
-    // console.log(changes);
       if (this.data.length) {
         this.l_data = JSON.parse(JSON.stringify(this.data));
         this.l_db = this.inputModel ? this.inputModel.map(ele => ele[this.settings.primary_key]) : [];
-        //remove selcted items which is not in data
+        
+        //remove selcted items which is not present in master data
         this.l_db = this.l_db.filter(value => {
           if (this.l_data.some(ele => ele[this.settings.primary_key] === value))
             return value
@@ -74,7 +70,6 @@ export class MatMultiselect implements OnInit {
         this.l_data = [];
       }
     }
-    // console.log(this.searched_data);
   }
 
   onKey(value) {
@@ -107,7 +102,6 @@ export class MatMultiselect implements OnInit {
       });
     }
     this.stabilizeData();
-    // console.log(this.l_db);
   }
 
   checkedBox(event) {
@@ -155,7 +149,6 @@ export class MatMultiselect implements OnInit {
   }
 
   getTitle() {
-
     if (this.l_db.length) {
       let op = this.data.filter(ele => {
         if (this.l_db.includes(ele[this.settings.primary_key]))

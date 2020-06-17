@@ -6,6 +6,7 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
+import { Router } from '@angular/router';
 
 // Angular component migration by Bharath S
 @Component({
@@ -114,7 +115,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   public readOnlyContentHelper: boolean = true;
 
   constructor(private django: DjangoService, public auth_service: AuthenticationService,
-    private toastr: NgToasterComponent, private spinner: NgLoaderService,
+    private toastr: NgToasterComponent, private spinner: NgLoaderService, private router: Router,
     public dataProvider: DataProviderService) {
     this.editMode = false;
     this.getCurrentFiles();
@@ -408,10 +409,11 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.naming = this.naming.filter(item => item['ddm_rmp_desc_text_admin_documents_id'] != id)
       let subscription = this.dataProvider.currentlookUpTableData.subscribe(element => {
         element['data'].desc_text_admin_documents = element['data'].desc_text_admin_documents.filter(item => item.ddm_rmp_desc_text_admin_documents_id != id)
-        console.log(element)
-        setTimeout(()=>{subscription.unsubscribe()
-          this.dataProvider.changelookUpData(element)},100)
-          this.spinner.hide()
+        setTimeout(() => {
+          subscription.unsubscribe()
+          this.dataProvider.changelookUpData(element)
+        }, 100)
+        this.spinner.hide()
       })
       this.editid = undefined;
       if (this.deleteIndex == undefined) {
@@ -542,12 +544,10 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
       this.document_detailsEdit["ddm_rmp_desc_text_admin_documents_id"] = this.editid;
       this.document_detailsEdit["title"] = document_title;
       this.document_detailsEdit["url"] = document_url;
-
       this.django.ddm_rmp_admin_documents_put(this.document_detailsEdit).subscribe(response => {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
@@ -566,5 +566,27 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
         this.toastr.error("Server problem encountered")
       });
     }
+  }
+
+  // route to internal and external links
+  routeToUrl(url) {
+    let urlList = this.auth_service.getListUrl();
+    let appUrl = urlList.find(link => link === url)
+    if (appUrl) {
+      if (this.validateRestictedUrl(url) && this.user_role == "Business-user") {     //restricting business users to access unauthorised tab
+        this.toastr.error("Access Denied !")
+        return
+      }
+      this.router.navigateByUrl(url)
+    }
+    else window.open(url)
+  }
+
+  // validate weather the url is ristricted or not
+  validateRestictedUrl(url) {
+    let restricedUrl = this.auth_service.restrictedUrls()
+    let urlFinder = restricedUrl.filter(item => item == url)
+    if (urlFinder.length > 0) return true
+    else return false
   }
 }

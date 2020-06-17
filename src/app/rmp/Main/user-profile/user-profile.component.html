@@ -14,7 +14,6 @@
       </div>
     </div>
   </div>
-
   <div class="row">
     <div class="col-xs-3">
       <i>
@@ -95,7 +94,6 @@
       </div>
     </div>
   </div>
-
   <div class="market-selections-main">
     <div class="row">
       <div class="col-xs-3 pl-0">
@@ -147,11 +145,13 @@
       </div>
     </div>
     <div class="row message-padding">
-      <b><i>*If more granular information is required, please mention it in Additional Requirements of Submit Request page</i></b>
+      <b><i>*If more granular information is required, please mention it in Additional Requirements of Submit Request
+          page</i></b>
     </div>
   </div>
 
   <!------------------------------------Help Modal------------------------------ -->
+
   <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -206,6 +206,7 @@
   <div hidden id="dload"></div>
 
   <!-- hidden div to download user selection -->
+
   <div *ngIf="displayPrintDiv" style="position: absolute;z-index: -1000;width:100%">
     <div class="hidden-user-selection"
       style="padding:30px;display: flex;justify-content: center;align-items: center;width:100%"
@@ -256,7 +257,7 @@
             <span class="selection-val"
               style="font-size: 16px;display: inline-block;margin-left: 20px;">{{user_office_address || 'Cant fetch address' }}</span>
           </div>
-          <div class="row">
+          <div class="row" *ngIf="user_role != 'Admin'">
             <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Disclaimer
               Acknowledge : </span>
             <span class="selection-val"
@@ -315,7 +316,6 @@
               style="font-size: 16px;display: inline-block;margin-left: 20px;">{{fanselectedItems.join(', ')}}</span>
           </div>
         </div>
-
       </div>
     </div>
   </div>

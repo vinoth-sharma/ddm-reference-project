@@ -117,16 +117,16 @@
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let metrics of vehicleEvent.orderMetrics">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            {{ metrics.label }}
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                {{ metrics.label }}
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                                {{ metrics.data.toString() }}
+                            </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
-                            {{ metrics.data.toString() }}
-                        </div>
-                    </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="vehicleEvent.keyData_start">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
-                            Consensus time and date:
+                                Key Data Elements for Date Range:
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
@@ -169,13 +169,19 @@
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight bold">
-                        Additional Requirements
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            {{ reqDetails.addReq }}
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
+                            Business Requirements:
                         </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight bold">
+                        {{ reqDetails.business_req }}
+                    </div>
+                </div>    
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
+                        Additional Requirements:
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight bold">
+                        {{ reqDetails.addReq }}
                     </div>
                 </div>
             </div>
@@ -210,25 +216,25 @@
     <pre class="div-wrap">
         <b>Market Selections:</b> &nbsp;&nbsp;
         <b>Market(s) Selected:</b> &nbsp;&nbsp;
-        <span *ngFor="let market of marketData">
+        <pre *ngFor="let market of marketData">
             {{ market.label }}&nbsp;&nbsp;
             {{ market.data.toString() }}
-        </span>
+        </pre>
     </pre>
 <pre class="div-wrap">
-            <b>Frequency of Reports:</b> &nbsp;&nbsp;
-            <span>{{ otherReportCriteria.freq }}&nbsp;&nbsp;</span>
-            <span *ngFor="let spcl of otherReportCriteria.frequency_data">
-                {{ spcl.label }}&nbsp;&nbsp;
-                {{ spcl.data.toString() }}
-        </span>
+    <b>Frequency of Reports:</b> &nbsp;&nbsp;
+    <span>{{ otherReportCriteria.freq }}&nbsp;&nbsp;</span>
+    <pre class="div-wrap" *ngFor="let spcl of otherReportCriteria.frequency_data">
+        {{ spcl.label }}&nbsp;&nbsp; - 
+        {{ spcl.data.toString() }}
+    </pre>
     </pre>
 <pre class="div-wrap">
             <b>Special Identifiers:</b> &nbsp;&nbsp;
-            <span *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
+            <pre *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
                     {{ spcl.label }}&nbsp;&nbsp;
                     {{ spcl.data.toString() }}
-            </span>
+            </pre>
     </pre>
 <pre class="div-wrap">
             <b>Would you need Text Notifications when Requests are fulfilled?:</b> &nbsp;&nbsp;
@@ -246,8 +252,8 @@
 <br>
 <pre class="div-wrap" *ngFor="let metrics of vehicleEvent.orderMetrics">
                 <b>{{  metrics.label }}:</b>  
-                <span>{{  metrics.data.toString() }}&nbsp;&nbsp;</span>
-            </pre>
+                <span>{{  metrics.values }}&nbsp;&nbsp;</span>
+            </pre>     
 <pre class="div-wrap" *ngIf="vehicleEvent.keyData_start">
                 <b> Key Data Elemet Date Range:</b> <br>
                 <pre class="div-wrap">
@@ -278,7 +284,10 @@
             <span> {{ ele.data.toString() }}&nbsp;&nbsp;</span>
         </pre>
 </pre>
-
+<pre class="div-wrap">
+        <b>Business Requirements:</b> &nbsp;&nbsp;
+        <span>{{ reqDetails.business_req }}&nbsp;&nbsp;</span>
+    </pre>    
 <pre class="div-wrap">
         <b>Additional Requirements:</b> &nbsp;&nbsp;
         <span>{{ reqDetails.addReq }}&nbsp;&nbsp;</span>

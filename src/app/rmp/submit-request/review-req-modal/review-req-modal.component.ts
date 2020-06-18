@@ -29,7 +29,8 @@ export class ReviewReqModalComponent implements OnInit {
     reqDate: null,
     title: "",
     addReq: "",
-    type: ""
+    type: "",
+    business_req: ""
   }
   public vehicleEvent = {
     orderCriteria: [],
@@ -51,7 +52,7 @@ export class ReviewReqModalComponent implements OnInit {
     private router: Router,
     public submitService: SubmitRequestService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
-    
+
   ngOnInit(): void {
     this.l_masterData = JSON.parse(JSON.stringify(this.data));
     this.generateRequestData(this.data);
@@ -113,6 +114,7 @@ export class ReviewReqModalComponent implements OnInit {
     this.reqDetails.title = data.reqBody.report_detail.title;
     this.reqDetails.addReq = data.reqBody.report_detail.additional_req;
     this.reqDetails.type = data.reqBody.report_detail.report_type;
+    this.reqDetails.business_req = data.reqBody.report_detail.business_req;
   }
 
   generateVehicleEvent(data) {
@@ -302,6 +304,20 @@ export class ReviewReqModalComponent implements OnInit {
       }
       this.marketData.push(obj)
     }
+
+    if (data['dl_list'].length) {
+      let list = [];
+      data['dl_list'].map(element => {
+        list.push(element['distribution_list'])
+      })
+      let obj = {
+        label: "Emails::",
+        data: list
+      }
+      this.marketData.push(obj);
+    }
+
+
     if (data.frequency_data.length) {
       if (data.frequency_data.length === 1) {
         if (data.frequency_data[0].ddm_rmp_lookup_select_frequency_id === 39)

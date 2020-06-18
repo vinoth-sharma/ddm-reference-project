@@ -1,5 +1,5 @@
 <div style="display: flex;" class="main-tool-body-header">
-  <div style="width: 90%;">
+  <div style="width: 145%;">
     <h3 style="display: inline-block;">
       <b>What is DDM?</b>
     </h3>
@@ -8,7 +8,7 @@
       <button [cssBtn]="'cancel'" class="save-text-ddm" mat-raised-button (click)="editTrue()">Cancel</button>
     </span>
   </div>
-  <div style="width: 10%;">
+  <div style="width: 10%;margin-left: 2.5vw;">
     <div class="press">
       <a data-toggle="tooltip" title="EDIT" (click)="editTrue()" *ngIf="user_role == 'Admin'">
         <i id="ic" class="material-icons">mode_edit</i>
@@ -24,11 +24,12 @@
   </div>
 </div>
 <div id="ddm-intro-pdf" class="main-tool-body-content">
-  <quill-editor class="quill" [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContent' (onContentChanged)='textChanged($event)'>
+  <quill-editor class="quill" [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContent'
+    (onContentChanged)='textChanged($event)'>
   </quill-editor>
 </div>
-<div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
@@ -37,8 +38,10 @@
       <div class="modal-body display-notes-scroll-modal">
         <div class="row">
           <div class="col-9">
-            <button [cssBtn]="'ok'" mat-raised-button class="save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-            <button [cssBtn]="'cancel'" mat-raised-button class="save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            <button [cssBtn]="'ok'" mat-raised-button class="save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+              style="margin-right:3%">Save</button>
+            <button [cssBtn]="'cancel'" mat-raised-button class="save-text-ddm" (click)="edit_True()"
+              *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3" style="padding-left:12%;">
             <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="editEnable()">
@@ -49,11 +52,13 @@
           </div>
         </div>
         <div class="quillEditor">
-          <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper' (onContentChanged)='textChanged($event)'></quill-editor>
+          <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'
+            (onContentChanged)='textChanged($event)'></quill-editor>
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">
-        <button [cssBtn]="'mid'" mat-raised-button id="modal_close_button" class="btn" (click)="edit_True()" data-dismiss="modal">Close</button>
+        <button [cssBtn]="'mid'" mat-raised-button id="modal_close_button" class="btn" (click)="edit_True()"
+          data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

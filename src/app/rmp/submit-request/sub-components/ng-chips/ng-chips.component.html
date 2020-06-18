@@ -7,9 +7,9 @@
     </mat-chip>
     <input (paste)="onPaste($event)" [placeholder]="custom_placeholder" [matChipInputFor]="chipList"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
-      (input)="textEntered($event)" (matChipInputTokenEnd)="add($event)">
-
+      (input)="textEntered($event)" (matChipInputTokenEnd)="add($event)" name="chipInput">
   </mat-chip-list>
   <mat-hint *ngIf="type==='fan'">*Only Applicable for Vehicle Event Status Requests</mat-hint>
-  <mat-hint *ngIf="!isTextValid" style="color: red;">Your items should be strictly numericals of 6 digits or more </mat-hint>
+  <mat-hint *ngIf="!isTextValid" style="color: red;">Your items should be strictly numericals of 6 digits or more
+  </mat-hint>
 </mat-form-field>

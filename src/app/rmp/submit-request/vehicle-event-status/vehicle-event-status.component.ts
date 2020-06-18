@@ -204,9 +204,6 @@ export class VehicleEventStatusComponent implements OnInit {
     this.submitService.updateLoadingStatus({ status: true, comp: "ves" })
   }
 
-  ngOnChanges(simpleChanges: SimpleChanges) {
-  }
-
   public refillMasterDatatoOptions() {
     this.filtered_MD.model_years = this.l_lookupTableMD.model_year;
     this.filtered_MD.distribution_entity = this.l_lookupTableMD.type_data;
@@ -391,6 +388,9 @@ export class VehicleEventStatusComponent implements OnInit {
         l_isSummaryReq: this.req_body.report_detail.is_summary_report,
         l_businessReq: this.req_body.report_detail.business_req
 
+      }
+      if(!(this.keyDataEle.others.checked || this.keyDataEle.selected.length)){
+          this.req_body.data_date_range = { StartDate: null, EndDate: null };
       }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
         data: obj, disableClose: true

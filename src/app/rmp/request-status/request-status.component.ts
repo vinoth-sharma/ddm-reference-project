@@ -732,7 +732,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         this.finalData = [];
       }
       else if (this.finalData[0].status == "Incomplete") {
-        this.errorModalMessageRequest = 'status for the report ' + this.finalData[0].ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report';
+        this.errorModalMessageRequest = 'Status for the report ' + this.finalData[0].ddm_rmp_post_report_id + ' is Incomplete and cannot be accepted. Please complete the request';
         $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
         this.finalData = [];
       } else {

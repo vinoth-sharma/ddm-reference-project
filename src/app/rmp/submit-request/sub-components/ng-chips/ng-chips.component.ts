@@ -74,39 +74,18 @@ export class NgChipsComponent {
   }
 
   public onPaste(event: ClipboardEvent) {
-    var rpoRegEx = /^([0-9]){6,}$/gi;
     let clipboardData = event.clipboardData;
-    let pastedText = clipboardData.getData('text').trim();
-    let l_data = [];
-    if (pastedText.match(rpoRegEx)) {
-      l_data.push(pastedText)
-    }
-    else {
-      let arr = this.extractString(pastedText);
-      l_data = arr.filter(ele => {
-        if (ele.match(rpoRegEx))
-          return true
-        else
-          return false
-      })
-    }
-
-    if (l_data.length) {
-      this.chipsEntered = [...new Set([...this.chipsEntered, ...l_data])];
+    let pastedText = clipboardData.getData('text');
+    let pastedChips = getChips(pastedText);
+    if (pastedChips){
+      this.chipsEntered = [...new Set([...this.chipsEntered, ...pastedChips])];
       this.inputModelChange.emit(this.chipsEntered);
       event.preventDefault();
     }
   }
+}
 
-  extractString(str) {
-    let delimiters = [";", ",", ":","\n"];
-    let l_data = [];
-    delimiters.forEach(ele => {
-      let arr = str.split(ele);
-      if (arr.length > 1) {
-        l_data = arr;
-      }
-    })
-    return l_data
-  }
+//validate chips
+function getChips(text) {
+  return text.match(/([0-9]{6,})/gi);
 }

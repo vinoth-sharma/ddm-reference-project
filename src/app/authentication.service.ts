@@ -82,4 +82,13 @@ export class AuthenticationService {
     return urls;
   }
 
+  public restrictedUrls() {
+    let url = [
+      "user/main/ddm-admin",
+      "user/metrics",
+      "user/main/ddm-brand-forms"
+    ]
+    return url;
+  }
+
 }

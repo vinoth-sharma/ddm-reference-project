@@ -1117,16 +1117,21 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       html2Canvas($('#user-selection-print-div')[0]).then((canvas) => {
         var a = document.createElement('a')
         a.href = canvas.toDataURL('image/png');
-        var doc = new jsPDF({
-          unit: 'px', format: 'a2'
-        });
+        let height = document.getElementById('user-selection-print-div').clientHeight;
+        height = (height < 1200) ? 1800 : height
+        let width = document.getElementById('user-selection-print-div').clientWidth * 0.8;
+        console.log(height, width)
+        var doc = new jsPDF('p', 'pt', [width, height]);
+        doc.addPage()
         doc.addImage(canvas.toDataURL('image/png'), 'png', 40, 40)
+        doc.deletePage(1)
         doc.save(fileName)
         this.displayPrintDiv = false;
       })
     }, 300)
   }
 
+  // returns list of value to be displayed in UI
   getListOfValues(list: [], key) {
     let temparr = []
     list.forEach(item => {

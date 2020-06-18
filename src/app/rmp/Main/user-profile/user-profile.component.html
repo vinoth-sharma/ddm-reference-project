@@ -1,4 +1,4 @@
- <div class="body-content" id="body_content" #body_content>
+<div class="body-content" id="body_content" #body_content>
   <div class="heading">
     <div class="col-xs-9 pl-0">
       <h3 class="mt-0"><b>User Profile</b></h3>
@@ -14,7 +14,6 @@
       </div>
     </div>
   </div>
-
   <div class="row">
     <div class="col-xs-3">
       <i>
@@ -95,7 +94,6 @@
       </div>
     </div>
   </div>
-
   <div class="market-selections-main">
     <div class="row">
       <div class="col-xs-3 pl-0">
@@ -147,11 +145,13 @@
       </div>
     </div>
     <div class="row message-padding">
-      <b><i>*If more granular information is required, please mention it in Additional Requirements</i></b>
+      <b><i>*If more granular information is required, please mention it in Additional Requirements of Submit Request
+          page</i></b>
     </div>
-  </div> 
+  </div>
 
   <!------------------------------------Help Modal------------------------------ -->
+
   <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -206,56 +206,116 @@
   <div hidden id="dload"></div>
 
   <!-- hidden div to download user selection -->
+
   <div *ngIf="displayPrintDiv" style="position: absolute;z-index: -1000;width:100%">
-    <div class="hidden-user-selection" style="padding:30px;display: flex;justify-content: center;align-items: center;width:100%"   id="user-selection-print-div">
+    <div class="hidden-user-selection"
+      style="padding:30px;display: flex;justify-content: center;align-items: center;width:100%"
+      id="user-selection-print-div">
       <div class="cont" style="width: 100%;">
-        <div class="header flex-center" style=" display: flex;justify-content: center;align-items: center; height:50px;background-color: lightgray;">
-          <span style="font-size: 20px;">USER SELECTION</span>
+        <div class="header flex-center"
+          style=" display: flex;justify-content: center;align-items: center; height:50px;background-color: lightgray;">
+          <span style="font-size: 20px;">USER PROFILE</span>
         </div>
         <div class="secection-contents" style="padding:20px;">
           <div class="row">
             <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Name : </span>
-            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{user_name}}</span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{user_name}}</span>
           </div>
-          <div class="row" >
-            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Market Selections : </span>
-            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.market_data,"market")}}</span>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Phone Number :
+            </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{text_number}}</span>
           </div>
-          <div class="row" >
-            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Division Selections : </span>
-            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.division_data,"division_desc")}}</span>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Carrier :
+            </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{user_info['carrier']}}</span>
           </div>
-          <div class="row" >
-            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Region Selections : </span>
-            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.country_region_data,"region_desc")}}</span>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Designation :
+            </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{user_designation}}</span>
           </div>
-          <div class="row" >
-            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Zone Selections : </span>
-            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.region_zone_data,"zone_desc")}}</span>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Department :
+            </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{user_department}}</span>
           </div>
-          <div class="row" >
-            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Area Selections : </span>
-            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.zone_area_data,"area_desc")}}</span>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Email : </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{user_email}}</span>
           </div>
-          <div class="row" >
-            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">GMMA Selections : </span>
-            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.gmma_data,"gmma_desc")}}</span>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Offince Address
+              : </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{user_office_address || 'Cant fetch address' }}</span>
           </div>
-          <div class="row" >
-            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">LMA Selections : </span>
-            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.lma_data,"lmg_desc")}}</span>
+          <div class="row" *ngIf="user_role != 'Admin'">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Disclaimer
+              Acknowledge : </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{user_disc_ack | date: 'dd-MMM-yyyy' }}</span>
           </div>
-          <div class="row" >
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Market
+              Selections : </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.market_data,"market")}}</span>
+          </div>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Division
+              Selections : </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.division_data,"division_desc")}}</span>
+          </div>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Region
+              Selections : </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.country_region_data,"region_desc")}}</span>
+          </div>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Zone Selections
+              : </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.region_zone_data,"zone_desc")}}</span>
+          </div>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">Area Selections
+              : </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.zone_area_data,"area_desc")}}</span>
+          </div>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">GMMA Selections
+              : </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.gmma_data,"gmma_desc")}}</span>
+          </div>
+          <div class="row">
+            <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">LMA Selections
+              : </span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{getListOfValues(selected.lma_data,"lmg_desc")}}</span>
+          </div>
+          <div class="row">
             <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">BAC : </span>
-            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{bacselectedItems.join(', ')}}</span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{bacselectedItems.join(', ')}}</span>
           </div>
-          <div class="row" >
+          <div class="row">
             <span class="selection-key" style="font-size: 16px;font-weight: bold;display: inline-block;">FAN: </span>
-            <span class="selection-val" style="font-size: 16px;display: inline-block;margin-left: 20px;">{{fanselectedItems.join(', ')}}</span>
+            <span class="selection-val"
+              style="font-size: 16px;display: inline-block;margin-left: 20px;">{{fanselectedItems.join(', ')}}</span>
           </div>
         </div>
-  
       </div>
     </div>
   </div>
-  

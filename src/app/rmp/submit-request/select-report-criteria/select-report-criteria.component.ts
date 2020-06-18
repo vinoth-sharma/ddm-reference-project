@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RequestOnbehalfComp } from '../request-onbehalf/request-onbehalf.component';
 import { DataProviderService } from '../../data-provider.service';
 import { Subscription } from 'rxjs';
+declare var $: any;
 
 
 @Component({
@@ -17,6 +18,73 @@ import { Subscription } from 'rxjs';
 })
 export class SelectReportCriteriaComp implements OnInit {
   @Output() clearSubmitReqEmitter = new EventEmitter();
+
+  public editModes: boolean = false;
+  public textChange: boolean = false;
+  public enableUpdateData: boolean = false;
+  public readOnlyContentHelper: boolean = true;
+  public original_content;
+  public naming: string = "Loading";
+  public main_menu_content: Array<object>
+  public description_text = {
+    "ddm_rmp_desc_text_id": 4,
+    "module_name": "Help_MainMenu",
+    "description": ""
+  }
+  public content;
+
+  public config = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+      ['clean'],
+      ['image']
+    ]
+  };
+  public toolbarTooltips = {
+    'font': 'Select a font',
+    'size': 'Select a font size',
+    'header': 'Select the text style',
+    'bold': 'Bold',
+    'italic': 'Italic',
+    'underline': 'Underline',
+    'strike': 'Strikethrough',
+    'color': 'Select a text color',
+    'background': 'Select a background color',
+    'script': {
+      'sub': 'Subscript',
+      'super': 'Superscript'
+    },
+    'list': {
+      'ordered': 'Numbered list',
+      'bullet': 'Bulleted list'
+    },
+    'indent': {
+      '-1': 'Decrease indent',
+      '+1': 'Increase indent'
+    },
+    'direction': {
+      'rtl': 'Text direction (right to left | left to right)',
+      'ltr': 'Text direction (left ro right | right to left)'
+    },
+    'align': 'Text alignment',
+    'link': 'Insert a link',
+    'image': 'Insert an image',
+    'formula': 'Insert a formula',
+    'clean': 'Clear format',
+    'add-table': 'Add a new table',
+    'table-row': 'Add a row to the selected table',
+    'table-column': 'Add a column to the selected table',
+    'remove-table': 'Remove selected table',
+    'help': 'Show help'
+  };
 
   l_lookup_MD: any = {
     market: {},
@@ -81,8 +149,8 @@ export class SelectReportCriteriaComp implements OnInit {
       query_criteria: "",
       link_title: "",
       is_vin_level_report: null,
-      is_summary_report : null,
-      business_req : ""
+      is_summary_report: null,
+      business_req: ""
     }
   }
 
@@ -126,6 +194,25 @@ export class SelectReportCriteriaComp implements OnInit {
         this.special_identifiers_obj.bac = []
         this.special_identifiers_obj.fan = []
         this.refillLookupTableData();
+      }
+      if (tableDate) {
+        this.dataProvider.changeIntialLoad(true)
+        this.dataProvider.currentlookupData.subscribe(element2 => {
+          if (element2) {
+            this.main_menu_content = element2['main_menu'];
+            this.content = tableDate;
+            let ref = this.content['data']['desc_text']
+            let temp = ref.find(function (element) {
+              return element["ddm_rmp_desc_text_id"] == 4;
+            })
+            if (temp) {
+              this.original_content = temp.description;
+            }
+            else { this.original_content = "" }
+            this.naming = this.original_content;
+          }
+        })
+        Utils.hideSpinner();
       }
     })
 
@@ -424,7 +511,7 @@ export class SelectReportCriteriaComp implements OnInit {
   }
 
   clearRequestData() {
-    let l_res = this.req_body.report_id?"NewRequest":"clear";
+    let l_res = this.req_body.report_id ? "NewRequest" : "clear";
     this.clearSubmitReqEmitter.emit(l_res);
   }
 
@@ -487,5 +574,106 @@ export class SelectReportCriteriaComp implements OnInit {
 
   ngOnDestroy() {
     this.subjectSubscription.unsubscribe();
+  }
+
+  public textChanged(event) {
+    this.textChange = true;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
+
+  public edit_True() {
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
+    this.naming = this.original_content;
+  }
+
+  public editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.naming = this.original_content;
+  }
+
+  ngAfterViewInit() {
+    this.showTooltips();
+  }
+
+  // quill editor buttons tooltips display
+  public showTooltips() {
+    let showTooltip = (which, el) => {
+      var tool: any;
+      if (which == 'button') {
+        tool = el.className.replace('ql-', '');
+      }
+      else if (which == 'span') {
+        tool = el.className.replace('ql-', '');
+        tool = tool.substr(0, tool.indexOf(' '));
+      }
+      if (tool) {
+        if (tool === 'blockquote') {
+          el.setAttribute('title', 'blockquote');
+        }
+        else if (tool === 'list' || tool === 'script') {
+          if (this.toolbarTooltips[tool][el.value])
+            el.setAttribute('title', this.toolbarTooltips[tool][el.value]);
+        }
+        else if (el.title == '') {
+          if (this.toolbarTooltips[tool])
+            el.setAttribute('title', this.toolbarTooltips[tool]);
+        }
+        //buttons with value
+        else if (typeof el.title !== 'undefined') {
+          if (this.toolbarTooltips[tool][el.title])
+            el.setAttribute('title', this.toolbarTooltips[tool][el.title]);
+        }
+        //defaultlsdfm,nxcm,v vxcn
+        else
+          el.setAttribute('title', this.toolbarTooltips[tool]);
+      }
+    };
+
+    let toolbarElement = document.querySelector('.ql-toolbar');
+    if (toolbarElement) {
+      let matchesButtons = toolbarElement.querySelectorAll('button');
+      for (let i = 0; i < matchesButtons.length; i++) {
+        showTooltip('button', matchesButtons[i]);
+      }
+      let matchesSpans = toolbarElement.querySelectorAll('.ql-toolbar > span > span');
+      for (let i = 0; i < matchesSpans.length; i++) {
+        showTooltip('span', matchesSpans[i]);
+      }
+    }
+  }
+
+  public help_content_edits() {
+    if (!this.textChange || this.enableUpdateData) {
+      Utils.showSpinner();
+      this.editModes = false;
+      this.readOnlyContentHelper = true;
+      this.description_text['description'] = this.naming;
+      $('#edit_button').show()
+      this.djangoService.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+        let temp_desc_text = this.content['data']['desc_text']
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 4) {
+            temp_desc_text[index] = this.description_text;
+          }
+        })
+        this.content['data']['desc_text'] = temp_desc_text;
+        this.dataProvider.changelookUpTableData(this.content);
+        this.editModes = false;
+        this.ngOnInit();
+        this.original_content = this.naming;
+        this.ngToaster.success("Updated Successfully");
+        $('#helpModal').modal('hide');
+        Utils.hideSpinner();
+        $('#helpModal').modal('hide');
+      }, err => {
+        Utils.hideSpinner();
+        this.ngToaster.error("Data not Updated");
+      })
+    } else {
+      this.ngToaster.error("Please enter the data");
+    }
   }
 }

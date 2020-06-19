@@ -26,6 +26,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
   subjectSubscription: Subscription;
   refreshWrapper: boolean = true;
   clearAll: boolean = false;
+  requestIdAvailable:boolean = false;
   selected = new FormControl(0);
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
@@ -51,6 +52,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
       if (status.comp === "da" && status.status) {
         let requestId = localStorage.getItem("report_id")
         if (requestId) {
+          this.requestIdAvailable = true;
           Utils.showSpinner();
           this.submitReqService.getReportDescription(requestId).subscribe(res => {
             this.setTabType(res);
@@ -61,6 +63,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
           })
         }
         else if (!this.clearAll) {
+          this.requestIdAvailable = false;
           Utils.showSpinner();
           this.submitReqService.getUserSelectedData().subscribe(res => {
             this.submitReqService.updateRequestStatus({ type: "user_selection", data: res })

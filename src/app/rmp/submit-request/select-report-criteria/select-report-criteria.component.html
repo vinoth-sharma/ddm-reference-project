@@ -2,7 +2,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 rcHeadWrapper">
         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 noPadding">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding rcTitle">Report Criteria</div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding rcCallout">Selections can be used to generate
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding rcCallout">*Selections can be used to generate
                 Vehicle Event Status or Dealer Allocation Requests
             </div>
         </div>
@@ -12,12 +12,6 @@
             </button>
             <button mat-flat-button [cssBtn]="'mid'" (click)="openRequestOnBehalf()"
                 *ngIf="userData.userRole === 'Admin'">Request on behalf</button>
-            <button class="btn-transparent" data-target="#helpModal" data-toggle="modal" data-backdrop="static"
-                id="main-help">
-                <a data-toggle="tooltip" title="HELP">
-                    <i id="ic" class="material-icons">help_outline</i>
-                </a>
-            </button>
         </div>
     </div>
     <div class="row topFiltersWrapper margBottom">
@@ -103,7 +97,7 @@
                             </div>
                         </ng-container>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="font-size: 0.8em;padding: 0px 25px;">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="font-size: 0.8em;padding: 0px 25px;font-style: italic;">
                         *If you don't select any option or select 'No', both will be same
                     </div>
                 </div>
@@ -112,46 +106,4 @@
     </div>
     <app-report-frequency [lookupTableData]="l_lookup_MD.other" (reportFreqEmitter)="repFreqChange($event)">
     </app-report-frequency>
-</div>
-
-<!-- DO NOT DELETE : CODE IN HALT DUE TO UAT-signoff -->
-<!------------------------------------Help Modal------------------------------ -->
-<div class="modal fade" style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="justify-content: flex-start;">
-                <h5 class="modal-title help-title">Help</h5>
-            </div>
-            <div class="modal-body display-notes-scroll-modal">
-                <div class="row">
-                    <div class="col-9">
-                        <span *ngIf="editModes">
-                            <button [cssBtn]="'ok'" mat-raised-button style="margin-right: 10px;"
-                                (click)="help_content_edits()">Save</button>
-                            <button [cssBtn]="'cancel'" mat-raised-button (click)="edit_True()">Cancel</button>
-                        </span>
-                    </div>
-                    <div class="col-3">
-                        <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton"
-                            style="padding-right:0px;" (click)='editEnable()'>
-                            <a data-toggle="tooltip" title="EDIT">
-                                <i id="ic" class="material-icons">mode_edit</i>
-                            </a>
-                        </button>
-                    </div>
-                </div>
-                <div class="quillEditor">
-                    <quill-editor class="quill" [(ngModel)]='naming' [modules]='config'
-                        [readOnly]='readOnlyContentHelper' (onContentChanged)='textChanged($event)'>
-                    </quill-editor>
-                </div>
-            </div>
-            <div class="modal-footer modal-footer-pad">
-                <button [cssBtn]="'mid'" mat-raised-button data-dismiss="modal">
-                    Close
-                </button>
-            </div>
-        </div>
-    </div>
 </div>

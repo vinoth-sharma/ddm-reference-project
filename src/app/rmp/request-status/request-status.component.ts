@@ -1008,7 +1008,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public query_criteria_click(query_report_id) {
     Utils.showSpinner();
     this.django.get_report_description(query_report_id).subscribe(response => {
-      console.log(response, 'response----------------')
       this.is_vin_level_report = response['report_data']['is_vin_level_report'];
       this.is_summary_report = response['report_data']['is_summary_report'];
       if (response["market_data"].length) {
@@ -1065,7 +1064,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       }
 
       if (response["frequency_data"].length) {
-        console.log(response["frequency_data"], 'frequency_data===============')
         let tempArray = [];
         this.frequency_flag = true;
         response["frequency_data"].map(element => {

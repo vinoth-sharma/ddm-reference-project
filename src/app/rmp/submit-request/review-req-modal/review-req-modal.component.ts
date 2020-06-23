@@ -191,7 +191,6 @@ export class ReviewReqModalComponent implements OnInit {
         else
           return ele.value
       })
-      console.log( data.checkbox_data, 'data---------------')
 
       this.vehicleEvent.orderMetrics.push(obj)
     }

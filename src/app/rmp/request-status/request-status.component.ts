@@ -240,6 +240,9 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public updateDLReportId: number;
   public distribution_data: string;
   public dl_list: any = [];
+  public is_vin_level_report: any;
+  public is_summary_report: any;
+
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -1005,6 +1008,9 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public query_criteria_click(query_report_id) {
     Utils.showSpinner();
     this.django.get_report_description(query_report_id).subscribe(response => {
+      console.log(response, 'response----------------')
+      this.is_vin_level_report = response['report_data']['is_vin_level_report'];
+      this.is_summary_report = response['report_data']['is_summary_report'];
       if (response["market_data"].length) {
         let tempArray = [];
         response["market_data"].map(element => tempArray.push(element.market));
@@ -1059,12 +1065,10 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       }
 
       if (response["frequency_data"].length) {
+        console.log(response["frequency_data"], 'frequency_data===============')
         let tempArray = [];
         this.frequency_flag = true;
         response["frequency_data"].map(element => {
-          if (element.description != '')
-            tempArray.push(element.select_frequency_values + "-" + element.description);
-          else
             tempArray.push(element.select_frequency_values);
         });
         this.report_frequency = tempArray.join(", ");
@@ -1158,19 +1162,13 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         }
 
         if (response["ost_data"]["checkbox_data"].length) {
-          let group = response["ost_data"]["checkbox_data"].reduce((r, a) => {
-            r[a.description_text] = [...r[a.description_text] || [], a.checkbox_description];
-            return r;
-          }, {});
-          let orderMetrics = [];
-          for (let ele in group) {
-            group[ele] = group[ele].join(',');
-            orderMetrics.push({
-              label: ele,
-              values: group[ele]
-            })
-          }
-          this.checkbox_data = orderMetrics;
+          let group = [];
+          response["ost_data"]["checkbox_data"].map(ele => {
+            if(ele.ddm_rmp_lookup_ots_checkbox_values === 27 || ele.ddm_rmp_lookup_ots_checkbox_values === 55){
+              group.push('Turn rate:'+ ele.checkbox_description)
+            } else group.push(ele.checkbox_description)
+          })
+          this.checkbox_data = group.join(',');
         } else {
           this.checkbox_data = [];
         }

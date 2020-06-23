@@ -147,8 +147,12 @@ export class ReportFrequencyComponent implements OnInit {
           description: daily.select_frequency_values === "Other" ? this.selected.monthly_others_decs : daily.select_frequency_values
         })
       }
-
       this.selected.daily_weekly.forEach(freqCB);
+      if(this.selected && this.selected.daily_weekly && 
+          this.selected.daily_weekly.length && this.selected.daily_weekly.length > 1) {
+        this.selected.daily_weekly = this.selected.daily_weekly.sort((a,b) =>
+        (a.ddm_rmp_lookup_select_frequency_id > b.ddm_rmp_lookup_select_frequency_id)? 1: -1)
+      }
       this.selected.monthly_bimonthly.forEach(freqCB);
       this.selected.quaterly.forEach(freqCB);
       this.l_lookupData.freq_dealer_allo.filter(ele => ele['checked']).forEach(freq => {

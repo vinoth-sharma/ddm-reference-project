@@ -51,24 +51,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
-                            Frequency of Reports:
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
-                            {{ otherReportCriteria.freq }}
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let spcl of otherReportCriteria.frequency_data">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            {{ spcl.label }}
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            {{ spcl.data.toString() }}
-                        </div>
-                    </div>
-                </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom" *ngIf="otherReportCriteria.spclIdentifiers.length">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
@@ -81,6 +63,24 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             {{ spcl.data.toString() }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                            Frequency of Reports:
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                            {{ otherReportCriteria.freq }}
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <b>Frequency of Selections:</b>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ otherReportCriteria.frequency_data }}
                         </div>
                     </div>
                 </div>
@@ -153,6 +153,22 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf='reqDetails.is_vin_level_report'>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
+                                Is this a Order Number/VIN level detail report?
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                {{reqDetails.is_vin_level_report}}
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf='reqDetails.is_summary_report'>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
+                                Is this a summary report with metrics?
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                {{reqDetails.is_summary_report}}
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom" *ngIf="reqDetails.type === 'da'">
@@ -221,21 +237,22 @@
             {{ market.data.toString() }}
         </pre>
     </pre>
+    <pre class="div-wrap">
+        <b>Special Identifiers:</b> &nbsp;&nbsp;
+        <pre *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
+                {{ spcl.label }}&nbsp;&nbsp;
+                {{ spcl.data.toString() }}
+        </pre>
+</pre>
 <pre class="div-wrap">
     <b>Frequency of Reports:</b> &nbsp;&nbsp;
     <span>{{ otherReportCriteria.freq }}&nbsp;&nbsp;</span>
-    <pre class="div-wrap" *ngFor="let spcl of otherReportCriteria.frequency_data">
-        {{ spcl.label }}&nbsp;&nbsp; - 
-        {{ spcl.data.toString() }}
-    </pre>
-    </pre>
+</pre>
 <pre class="div-wrap">
-            <b>Special Identifiers:</b> &nbsp;&nbsp;
-            <pre *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
-                    {{ spcl.label }}&nbsp;&nbsp;
-                    {{ spcl.data.toString() }}
-            </pre>
-    </pre>
+    <b>Frequency of Selections:</b> &nbsp;&nbsp;
+    <span>{{ otherReportCriteria.frequency_data }}&nbsp;&nbsp;</span>
+</pre>
+
 <pre class="div-wrap">
             <b>Would you need Text Notifications when Requests are fulfilled?:</b> &nbsp;&nbsp;
             <span> {{ otherReportCriteria.textNotification }}&nbsp;&nbsp;</span>
@@ -276,6 +293,15 @@
             <b>End:</b> &nbsp;&nbsp;
             <span>{{ vehicleEvent.dosp_end | date: 'dd-MMM-yyyy' }}&nbsp;&nbsp;</span>
         </pre>
+        <pre class="div-wrap" *ngIf='reqDetails.is_vin_level_report'>
+            <b>Is this a Order Number/VIN level detail report?:</b> &nbsp;&nbsp;
+            <span> {{reqDetails.is_vin_level_report}}&nbsp;&nbsp;</span>
+        </pre>
+        <pre class="div-wrap" *ngIf='reqDetails.is_summary_report'>
+            <b>Is this a summary report with metrics?:</b> &nbsp;&nbsp;
+            <span>{{reqDetails.is_summary_report}}&nbsp;&nbsp;</span>
+        </pre>
+                
 </pre>
 <pre class="div-wrap" *ngIf="reqDetails.type === 'da'">
         <b> Dealer Allocation Selections:</b> <br>

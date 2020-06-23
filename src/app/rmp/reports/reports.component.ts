@@ -389,8 +389,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             if (this.reportContainer[i]['description'] != null) {
               this.reportContainer[i]['description'].forEach(ele => {
                 if (ele != 'Monday' && ele != 'Tuesday' && ele != 'Wednesday' && ele != 'Thursday' && ele != 'Friday') {
-                  this.reportContainer[i]['frequency_data_filtered'].push(ele)
-                  this.reportContainer[i]['description'] = this.reportContainer[i]['frequency_data_filtered'];
+                  if (ele != 'Other' && !this.reportContainer[i]['frequency_data_filtered'].includes(ele)) {
+                    this.reportContainer[i]['frequency_data_filtered'].push(ele)
+                    this.reportContainer[i]['description'] = this.reportContainer[i]['frequency_data_filtered'];
+                  }
                 }
               })
             }

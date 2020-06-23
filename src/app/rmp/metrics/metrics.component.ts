@@ -233,8 +233,10 @@ export class MetricsComponent implements OnInit, AfterViewInit {
             if (this.reports[i]['description'] != null) {
               this.reports[i]['description'].forEach(ele => {
                 if (ele != 'Monday' && ele != 'Tuesday' && ele != 'Wednesday' && ele != 'Thursday' && ele != 'Friday') {
-                  this.reports[i]['frequency_data_filtered'].push(ele)
-                  this.reports[i]['description'] = this.reports[i]['frequency_data_filtered'];
+                  if (ele != 'Other' && !this.reports[i]['frequency_data_filtered'].includes(ele)) {
+                    this.reports[i]['frequency_data_filtered'].push(ele)
+                    this.reports[i]['description'] = this.reports[i]['frequency_data_filtered'];
+                  }
                 }
               })
             }

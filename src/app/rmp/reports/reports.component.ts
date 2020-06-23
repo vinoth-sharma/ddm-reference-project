@@ -131,7 +131,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     report_name: '',
     title: '',
     frequency: '',
-    frequency_data_filtered: '',
+    frequency_data_filtered: ''
   };
   public quillToolBarDisplay = [
     ['bold', 'italic', 'underline', 'strike'],

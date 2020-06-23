@@ -56,6 +56,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
     report_count: '',
     freq: '',
     description: '',
+    frequency_data_filtered: ''
   }
   public weekDayDict = {
     Monday: 'M',
@@ -232,19 +233,28 @@ export class MetricsComponent implements OnInit, AfterViewInit {
             if (this.reports[i]['description'] != null) {
               this.reports[i]['description'].forEach(ele => {
                 if (ele != 'Monday' && ele != 'Tuesday' && ele != 'Wednesday' && ele != 'Thursday' && ele != 'Friday') {
-                  if ((ele.length != 0) && (ele != null) && (ele != '')) {
-                    this.reports[i]['frequency_data_filtered'].push(ele)
-                    this.reports[i]['description'] = this.reports[i]['frequency_data_filtered'];
-                  }
+                  this.reports[i]['frequency_data_filtered'].push(ele)
+                  this.reports[i]['description'] = this.reports[i]['frequency_data_filtered'];
                 }
               })
             }
           }
+          else if (this.reports[i]['frequency_data_filtered'] == null) {
+            this.reports[i]['frequency_data_filtered'] = [];
+          }
         }
         for (var i = 0; i < this.reports.length; i++) {
-          if (this.reports[i]['description'] != null)
-            this.reports[i]['description'] = this.reports[i]['description'].filter(Boolean);
+          if (this.reports[i]['frequency_data_filtered'] != null)
+            this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data_filtered'].filter(Boolean);
         }
+
+        this.reports.forEach(ele => {
+          if (ele['frequency_data_filtered']) {
+            ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");
+          }
+          ele['report_name_old'] = ele['report_name'];
+          ele['clicked'] = false;
+        })
         Utils.hideSpinner();
       }
     });

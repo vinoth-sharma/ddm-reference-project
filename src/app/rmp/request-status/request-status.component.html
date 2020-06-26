@@ -384,7 +384,7 @@
       <div class="modal-body">
         <div>
           <i>
-            <p>*Max character limit is 255;Please do not try to submit empty comments</p>
+            <p class="app-hint-styles">*Max character limit is 255;Please do not try to submit empty comments</p>
           </i>
         </div>
         <div class="form-group">
@@ -1015,14 +1015,15 @@
             </div>
           </div>
           <div class="row note">
-            <p><i>*Type email address or name.Use buttons to check/retrieve mail.Click Add</i></p>
+            <p class="app-hint-styles"><i>*Type email address or name.Use buttons to check/retrieve mail.Click Add</i>
+            </p>
           </div>
         </div>
         <hr class="hr-margin">
         <div class="row dl-bottom">
           <div class="col-sm-3 dl-bottom-text">
             <h5>Distribution List:</h5>
-            <p><i>*Verify Recipients.</i>
+            <p class="app-hint-styles"><i>*Verify Recipients.</i>
               <br> <i>Click box next to name and</i>
               <br> <i>click Remove to delete</i></p>
           </div>
@@ -1065,7 +1066,7 @@
       <div class="modal-body">
         <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" placeholder="https://example.com"
           type="text" class="form-control" />
-        <span *ngIf="linkToUrlFlag" style="font-size: 14px;font-style: italic;">*This field cannot be Empty</span>
+        <span *ngIf="linkToUrlFlag" class="app-hint-styles">*This field cannot be Empty</span>
       </div>
       <div class="modal-footer">
         <button type="button" [cssBtn]="'ok'" mat-raised-button [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save

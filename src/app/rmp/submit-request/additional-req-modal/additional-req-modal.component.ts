@@ -47,7 +47,6 @@ export class AdditionalReqModalComponent implements OnInit {
     this.responseData.addReq = this.responseData.addReq.trim();
     this.responseData.businessReq = this.responseData.businessReq ? this.responseData.businessReq.trim() : "";
     this.responseData.selectedFile = this.getFile();
-
     let l_data_validation = this.responseData.cb.filter(ele => {
       if (ele.description && [1, 2].includes(ele.ddm_rmp_ots_checkbox_group_id)) { return ele }
     });

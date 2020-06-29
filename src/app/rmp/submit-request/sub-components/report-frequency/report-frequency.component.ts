@@ -147,7 +147,6 @@ export class ReportFrequencyComponent implements OnInit {
           description: daily.select_frequency_values === "Other" ? this.selected.monthly_others_decs : daily.select_frequency_values
         })
       }
-
       this.selected.daily_weekly.forEach(freqCB);
       this.selected.monthly_bimonthly.forEach(freqCB);
       this.selected.quaterly.forEach(freqCB);

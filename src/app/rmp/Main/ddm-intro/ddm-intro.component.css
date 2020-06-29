@@ -22,8 +22,9 @@
 
  /* changes done Ganesha */
 ::ng-deep .quill .ql-container .ql-editor {
-    overflow-y: auto;
-    max-height: 50vh;
+        overflow-y: auto;
+        max-height: 50vh;
+        height: 50vh;
 }
 
 .editButton {

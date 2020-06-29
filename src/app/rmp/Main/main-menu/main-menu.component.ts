@@ -39,13 +39,18 @@ export class MainMenuComponent implements OnInit {
 
   // highlighting selected tab button border bottom color of button
   public selectedTab(tab: any) {
-    let listOfTabs = document.getElementsByClassName('left-tabs')[0].children;
-    for (let i = 0; i < listOfTabs.length; i++) {
-      if (listOfTabs[i]['text'].trim() == tab['target']['innerText'].trim()) {
-        listOfTabs[i]['style']['borderBottom'] = '2px solid #2a6496';
-      } else {
-        listOfTabs[i]['style']['borderBottom'] = '';
+    if(document.getElementsByClassName('left-tabs') && 
+        document.getElementsByClassName('left-tabs').length && 
+        document.getElementsByClassName('left-tabs')[0].children) {
+      let listOfTabs = document.getElementsByClassName('left-tabs')[0].children;
+      for (let i = 0; i < listOfTabs.length; i++) {
+        if (listOfTabs[i]['text'].trim() == tab['target']['innerText'].trim()) {
+          listOfTabs[i]['style']['borderBottom'] = '2px solid #2a6496';
+        } else {
+          listOfTabs[i]['style']['borderBottom'] = '';
+        }
       }
     }
+    
   }
 }

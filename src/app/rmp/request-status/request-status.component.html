@@ -611,6 +611,12 @@
               <span *ngIf='fan_desc'>{{ fan_desc }}&nbsp;&nbsp;</span>
               <br>
             </div>
+            <div class="div-wrap" *ngIf='special_identifier && special_identifier.length'>
+              <b style="font-size:120%">Special Identifiers</b>
+            <div *ngFor='let spcl of special_identifier'> 
+             <b>{{spcl.label}}:</b>&nbsp;&nbsp;<span>{{spcl.value}}</span>
+            </div>
+          </div>
             <div class="div-wrap">
               <b>Emails:</b> &nbsp;&nbsp;
               <span>{{dl_list}}</span>
@@ -625,13 +631,6 @@
               <span>{{ report_frequency }}&nbsp;&nbsp;</span>
             </div>
             <br>
-
-            <div class="div-wrap" *ngIf='special_identifier && special_identifier.length'>
-              <b style="font-size:120%">Special Identifiers</b>
-              <div *ngFor='let spcl of special_identifier'>
-                <b>{{spcl.label}}:</b>&nbsp;&nbsp;<span>{{spcl.value}}</span>
-              </div>
-            </div>
             <h5>
               <b>Text Notification, when Requests are fulfilled?</b>
             </h5>
@@ -688,9 +687,8 @@
                 <br>
               </div>
               <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
-              <div class="div-wrap" *ngFor="let ele of checkbox_data">
-                <b> {{ ele.label }}:</b> &nbsp;&nbsp;
-                <span>{{ ele.values }}&nbsp;&nbsp;</span>
+              <div class="div-wrap">
+                <span>{{ checkbox_data }}&nbsp;&nbsp;</span>
                 <br>
                 <br>
               </div>
@@ -703,18 +701,30 @@
                 <br>
               </div>
               <div class="div-wrap">
-                <b>DOSP - Orders Processed:</b> &nbsp;&nbsp;
-                <span *ngFor="let element of summary?.ost_data.data_date_range">
-                  <b>Start:</b>&nbsp;{{element?.dosp_start_date| date: 'dd-MMM-yyyy'}}
-                  <b>End:</b>&nbsp;{{element?.dosp_end_date| date: 'dd-MMM-yyyy' }}
-                </span>
-                <br>
-              </div>
-              <div class="div-wrap">
-                <b>Additional Requirements:</b> &nbsp;&nbsp;
-                <span>{{summary?.additional_req}}</span>
-                <br>
-              </div>
+                  <b>DOSP - Orders Processed:</b> &nbsp;&nbsp;
+                  <span *ngFor="let element of summary?.ost_data.data_date_range">
+                    <b>Start:</b>&nbsp;{{element?.dosp_start_date| date: 'dd-MMM-yyyy'}}
+                    <b>End:</b>&nbsp;{{element?.dosp_end_date| date: 'dd-MMM-yyyy' }}
+                  </span>
+                  <br>
+                </div>
+                <div class="div-wrap" *ngIf='is_vin_level_report'>
+                       <b>Is this a Order Number/VIN level detail report?:</b>
+                    <span>
+                            {{is_vin_level_report}}
+                    </span>
+                </div>
+                <div class="div-wrap" *ngIf='is_summary_report'>
+                    <b>Is this a summary report with metrics?:</b>
+                    <span>
+                            {{is_summary_report}}
+                    </span>
+                </div>
+                <div class="div-wrap">
+                    <b>Additional Requirements:</b> &nbsp;&nbsp;
+                    <span>{{summary?.additional_req}}</span>
+                    <br>
+                </div>
             </div>
             <!--                                Order To Sale Start                                    -->
 
@@ -735,7 +745,7 @@
               </div>
               <div class="div-wrap">
                 <b>Consensus Time and Date:</b> &nbsp;&nbsp;
-                <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
+                <span *ngFor="let element of summary?.da_data.concensus_time_date">
                   <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
                   <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
                 </span>
@@ -1177,15 +1187,19 @@
   <span *ngIf='fan_desc'>{{ fan_desc }}&nbsp;&nbsp;</span>
   <br>
 </pre>
+<pre class="div-wrap" *ngIf='special_identifier && special_identifier.length'>
+  <b style="font-size:120%">Special Identifiers</b>
+  <pre class="div-wrap" *ngFor='let spcl of special_identifier'> 
+      <b>{{spcl.label}}:</b>&nbsp;&nbsp;<span>{{spcl.value}}</span>
+  </pre>
+</pre>
+<pre class="div-wrap">
+  <b>Emails:</b> &nbsp;&nbsp;
+  <span>{{dl_list}}</span>
+</pre>
 <pre class="div-wrap" *ngIf="!frequency_flag">
     <b style="font-size:120%">Frequency of Reports</b>
   <span *ngIf='report_frequency'>{{ report_frequency }}&nbsp;&nbsp;</span> <br><br>
-</pre>
-<pre class="div-wrap" *ngIf='special_identifier && special_identifier.length'>
-    <b style="font-size:120%">Special Identifiers</b>
-    <pre class="div-wrap" *ngFor='let spcl of special_identifier'> 
-        <b>{{spcl.label}}:</b>&nbsp;&nbsp;<span>{{spcl.value}}</span>
-    </pre>
 </pre>
 <h5>
   <b style="font-size:150%">Text Notification, when Requests are fulfilled?</b>
@@ -1234,9 +1248,8 @@
 <pre class="div-wrap">
   <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
   <pre class="div-wrap">
-    <span class="div-wrap" *ngFor="let ele of checkbox_data">
-      <b> {{ ele.label }}:</b> &nbsp;&nbsp;
-      <span>{{ ele.values }}&nbsp;&nbsp;</span>
+    <span class="div-wrap">
+      <span>{{ checkbox_data }}&nbsp;&nbsp;</span>
       <br>
       <br>
     </span>
@@ -1249,9 +1262,13 @@
     <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
   </span>
 </pre>
-<pre class="div-wrap">
-  <b>Emails:</b> &nbsp;&nbsp;
-  <span>{{dl_list}}</span>
+<pre class="div-wrap" *ngIf='ris_vin_level_report'>
+    <b>Is this a Order Number/VIN level detail report?:</b> &nbsp;&nbsp;
+    <span> {{is_vin_level_report}}&nbsp;&nbsp;</span>
+</pre>
+<pre class="div-wrap" *ngIf='is_summary_report'>
+    <b>Is this a summary report with metrics?:</b> &nbsp;&nbsp;
+    <span>{{is_summary_report}}&nbsp;&nbsp;</span>
 </pre>
 <pre class="div-wrap">
   <b>Additional Requirements:</b> <br>
@@ -1282,10 +1299,6 @@
       <span *ngFor="let element of summary?.da_data.concensus_data">
         <span *ngIf='element && element.cd_values'>{{element?.cd_values}}</span>&nbsp;&nbsp;
       </span>
-  </pre>
-<pre class="div-wrap">
-      <b>Emails:</b>&nbsp;&nbsp;
-      <span>{{dl_list}}</span>
   </pre>
 <pre class="div-wrap">
       <b>Additional Requirements:</b> &nbsp;&nbsp;

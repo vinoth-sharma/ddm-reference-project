@@ -22,7 +22,7 @@ export class ReviewReqModalComponent implements OnInit {
     freq: "",
     textNotification: "",
     spclIdentifiers: [],
-    frequency_data: []
+    frequency_data: ''
   };
   public reqDetails = {
     reqId: null,
@@ -30,7 +30,9 @@ export class ReviewReqModalComponent implements OnInit {
     title: "",
     addReq: "",
     type: "",
-    business_req: ""
+    business_req: "",
+    is_vin_level_report: false,
+    is_summary_report: false
   }
   public vehicleEvent = {
     orderCriteria: [],
@@ -115,6 +117,8 @@ export class ReviewReqModalComponent implements OnInit {
     this.reqDetails.addReq = data.reqBody.report_detail.additional_req;
     this.reqDetails.type = data.reqBody.report_detail.report_type;
     this.reqDetails.business_req = data.reqBody.report_detail.business_req;
+    this.reqDetails.is_vin_level_report = data.reqBody.report_detail.is_vin_level_report;
+    this.reqDetails.is_summary_report = data.reqBody.report_detail.is_summary_report;
   }
 
   generateVehicleEvent(data) {
@@ -311,7 +315,7 @@ export class ReviewReqModalComponent implements OnInit {
         list.push(element['distribution_list'])
       })
       let obj = {
-        label: "Emails::",
+        label: "Emails:",
         data: list
       }
       this.marketData.push(obj);
@@ -329,12 +333,9 @@ export class ReviewReqModalComponent implements OnInit {
         this.otherReportCriteria.freq = "Recurring"
       }
 
-      this.otherReportCriteria.frequency_data = data.frequency_data.map(ele => {
-        return {
-          label: ele.select_frequency_values,
-          data: "Yes"
-        }
-      })
+      let freqData = [];
+       data.frequency_data.map(ele => freqData.push(ele.select_frequency_values))
+      this.otherReportCriteria.frequency_data = freqData.join(',');
     }
 
     if (data.special_identifier_data.length) {

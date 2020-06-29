@@ -230,7 +230,8 @@
               </td>
               <td>
                 <div>
-                  {{element.frequency}}
+                  <span *ngIf="element.frequency == 'Recurring'">Freq Chg</span>
+                  <span *ngIf="element.frequency != 'Recurring'">{{element?.frequency}}</span>
                 </div>
               </td>
               <td>
@@ -253,7 +254,7 @@
                   {{element.status}}
                 </div>
                 <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
-                  {{element.status}}
+                  Freq Chg
                   <div *ngIf="user_role=='Admin'">
                     <button [cssBtn]="'mid'" mat-raised-button class="table-buttons table-padding"
                       (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
@@ -262,7 +263,7 @@
                   </div>
                 </div>
                 <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
-                  {{element.status}}
+                  In Process
                   <div *ngIf="user_role=='Admin'" style="margin-top:5px">
                     <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" style="margin-left: 15px;"
                       data-toggle="modal" data-backdrop="static" data-target="#changeStatusModal"
@@ -1095,7 +1096,7 @@
       <div class="modal-body">
         <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%"
           id="selectReportStatus">
-          <option value="Active"> Active </option>
+          <option value="Active"> In Process </option>
           <option value="Completed"> Completed </option>
         </select>
       </div>
@@ -1241,7 +1242,6 @@
     </span>
   </pre>
 </pre>
-
 <pre class="div-wrap">
   <b>Consensus Time and Date:</b> &nbsp;&nbsp;
   <span *ngFor="let element of summary?.ost_data.data_date_range">

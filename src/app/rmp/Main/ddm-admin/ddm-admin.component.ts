@@ -351,11 +351,11 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       "url": "",
       "admin_flag": false
     }
-    let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString().trim();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let duplicateName = this.naming.find(ele => (ele['title'] == link_title));
-    let dupeFileName = this.isAdmin.docs.find(item => item.uploaded_file_name == link_title)
+    let dupeFileName = this.isAdmin.docs.find(item => item.uploaded_file_name.trim() == link_title)
     if ((duplicateName || dupeFileName)) {
       let eid = duplicateName ? duplicateName['ddm_rmp_desc_text_admin_documents_id'] : undefined;
       if (eid != this.editid || dupeFileName) {

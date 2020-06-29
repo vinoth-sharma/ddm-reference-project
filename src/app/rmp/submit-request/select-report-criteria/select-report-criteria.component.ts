@@ -152,14 +152,6 @@ export class SelectReportCriteriaComp implements OnInit {
       else
         this.special_identifiers_obj.fan.push(si)
     })
-
-    // to set default values for special identifiers
-    // this.special_identifiers_obj.bac.forEach(bac=>{
-    //   bac['checked'] = "No";
-    // });
-    // this.special_identifiers_obj.fan.forEach(fan=>{
-    //   fan['checked'] = "Yes";
-    // })
   }
 
   refillDropdownMasterData() {
@@ -314,7 +306,6 @@ export class SelectReportCriteriaComp implements OnInit {
       this.submitService.updateLoadingStatus({ status: true, comp: "da" });
     }, err => {
       Utils.hideSpinner();
-      console.log(err);
     });
 
   }

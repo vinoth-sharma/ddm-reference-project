@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { RequestOnbehalfComp } from '../request-onbehalf/request-onbehalf.component';
 import { DataProviderService } from '../../data-provider.service';
 import { Subscription } from 'rxjs';
+declare var $: any;
+
 import { ReportCriteriaHelpComponent } from '../report-criteria-help/report-criteria-help.component';
 
 @Component({
@@ -306,7 +308,6 @@ export class SelectReportCriteriaComp implements OnInit {
       this.submitService.updateLoadingStatus({ status: true, comp: "da" });
     }, err => {
       Utils.hideSpinner();
-      console.log(err);
     });
 
   }

@@ -194,7 +194,7 @@
               </td>
               <td>
                 <div>
-                  {{element?.description?.join()}}
+                  {{element?.frequency_data_filtered}}
                 </div>
               </td>
               <td>
@@ -700,7 +700,7 @@
         <div class="modal-body">
           <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" type="text"
             placeholder="https://example.com" class="form-control" />
-          <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
+          <span *ngIf="linkToUrlFlag" style="font-size: 14px;font-style: italic;">*This field cannot be Empty</span>
         </div>
         <div class="modal-footer">
           <button type="button" [cssBtn]="'ok'" mat-raised-button [disabled]="linkToUrlFlag"

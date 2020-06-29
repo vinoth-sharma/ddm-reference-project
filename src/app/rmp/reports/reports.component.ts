@@ -131,7 +131,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     report_name: '',
     title: '',
     frequency: '',
-    frequency_data_filtered: '',
+    frequency_data_filtered: ''
   };
   public quillToolBarDisplay = [
     ['bold', 'italic', 'underline', 'strike'],
@@ -392,8 +392,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             if (this.reportContainer[i]['description'] != null) {
               this.reportContainer[i]['description'].forEach(ele => {
                 if (ele != 'Monday' && ele != 'Tuesday' && ele != 'Wednesday' && ele != 'Thursday' && ele != 'Friday') {
-                  this.reportContainer[i]['frequency_data_filtered'].push(ele)
-                  this.reportContainer[i]['description'] = this.reportContainer[i]['frequency_data_filtered'];
+                  if (ele != 'Other' && !this.reportContainer[i]['frequency_data_filtered'].includes(ele)) {
+                    this.reportContainer[i]['frequency_data_filtered'].push(ele)
+                    this.reportContainer[i]['description'] = this.reportContainer[i]['frequency_data_filtered'];
+                  }
                 }
               })
             }
@@ -1128,10 +1130,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public addLinkUrl(element, type) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     if (type == "create") {
-      this.addUrlTitle = "ADD URL"
+      this.addUrlTitle = "Add URL"
       document.querySelector("#add-url-input")["value"] = "";
     } else {
-      this.addUrlTitle = "EDIT URL"
+      this.addUrlTitle = "Edit URL"
       document.querySelector("#add-url-input")["value"] = element.link_to_results;
       this.validateLinkToUrl(element.link_to_results)
     }

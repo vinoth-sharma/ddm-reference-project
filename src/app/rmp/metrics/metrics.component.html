@@ -142,14 +142,14 @@
                   <span *ngIf="reports[weekDay + 'Frequency']">&#8595;</span>
                 </th>
                 <th>
-                  <div class="alignLeft" (click)="sort('description')">
+                  <div class="alignLeft" (click)="sort('frequency_data_filtered')">
                     <div>Other</div>
-                    <div *ngIf="!reports['description']">&#8593;</div>
-                    <div *ngIf="reports['description']">&#8595;</div>
+                    <div *ngIf="!reports['frequency_data_filtered']">&#8593;</div>
+                    <div *ngIf="reports['frequency_data_filtered']">&#8595;</div>
                   </div>
                   <div>
                     <input (input)="filterData()" placeholder="Search" class="form-control"
-                      [(ngModel)]="filters.description">
+                      [(ngModel)]="filters.frequency_data_filtered">
                   </div>
                 </th>
               </tr>
@@ -192,7 +192,7 @@
                   {{element[weekDay + 'Frequency']}}
                 </td>
                 <td scope="col">
-                  {{element?.description?.join()}}
+                  {{element?.frequency_data_filtered}}
                 </td>
               </tr>
             </tbody>

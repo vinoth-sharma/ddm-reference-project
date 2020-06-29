@@ -12,3 +12,7 @@
 .header-opt {
     font-weight: 700;
 }
+
+.modal-dialog {
+    margin-top: 30vh;
+}

@@ -7,17 +7,18 @@
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 alignRight">
-
             <button mat-flat-button [cssBtn]="'mid'" (click)="clearRequestData()" style="margin-right: 8px;;">
                 {{ req_body.report_id?"New Request":" Clear All" }}
             </button>
             <button mat-flat-button [cssBtn]="'mid'" (click)="openRequestOnBehalf()"
-            *ngIf="userData.userRole === 'Admin'">Request on behalf</button>
+                *ngIf="userData.userRole === 'Admin'">Request on behalf
+            </button>
+            <a (click)='openHelpModal()' class="help-icon" data-toggle="tooltip" title="HELP">
+                <i id="ic" class="material-icons">help_outline</i>
+            </a>
         </div>
     </div>
-
     <div class="row topFiltersWrapper margBottom">
-
         <div class="col-lg-15 col-md-15 col-sm-15 col-xs-15" *ngIf="req_body.report_id"
             style="margin : 0px 20px 10px;font-size: 1.1em; font-weight: 600;">
             <div class="green"> Request #{{ req_body.report_id }} - {{ req_body.report_detail.status }}. </div>
@@ -84,7 +85,6 @@
                             </app-ng-chips>
                         </div>
                         <ng-container *ngFor="let ques of special_identifiers_obj.fan">
-
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding bacDealers">
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                     <div class="lineHeight"> {{ ques.spl_desc }} </div>

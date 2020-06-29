@@ -15,7 +15,7 @@
 }
 
 .heading {
-    width: 91.5vw;
+    width: 91.25vw;
     float: left;
     height: 100%;
     padding-top: 1vh;
@@ -97,8 +97,7 @@ a:active {
     padding-right:0px;
 }
 
-
-.quillEditor{
+.quillEditor {
     position: relative;
     padding: 3px;
 }

@@ -32,6 +32,7 @@
 
 .rcCallout {
     font-size: 1em;
+    font-style: italic;
 }
 
 .bacDealers {
@@ -116,4 +117,9 @@
 
 .savenProceed {
     margin-top: 2vh;
+}
+
+.help-icon {
+    margin : 5px 0 0 10px;
+    cursor: pointer;
 }

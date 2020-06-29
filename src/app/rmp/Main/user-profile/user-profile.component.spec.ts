@@ -360,7 +360,6 @@ describe('UserProfileComponent', () => {
 
   it('sholud toggle type for input field', () => {
     let element = fixture.debugElement.nativeElement;
-    console.log("styles", element.querySelector("#phone").style.webkitTextSecurity)
     component.showPassword();
     expect(element.querySelector("#phone").style.webkitTextSecurity).toEqual("none")
   })

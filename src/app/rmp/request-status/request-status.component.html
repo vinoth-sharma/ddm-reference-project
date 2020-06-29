@@ -230,7 +230,8 @@
               </td>
               <td>
                 <div>
-                  {{element.frequency}}
+                  <span *ngIf="element.frequency == 'Recurring'">Freq Chg</span>
+                  <span *ngIf="element.frequency != 'Recurring'">{{element?.frequency}}</span>
                 </div>
               </td>
               <td>
@@ -253,7 +254,7 @@
                   {{element.status}}
                 </div>
                 <div *ngIf="element.status == 'Recurring'" style="width: 135px !important;">
-                  {{element.status}}
+                  Freq Chg
                   <div *ngIf="user_role=='Admin'">
                     <button [cssBtn]="'mid'" mat-raised-button class="table-buttons table-padding"
                       (click)="updateMarkAsComplete(element.ddm_rmp_post_report_id)">
@@ -262,7 +263,7 @@
                   </div>
                 </div>
                 <div *ngIf="element.status == 'Active'" style="width: 115px !important;">
-                  {{element.status}}
+                  In Process
                   <div *ngIf="user_role=='Admin'" style="margin-top:5px">
                     <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" style="margin-left: 15px;"
                       data-toggle="modal" data-backdrop="static" data-target="#changeStatusModal"
@@ -384,7 +385,7 @@
       <div class="modal-body">
         <div>
           <i>
-            <h6>*Max character limit is 255;Please do not try to submit empty comments</h6>
+            <p class="app-hint-styles">*Max character limit is 255;Please do not try to submit empty comments</p>
           </i>
         </div>
         <div class="form-group">
@@ -591,13 +592,13 @@
               <br>
             </div>
             <div class="div-wrap">
-              <b>LMA(s) Selected:</b> &nbsp;&nbsp;
-              <span *ngIf='lma_description'>{{ lma_description }}&nbsp;&nbsp;</span>
+              <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
+              <span *ngIf='gmma_description'>{{ gmma_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
-              <span *ngIf='gmma_description'>{{ gmma_description }}&nbsp;&nbsp;</span>
+              <b>LMA(s) Selected:</b> &nbsp;&nbsp;
+              <span *ngIf='lma_description'>{{ lma_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
@@ -609,6 +610,11 @@
               <b>FAN(s) Selected:</b> &nbsp;&nbsp;
               <span *ngIf='fan_desc'>{{ fan_desc }}&nbsp;&nbsp;</span>
               <br>
+            </div>
+            <div class="div-wrap">
+              <b>Emails:</b> &nbsp;&nbsp;
+              <span>{{dl_list}}</span>
+              <br>
               <br>
             </div>
             <b style="font-size:120%">Frequency of Reports</b>
@@ -619,9 +625,12 @@
               <span>{{ report_frequency }}&nbsp;&nbsp;</span>
             </div>
             <br>
-            <b style="font-size:120%">Special Identifiers</b>
-            <div class="div-wrap">
-              <p *ngIf='special_identifier'> {{ special_identifier }}</p>
+
+            <div class="div-wrap" *ngIf='special_identifier && special_identifier.length'>
+              <b style="font-size:120%">Special Identifiers</b>
+              <div *ngFor='let spcl of special_identifier'>
+                <b>{{spcl.label}}:</b>&nbsp;&nbsp;<span>{{spcl.value}}</span>
+              </div>
             </div>
             <h5>
               <b>Text Notification, when Requests are fulfilled?</b>
@@ -636,13 +645,8 @@
               <b style="font-size:150%">Vehicle Event Status Data</b>
               <br>
               <br>
-              <div class="div-wrap">
-                <b style="font-size:120%">Order Criteria</b>
-                <br>
-                <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
-                <span *ngIf='allocation_group'>{{ allocation_group }}&nbsp;&nbsp;</span>
-                <br>
-              </div>
+              <b style="font-size:120%">Order Criteria</b>
+              <br>
               <div class="div-wrap">
                 <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
                 <span *ngIf='model_year'>{{ model_year }}&nbsp;&nbsp;</span>
@@ -651,6 +655,11 @@
               <div class="div-wrap">
                 <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
                 <span *ngIf='vehicle_line_brand'>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
+                <span *ngIf='allocation_group'>{{ allocation_group }}&nbsp;&nbsp;</span>
                 <br>
               </div>
               <div class="div-wrap">
@@ -663,23 +672,25 @@
                 <span *ngIf='distribution_data'>{{ distribution_data }}&nbsp;&nbsp;</span>
               </div>
               <div class="div-wrap">
+                <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
+                <span *ngIf='order_type'>{{ order_type }}&nbsp;&nbsp;</span>
+              </div>
+              <div class="div-wrap">
                 <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
                 <span *ngIf='order_event'>{{ order_event }}&nbsp;&nbsp;</span>
                 <br>
-              </div>
-              <div class="div-wrap">
-                <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
-                <span *ngIf='order_type'>{{ order_type }}&nbsp;&nbsp;</span>
-                <br>
-                <br>
                 <br>
               </div>
+
               <div class="div-wrap">
                 <b style="font-size:120%">Order Metrics</b>
                 <br>
                 <br>
-                <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
-                <span *ngIf='checkbox_data'>{{ checkbox_data}} &nbsp;&nbsp;</span>
+              </div>
+              <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
+              <div class="div-wrap" *ngFor="let ele of checkbox_data">
+                <b> {{ ele.label }}:</b> &nbsp;&nbsp;
+                <span>{{ ele.values }}&nbsp;&nbsp;</span>
                 <br>
                 <br>
               </div>
@@ -689,20 +700,22 @@
                   <b>Start:</b>&nbsp;{{element?.start_date| date: 'dd-MMM-yyyy'}}
                   <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
                 </span>
+                <br>
               </div>
               <div class="div-wrap">
-                  <b>DOSP - Orders Processed:</b> &nbsp;&nbsp;
-                  <span *ngFor="let element of summary?.ost_data.data_date_range">
-                    <b>Start:</b>&nbsp;{{element?.dosp_start_date| date: 'dd-MMM-yyyy'}}
-                    <b>End:</b>&nbsp;{{element?.dosp_end_date| date: 'dd-MMM-yyyy' }}
-                  </span>
-                </div>
-              <div style="width:100%;float:left;padding-top: 20px">
-                <b>Additional Requirements:</b>
+                <b>DOSP - Orders Processed:</b> &nbsp;&nbsp;
+                <span *ngFor="let element of summary?.ost_data.data_date_range">
+                  <b>Start:</b>&nbsp;{{element?.dosp_start_date| date: 'dd-MMM-yyyy'}}
+                  <b>End:</b>&nbsp;{{element?.dosp_end_date| date: 'dd-MMM-yyyy' }}
+                </span>
                 <br>
-                <span>{{summary?.additional_req}}</span>
               </div>
-            </div>transformedData
+              <div class="div-wrap">
+                <b>Additional Requirements:</b> &nbsp;&nbsp;
+                <span>{{summary?.additional_req}}</span>
+                <br>
+              </div>
+            </div>
             <!--                                Order To Sale Start                                    -->
 
             <!--                      Dealer allocation Part Start                          -->
@@ -736,7 +749,6 @@
               </div>
               <div class="div-wrap">
                 <b>Additional Requirements:</b>
-                <br>
                 <span>{{summary?.additional_req}}</span>
               </div>
             </div>
@@ -864,12 +876,12 @@
           </div>
         </div>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="padding-top: 5vh;">
         Are you sure you want to cancel the request permanently?
       </div>
       <div class="modal-footer">
         <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
-          (click)="closeCancel_modal()">Close</button>
+          (click)="closeCancel_modal()">Cancel</button>
         <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" (click)="Cancel()">Yes</button>
       </div>
     </div>
@@ -988,30 +1000,33 @@
       <div class="modal-header">
         <h3>Modify Distribution List</h3>
       </div>
-      <div class="modal-body" style="height:275px">
-        <div class="row row-height">
-          <div class="col-sm-3 dl-top-text">
+      <div class="modal-body dl-body-height">
+        <div>
+          <div class="row dl-top-text ml-0">
             <h5>Add Emails to Distribution List:</h5>
           </div>
-          <div class="col-sm-7 dltext-div">
-            <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control input-margin"
-              [(ngModel)]="model" [ngbTypeahead]="searchUserList" [ngModelOptions]="{standalone: true}" />
-            <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
+          <div class="row dltext-div">
+            <div class="col-xs-10">
+              <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control input-margin"
+                [(ngModel)]="model" [ngbTypeahead]="searchUserList" [ngModelOptions]="{standalone: true}" />
+              <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
+            </div>
+            <div class="col-xs-2">
+              <button (click)="addContact()" class="button-add" [cssBtn]="'ok'" mat-raised-button>Add</button>
+            </div>
           </div>
-          <div class="col-sm-2">
-            <button (click)="addContact()" class="button-add" [cssBtn]="'ok'" mat-raised-button>Add</button>
+          <div class="row note">
+            <p class="app-hint-styles"><i>*Type email address or name.Use buttons to check/retrieve mail.Click Add</i>
+            </p>
           </div>
-        </div>
-        <div class="row note">
-          <p><i>( Type email address or name.Use buttons to check/retrieve mail.Click Add )</i></p>
         </div>
         <hr class="hr-margin">
         <div class="row dl-bottom">
           <div class="col-sm-3 dl-bottom-text">
             <h5>Distribution List:</h5>
-            <p><i>( Verify Recipients.</i>
+            <p class="app-hint-styles"><i>*Verify Recipients.</i>
               <br> <i>Click box next to name and</i>
-              <br> <i>click Remove to delete )</i></p>
+              <br> <i>click Remove to delete</i></p>
           </div>
           <div class="col-sm-7 dl-add-remove-list">
             <div class="form-check list-group" *ngFor="let contact of contacts">
@@ -1052,7 +1067,7 @@
       <div class="modal-body">
         <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" placeholder="https://example.com"
           type="text" class="form-control" />
-        <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
+        <span *ngIf="linkToUrlFlag" class="app-hint-styles">*This field cannot be Empty</span>
       </div>
       <div class="modal-footer">
         <button type="button" [cssBtn]="'ok'" mat-raised-button [disabled]="linkToUrlFlag" (click)="saveLinkURL()">Save
@@ -1081,7 +1096,7 @@
       <div class="modal-body">
         <select class="form-control" (change)="setselectReportStatus()" style="height:36px;width:50%"
           id="selectReportStatus">
-          <option value="Active"> Active </option>
+          <option value="Active"> In Process </option>
           <option value="Completed"> Completed </option>
         </select>
       </div>
@@ -1162,13 +1177,15 @@
   <span *ngIf='fan_desc'>{{ fan_desc }}&nbsp;&nbsp;</span>
   <br>
 </pre>
-<b style="font-size:120%">Frequency of Reports</b>
 <pre class="div-wrap" *ngIf="!frequency_flag">
+    <b style="font-size:120%">Frequency of Reports</b>
   <span *ngIf='report_frequency'>{{ report_frequency }}&nbsp;&nbsp;</span> <br><br>
 </pre>
-<b style="font-size:120%">Special Identifiers</b>
-<pre class="div-wrap">
-  <p *ngIf='special_identifier'>{{ special_identifier }}</p>
+<pre class="div-wrap" *ngIf='special_identifier && special_identifier.length'>
+    <b style="font-size:120%">Special Identifiers</b>
+    <pre class="div-wrap" *ngFor='let spcl of special_identifier'> 
+        <b>{{spcl.label}}:</b>&nbsp;&nbsp;<span>{{spcl.value}}</span>
+    </pre>
 </pre>
 <h5>
   <b style="font-size:150%">Text Notification, when Requests are fulfilled?</b>
@@ -1213,8 +1230,17 @@
 </pre>
 <pre class="div-wrap">
   <b style="font-size:120%">Order Metrics</b><br>
+  </pre>
+<pre class="div-wrap">
   <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
-  <span *ngIf='checkbox_data'>{{ checkbox_data}} &nbsp;&nbsp;</span>
+  <pre class="div-wrap">
+    <span class="div-wrap" *ngFor="let ele of checkbox_data">
+      <b> {{ ele.label }}:</b> &nbsp;&nbsp;
+      <span>{{ ele.values }}&nbsp;&nbsp;</span>
+      <br>
+      <br>
+    </span>
+  </pre>
 </pre>
 <pre class="div-wrap">
   <b>Consensus Time and Date:</b> &nbsp;&nbsp;
@@ -1222,6 +1248,10 @@
     <b>Start:</b>&nbsp;{{element?.start_date| date: 'dd-MMM-yyyy'}}
     <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
   </span>
+</pre>
+<pre class="div-wrap">
+  <b>Emails:</b> &nbsp;&nbsp;
+  <span>{{dl_list}}</span>
 </pre>
 <pre class="div-wrap">
   <b>Additional Requirements:</b> <br>
@@ -1252,6 +1282,10 @@
       <span *ngFor="let element of summary?.da_data.concensus_data">
         <span *ngIf='element && element.cd_values'>{{element?.cd_values}}</span>&nbsp;&nbsp;
       </span>
+  </pre>
+<pre class="div-wrap">
+      <b>Emails:</b>&nbsp;&nbsp;
+      <span>{{dl_list}}</span>
   </pre>
 <pre class="div-wrap">
       <b>Additional Requirements:</b> &nbsp;&nbsp;

@@ -398,3 +398,9 @@ button.btn.btn-link.ngb-dp-arrow-btn{
   background-color: #f921217d;
   margin-bottom: 2px;
 }
+
+.app-hint-styles {
+  color: #007bff;
+  font-style: italic;
+  font-size: 0.8vw;
+}

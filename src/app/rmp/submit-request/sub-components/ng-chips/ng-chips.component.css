@@ -3,6 +3,8 @@
     overflow-y: auto;
 }
 
-mat-hint {
+.hint-styles {
     font-style: italic;
+    font-size: 1.6vh;
+    color: #007bff;
 }

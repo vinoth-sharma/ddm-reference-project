@@ -108,7 +108,6 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
     'help': 'Show help'
   };
 
-
   constructor(private django: DjangoService, private auth_service: AuthenticationService,
     private toastr: NgToasterComponent,
     private dataProvider: DataProviderService, private router: Router) {
@@ -317,10 +316,10 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
       "admin_flag": false
     }
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString().trim();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let duplicateName = this.naming.find(ele => (ele['title'] == link_title));
-    let dupeFileName = this.isRef.docs.find(item => item.uploaded_file_name == link_title)
+    let dupeFileName = this.isRef.docs.find(item => item.uploaded_file_name.trim() == link_title)
     if ((duplicateName || dupeFileName)) {
       let eid = duplicateName ? duplicateName['ddm_rmp_desc_text_reference_documents_id'] : undefined;
       if (eid != this.editid || dupeFileName) {
@@ -379,7 +378,6 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
       this.editid = undefined;
       let subscription = this.dataProvider.currentlookUpTableData.subscribe(element => {
         element['data'].desc_text_reference_documents = element['data'].desc_text_reference_documents.filter(item => item.ddm_rmp_desc_text_reference_documents_id != id)
-        console.log(element)
         setTimeout(() => {
           subscription.unsubscribe()
           this.dataProvider.changelookUpData(element)
@@ -408,7 +406,6 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
       })
       Utils.hideSpinner();
       this.toastr.success("Document deleted successfully");
-
     }, err => {
       Utils.hideSpinner();
       this.toastr.error("Server problem encountered");
@@ -534,23 +531,23 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
   }
 
   // route to internal and external links
-  routeToUrl(url) {
+  public routeToUrl(url) {
     let urlList = this.auth_service.getListUrl();
     let appUrl = urlList.find(link => link === url)
 
     if (appUrl) {
       //restricting business users to access metrics tab
       if (this.validateRestictedUrl(url) && this.user_role == "Business-user") {
-        this.toastr.error("Access Denied !")
-        return
+        this.toastr.error("Access Denied !");
+        return;
       }
       this.router.navigateByUrl(url)
     }
     else window.open(url)
-
   }
+
   // validate weather the url is ristricted or not
-  validateRestictedUrl(url) {
+  public validateRestictedUrl(url) {
     let restricedUrl = this.auth_service.restrictedUrls()
     let urlFinder = restricedUrl.filter(item => item == url)
     if (urlFinder.length > 0) return true

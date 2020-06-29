@@ -152,7 +152,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public model: string;
   public notification_set: Set<any>;
   public self_email: any;
-  public Status_List: { 'status_id': number; 'status': string; }[];
+  public Status_List: { 'status_id': number; 'status': string; 'displayValue': string }[];
   public setbuilder_sort: any[];
   public statusFilter = [];
   public filters = {
@@ -252,12 +252,12 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.model = "";
     this.getRoleDetails();
     this.Status_List = [
-      { 'status_id': 1, 'status': 'Incomplete' },
-      { 'status_id': 2, 'status': 'Pending' },
-      { 'status_id': 3, 'status': 'Active' },
-      { 'status_id': 4, 'status': 'Completed' },
-      { 'status_id': 5, 'status': 'Recurring' },
-      { 'status_id': 6, 'status': 'Cancelled' }
+      { 'status_id': 1, 'status': 'Incomplete', 'displayValue': "Incomplete" },
+      { 'status_id': 2, 'status': 'Pending', 'displayValue': "Pending" },
+      { 'status_id': 3, 'status': 'Active', 'displayValue': "In Process" },
+      { 'status_id': 4, 'status': 'Completed', 'displayValue': "Completed" },
+      { 'status_id': 5, 'status': 'Recurring', 'displayValue': "Freq Chg" },
+      { 'status_id': 6, 'status': 'Cancelled', 'displayValue': "Cancelled" }
     ];
     this.contacts = [];
     this.currentLookUpTableData();
@@ -386,7 +386,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       text: "Status",
       singleSelection: true,
       primaryKey: 'status_id',
-      labelKey: 'status',
+      labelKey: 'displayValue',
     };
   }
 

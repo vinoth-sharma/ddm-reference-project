@@ -21,7 +21,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
   public namings: any;
   public parentsSubject: Rx.Subject<any> = new Rx.Subject();
   public description_texts = {
-    'ddm_rmp_desc_text_id': 24,
+    'ddm_rmp_desc_text_id': 17,
     'module_name': 'Help_Metrics',
     'description': ''
   };
@@ -155,6 +155,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
+
   constructor(public django: DjangoService,
     public auth_service: AuthenticationService,
     private generated_report_service: GeneratedReportService,
@@ -170,7 +171,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
       if (element) {
         this.content = element;
         let refs = this.content['data']['desc_text'];
-        let temps = refs.find(element => element["ddm_rmp_desc_text_id"] == 24);
+        let temps = refs.find(element => element["ddm_rmp_desc_text_id"] == 17);
         if (temps) this.original_contents = temps.description;
         else this.original_contents = ""
         this.namings = this.original_contents;
@@ -345,7 +346,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
 
         let temp_desc_text = this.content['data']['desc_text'];
         temp_desc_text.map((element, index) => {
-          if (element['ddm_rmp_desc_text_id'] == 23) {
+          if (element['ddm_rmp_desc_text_id'] == 17) {
             temp_desc_text[index] = this.description_texts
           }
         })

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import Utils from "../../../../utils";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
@@ -12,33 +12,33 @@ import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toa
   styleUrls: ['./ddm-team.component.css']
 })
 export class DdmTeamComponent implements OnInit, AfterViewInit {
-  content;
-  naming: string = "Loading";
-  editMode: Boolean;
-  textChange = false;
-  description_text = {
+  public content;
+  public naming: string = "Loading";
+  public editMode: Boolean;
+  public textChange = false;
+  public description_text = {
     "ddm_rmp_desc_text_id": 2,
     "module_name": "DDM Team",
     "description": ""
   };
-  original_content;
-  enableUpdateData = false;
+  public original_content;
+  public enableUpdateData = false;
 
-  contents;
-  enable_edits = false
-  editModes = false;
-  original_contents;
-  namings: string = "Loading";
+  public contents;
+  public enable_edits = false
+  public editModes = false;
+  public original_contents;
+  public namings: string = "Loading";
 
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  description_texts = {
+  public parentsSubject: Rx.Subject<any> = new Rx.Subject();
+  public description_texts = {
     "ddm_rmp_desc_text_id": 7,
     "module_name": "Help_DDMTeam",
     "description": ""
   }
-  user_role: string;
-  readOnlyContent: boolean = true;
-  readOnlyContentHelper: boolean = true;
+  public user_role: string;
+  public readOnlyContent: boolean = true;
+  public readOnlyContentHelper: boolean = true;
   public config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
@@ -106,7 +106,7 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
     })
   }
 
-  notify() {
+  public notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
@@ -189,15 +189,13 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
     }
   }
 
-
-
-  textChanged(event) {
+  public textChanged(event) {
     this.textChange = true;
     if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
-  content_edits() {
+  public content_edits() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
       this.editModes = false;
@@ -228,20 +226,19 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
     }
   }
 
-  edit_True() {
+  public edit_True() {
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
   }
 
-  editEnableHelp() {
+  public editEnableHelp() {
     this.editModes = true;
     this.readOnlyContentHelper = false;
     this.namings = this.original_contents;
   }
 
-
-  content_edit() {
+  public content_edit() {
     if (!this.textChange || this.enableUpdateData) {
       Utils.showSpinner();
       this.editMode = false;
@@ -270,7 +267,8 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
     }
 
   }
-  editTrue() {
+
+  public editTrue() {
     if (this.editMode) {
       this.readOnlyContent = true;
     }
@@ -280,6 +278,5 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
     this.editMode = !this.editMode;
     this.naming = this.original_content;
   }
-
 
 }

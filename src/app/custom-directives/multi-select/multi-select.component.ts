@@ -28,7 +28,6 @@ export class MultiSelectComponent implements OnInit{
   }
 
   ngOnChanges(changes: SimpleChanges){
-    // console.log(changes);
     if(this.data && changes['data'])
       this.columnsUpdated();
     this.selectionUpdated(changes);
@@ -86,13 +85,7 @@ export class MultiSelectComponent implements OnInit{
   // Updating select all checkbox based on multiple conditions
   updateSelectAll() {
     let checkSelectAll = this.filteredData.map((datum) => this.optionsMap[datum]['checked']);
-    // console.log(checkSelectAll,checkSelectAll.indexOf(false));
     let ele = document.getElementById("selectAllCb"+ "_" +this.index) as HTMLInputElement;
-    // if(checkSelectAll.indexOf(false) === -1){
-    //   ele.checked = true;
-    // } else {
-    //   ele.checked = false;
-    // }
     if(checkSelectAll.indexOf(false) !== -1 || checkSelectAll.length === 0){
       ele.checked = false;
     } else {
@@ -138,8 +131,6 @@ export class MultiSelectComponent implements OnInit{
 
   // function to trigger on toggle of each option
   toggleEach(option){
-    // console.log(option);
-   // console.log(this.index);
     this.optionsMap[option]['checked'] = !this.optionsMap[option]['checked'];
     this.updateSelectAll();
     this.optionSelected.emit(this.optionsMap)
@@ -151,7 +142,6 @@ export class MultiSelectComponent implements OnInit{
   }
 
   selectClicked(eve){
-    // console.log(eve);
     if(this.data?this.data.length:false){
       this.client.x = (eve.clientX - eve.layerX - 10) + 'px';
       this.client.y = (eve.clientY - eve.layerY - 10) + 'px';
@@ -169,7 +159,6 @@ export class MultiSelectComponent implements OnInit{
 
   inputAlias(ele,value){
     ele['aliasName'] = value;
-    // console.log(event);
     this.optionSelected.emit(this.optionsMap)
   }
 

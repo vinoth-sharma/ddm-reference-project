@@ -1120,7 +1120,6 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
         let height = document.getElementById('user-selection-print-div').clientHeight;
         height = (height < 1200) ? 1800 : height
         let width = document.getElementById('user-selection-print-div').clientWidth * 0.8;
-        console.log(height, width)
         var doc = new jsPDF('p', 'pt', [width, height]);
         doc.addPage()
         doc.addImage(canvas.toDataURL('image/png'), 'png', 40, 40)

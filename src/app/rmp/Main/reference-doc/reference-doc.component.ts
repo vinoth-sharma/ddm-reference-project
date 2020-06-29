@@ -317,10 +317,10 @@ export class ReferenceDocComponent implements OnInit, AfterViewInit {
       "admin_flag": false
     }
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString().trim();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let duplicateName = this.naming.find(ele => (ele['title'] == link_title));
-    let dupeFileName = this.isRef.docs.find(item => item.uploaded_file_name == link_title)
+    let dupeFileName = this.isRef.docs.find(item => item.uploaded_file_name.trim() == link_title)
     if ((duplicateName || dupeFileName)) {
       let eid = duplicateName ? duplicateName['ddm_rmp_desc_text_reference_documents_id'] : undefined;
       if (eid != this.editid || dupeFileName) {

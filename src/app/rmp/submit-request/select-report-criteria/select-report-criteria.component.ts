@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RequestOnbehalfComp } from '../request-onbehalf/request-onbehalf.component';
 import { DataProviderService } from '../../data-provider.service';
 import { Subscription } from 'rxjs';
+import { ReportCriteriaHelpComponent } from '../report-criteria-help/report-criteria-help.component';
 
 
 @Component({
@@ -81,8 +82,8 @@ export class SelectReportCriteriaComp implements OnInit {
       query_criteria: "",
       link_title: "",
       is_vin_level_report: null,
-      is_summary_report : null,
-      business_req : ""
+      is_summary_report: null,
+      business_req: ""
     }
   }
 
@@ -95,6 +96,7 @@ export class SelectReportCriteriaComp implements OnInit {
   message = "";
 
   subjectSubscription: Subscription;
+  public helpData = "";
 
   constructor(public djangoService: DjangoService,
     public ngToaster: NgToasterComponent,
@@ -424,7 +426,7 @@ export class SelectReportCriteriaComp implements OnInit {
   }
 
   clearRequestData() {
-    let l_res = this.req_body.report_id?"NewRequest":"clear";
+    let l_res = this.req_body.report_id ? "NewRequest" : "clear";
     this.clearSubmitReqEmitter.emit(l_res);
   }
 
@@ -487,5 +489,11 @@ export class SelectReportCriteriaComp implements OnInit {
 
   ngOnDestroy() {
     this.subjectSubscription.unsubscribe();
+  }
+
+  openHelpModal() {
+    this.dialog.open(ReportCriteriaHelpComponent, {
+      data: "", disableClose: true
+    })
   }
 }

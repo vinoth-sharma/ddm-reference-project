@@ -6,6 +6,7 @@ import { AuthenticationService } from 'src/app/authentication.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Utils from 'src/utils';
 
+// Angular component developed by Bharath S
 @Component({
   selector: 'app-report-criteria-help',
   templateUrl: './report-criteria-help.component.html',
@@ -36,6 +37,7 @@ export class ReportCriteriaHelpComponent implements OnInit {
     description: ""
   }
   public user_role = "";
+
   constructor(public dialogRef: MatDialogRef<ReportCriteriaHelpComponent>,
     public subReqService: SubmitRequestService,
     private toaster: NgToasterComponent,
@@ -60,7 +62,7 @@ export class ReportCriteriaHelpComponent implements OnInit {
       Utils.hideSpinner()
     });
   }
-  
+
   // save help section data
   public submitReqHelpDesc() {
     Utils.showSpinner();

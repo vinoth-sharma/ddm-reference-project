@@ -312,7 +312,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  cancelNameEdit(element) {
+  public cancelNameEdit(element) {
     element.report_name = this.ddmReportname
     element.clicked = false
   }
@@ -591,7 +591,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   /*-------------------Freq Selections------------------------------------- */
-  FrequencySelection() {
+  public frequencySelection() {
     this.select_frequency_ots = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id < 4)
     this.select_frequency_da = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id == 4)
     this.on_demand_freq = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id > 4)
@@ -691,7 +691,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   // update frequency to the server
   public updateFreq(request_id) {
-
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
     this.jsonfinal['status'] = "Recurring"
@@ -733,7 +732,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.changeFreqId = requestId;
     this.changeFreqTitle = title;
     this.changeFreqDate = date;
-    this.FrequencySelection()
+    this.frequencySelection()
     this.django.get_report_description(requestId).subscribe(element => {
       if (element["frequency_data"].length !== 0 && element["frequency_data"][0]['select_frequency_values'] !== 'One Time') {
         this.frequencyLength = element['frequency_data']
@@ -1159,7 +1158,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.toasterService.error(error.error.error.link_to_results.join())
       Utils.hideSpinner()
     })
-
   }
 
   // open links in an new window
@@ -1193,8 +1191,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       return "One Time"
     }
   }
+
   // to get current frequency in the form of string
-  getCurrentFreqData(freqData) {
+  public getCurrentFreqData(freqData) {
     let freqList = []
     let finalSelection = []
 
@@ -1210,13 +1209,15 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
 
   }
+
   // get frequency keys from array
-  getFreqName(id, arr) {
+  public getFreqName(id, arr) {
     let obj = arr.find(item => item.ddm_rmp_lookup_select_frequency_id == id.ddm_rmp_lookup_select_frequency_id)
     return obj.select_frequency_values == "Other" ? obj.select_frequency_values + " - " + id.description : obj.select_frequency_values
   }
+
   // post a comment when frequency is changed
-  postComment(id, text) {
+  public postComment(id, text) {
     let report_comment = {
       'ddm_rmp_post_report': id,
       "comment": text,

@@ -107,6 +107,6 @@ import { ReportCriteriaHelpComponent } from './submit-request/report-criteria-he
   ],
   entryComponents: [DisplayNotesComponent, NotesWrapperComponent, DisclaimerModalComponent,
     DisclaimerHelpModalComponent, AdditionalReqModalComponent, ReviewReqModalComponent,
-    RequestOnbehalfComp,ReportCriteriaHelpComponent]
+    RequestOnbehalfComp, ReportCriteriaHelpComponent]
 })
 export class RMPModule { }

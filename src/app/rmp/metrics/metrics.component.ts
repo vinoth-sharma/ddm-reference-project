@@ -154,6 +154,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
   public paginatorOptions: number[] = [5, 10, 25, 100]
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
+
   constructor(public django: DjangoService,
     public auth_service: AuthenticationService,
     private generated_report_service: GeneratedReportService,

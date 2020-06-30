@@ -8,7 +8,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { RequestOnbehalfComp } from '../request-onbehalf/request-onbehalf.component';
 import { DataProviderService } from '../../data-provider.service';
 import { Subscription } from 'rxjs';
+declare var $: any;
 
+import { ReportCriteriaHelpComponent } from '../report-criteria-help/report-criteria-help.component';
 
 @Component({
   selector: 'select-report-criteria',
@@ -18,14 +20,14 @@ import { Subscription } from 'rxjs';
 export class SelectReportCriteriaComp implements OnInit {
   @Output() clearSubmitReqEmitter = new EventEmitter();
 
-  l_lookup_MD: any = {
+  public l_lookup_MD: any = {
     market: {},
     other: {}
   }
 
-  l_selectedReqData: any = {};
+  public l_selectedReqData: any = {};
 
-  selected = {
+  public selected = {
     market: [],
     region: [],
     division: [],
@@ -37,7 +39,7 @@ export class SelectReportCriteriaComp implements OnInit {
     fan: []
   }
 
-  filtered_master_data = {
+  public filtered_master_data = {
     market: [],
     region: [],
     division: [],
@@ -47,7 +49,7 @@ export class SelectReportCriteriaComp implements OnInit {
     area: []
   }
 
-  special_identifiers_obj = {
+  public special_identifiers_obj = {
     bac: [],
     fan: []
   };
@@ -81,8 +83,8 @@ export class SelectReportCriteriaComp implements OnInit {
       query_criteria: "",
       link_title: "",
       is_vin_level_report: null,
-      is_summary_report : null,
-      business_req : ""
+      is_summary_report: null,
+      business_req: ""
     }
   }
 
@@ -92,9 +94,10 @@ export class SelectReportCriteriaComp implements OnInit {
     email: ""
   }
 
-  message = "";
+  public message = "";
 
-  subjectSubscription: Subscription;
+  public subjectSubscription: Subscription;
+  public helpData = "";
 
   constructor(public djangoService: DjangoService,
     public ngToaster: NgToasterComponent,
@@ -143,7 +146,7 @@ export class SelectReportCriteriaComp implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
   }
 
-  refillLookupTableData() {
+  public refillLookupTableData() {
     // master data of bac/fan radio button
     this.l_lookup_MD.other.special_identifiers.forEach(si => {
       if ([1, 5].includes(si.ddm_rmp_lookup_special_identifiers))
@@ -151,21 +154,13 @@ export class SelectReportCriteriaComp implements OnInit {
       else
         this.special_identifiers_obj.fan.push(si)
     })
-
-    // to set default values for special identifiers
-    // this.special_identifiers_obj.bac.forEach(bac=>{
-    //   bac['checked'] = "No";
-    // });
-    // this.special_identifiers_obj.fan.forEach(fan=>{
-    //   fan['checked'] = "Yes";
-    // })
   }
 
-  refillDropdownMasterData() {
+  public refillDropdownMasterData() {
     this.filtered_master_data.market = this.l_lookup_MD.market.market_data;
   }
 
-  multiSelectChange(event, type) {
+  public multiSelectChange(event, type) {
     switch (type) {
       case 'market':
         this.MarketDependencies();
@@ -182,7 +177,7 @@ export class SelectReportCriteriaComp implements OnInit {
 
   }
 
-  MarketDependencies() {
+  public MarketDependencies() {
     let l_market_ids = this.selected.market.map(ele => ele.ddm_rmp_lookup_market_id);
     let marketCBFunc = function (ele) {
       if (l_market_ids.includes(ele.ddm_rmp_lookup_market)) {
@@ -198,14 +193,14 @@ export class SelectReportCriteriaComp implements OnInit {
     this.zoneDependencies();
   }
 
-  resolveSelectedMarketDependencies(callback) {
+  public resolveSelectedMarketDependencies(callback) {
     this.selected.region = this.selected.region.filter(callback);
     this.selected.division = this.selected.division.filter(callback);
     this.selected.lma = this.selected.lma.filter(callback);
     this.selected.gmma = this.selected.gmma.filter(callback);
   }
 
-  regionDependencies() {
+  public regionDependencies() {
     let l_region_ids = this.selected.region.map(ele => ele.ddm_rmp_lookup_country_region_id);
     let regionCBFunc = function (ele) {
       if (l_region_ids.includes(ele.ddm_rmp_lookup_country_region)) {
@@ -217,7 +212,7 @@ export class SelectReportCriteriaComp implements OnInit {
     this.zoneDependencies();
   }
 
-  zoneDependencies() {
+  public zoneDependencies() {
     let l_zone_ids = this.selected.zone.map(ele => ele.ddm_rmp_lookup_region_zone_id);
     let zoneCBFunc = function (ele) {
       if (l_zone_ids.includes(ele.ddm_rmp_lookup_region_zone)) {
@@ -229,7 +224,7 @@ export class SelectReportCriteriaComp implements OnInit {
   }
 
 
-  repFreqChange(req) {
+  public repFreqChange(req) {
     if (!this.selected.market.length)
       this.ngToaster.error("Market selection is mandatory")
     else if (!this.selected.division.length)
@@ -249,7 +244,7 @@ export class SelectReportCriteriaComp implements OnInit {
       this.submitReportCriteria(req);
   }
 
-  submitReportCriteria(freqReq) {
+  public submitReportCriteria(freqReq) {
 
     this.req_body.market_selection = this.selected.market;
     this.req_body.division_selection = this.selected.division;
@@ -313,12 +308,11 @@ export class SelectReportCriteriaComp implements OnInit {
       this.submitService.updateLoadingStatus({ status: true, comp: "da" });
     }, err => {
       Utils.hideSpinner();
-      console.log(err);
     });
 
   }
 
-  refillSelectedRequestData(reqData) {
+  public refillSelectedRequestData(reqData) {
     let marketIds = reqData.market_data.map(ele => ele.ddm_rmp_lookup_market);
     this.selected.market = this.l_lookup_MD.market.market_data.filter(market => {
       if (marketIds.includes(market.ddm_rmp_lookup_market_id))
@@ -397,7 +391,7 @@ export class SelectReportCriteriaComp implements OnInit {
     }
   }
 
-  refillDefaultUserSelectedData(data) {
+  public refillDefaultUserSelectedData(data) {
     if (!data.has_previous_selections)
       return true
 
@@ -417,14 +411,14 @@ export class SelectReportCriteriaComp implements OnInit {
     this.selected.fan = data.fan_data[0].fan_data;
   }
 
-  openRequestOnBehalf() {
+  public openRequestOnBehalf() {
     this.dialog.open(RequestOnbehalfComp, {
       data: {}, disableClose: true
     })
   }
 
-  clearRequestData() {
-    let l_res = this.req_body.report_id?"NewRequest":"clear";
+  public clearRequestData() {
+    let l_res = this.req_body.report_id ? "NewRequest" : "clear";
     this.clearSubmitReqEmitter.emit(l_res);
   }
 
@@ -487,5 +481,11 @@ export class SelectReportCriteriaComp implements OnInit {
 
   ngOnDestroy() {
     this.subjectSubscription.unsubscribe();
+  }
+
+  public openHelpModal() {
+    this.dialog.open(ReportCriteriaHelpComponent, {
+      data: "", disableClose: true
+    })
   }
 }

@@ -19,7 +19,7 @@
         (matChipInputTokenEnd)="add($event)"
         name="emailInput">
     </mat-chip-list>
-    <mat-hint>*Email can either be added by selecting from the available list in dropdown or free text followed by pressing 'Enter' key</mat-hint>
+    <mat-hint class="hint-styles">*Email can either be added by selecting from the available list in dropdown or free text followed by pressing 'Enter' key</mat-hint>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
       <mat-option *ngFor="let chip of filteredChips | async" [value]="chip">
         {{chip}}

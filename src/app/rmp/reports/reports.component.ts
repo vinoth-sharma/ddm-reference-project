@@ -24,7 +24,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public namings: any;
   public enableUpdateData = false;
   public description_texts = {
-    'ddm_rmp_desc_text_id': 23,
+    'ddm_rmp_desc_text_id': 16,
     'module_name': 'Help_Reports',
     'description': ''
   };
@@ -131,7 +131,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     report_name: '',
     title: '',
     frequency: '',
-    frequency_data_filtered: '',
+    frequency_data_filtered: ''
   };
   public quillToolBarDisplay = [
     ['bold', 'italic', 'underline', 'strike'],
@@ -161,7 +161,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public linkUrlId: number;
   public addUrlTitle: String = '';
   public linkToUrlFlag = true;
-  public frequencySelections = ['One Time', 'Recurring']
+  public frequencySelections = [{ name: 'One Time', value: "One Time" }, { name: "Freq Chg", value: 'Recurring' }]
   public selectedNewFrequency: string = "";
   public isRecurringFrequencyHidden: boolean = false;
   public toolbarTooltips = {
@@ -202,6 +202,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     'help': 'Show help'
   };
   public ddmReportname: String
+  public previousFreqSelection = "";
+  public user_name = "";
 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service: AuthenticationService,
@@ -310,7 +312,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  cancelNameEdit(element) {
+  public cancelNameEdit(element) {
     element.report_name = this.ddmReportname
     element.clicked = false
   }
@@ -320,6 +322,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role['role'];
+        this.user_name = role["first_name"] + " " + role["last_name"];
         if (this.user_role == "Admin") this.config.toolbar = this.quillToolBarDisplay;
         else this.config.toolbar = false;
       }
@@ -334,7 +337,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         this.frequency_selections = this.content['data']['report_frequency']
         const refs = this.content['data']['desc_text'];
         const temps = refs.find(function (element) {
-          return element['ddm_rmp_desc_text_id'] == 23;
+          return element['ddm_rmp_desc_text_id'] == 16;
         });
         if (temps) {
           this.original_contents = temps.description;
@@ -389,8 +392,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             if (this.reportContainer[i]['description'] != null) {
               this.reportContainer[i]['description'].forEach(ele => {
                 if (ele != 'Monday' && ele != 'Tuesday' && ele != 'Wednesday' && ele != 'Thursday' && ele != 'Friday') {
-                  this.reportContainer[i]['frequency_data_filtered'].push(ele)
-                  this.reportContainer[i]['description'] = this.reportContainer[i]['frequency_data_filtered'];
+                  if (ele != 'Other' && !this.reportContainer[i]['frequency_data_filtered'].includes(ele)) {
+                    this.reportContainer[i]['frequency_data_filtered'].push(ele)
+                    this.reportContainer[i]['description'] = this.reportContainer[i]['frequency_data_filtered'];
+                  }
                 }
               })
             }
@@ -552,7 +557,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
         let temp_desc_text = this.content['data']['desc_text']
         temp_desc_text.map((element, index) => {
-          if (element['ddm_rmp_desc_text_id'] == 23) {
+          if (element['ddm_rmp_desc_text_id'] == 16) {
             temp_desc_text[index] = this.description_texts
           }
         })
@@ -588,7 +593,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   /*-------------------Freq Selections------------------------------------- */
-  FrequencySelection() {
+  public frequencySelection() {
     this.select_frequency_ots = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id < 4)
     this.select_frequency_da = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id == 4)
     this.on_demand_freq = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id > 4)
@@ -693,6 +698,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.jsonfinal['status'] = "Recurring"
     this.jsonfinal['frequency'] = this.selectedNewFrequency;
     this.setFrequency();
+    let comment = "Frequency has changed from : " + this.getPreviousFreqData(this.frequencyLength) + "\n" + " To :" + "\n" + this.getCurrentFreqData(this.jsonfinal);
     this.django.ddm_rmp_frequency_update(this.jsonfinal).subscribe(element => {
       this.reports = this.reports.filter(report => report.ddm_rmp_post_report_id != request_id)
       this.spinner.hide();
@@ -704,6 +710,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.changeInFreq = true;
       $('#change-Frequency').modal('hide');
       this.getReportList();
+      this.postComment(request_id, comment)
     }, err => {
       this.spinner.hide();
       this.toasterService.error("Server Error");
@@ -727,10 +734,11 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.changeFreqId = requestId;
     this.changeFreqTitle = title;
     this.changeFreqDate = date;
-    this.FrequencySelection()
+    this.frequencySelection()
     this.django.get_report_description(requestId).subscribe(element => {
       if (element["frequency_data"].length !== 0 && element["frequency_data"][0]['select_frequency_values'] !== 'One Time') {
         this.frequencyLength = element['frequency_data']
+        this.previousFreqSelection = this.getPreviousFreqData(element['frequency_data'])
         var subData = element["frequency_data"];
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
@@ -1122,10 +1130,10 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public addLinkUrl(element, type) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
     if (type == "create") {
-      this.addUrlTitle = "ADD URL"
+      this.addUrlTitle = "Add URL"
       document.querySelector("#add-url-input")["value"] = "";
     } else {
-      this.addUrlTitle = "EDIT URL"
+      this.addUrlTitle = "Edit URL"
       document.querySelector("#add-url-input")["value"] = element.link_to_results;
       this.validateLinkToUrl(element.link_to_results)
     }
@@ -1152,7 +1160,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.toasterService.error(error.error.error.link_to_results.join())
       Utils.hideSpinner()
     })
-
   }
 
   // open links in an new window
@@ -1170,4 +1177,61 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (data == "") this.linkToUrlFlag = true
     else this.linkToUrlFlag = false;
   }
+  // to get previous frequency in the form of string
+  public getPreviousFreqData(freqArr) {
+    let tempArr = []
+    if (this.changeFrequency != "One Time") {
+      freqArr.map(item => {
+        if (item.select_frequency_values == "Other") {
+          tempArr.push("Others - " + item.description)
+        } else {
+          tempArr.push(item.select_frequency_values)
+        }
+      })
+      return tempArr.join()
+    } else {
+      return "One Time"
+    }
+  }
+
+  // to get current frequency in the form of string
+  public getCurrentFreqData(freqData) {
+    let freqList = []
+    let finalSelection = []
+
+    if (this.selectedNewFrequency == "One Time") {
+      return "One Time"
+    } else {
+      freqList.push(...this.Select_ots["Daily/Weekly (Monday to Friday) only"], ...this.Select_ots["Monthly or Bi-monthly (select timing)"], ...this.Select_ots["Quarterly (select timing)"], ...this.Select_da["Other"])
+      freqData.select_frequency.forEach(item => {
+        finalSelection.push(this.getFreqName(item, freqList))
+        item.rmp_lookup_select_frequency_id
+      })
+      return finalSelection.join()
+    }
+
+  }
+
+  // get frequency keys from array
+  public getFreqName(id, arr) {
+    let obj = arr.find(item => item.ddm_rmp_lookup_select_frequency_id == id.ddm_rmp_lookup_select_frequency_id)
+    return obj.select_frequency_values == "Other" ? obj.select_frequency_values + " - " + id.description : obj.select_frequency_values
+  }
+
+  // post a comment when frequency is changed
+  public postComment(id, text) {
+    let report_comment = {
+      'ddm_rmp_post_report': id,
+      "comment": text,
+      "comment_read_flag": false,
+      "audience": "",
+      "commentor": this.user_name
+    };
+    this.django.post_report_comments(report_comment).subscribe(response => {
+      Utils.hideSpinner();
+    }, err => {
+      Utils.hideSpinner();
+    })
+  }
+
 }

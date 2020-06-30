@@ -164,6 +164,7 @@ hr {
 
 .req-fields {
     padding-top: 0.5vh;
+    font-style: italic;
 }
 
 .title-position {
@@ -181,6 +182,7 @@ hr {
 
 .message-padding {
     padding-left : 1vw; 
+    font-style: italic;
 }
 
 ::ng-deep .main-tool-body-content .information .quill .ql-container .ql-editor {
@@ -188,7 +190,7 @@ hr {
 }
 
 .market-selections-main {
-    max-height: 32vh;
+    max-height: 36vh;
     overflow-y: auto;
     overflow-x: hidden
 }

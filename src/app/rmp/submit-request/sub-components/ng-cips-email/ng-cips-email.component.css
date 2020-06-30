@@ -2,3 +2,9 @@
     max-height: 360px;
     overflow-y: auto;
 }
+
+.hint-styles {
+    font-style: italic;
+    font-size: 1.6vh;
+    color: #007bff
+}

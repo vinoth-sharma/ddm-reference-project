@@ -7,7 +7,7 @@ import { constants_value } from '../../constants';
   templateUrl: './multi-select.component.html',
   styleUrls: ['./multi-select.component.css']
 })
-export class MultiSelectComponent implements OnInit{
+export class MultiSelectComponent implements OnInit {
 
   @Input() data: string[];
   @Input() styles: {};
@@ -15,7 +15,7 @@ export class MultiSelectComponent implements OnInit{
   @Input() allowAlias: boolean;
   @Output() optionSelected = new EventEmitter()
   @Input() selectedColumns: string[];
-  @Input() aliasNames:any; 
+  @Input() aliasNames: any;
 
   filteredData: string[] = [];
   hideMenu: boolean = false;
@@ -27,14 +27,13 @@ export class MultiSelectComponent implements OnInit{
 
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    // console.log(changes);
-    if(this.data && changes['data'])
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.data && changes['data'])
       this.columnsUpdated();
     this.selectionUpdated(changes);
-    }
+  }
 
-  columnsUpdated(){
+  columnsUpdated() {
     this.filteredData = [];
     this.optionsMap = [];
     // Copying input data so that it doesnt get mutated while searching
@@ -49,26 +48,26 @@ export class MultiSelectComponent implements OnInit{
     this.filteredData = this.filteredData.sort(); // sorting 
   }
 
-  selectionUpdated(changes){
-    if(this.selectedColumns && changes['selectedColumns'])
+  selectionUpdated(changes) {
+    if (this.selectedColumns && changes['selectedColumns'])
       this.updatedChecked();
-    if(this.aliasNames && changes['aliasNames'])
+    if (this.aliasNames && changes['aliasNames'])
       this.updateAliasNames();
   }
 
   //update by default checked
-  updatedChecked(){
-    this.selectedColumns = this.selectedColumns.filter(ele=> this.filteredData.some(filt=> filt.toLowerCase() === ele.toLowerCase()) )
-    this.selectedColumns.forEach(selected=>{
+  updatedChecked() {
+    this.selectedColumns = this.selectedColumns.filter(ele => this.filteredData.some(filt => filt.toLowerCase() === ele.toLowerCase()))
+    this.selectedColumns.forEach(selected => {
       this.optionsMap[selected].checked = true;
     })
     this.updateSelectedValues();
   }
 
   //update by default alias names
-  updateAliasNames(){
+  updateAliasNames() {
     let elements = Object.keys(this.aliasNames);
-    elements.forEach(alias=>{
+    elements.forEach(alias => {
       this.optionsMap[alias].aliasName = this.aliasNames[alias];
     })
   }
@@ -77,7 +76,7 @@ export class MultiSelectComponent implements OnInit{
   updateSelectedValues() {
     this.selectedValues.length = 0;
     this.data.map((datum) => {
-      if(this.optionsMap[datum]['checked']) {
+      if (this.optionsMap[datum]['checked']) {
         this.selectedValues.push(datum);
       }
     })
@@ -86,14 +85,8 @@ export class MultiSelectComponent implements OnInit{
   // Updating select all checkbox based on multiple conditions
   updateSelectAll() {
     let checkSelectAll = this.filteredData.map((datum) => this.optionsMap[datum]['checked']);
-    // console.log(checkSelectAll,checkSelectAll.indexOf(false));
-    let ele = document.getElementById("selectAllCb"+ "_" +this.index) as HTMLInputElement;
-    // if(checkSelectAll.indexOf(false) === -1){
-    //   ele.checked = true;
-    // } else {
-    //   ele.checked = false;
-    // }
-    if(checkSelectAll.indexOf(false) !== -1 || checkSelectAll.length === 0){
+    let ele = document.getElementById("selectAllCb" + "_" + this.index) as HTMLInputElement;
+    if (checkSelectAll.indexOf(false) !== -1 || checkSelectAll.length === 0) {
       ele.checked = false;
     } else {
       ele.checked = true;
@@ -107,19 +100,19 @@ export class MultiSelectComponent implements OnInit{
     this.filteredData = [...this.filteredData.filter((el) => {
       return el.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
     })];
-    this.filteredData =  this.filteredData.sort();
+    this.filteredData = this.filteredData.sort();
     this.updateSelectAll()
   }
 
   // function to trigger while seacrh value is being entered: for each keyup event
-  startSearch(event){
+  startSearch(event) {
     // let searchValue = $('#searchField')[0].innerHTML;
     let searchValue = event.srcElement.innerText;
     if (searchValue !== "") {
       this.updateOptions(searchValue);
-    } else{
+    } else {
       this.filteredData = [...this.data];
-      this.filteredData =  this.filteredData.sort();
+      this.filteredData = this.filteredData.sort();
       this.updateSelectAll();
     }
   }
@@ -131,15 +124,13 @@ export class MultiSelectComponent implements OnInit{
     this.filteredData.map((datum) => {
       this.optionsMap[datum]['checked'] = ele.checked;
     });
-    this.filteredData =  this.filteredData.sort();
+    this.filteredData = this.filteredData.sort();
     this.updateSelectedValues();
     this.optionSelected.emit(this.optionsMap)
   }
 
   // function to trigger on toggle of each option
-  toggleEach(option){
-    // console.log(option);
-   // console.log(this.index);
+  toggleEach(option) {
     this.optionsMap[option]['checked'] = !this.optionsMap[option]['checked'];
     this.updateSelectAll();
     this.optionSelected.emit(this.optionsMap)
@@ -150,33 +141,31 @@ export class MultiSelectComponent implements OnInit{
     y: 'auto'
   }
 
-  selectClicked(eve){
-    // console.log(eve);
-    if(this.data?this.data.length:false){
+  selectClicked(eve) {
+    if (this.data ? this.data.length : false) {
       this.client.x = (eve.clientX - eve.layerX - 10) + 'px';
       this.client.y = (eve.clientY - eve.layerY - 10) + 'px';
       this.hideMenu = true;
-    setTimeout(() => {
-      this.updateSelectAll();
-    }, 0);
-  }
+      setTimeout(() => {
+        this.updateSelectAll();
+      }, 0);
+    }
   }
 
-  closeDropDown(){
-    this.startSearch({ srcElement: { innerText : "" } }  )
+  closeDropDown() {
+    this.startSearch({ srcElement: { innerText: "" } })
     this.hideMenu = false;
   }
 
-  inputAlias(ele,value){
+  inputAlias(ele, value) {
     ele['aliasName'] = value;
-    // console.log(event);
     this.optionSelected.emit(this.optionsMap)
   }
 
-  getTitle(arr){
+  getTitle(arr) {
     return arr.map(element => {
-      let regex = new RegExp(constants_value.column_space_replace_value,"gi")
-      return element.replace(regex," ")
+      let regex = new RegExp(constants_value.column_space_replace_value, "gi")
+      return element.replace(regex, " ")
     });
   }
 }

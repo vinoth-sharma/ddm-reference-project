@@ -8,15 +8,16 @@
 }
 
 .main-tool-body-header {
-    height: 7vh;
-    margin-top: 2vh;
+    height: 5.75vh;
+    margin-top: 1vh;
     margin-left: 1.5vw;
     -webkit-print-color-adjust: exact
 }
 
 .main-tool-body-content {
     -webkit-print-color-adjust: exact;
-    margin-left: 1.5vw
+    margin-left: 1.5vw;
+    margin-right: 1.3vw;
 }
 
  /* changes done Ganesha */
@@ -78,7 +79,7 @@ b {
     font-size: 1.5rem
 }
 
-.quillEditor{
+.quillEditor {
     position: relative;
     padding: 3px;
 }

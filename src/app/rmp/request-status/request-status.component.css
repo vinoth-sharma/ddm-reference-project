@@ -302,6 +302,7 @@ tr {
 
 .modal-body {
   padding: 13px 13px 0 13px;
+  font-size: 14px;
 }
 
 .material-icons {
@@ -450,11 +451,6 @@ angular4-multiselect > div.c-btn {
   font-size: 12px;
 }
 
-.modal-body {
-  height:400px;
-  overflow: auto;
-}
-
 #CancelPermanently .modal-body,#errorModalRequest .modal-body {
   height:100px;
 }
@@ -462,6 +458,12 @@ angular4-multiselect > div.c-btn {
 #ModalComment .modal-body {
   height: 180px;
   overflow: hidden;
+}
+
+#DistributionListModal .modal-body {
+  max-height: 50vh;
+  min-height: 30vh;
+  margin-bottom: 1.5vh;
 }
 
 .custom-changes-icon {
@@ -603,12 +605,8 @@ table,td{
   padding-right: 0.5vw;
 }
 
-.row-height {
-  height: 7vh;
-}
-
 .dl-add-remove-list {
-  max-height: 16vh;
+  max-height: 28vh;
   overflow-y: auto;
 }
 
@@ -622,7 +620,6 @@ table,td{
 
 .note {
   margin-left: 0vw;
-  margin-bottom: 2vh;
 }
 
 .hr-margin {

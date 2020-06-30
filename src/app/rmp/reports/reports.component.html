@@ -182,7 +182,10 @@
               </td>
               <td class="change-freq"
                 (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
-                <div>{{element.frequency}}</div>
+                <div>
+                  <span *ngIf="element.frequency == 'Recurring'">Freq Chg</span>
+                  <span *ngIf="element.frequency != 'Recurring'">{{element?.frequency}}</span>
+                </div>
               </td>
               <td *ngFor="let weekDay of weekDays">
                 <div style="width: 20px">
@@ -191,7 +194,7 @@
               </td>
               <td>
                 <div>
-                  {{element?.description?.join()}}
+                  {{element?.frequency_data_filtered}}
                 </div>
               </td>
               <td>
@@ -332,8 +335,9 @@
                 <div>
                   <div class="col-xs-7">
                     <select class="form-control pt-0 pb-0" [(ngModel)]="selectedNewFrequency" id="reportFormat"
-                      (change)="setSelectedFrequency(selectedNewFrequency)">
-                      <option *ngFor="let choice of frequencySelections" [value]="choice">{{ choice }}</option>
+                      (change)="setSelectedFrequency($event.target.value)">
+                      <option *ngFor="let choice of frequencySelections" [value]="choice.value">{{ choice?.name }}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -696,7 +700,7 @@
         <div class="modal-body">
           <input id="add-url-input" (keyup)="validateLinkToUrl($event.target.value)" type="text"
             placeholder="https://example.com" class="form-control" />
-          <span *ngIf="linkToUrlFlag" style="color:red;">This field cannot be Empty</span>
+          <span *ngIf="linkToUrlFlag" class="app-hint-styles">*This field cannot be Empty</span>
         </div>
         <div class="modal-footer">
           <button type="button" [cssBtn]="'ok'" mat-raised-button [disabled]="linkToUrlFlag"

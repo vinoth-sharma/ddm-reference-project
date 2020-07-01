@@ -8,7 +8,7 @@
         </div>
         <div class="col-xs-5 search-position">
           <input placeholder="Search by Request Number/Requestor/Title/Status" class="mt-0 form-control"
-            style="margin-left:5vw" [(ngModel)]="filters.global" name="global" (input)="filterData()"
+            style="margin-left:5vw" [(ngModel)]="globalSearch" name="global" (input)="searchColumn('search')"
             [ngModelOptions]="{standalone: true}">
         </div>
         <div class="col-xs-4" style="padding-right:0%;">
@@ -73,8 +73,8 @@
                   <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control"
-                    [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id"
+                  <input (input)="searchColumn('search')" placeholder="Search" class="form-control"
+                    [(ngModel)]="searchFields.ddm_rmp_post_report_id" name="ddm_rmp_post_report_id"
                     [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
@@ -85,8 +85,8 @@
                   <div *ngIf="reports['created_on']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control"
-                    [(ngModel)]="filters.created_on" name="filters.created_on" [ngModelOptions]="{standalone: true}">
+                  <input (input)="searchColumn('search')" placeholder="Search" class="form-control"
+                    [(ngModel)]="searchFields.created_on1" name="created_on" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -96,8 +96,8 @@
                   <div *ngIf="reports['requestor']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control"
-                    [(ngModel)]="filters.requestor" name="filters.requestor" [ngModelOptions]="{standalone: true}">
+                  <input (input)="searchColumn('search')" placeholder="Search" class="form-control"
+                    [(ngModel)]="searchFields.requestor" name="requestor" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -107,8 +107,8 @@
                   <div *ngIf="reports['on_behalf_of']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control"
-                    [(ngModel)]="filters.on_behalf_of" name="filters.on_behalf_of"
+                  <input (input)="searchColumn('search')" placeholder="Search" class="form-control"
+                    [(ngModel)]="searchFields.on_behalf_of" name="on_behalf_of"
                     [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
@@ -119,8 +119,9 @@
                   <div *ngIf="reports['title']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.title"
-                    name="filters.title" [ngModelOptions]="{standalone: true}">
+                  <input (input)="searchColumn('search')" placeholder="Search" class="form-control"
+                   [(ngModel)]="searchFields.title"
+                    name="title" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
@@ -130,8 +131,8 @@
                   <div *ngIf="reports['frequency']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
-                    class="form-control" [(ngModel)]="filters.frequency" name="filters.frequency">
+                  <input (input)="searchColumn('search')" [ngModelOptions]="{standalone: true}" placeholder="Search"
+                    class="form-control" [(ngModel)]="searchFields.frequency" name="frequency">
                 </div>
               </th>
               <th>
@@ -141,16 +142,27 @@
                   <div *ngIf="reports['assigned_to']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
-                    class="form-control" [(ngModel)]="filters.assigned_to" name="filters.assigned_to">
+                  <input (input)="searchColumn('search')" [ngModelOptions]="{standalone: true}" placeholder="Search"
+                    class="form-control" [(ngModel)]="searchFields.assigned_to" name="assigned_to">
                 </div>
               </th>
               <th style="min-width: 135px;">
                 <div id="status_dropdown" style="width: 135px !important;">
-                  <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
+                  <!-- <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
                     [settings]="StatusDropdownSettings" (onSelect)="filterData()" (onDeSelect)="filterData()"
                     style="font-size: 12px;width:135px; ">
-                  </angular4-multiselect>
+                  </angular4-multiselect> -->
+
+                  <mat-form-field appearance="fill">
+                    <mat-label>Status</mat-label>
+                    <mat-select [(ngModel)]="searchFields.status" (selectionChange)="searchColumn('search')">
+                      <mat-option value=" ">None</mat-option>
+                      <mat-option *ngFor="let status of statusMasterData" [value]="status">
+                        {{ status }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
                 </div>
               </th>
               <th>
@@ -160,8 +172,8 @@
                   <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="filterData()" [ngModelOptions]="{standalone: true}" placeholder="Search"
-                    class="form-control" [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
+                  <input (input)="searchColumn('search')" [ngModelOptions]="{standalone: true}" placeholder="Search"
+                    class="form-control" [(ngModel)]="searchFields.ddm_rmp_status_date1" name="ddm_rmp_status_date1">
                 </div>
               </th>
               <th style="text-align:center">
@@ -365,8 +377,8 @@
         </table>
       </div>
       <div style="display:flex; align-items: flex-end;flex-direction: row;width:94vw">
-        <mat-paginator style="margin-left:auto" [length]="reports.length" [pageSize]="paginatorpageSize"
-          [pageSizeOptions]="paginatorOptions" (page)="onPaginationChange($event)">
+        <mat-paginator style="margin-left:auto" [length]="totalRecords" [pageSize]="paginatorpageSize"
+          [pageSizeOptions]="paginatorOptions" (page)="searchColumn('paginator')">
         </mat-paginator>
       </div>
     </div>

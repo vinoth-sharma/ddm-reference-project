@@ -1,5 +1,5 @@
 // Migrated by Ganesha
-import { Component, OnInit, OnChanges, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit, ViewChild } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
@@ -14,6 +14,7 @@ import { AuthenticationService } from "src/app/authentication.service";
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import Utils from 'src/utils';
 import '../../../assets/debug2.js';
+import { MatPaginator } from '@angular/material/paginator';
 declare var jsPDF: any;
 declare var $: any;
 
@@ -23,6 +24,7 @@ declare var $: any;
   styleUrls: ['./request-status.component.css']
 })
 export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   public searchText: any = '';
   public p: any;
@@ -185,9 +187,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public changeDoc: boolean = false;
   public linkToUrlFlag = true;
 
-  // paginator params
-  public paginatorpageSize = 10;
-  public paginatorOptions: number[] = [5, 10, 25, 100]
+
   public paginatorLowerValue = 0;
   public paginatorHigherValue = 10;
   public searchGlobalObj = {
@@ -243,6 +243,36 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public is_vin_level_report: any;
   public is_summary_report: any;
 
+  public globalSearch = "";
+  public searchFields = {
+    ddm_rmp_post_report_id: "",
+    created_on1: "",
+    requestor: "",
+    on_behalf_of: "",
+    title: "",
+    frequency: "",
+    assigned_to: "",
+    status: "",
+    ddm_rmp_status_date1: ""
+  }
+  public sortFields = {
+    ddm_rmp_post_report_id: "",
+    created_on1: "",
+    requestor: "",
+    on_behalf_of: "",
+    title: "",
+    frequency: "",
+    assigned_to: "",
+    status: "",
+    ddm_rmp_status_date1: ""
+  }
+
+  // paginator params
+  public paginatorpageSize = 10;
+  public paginatorOptions: number[] = [5, 10, 25, 100];
+  public totalRecords = 0;
+
+  statusMasterData = ["Incomplete", "Pending", "In Process", "Freq Chg", "Cancelled"]
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -329,28 +359,32 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         else this.original_contents = "";
         this.namings = this.original_contents;
         this.generated_id_service.changeButtonStatus(false);
-        const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 200 }
-        this.django.list_of_reports(obj).subscribe(list => {
-          list["report_list"].forEach(element => {
-            if (this.setbuilder_sort && this.setbuilder_sort.includes(element.ddm_rmp_post_report_id))
-              element['unread'] = true;
-            else element['unread'] = false;
-
-            element['created_on'] = this.DatePipe.transform(element['created_on'], 'dd-MMM-yyyy')
-            element['ddm_rmp_post_report_id'] = isNaN(+element['ddm_rmp_post_report_id']) ? 99999 : +element['ddm_rmp_post_report_id'];
-            element['ddm_rmp_status_date'] = this.DatePipe.transform(element['ddm_rmp_status_date'], 'dd-MMM-yyyy')
-
-            if (element && element.isChecked) element.isChecked = false;
-          });
-          list["report_list"] = list["report_list"].sort((a, b) => {
-            if (b['unread'] == a['unread']) {
-              return a['ddm_rmp_post_report_id'] > b['ddm_rmp_post_report_id'] ? 1 : -1;
-            }
-            return b['unread'] > a['unread'] ? 1 : -1;
-          });
-          this.reports = list["report_list"];
-        });
+        this.getReportDetails();
       }
+    });
+  }
+
+  public getReportDetails() {
+    const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 200 }
+    this.django.list_of_reports(obj).subscribe(list => {
+      list["report_list"].forEach(element => {
+        if (this.setbuilder_sort && this.setbuilder_sort.includes(element.ddm_rmp_post_report_id))
+          element['unread'] = true;
+        else element['unread'] = false;
+
+        element['created_on'] = this.DatePipe.transform(element['created_on'], 'dd-MMM-yyyy')
+        element['ddm_rmp_post_report_id'] = isNaN(+element['ddm_rmp_post_report_id']) ? 99999 : +element['ddm_rmp_post_report_id'];
+        element['ddm_rmp_status_date'] = this.DatePipe.transform(element['ddm_rmp_status_date'], 'dd-MMM-yyyy')
+
+        if (element && element.isChecked) element.isChecked = false;
+      });
+      list["report_list"] = list["report_list"].sort((a, b) => {
+        if (b['unread'] == a['unread']) {
+          return a['ddm_rmp_post_report_id'] > b['ddm_rmp_post_report_id'] ? 1 : -1;
+        }
+        return b['unread'] > a['unread'] ? 1 : -1;
+      });
+      this.reports = list["report_list"];
     });
   }
 
@@ -1067,7 +1101,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         let tempArray = [];
         this.frequency_flag = true;
         response["frequency_data"].map(element => {
-            tempArray.push(element.select_frequency_values);
+          tempArray.push(element.select_frequency_values);
         });
         this.report_frequency = tempArray.join(", ");
       } else {
@@ -1162,8 +1196,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         if (response["ost_data"]["checkbox_data"].length) {
           let group = [];
           response["ost_data"]["checkbox_data"].map(ele => {
-            if(ele.ddm_rmp_lookup_ots_checkbox_values === 27 || ele.ddm_rmp_lookup_ots_checkbox_values === 55){
-              group.push('Turn rate:'+ ele.checkbox_description)
+            if (ele.ddm_rmp_lookup_ots_checkbox_values === 27 || ele.ddm_rmp_lookup_ots_checkbox_values === 55) {
+              group.push('Turn rate:' + ele.checkbox_description)
             } else group.push(ele.checkbox_description)
           })
           this.checkbox_data = group.join(',');
@@ -1289,7 +1323,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       this.dl_flag = true
     }
     else {
-      if(!this.contacts.includes(this.model)){
+      if (!this.contacts.includes(this.model)) {
         this.contacts.push(this.model);
         this.dl_flag = false
         this.model = "";
@@ -1527,8 +1561,95 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     else this.linkToUrlFlag = false;
   }
 
+  // public onPaginationChange(event) {
+  //   console.log(event);
+
+  //   this.paginatorLowerValue = event.pageIndex * event.pageSize;
+  //   this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
+  // }
+
+  public searchColumn(type) {
+    
+    console.log(this.sortFields);
+    console.log(this.searchFields);
+
+    if(type==="search"){
+      this.paginator.pageIndex = 0;
+    }
+    else if(type === 'paginator'){
+      if(this.paginator.pageSize !== this.paginatorpageSize){
+        this.paginatorpageSize = this.paginator.pageSize; 
+        this.paginator.pageIndex = 0;
+      }
+    }
+
+    let body = {
+      page_no: this.paginator.pageIndex + 1,
+      page_size: this.paginator.pageSize
+    };
+
+    let i = 1;
+    if (this.globalSearch.trim()) {
+      body['main_search_val'] = 1;
+      body['main_search'] = {
+        value: this.globalSearch
+      }
+      i++;
+    }
+
+    let l_body = {};
+    for (const key in this.searchFields) {
+      if (this.searchFields.hasOwnProperty(key)) {
+        const element = this.searchFields[key];
+        if (element.trim()) {
+          l_body[key] = element;
+        }
+      }
+
+      if (Object.keys(l_body).length) {
+        body['col_search_val'] = i;
+        body['col_search'] = l_body
+      }
+    }
+    console.log(this.paginator);
+    
+
+    console.log(body);
+
+    this.getRequestListHttp(body);
+  }
+
   public onPaginationChange(event) {
-    this.paginatorLowerValue = event.pageIndex * event.pageSize;
-    this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
+    console.log(event);
+
+  }
+
+  public getRequestListHttp(body) {
+
+    this.django.list_of_requests(body).subscribe((list:any) => {
+      this.totalRecords = list.row_count;
+      list["data"].forEach(element => {
+        if (this.setbuilder_sort && this.setbuilder_sort.includes(element.ddm_rmp_post_report_id))
+          element['unread'] = true;
+        else element['unread'] = false;
+
+        element['created_on'] = this.DatePipe.transform(element['created_on'], 'dd-MMM-yyyy')
+        element['ddm_rmp_post_report_id'] = isNaN(+element['ddm_rmp_post_report_id']) ? 99999 : +element['ddm_rmp_post_report_id'];
+        element['ddm_rmp_status_date'] = this.DatePipe.transform(element['ddm_rmp_status_date'], 'dd-MMM-yyyy')
+
+        if (element && element.isChecked) element.isChecked = false;
+      });
+      list["data"] = list["data"].sort((a, b) => {
+        if (b['unread'] == a['unread']) {
+          return a['ddm_rmp_post_report_id'] > b['ddm_rmp_post_report_id'] ? 1 : -1;
+        }
+        return b['unread'] > a['unread'] ? 1 : -1;
+      });
+
+      this.reports = list["data"];
+    }, err => {
+
+    });
+
   }
 }

@@ -206,7 +206,8 @@ export class DealerAllocationComp implements OnInit {
         l_addReq: this.req_body.report_detail.additional_req,
         l_isVvinReq: this.req_body.report_detail.is_vin_level_report,
         l_isSummaryReq: this.req_body.report_detail.is_summary_report,
-        l_businessReq: this.req_body.report_detail.business_req
+        l_businessReq: this.req_body.report_detail.business_req,
+        l_requestId: this.req_body.report_id
       }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
         data: obj, disableClose: true
@@ -255,7 +256,7 @@ export class DealerAllocationComp implements OnInit {
       data: {
         reqBody: this.req_body,
         selectedReqData: this.l_selectedReqData,
-        selectedFile : result.data.selectedFile
+        selectedFile: result.data.selectedFile
       }, disableClose: true
     })
 

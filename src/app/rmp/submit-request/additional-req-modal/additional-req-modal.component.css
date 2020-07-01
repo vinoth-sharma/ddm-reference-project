@@ -16,3 +16,9 @@
 .modal-dialog {
     margin-top: 30vh;
 }
+
+.file-input {
+    max-height: 10vh;
+    overflow-y: scroll;
+    cursor: pointer;
+}

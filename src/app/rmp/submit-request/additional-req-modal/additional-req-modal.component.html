@@ -20,11 +20,11 @@
                         Attach files from the computer
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                        <input type="file" id="file-upload" multiple (onclick)="getFile()" style="color: white;" />
+                        <input type="file" title="Please upload a file of CSV/PDF/WORD/EXCEL format!" id="file-upload"
+                            multiple (onclick)="getFile()" style="color: white;" />
                     </div>
                     <div (click)="openFileChangesModal()" title="Click here to deselect the selected files"
-                        class="col-lg-5 col-md-5 col-sm-5 col-xs-5" id="selectedFiles"
-                        style="max-height: 10vh;overflow-y: scroll;">
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-5 file-input" id="selectedFiles">
                     </div>
                 </div>
             </div>

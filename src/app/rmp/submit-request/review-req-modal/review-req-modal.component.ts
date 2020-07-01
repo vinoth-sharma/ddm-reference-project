@@ -104,10 +104,17 @@ export class ReviewReqModalComponent implements OnInit {
   }
 
   submitFile() {
-    if (this.data.selectedFile)
-      this.django.ddm_rmp_file_data(this.data.selectedFile).subscribe(response => {
-      }, err => {
-      });
+    //loop for multiple objects
+    console.log("this.data.selectedFile", this.data.selectedFile);
+
+    this.data.selectedFile.forEach((element, index) => {
+      if (element) {
+        this.django.ddm_rmp_file_data(this.data.selectedFile[index]).subscribe(response => {
+          this.toaster.success("File/s upload successful!")
+        }, err => {
+        });
+      }
+    });
   }
 
   generateRequestData(data) {
@@ -334,7 +341,7 @@ export class ReviewReqModalComponent implements OnInit {
       }
 
       let freqData = [];
-       data.frequency_data.map(ele => freqData.push(ele.select_frequency_values))
+      data.frequency_data.map(ele => freqData.push(ele.select_frequency_values))
       this.otherReportCriteria.frequency_data = freqData.join(',');
     }
 

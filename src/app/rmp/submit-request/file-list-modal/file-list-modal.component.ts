@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
-import { newArray } from '@angular/compiler/src/util';
 
 // Angular Component developed by Deepak Urs G V
 @Component({
@@ -25,17 +24,10 @@ export class FileListModalComponent implements OnInit {
   }
 
   public deleteFileCapture(file) {
-    console.log("FILE being deleted : ", file);
-    // this.data = this.data.filter(function(el){
-    //   return el.url !== file.name
-    // });
     let newArray = [];
     let tempData = Array.from(this.data);
     tempData.map(i => { if (i['name'] != file['name']) { newArray.push(i) } })
-
-    Array.prototype.push.apply(tempData, this.data);
     this.data = newArray;
-    console.log("NEW ARRAY", this.data);
 
     this.toaster.success(file.name + " removed successfully!!")
   }

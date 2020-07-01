@@ -11,7 +11,7 @@ import { FileListModalComponent } from '../file-list-modal/file-list-modal.compo
 })
 export class AdditionalReqModalComponent implements OnInit {
 
-  public supportedFiles = ["csv", "pdf", "odt", "ods", "doc", "docx", "xlsx"];
+  public supportedFiles = ["csv", "pdf", "doc", "docx", "xlsx"];
   public radioOpt = [{ label: "Yes", value: true }, { label: "No", value: false }]
   public report_title = "";
   public additional_req = "";
@@ -19,7 +19,9 @@ export class AdditionalReqModalComponent implements OnInit {
   public selDiv: any = "";
   public selectedFilesNames: string = 'Hello World!';
   public testFileObjects = [];
-  public files: any = []
+  public files: any = [];
+  public filesDataArray: any = [];
+  public procuredRequestId: any;
 
   public l_data1 = [];
   public l_data2 = [];
@@ -46,6 +48,7 @@ export class AdditionalReqModalComponent implements OnInit {
     this.responseData.isVinLevel = this.data.l_isVvinReq;
     this.responseData.isSummaryReport = this.data.l_isSummaryReq;
     this.responseData.businessReq = this.data.l_businessReq;
+    this.procuredRequestId = this.data.l_requestId;
     document.querySelector('#file-upload').addEventListener('change', this.handleFileSelect, false);
     this.selDiv = document.querySelector("#selectedFiles");
   }
@@ -61,8 +64,8 @@ export class AdditionalReqModalComponent implements OnInit {
       this.toaster.success('FILE CHANGE CAPTURED!!!')
     }
   }
-  public handleFileSelect(e, flag?: string) {
 
+  public handleFileSelect(e, flag?: string) {
     this.selDiv = document.querySelector("#selectedFiles");
 
     if (flag && flag == 'override') {
@@ -75,7 +78,6 @@ export class AdditionalReqModalComponent implements OnInit {
       }
       this.files = e.target.files;
     }
-
 
     for (var i = 0; i < this.files.length; i++) {
       var f = this.files[i];
@@ -111,7 +113,7 @@ export class AdditionalReqModalComponent implements OnInit {
     else if (!l_data_validation.every(ele => ele['desc'])) {
       this.toaster.error("Please enter the values if others selected")
     }
-    else if (!this.validateFile()) {
+    else if (this.validateFile()) {
       this.toaster.error(`Please upload file with valid format (${this.supportedFiles})`)
     }
     else
@@ -119,34 +121,50 @@ export class AdditionalReqModalComponent implements OnInit {
   }
 
   public validateFile() {
-    let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files[0];
-    if (l_file) {
-      let extension = l_file.name.split(".").pop();
-      if (this.supportedFiles.includes(extension))
-        return true
-      else
-        return false
+    let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files;
+    let tempData = Array.from(l_file);
+    let blockerFlag = false;
+    tempData.forEach(fileObject => {
+      if (fileObject) {
+        let extension = fileObject['name'].split(".").pop();
+        if (this.supportedFiles.includes(extension))
+          blockerFlag = false
+        else
+          blockerFlag = true
+      }
+      else {
+        blockerFlag = true
+      }
+    });
+    if (blockerFlag != false) {
+      return true;
     }
-    else
-      return true
+    else {
+      return false;
+    }
   }
 
   public getFile() {
-    let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files[0];
+
     let l_filesDisplay = (<HTMLInputElement>document.getElementById("file-upload")).files;
     console.log("Uploaded file details : ", l_filesDisplay);
 
-    if (l_file) {
-      let formData = new FormData();
-      formData.append('file_upload', l_file);
-      formData.append('uploaded_file_name', l_file.name);
-      formData.append('flag', "is_req");
-      formData.append('type', 'rmp');
-      return formData
-    }
-    else {
-      return ""
-    }
+    let tempData = Array.from(l_filesDisplay);
+    tempData.forEach(file => {
+      if (file) {
+        let formData = new FormData();
+        formData.append('file_upload', file);
+        formData.append('uploaded_file_name', file.name);
+        formData.append('flag', "is_req");
+        formData.append('type', 'rmp');
+        formData.append('request_id', this.procuredRequestId)
+        this.filesDataArray.push(formData);
+      }
+      else {
+        // Do nothing
+      }
+    })
+    return this.filesDataArray;
   }
 
   public closeDialog() {
@@ -161,6 +179,13 @@ export class AdditionalReqModalComponent implements OnInit {
       if (result) {
         console.log("INPUT MODIFIED FILE LIST!!", result);
         this.handleFileSelect(result, 'override');
+        // let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files;
+
+        // use standard varaible for result.
+        // (<HTMLInputElement>document.getElementById("file-upload")).files = result;
+
+        // console.log("CROSS CHECKING updated list of files after verifying!!");
+        // console.log("(<HTMLInputElement>document.getElementById('file-upload')).files;",(<HTMLInputElement>document.getElementById("file-upload")).files);
       }
     });
   }

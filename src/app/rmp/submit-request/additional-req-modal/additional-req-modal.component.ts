@@ -49,6 +49,8 @@ export class AdditionalReqModalComponent implements OnInit {
     this.responseData.isSummaryReport = this.data.l_isSummaryReq;
     this.responseData.businessReq = this.data.l_businessReq;
     this.procuredRequestId = this.data.l_requestId;
+    console.log("ADDITIONAL REQ data obj : ",this.responseData);
+    
     document.querySelector('#file-upload').addEventListener('change', this.handleFileSelect, false);
     this.selDiv = document.querySelector("#selectedFiles");
   }

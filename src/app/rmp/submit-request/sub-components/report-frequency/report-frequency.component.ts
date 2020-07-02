@@ -158,6 +158,8 @@ export class ReportFrequencyComponent implements OnInit {
       })
     }
 
+    console.log("SAVING AND proceeding data : ",req_body);
+    
     this.reportFreqEmitter.emit(req_body);
   }
 

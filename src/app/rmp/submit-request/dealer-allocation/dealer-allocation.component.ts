@@ -265,6 +265,8 @@ export class DealerAllocationComp implements OnInit {
         selectedFile: result.data.selectedFile
       }, disableClose: true
     })
+    
+    
 
     dialogRef.afterClosed().subscribe(result => {
       //doesnt do anything

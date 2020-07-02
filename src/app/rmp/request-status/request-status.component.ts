@@ -272,7 +272,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public paginatorOptions: number[] = [5, 10, 25, 100];
   public totalRecords = 0;
 
-  statusMasterData = ["Incomplete", "Pending", "In Process", "Freq Chg", "Cancelled"]
+  statusMasterData = ["Incomplete","Pending","In Process","Completed","Freq Chg", "Cancelled"]
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -622,20 +622,18 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
     this.django.cancel_report(this.cancel_report).subscribe(response => {
       this.cancel_response = response;
-      const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 };
-      this.django.list_of_reports(obj).subscribe(list => {
-        this.reports = list["report_list"];
-        $('#CancelRequest').modal('hide');
-        this.toastr.success("The request-id : " + this.finalData[0]['ddm_rmp_post_report_id'] + " has been cancelled successfully")
-        Utils.hideSpinner();
-        this.comment_text = "Cancelled"
-        this.extract_comment(true);
-      },
-        err => {
-          this.toastr.error("There has been an error in cancelling the request-id : " + this.finalData[0]['ddm_rmp_post_report_id'])
-          this.toastr.error(err);
-          Utils.hideSpinner();
-        })
+      $('#CancelRequest').modal('hide');
+      this.toastr.success("The request-id : " + this.finalData[0]['ddm_rmp_post_report_id'] + " has been cancelled successfully")
+      Utils.hideSpinner();
+      this.comment_text = "Cancelled"
+      this.extract_comment(true);
+      //Refresh Request data from Backend
+      this.resetSearchSort();
+      this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
+    },
+    err => {
+      this.toastr.error("There has been an error in cancelling the request-id : " + this.finalData[0]['ddm_rmp_post_report_id'])
+      Utils.hideSpinner();
     })
   }
 

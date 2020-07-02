@@ -272,7 +272,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public paginatorOptions: number[] = [5, 10, 25, 100];
   public totalRecords = 0;
 
-  statusMasterData = ["Incomplete","Pending","In Process","Completed","Freq Chg", "Cancelled"]
+  statusMasterData = ["Incomplete", "Pending", "In Process", "Completed", "Freq Chg", "Cancelled"]
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -631,10 +631,10 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       this.resetSearchSort();
       this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
     },
-    err => {
-      this.toastr.error("There has been an error in cancelling the request-id : " + this.finalData[0]['ddm_rmp_post_report_id'])
-      Utils.hideSpinner();
-    })
+      err => {
+        this.toastr.error("There has been an error in cancelling the request-id : " + this.finalData[0]['ddm_rmp_post_report_id'])
+        Utils.hideSpinner();
+      })
   }
 
   public closeCancel() {
@@ -652,14 +652,13 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.assignTBD['requestor'] = 'TBD';
     this.django.ddm_rmp_tbd_req_put(this.assignTBD).subscribe(response => {
       this.assign_res = response;
-      const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 };
-      this.django.list_of_reports(obj).subscribe(list => {
-        this.reports = list["report_list"];
-        Utils.hideSpinner();
-        this.finalData = [];
-        this.toastr.success("Updated Successfully")
-        $('#CancelRequest').modal('hide');
-      });
+      Utils.hideSpinner();
+      this.finalData = [];
+      this.toastr.success("Updated Successfully")
+      $('#CancelRequest').modal('hide');
+      //Refresh Request data from Backend
+      this.resetSearchSort();
+      this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
     }, err => {
       Utils.hideSpinner();
       this.toastr.error("Server Error")
@@ -701,13 +700,12 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.assignOwner_Assigned['assigned_to'] = 'TBD';
     this.django.ddm_rmp_assign_to(this.assignOwner_Assigned).subscribe(ele => {
       this.assigned_res = ele;
-      const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
-      this.django.list_of_reports(obj).subscribe(list => {
-        this.reports = list["report_list"];
-        Utils.hideSpinner();
-        this.finalData = [];
-      })
+      Utils.hideSpinner();
+      this.finalData = [];
       this.toastr.success("Updated Successfully");
+      //Refresh Request data from Backend
+      this.resetSearchSort();
+      this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
     }, err => {
       Utils.hideSpinner();
       this.toastr.error("Server Error");
@@ -1647,7 +1645,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     });
   }
 
-  resetSearchSort(){
+  resetSearchSort() {
     this.globalSearch = "";
     this.paginatorpageSize = 10;
     this.paginator.pageIndex = 0;

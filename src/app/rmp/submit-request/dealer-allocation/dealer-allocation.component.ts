@@ -123,14 +123,19 @@ export class DealerAllocationComp implements OnInit {
     })
     this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
       this.l_lookupTableMD = tableDate ? JSON.parse(JSON.stringify(tableDate.data)) : {};
+      // console.log("this.l_lookupTableMD for the DA page",this.l_lookupTableMD);
+      
       this.refillMasterDatatoOptions();
     })
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
+      console.log("result obtained in this.submitService.requestStatusEmitter:",res);
+      
       if (res.type === "srw") {
         this.l_selectedReqData = res.data;
         this.refillDivisionMD(res.data.division_dropdown);
         this.fillReportDetails(res.data);
+        // during update/edit operation
         this.refillSelectedRequestData(res.data);
         this.messageClass = "red";
 
@@ -144,6 +149,7 @@ export class DealerAllocationComp implements OnInit {
           this.req_body.report_detail.status = l_status;
           if (l_status === "Cancelled")
             this.req_body.report_id = null;
+            // ???
           else if (l_status === "Completed" && !res.data.frequency_data.some(freq => freq.ddm_rmp_lookup_select_frequency_id === 39))
             this.req_body.report_id = null;
           else {

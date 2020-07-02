@@ -147,8 +147,6 @@ export class AdditionalReqModalComponent implements OnInit {
   public getFile() {
 
     let l_filesDisplay = (<HTMLInputElement>document.getElementById("file-upload")).files;
-    console.log("Uploaded file details : ", l_filesDisplay);
-
     let tempData = Array.from(l_filesDisplay);
     tempData.forEach(file => {
       if (file) {
@@ -159,9 +157,6 @@ export class AdditionalReqModalComponent implements OnInit {
         formData.append('type', 'rmp');
         formData.append('request_id', this.procuredRequestId)
         this.filesDataArray.push(formData);
-      }
-      else {
-        // Do nothing
       }
     })
     return this.filesDataArray;

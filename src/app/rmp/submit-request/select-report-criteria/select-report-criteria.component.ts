@@ -262,6 +262,7 @@ export class SelectReportCriteriaComp implements OnInit {
       if (this.special_identifiers_obj.hasOwnProperty(key)) {
         const obj_ele = this.special_identifiers_obj[key];
         obj_ele.forEach(element => {
+          //need not be sent to BE,so deleting it
           if (element['checked'] === "Yes") {
             delete element['checked'];
             specl_identfrs.push(element)
@@ -279,6 +280,7 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.status_date = new Date();
     this.req_body.report_detail.on_behalf_of = this.submitService.getSubmitOnBehalf();
 
+    // used while edit/update operation
     if (this.req_body.report_detail.status === "Cancelled")
       this.req_body.report_detail.status = "Incomplete";
     else if (this.req_body.report_detail.status === "Completed" && !this.l_selectedReqData.frequency_data.some(freq => freq.ddm_rmp_lookup_select_frequency_id === 39)) {
@@ -286,10 +288,13 @@ export class SelectReportCriteriaComp implements OnInit {
       this.req_body.report_id = null;
       this.req_body.report_detail.report_type = "";
     }
-
+    console.log("LATEST UPDATED DATA OBJ after S&P :",this.req_body);
+    
+    // confirmation of S&P
     Utils.showSpinner();
     this.submitService.submitUserMarketSelection(this.req_body).subscribe(response => {
       Utils.hideSpinner();
+      //if update call here
       if (this.req_body.report_id)
         this.ngToaster.success(`Request #${response['report_data']['ddm_rmp_post_report_id']} - Updated successfully`)
       else
@@ -304,6 +309,7 @@ export class SelectReportCriteriaComp implements OnInit {
       this.req_body.report_id = response['report_data']['ddm_rmp_post_report_id'];
       this.req_body.report_detail.status = response['report_data']['status'];
 
+      //CHROME ITEM : saves like cache data for the particular tab/page
       localStorage.setItem('report_id', response['report_data']['ddm_rmp_post_report_id'])
       this.submitService.updateLoadingStatus({ status: true, comp: "da" });
     }, err => {

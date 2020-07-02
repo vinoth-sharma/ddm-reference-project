@@ -174,6 +174,7 @@ export class VehicleEventStatusComponent implements OnInit {
         let l_status = res.data.status;
         let l_reportId = res.data.ddm_rmp_post_report_id;
         let l_reqType = res.data.report_type;
+        //ots is the code for VES page
         this.display_message = `Request #${l_reportId} (Request type - ${l_reqType === "ots" ? "Vehicle event status" : "Dealer Allocation"})`;
 
         if (res.type === "srw" && (l_status === "Cancelled" || l_status === "Completed")) {

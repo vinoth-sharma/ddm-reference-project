@@ -346,6 +346,7 @@ export class ReviewReqModalComponent implements OnInit {
     }
 
     if (data.special_identifier_data.length) {
+      // BAC and FAN
       this.otherReportCriteria.spclIdentifiers = data.special_identifier_data.map(ele => {
         return {
           label: ele.spl_desc,

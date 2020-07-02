@@ -38,7 +38,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public StatusDropdownSettings = {};
   public hidVar = true;
   public column: string[];
-  public reports: any = null;
+  public reports: any = [];
   public assigned: any;
   public status_date: any;
   public status: any;
@@ -109,7 +109,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public tbddropdownSettingsAssigned = {};
   public tbddropdownListfinalAssigned = [];
   public usersList = [];
-  public showODCBtn: boolean = false;
+  // public showODCBtn: boolean = false;
   public assignOwner = {
     'request_id': "",
     'users_table_id': "",
@@ -257,14 +257,14 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   }
   public sortFields = {
     ddm_rmp_post_report_id: "",
-    created_on1: "",
+    created_on: "",
     requestor: "",
     on_behalf_of: "",
     title: "",
     frequency: "",
     assigned_to: "",
     status: "",
-    ddm_rmp_status_date1: ""
+    ddm_rmp_status_date: ""
   }
 
   // paginator params
@@ -281,6 +281,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     private dataProvider: DataProviderService,
     private auth_service: AuthenticationService,
     private toastr: NgToasterComponent) {
+    Utils.showSpinner();
     this.getCurrentNotifications();
     this.model = "";
     this.getRoleDetails();
@@ -359,7 +360,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         else this.original_contents = "";
         this.namings = this.original_contents;
         this.generated_id_service.changeButtonStatus(false);
-        this.getReportDetails();
+        // this.getReportDetails();
+        this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
       }
     });
   }
@@ -550,7 +552,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   // get the details of checked report
   public Report_request(element, event) {
     this.cancel = element.ddm_rmp_post_report_id;
-    this.showODCBtn = element['status'] === 'Active' ? true : false;
+    // this.showODCBtn = element['status'] === 'Active' ? true : false;
     this.reports.forEach(ele => {
       if (ele.ddm_rmp_post_report_id === element.ddm_rmp_post_report_id) {
         this.finalData = [ele];
@@ -785,22 +787,17 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
             });
 
           this.django.accept_report(this.accept_report).subscribe(response => {
-            const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
-            this.django.list_of_reports(obj).subscribe(list => {
-              this.reports = list["report_list"];
-              this.reports.forEach(ele => {
-                if (ele.ddm_rmp_post_report_id ===
-                  this.finalData[0].ddm_rmp_post_report_id)
-                  this.showODCBtn = ele['status'] === 'Active' ? true : false;
-              });
-              this.toastr.success("Status Changed to Active");
-              Utils.hideSpinner();
-              this.finalData = [];
-            });
+            this.toastr.success("Status Changed to Active");
+            Utils.hideSpinner();
+            this.finalData = [];
+            //Refresh Request data from Backend
+            this.resetSearchSort();
+            this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
           }, err => {
             this.toastr.error("Server Error")
             Utils.hideSpinner();
           })
+
         }
         else if (!$(".report_id_checkboxes:checkbox:checked").length) {
           this.errorModalMessageRequest = "Select a report to Accept";
@@ -1569,16 +1566,13 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   // }
 
   public searchColumn(type) {
-    
-    console.log(this.sortFields);
-    console.log(this.searchFields);
 
-    if(type==="search"){
+    if (type === "search" || type === "sort") {
       this.paginator.pageIndex = 0;
     }
-    else if(type === 'paginator'){
-      if(this.paginator.pageSize !== this.paginatorpageSize){
-        this.paginatorpageSize = this.paginator.pageSize; 
+    else if (type === 'paginator') {
+      if (this.paginator.pageSize !== this.paginatorpageSize) {
+        this.paginatorpageSize = this.paginator.pageSize;
         this.paginator.pageIndex = 0;
       }
     }
@@ -1588,13 +1582,10 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       page_size: this.paginator.pageSize
     };
 
-    let i = 1;
     if (this.globalSearch.trim()) {
-      body['main_search_val'] = 1;
       body['main_search'] = {
         value: this.globalSearch
       }
-      i++;
     }
 
     let l_body = {};
@@ -1605,51 +1596,72 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           l_body[key] = element;
         }
       }
+    }
 
-      if (Object.keys(l_body).length) {
-        body['col_search_val'] = i;
-        body['col_search'] = l_body
+    if (Object.keys(l_body).length) {
+      body['col_search'] = l_body
+    }
+
+    for (const col in this.sortFields) {
+      if (this.sortFields.hasOwnProperty(col)) {
+        let value = this.sortFields[col];
+        if (value)
+          body['sort_filter'] = { col_val: col, sort_type: value }
       }
     }
-    console.log(this.paginator);
-    
+
 
     console.log(body);
-
     this.getRequestListHttp(body);
   }
 
-  public onPaginationChange(event) {
-    console.log(event);
+  sortRequestData(column) {
+    let l_order = "";
+    if (this.sortFields[column] === 'Asc')
+      l_order = "Desc";
+    else if (this.sortFields[column] === 'Desc')
+      l_order = "Asc";
+    else
+      l_order = "Asc";
 
+    for (const col in this.sortFields) {
+      if (this.sortFields.hasOwnProperty(col)) {
+        this.sortFields[col] = ""
+      }
+    }
+
+    this.sortFields[column] = l_order;
+    this.searchColumn("sort");
   }
 
   public getRequestListHttp(body) {
-
-    this.django.list_of_requests(body).subscribe((list:any) => {
+    Utils.showSpinner();
+    this.django.list_of_requests(body).subscribe((list: any) => {
       this.totalRecords = list.row_count;
       list["data"].forEach(element => {
-        if (this.setbuilder_sort && this.setbuilder_sort.includes(element.ddm_rmp_post_report_id))
-          element['unread'] = true;
-        else element['unread'] = false;
-
-        element['created_on'] = this.DatePipe.transform(element['created_on'], 'dd-MMM-yyyy')
-        element['ddm_rmp_post_report_id'] = isNaN(+element['ddm_rmp_post_report_id']) ? 99999 : +element['ddm_rmp_post_report_id'];
-        element['ddm_rmp_status_date'] = this.DatePipe.transform(element['ddm_rmp_status_date'], 'dd-MMM-yyyy')
-
         if (element && element.isChecked) element.isChecked = false;
       });
-      list["data"] = list["data"].sort((a, b) => {
-        if (b['unread'] == a['unread']) {
-          return a['ddm_rmp_post_report_id'] > b['ddm_rmp_post_report_id'] ? 1 : -1;
-        }
-        return b['unread'] > a['unread'] ? 1 : -1;
-      });
-
       this.reports = list["data"];
+      Utils.hideSpinner();
     }, err => {
-
+      Utils.hideSpinner();
+      this.toastr.error("Server Error")
     });
+  }
 
+  resetSearchSort(){
+    this.globalSearch = "";
+    this.paginatorpageSize = 10;
+    this.paginator.pageIndex = 0;
+    for (const col in this.searchFields) {
+      if (this.searchFields.hasOwnProperty(col)) {
+        this.searchFields[col] = ""
+      }
+    }
+    for (const col in this.sortFields) {
+      if (this.sortFields.hasOwnProperty(col)) {
+        this.sortFields[col] = ""
+      }
+    }
   }
 }

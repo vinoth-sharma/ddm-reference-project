@@ -1,6 +1,6 @@
-<div *ngIf="reports" class="flex-container row tool-body">
+<div class="flex-container row tool-body">
   <!--                            Main Body Content                         -->
-  <div *ngIf="reports" class="main-tool-body">
+  <div class="main-tool-body">
     <div>
       <div class="row" style="height: 8vh;">
         <div class="col-xs-3 title-top-position">
@@ -59,18 +59,17 @@
           style="display:none"></button>
       </div>
       <div class="tableFixHead">
-        <table *ngIf="reports" class="table report_table table-bordered table-hover"
-          style="overflow:-moz-hidden-unscrollable">
+        <table class="table report_table table-bordered table-hover" style="overflow:-moz-hidden-unscrollable;border: unset;">
           <thead class="thead">
             <tr>
               <th>
                 <div style="margin-bottom: 40px;">Select</div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('ddm_rmp_post_report_id')">
+                <div class="alignLeft" (click)="sortRequestData('ddm_rmp_post_report_id')">
                   <div>Request Number</div>
-                  <div *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
-                  <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
+                  <div *ngIf="sortFields.ddm_rmp_post_report_id === 'Asc'">&#8593;</div>
+                  <div *ngIf="sortFields.ddm_rmp_post_report_id === 'Desc'">&#8595;</div>
                 </div>
                 <div>
                   <input (input)="searchColumn('search')" placeholder="Search" class="form-control"
@@ -79,10 +78,10 @@
                 </div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('created_on')">
+                <div class="alignLeft" (click)="sortRequestData('created_on')">
                   <div>Created On</div>
-                  <div *ngIf="!reports['created_on']">&#8593;</div>
-                  <div *ngIf="reports['created_on']">&#8595;</div>
+                  <div *ngIf="sortFields.created_on === 'Asc'">&#8593;</div>
+                  <div *ngIf="sortFields.created_on === 'Desc'">&#8595;</div>
                 </div>
                 <div>
                   <input (input)="searchColumn('search')" placeholder="Search" class="form-control"
@@ -90,10 +89,10 @@
                 </div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('requestor')">
+                <div class="alignLeft" (click)="sortRequestData('requestor')">
                   <div>Requestor</div>
-                  <div *ngIf="!reports['requestor']">&#8593;</div>
-                  <div *ngIf="reports['requestor']">&#8595;</div>
+                  <div *ngIf="sortFields.requestor === 'Asc'">&#8593;</div>
+                  <div *ngIf="sortFields.requestor === 'Desc'">&#8595;</div>
                 </div>
                 <div>
                   <input (input)="searchColumn('search')" placeholder="Search" class="form-control"
@@ -101,34 +100,32 @@
                 </div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('on_behalf_of')">
+                <div class="alignLeft" (click)="sortRequestData('on_behalf_of')">
                   <div>On Behalf of</div>
-                  <div *ngIf="!reports['on_behalf_of']">&#8593;</div>
-                  <div *ngIf="reports['on_behalf_of']">&#8595;</div>
+                  <div *ngIf="sortFields.on_behalf_of === 'Asc'">&#8593;</div>
+                  <div *ngIf="sortFields.on_behalf_of === 'Desc'">&#8595;</div>
                 </div>
                 <div>
                   <input (input)="searchColumn('search')" placeholder="Search" class="form-control"
-                    [(ngModel)]="searchFields.on_behalf_of" name="on_behalf_of"
-                    [ngModelOptions]="{standalone: true}">
+                    [(ngModel)]="searchFields.on_behalf_of" name="on_behalf_of" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('title')">
+                <div class="alignLeft" (click)="sortRequestData('title')">
                   <div>Title</div>
-                  <div *ngIf="!reports['title']">&#8593;</div>
-                  <div *ngIf="reports['title']">&#8595;</div>
+                  <div *ngIf="sortFields.title === 'Asc'">&#8593;</div>
+                  <div *ngIf="sortFields.title === 'Desc'">&#8595;</div>
                 </div>
                 <div>
                   <input (input)="searchColumn('search')" placeholder="Search" class="form-control"
-                   [(ngModel)]="searchFields.title"
-                    name="title" [ngModelOptions]="{standalone: true}">
+                    [(ngModel)]="searchFields.title" name="title" [ngModelOptions]="{standalone: true}">
                 </div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('frequency')">
+                <div class="alignLeft" (click)="sortRequestData('frequency')">
                   <div>Frequency</div>
-                  <div *ngIf="!reports['frequency']">&#8593;</div>
-                  <div *ngIf="reports['frequency']">&#8595;</div>
+                  <div *ngIf="sortFields.frequency === 'Asc'">&#8593;</div>
+                  <div *ngIf="sortFields.frequency === 'Desc'">&#8595;</div>
                 </div>
                 <div>
                   <input (input)="searchColumn('search')" [ngModelOptions]="{standalone: true}" placeholder="Search"
@@ -136,10 +133,10 @@
                 </div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('assigned_to')">
+                <div class="alignLeft" (click)="sortRequestData('assigned_to')">
                   <div>Assigned To</div>
-                  <div *ngIf="!reports['assigned_to']">&#8593;</div>
-                  <div *ngIf="reports['assigned_to']">&#8595;</div>
+                  <div *ngIf="sortFields.assigned_to === 'Asc'">&#8593;</div>
+                  <div *ngIf="sortFields.assigned_to === 'Desc'">&#8595;</div>
                 </div>
                 <div>
                   <input (input)="searchColumn('search')" [ngModelOptions]="{standalone: true}" placeholder="Search"
@@ -166,10 +163,10 @@
                 </div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('ddm_rmp_status_date')">
+                <div class="alignLeft" (click)="sortRequestData('ddm_rmp_status_date')">
                   <div>Status Date</div>
-                  <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
-                  <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
+                  <div *ngIf="sortFields.ddm_rmp_status_date === 'Asc'">&#8593;</div>
+                  <div *ngIf="sortFields.ddm_rmp_status_date === 'Desc'">&#8595;</div>
                 </div>
                 <div>
                   <input (input)="searchColumn('search')" [ngModelOptions]="{standalone: true}" placeholder="Search"
@@ -188,9 +185,8 @@
             </tr>
           </thead>
           <!-- Table body contents -->
-          <tbody>
-            <ng-container
-              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | slice : paginatorLowerValue : paginatorHigherValue ;">
+          <tbody *ngIf="reports.length">
+            <ng-container *ngFor="let element of reports">
               <tr class="clickable">
                 <td style="padding:6px;width: 100%;">
               <tr class="row">
@@ -213,7 +209,7 @@
               </td>
               <td>
                 <div>
-                  {{element.created_on| date: 'dd-MMM-yyyy' }}
+                  {{ element.created_on1 }}
                 </div>
               </td>
               <td>
@@ -242,8 +238,9 @@
               </td>
               <td>
                 <div>
-                  <span *ngIf="element.frequency == 'Recurring'">Freq Chg</span>
-                  <span *ngIf="element.frequency != 'Recurring'">{{element?.frequency}}</span>
+                  {{ element.frequency }}
+                  <!-- <span *ngIf="element.frequency == 'Recurring'">Freq Chg</span>
+                  <span *ngIf="element.frequency != 'Recurring'">{{element?.frequency}}</span> -->
                 </div>
               </td>
               <td>
@@ -288,7 +285,7 @@
               </td>
               <td>
                 <div>
-                  {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
+                  {{ element.ddm_rmp_status_date1 }}
                 </div>
               </td>
               <td>
@@ -374,6 +371,11 @@
               </tr>
             </ng-container>
           </tbody>
+          <tbody *ngIf="!reports.length">
+            <tr>
+              <td align="center" colspan="13" style="border:unset;padding: 50px 0px;">No Data Found</td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <div style="display:flex; align-items: flex-end;flex-direction: row;width:94vw">
@@ -384,9 +386,9 @@
     </div>
   </div>
 </div>
-<div class="flex-container row tool-body" *ngIf="!reports" style="background: #f1f1f1">
+<!-- <div class="flex-container row tool-body" *ngIf="!reports.length" style="background: #f1f1f1">
   <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
-</div>
+</div> -->
 <div id="ModalComment" class="modal fade" role="dialog" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -625,10 +627,10 @@
             </div>
             <div class="div-wrap" *ngIf='special_identifier && special_identifier.length'>
               <b style="font-size:120%">Special Identifiers</b>
-            <div *ngFor='let spcl of special_identifier'> 
-             <b>{{spcl.label}}:</b>&nbsp;&nbsp;<span>{{spcl.value}}</span>
+              <div *ngFor='let spcl of special_identifier'>
+                <b>{{spcl.label}}:</b>&nbsp;&nbsp;<span>{{spcl.value}}</span>
+              </div>
             </div>
-          </div>
             <div class="div-wrap">
               <b>Emails:</b> &nbsp;&nbsp;
               <span>{{dl_list}}</span>
@@ -713,30 +715,30 @@
                 <br>
               </div>
               <div class="div-wrap">
-                  <b>DOSP - Orders Processed:</b> &nbsp;&nbsp;
-                  <span *ngFor="let element of summary?.ost_data.data_date_range">
-                    <b>Start:</b>&nbsp;{{element?.dosp_start_date| date: 'dd-MMM-yyyy'}}
-                    <b>End:</b>&nbsp;{{element?.dosp_end_date| date: 'dd-MMM-yyyy' }}
-                  </span>
-                  <br>
-                </div>
-                <div class="div-wrap" *ngIf='is_vin_level_report'>
-                       <b>Is this a Order Number/VIN level detail report?:</b>
-                    <span>
-                            {{is_vin_level_report}}
-                    </span>
-                </div>
-                <div class="div-wrap" *ngIf='is_summary_report'>
-                    <b>Is this a summary report with metrics?:</b>
-                    <span>
-                            {{is_summary_report}}
-                    </span>
-                </div>
-                <div class="div-wrap">
-                    <b>Additional Requirements:</b> &nbsp;&nbsp;
-                    <span>{{summary?.additional_req}}</span>
-                    <br>
-                </div>
+                <b>DOSP - Orders Processed:</b> &nbsp;&nbsp;
+                <span *ngFor="let element of summary?.ost_data.data_date_range">
+                  <b>Start:</b>&nbsp;{{element?.dosp_start_date| date: 'dd-MMM-yyyy'}}
+                  <b>End:</b>&nbsp;{{element?.dosp_end_date| date: 'dd-MMM-yyyy' }}
+                </span>
+                <br>
+              </div>
+              <div class="div-wrap" *ngIf='is_vin_level_report'>
+                <b>Is this a Order Number/VIN level detail report?:</b>
+                <span>
+                  {{is_vin_level_report}}
+                </span>
+              </div>
+              <div class="div-wrap" *ngIf='is_summary_report'>
+                <b>Is this a summary report with metrics?:</b>
+                <span>
+                  {{is_summary_report}}
+                </span>
+              </div>
+              <div class="div-wrap">
+                <b>Additional Requirements:</b> &nbsp;&nbsp;
+                <span>{{summary?.additional_req}}</span>
+                <br>
+              </div>
             </div>
             <!--                                Order To Sale Start                                    -->
 

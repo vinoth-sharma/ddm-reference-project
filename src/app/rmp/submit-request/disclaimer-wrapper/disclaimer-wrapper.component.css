@@ -72,3 +72,11 @@ h3 {
 .disclaimer-footer {
     margin-left : 41vw;
 }
+
+::ng-deep .cdk-global-overlay-wrapper{
+    align-items: flex-start !important;
+}
+
+::ng-deep .cdk-overlay-pane{
+    margin-top:4vh;
+}

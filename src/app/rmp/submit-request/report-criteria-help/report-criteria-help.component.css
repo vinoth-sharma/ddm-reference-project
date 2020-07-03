@@ -1,0 +1,22 @@
+::ng-deep quill-editor .ql-container.ql-snow{
+    height: 41.5vh;
+    overflow: auto;
+}
+
+::ng-deep .cdk-global-overlay-wrapper{
+    align-items: flex-start ;
+}
+
+::ng-deep .cdk-overlay-pane{
+    margin-top:4vh;
+}
+
+.modal-container{
+    width: 40vw;
+    height: 75vh;
+    overflow: hidden;
+}
+
+.modal-body{
+    overflow: auto;
+}

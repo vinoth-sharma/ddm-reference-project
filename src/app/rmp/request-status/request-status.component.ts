@@ -26,26 +26,13 @@ declare var $: any;
 export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public searchText: any = '';
-  public p: any;
   public frequency_flag: any;
   public comment_text: any;
-  public param = "open_count";
-  public orderType = 'desc';
-  public fieldType = 'string';
   public enableUpdateData = false;
   public textChange = false;
   public StatusDropdownSettings = {};
   public hidVar = true;
-  public column: string[];
   public reports: any = [];
-  public assigned: any;
-  public status_date: any;
-  public status: any;
-  public user: any;
-  public links: any;
-  public behalf: any;
-  public query: any;
   public cancel = {};
   public date: String;
   public finalData = []
@@ -56,29 +43,22 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     "request_id": "",
     "requestor": ""
   };
-  public document_detailsEdit = {};
   public cancel_report = {
     "cancel_reports": []
   };
   public accept_report = {
     "accept_reports": []
   };
-  public add_link: { 'report_id': number; "link_title": string; "link_to_results": string; };
   public edit_link: { 'report_id': number; "link_title": string; "link_to_results": string; };
   public active_report_id_enter_comment: number;
   public collection = [];
-  public status_reports: any;
-  public id_get: any;
   public user_id: any;
   public assignReportId: any;
-  public assignFullname: any
   public contacts: Array<string>;
   public dl_update = {
     "request_id": null,
     "dl_list": []
   };
-  public contents: any;
-  public enable_edits = false
   public editModes = false;
   public original_contents;
   public namings: string = "Loading";
@@ -109,7 +89,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public tbddropdownSettingsAssigned = {};
   public tbddropdownListfinalAssigned = [];
   public usersList = [];
-  // public showODCBtn: boolean = false;
   public assignOwner = {
     'request_id': "",
     'users_table_id': "",
@@ -124,7 +103,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public ackList = {
     'data': []
   };
-  public parentsSubject: Rx.Subject<any> = new Rx.Subject();
   public description_texts = {
     "ddm_rmp_desc_text_id": 13,
     "module_name": "Help_RequestStatus",
@@ -154,7 +132,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public model: string;
   public notification_set: Set<any>;
   public self_email: any;
-  public Status_List: { 'status_id': number; 'status': string; 'displayValue': string }[];
+  public Status_List: { 'status_id': number; 'status': string;}[];
   public setbuilder_sort: any[];
   public filters = {
     global: '',
@@ -186,19 +164,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public changeDoc: boolean = false;
   public linkToUrlFlag = true;
 
-
-  public paginatorLowerValue = 0;
-  public paginatorHigherValue = 10;
-  public searchGlobalObj = {
-    'ddm_rmp_post_report_id': this.searchText,
-    'ddm_rmp_status_date': this.searchText,
-    'created_on': this.searchText,
-    'title': this.searchText,
-    'requestor': this.searchText,
-    'on_behalf_of': this.searchText,
-    'assigned_to': this.searchText,
-    'status': this.searchText
-  };
   public toolbarTooltips = {
     'font': 'Select a font',
     'size': 'Select a font size',
@@ -242,6 +207,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public is_vin_level_report: any;
   public is_summary_report: any;
 
+  //search text box data binding elements
   public globalSearch = "";
   public searchFields = {
     ddm_rmp_post_report_id: "",
@@ -254,6 +220,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     status: "",
     ddm_rmp_status_date1: ""
   }
+  //Sort column data binding elements
   public sortFields = {
     ddm_rmp_post_report_id: "",
     created_on: "",
@@ -271,7 +238,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public paginatorOptions: number[] = [5, 10, 25, 100];
   public totalRecords = 0;
 
-  statusMasterData = ["Incomplete", "Pending", "In Process", "Completed", "Freq Chg", "Cancelled"]
   statusSelected = [];
   downloadInProgress:boolean = false;
 
@@ -287,12 +253,12 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.model = "";
     this.getRoleDetails();
     this.Status_List = [
-      { 'status_id': 1, 'status': 'Incomplete', 'displayValue': "Incomplete" },
-      { 'status_id': 2, 'status': 'Pending', 'displayValue': "Pending" },
-      { 'status_id': 3, 'status': 'Active', 'displayValue': "In Process" },
-      { 'status_id': 4, 'status': 'Completed', 'displayValue': "Completed" },
-      { 'status_id': 5, 'status': 'Recurring', 'displayValue': "Freq Chg" },
-      { 'status_id': 6, 'status': 'Cancelled', 'displayValue': "Cancelled" }
+      { 'status_id': 1, 'status': 'Incomplete' },
+      { 'status_id': 2, 'status': 'Pending' },
+      { 'status_id': 3, 'status': 'Active' },
+      { 'status_id': 4, 'status': 'Completed'},
+      { 'status_id': 5, 'status': 'Recurring' },
+      { 'status_id': 6, 'status': 'Cancelled' }
     ];
     this.contacts = [];
     this.currentLookUpTableData();
@@ -538,18 +504,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.namings = this.original_contents;
   }
 
-  // // supdated the order type
-  // public sort(typeVal) {
-  //   this.param = typeVal.toLowerCase().replace(/\s/g, "_");
-  //   this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
-  //   this.orderType = this.reports[typeVal];
-  //   if (['ddm_rmp_post_report_id'].includes(this.param)) {
-  //     this.fieldType = 'number';
-  //   } else {
-  //     this.fieldType = 'string';
-  //   }
-  // }
-
   // get the details of checked report
   public Report_request(element, event) {
     this.cancel = element.ddm_rmp_post_report_id;
@@ -560,12 +514,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         ele.isChecked = event.target.checked;
       } else ele.isChecked = false;
     });
-  }
-
-  public DealerAllocation(event) {
-  }
-
-  public OrderToSale(event) {
   }
 
   // check status of selected report and take action on based on status
@@ -742,22 +690,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public closeTBD() {
     this.tbdselectedItems_report = [];
   }
-
-  // // sort reports based on ascending or descending order
-  // public sort_by() {
-  //   Utils.showSpinner();
-  //   if (this.sorted_by == "asc")
-  //     this.sorted_by = "desc";
-  //   else if (this.sorted_by == "desc")
-  //     this.sorted_by = "asc";
-
-  //   const obj = { 'sort_by': this.sorted_by, 'page_no': 1, 'per_page': 6 };
-
-  //   this.django.list_of_reports(obj).subscribe(list => {
-  //     this.reports = list["report_list"];
-  //     Utils.hideSpinner();
-  //   });
-  // }
 
   // converting status into Active of reports
   public Accept() {
@@ -1042,7 +974,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     }
   }
 
-  // changes done by Ganesh
   // displaying details of pop-up of selected report
   public query_criteria_click(query_report_id) {
     Utils.showSpinner();
@@ -1511,11 +1442,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.selectedReportStatus = "Active";
   }
 
-  // // capturing report status from input
-  // public setselectReportStatus() {
-  //   this.selectReportStatus = document.querySelector("#selectReportStatus")["value"]
-  // }
-
   // saving report status to server
   public saveReportStatus() {
     let link = document.querySelector("#add-url-input")["value"]
@@ -1529,13 +1455,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         //Refresh Request data from Backend
         this.resetSearchSort();
         this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
-
-        // this.reports.map(item => {
-        //   if (item.ddm_rmp_post_report_id == this.linkUrlId) {
-        //     item.status = "Completed"
-        //     item.ddm_rmp_status_date = new Date()
-        //   }
-        // })
       }
     }, error => {
       this.toastr.error("Failed To Change Status, Please Try Again")
@@ -1559,20 +1478,11 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     else this.linkToUrlFlag = false;
   }
 
-  // public onPaginationChange(event) {
-  //   console.log(event);
-
-  //   this.paginatorLowerValue = event.pageIndex * event.pageSize;
-  //   this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
-  // }
-
-
   public changeStatusFilterData() {
     if (this.statusSelected.length)
       this.searchFields.status = this.statusSelected[0].status;
     else
       this.searchFields.status = "";
-
     this.searchColumn("search");
   }
 
@@ -1620,9 +1530,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
           body['sort_filter'] = { col_val: col, sort_type: value }
       }
     }
-
-
-    console.log(body);
     this.getRequestListHttp(body);
   }
 
@@ -1640,7 +1547,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         this.sortFields[col] = ""
       }
     }
-
     this.sortFields[column] = l_order;
     this.searchColumn("sort");
   }

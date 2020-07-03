@@ -255,9 +255,9 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.Status_List = [
       { 'status_id': 1, 'status': 'Incomplete' },
       { 'status_id': 2, 'status': 'Pending' },
-      { 'status_id': 3, 'status': 'Active' },
+      { 'status_id': 3, 'status': 'In Process' },
       { 'status_id': 4, 'status': 'Completed'},
-      { 'status_id': 5, 'status': 'Recurring' },
+      { 'status_id': 5, 'status': 'Freq Chg' },
       { 'status_id': 6, 'status': 'Cancelled' }
     ];
     this.contacts = [];
@@ -507,7 +507,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   // get the details of checked report
   public Report_request(element, event) {
     this.cancel = element.ddm_rmp_post_report_id;
-    // this.showODCBtn = element['status'] === 'Active' ? true : false;
     this.reports.forEach(ele => {
       if (ele.ddm_rmp_post_report_id === element.ddm_rmp_post_report_id) {
         this.finalData = [ele];
@@ -534,8 +533,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
                 $('#CancelRequest').modal('hide');
                 $('#CancelPermanently').modal({ backdrop: "static", keyboard: true, show: true });
               }
-              else if (e.status == "Completed" || e.status == "Active" ||
-                e.status == "Recurring") {
+              else if (e.status == "Completed" || e.status == "In Process" ||
+                e.status == "Freq Chg") {
                 $('#CancelPermanently').modal('hide');
                 $('#CancelRequest').modal({ backdrop: "static", keyboard: true, show: true });
               }
@@ -712,11 +711,11 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
             {
               'report_id': this.finalData[0]['ddm_rmp_post_report_id'],
               'assign_to': this.user_name, 'status_date': this.date,
-              'status': 'Active'
+              'status': 'In Process'
             });
 
           this.django.accept_report(this.accept_report).subscribe(response => {
-            this.toastr.success("Status Changed to Active");
+            this.toastr.success("Status Changed to In Process");
             Utils.hideSpinner();
             this.finalData = [];
             //Refresh Request data from Backend
@@ -828,11 +827,11 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
       this.finalData = [];
     } else if (this.checkbox_length == 1) {
-      if (this.finalData[0].status != "Active") {
+      if (this.finalData[0].status != "In Process") {
         this.errorModalMessageRequest = "Request not Active yet. Can't post link to results.";
         $('#errorModalRequest').modal({ backdrop: "static", keyboard: true, show: true });
         this.finalData = [];
-      } else if (this.finalData[0].status == "Active" ||
+      } else if (this.finalData[0].status == "In Process" ||
         this.finalData[0].status == "Completed") { }
       $("#post_link_button:button").trigger('click');
     }
@@ -1438,8 +1437,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   // setting report id inorder to edit
   public openEditStatusModal(element) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
-    document.querySelector("#selectReportStatus")["value"] = "Active";
-    this.selectedReportStatus = "Active";
+    document.querySelector("#selectReportStatus")["value"] = "In Process";
+    this.selectedReportStatus = "In Process";
   }
 
   // saving report status to server

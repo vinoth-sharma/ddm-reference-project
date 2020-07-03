@@ -120,7 +120,12 @@ th,td {
 .table-striped > tbody > tr:nth-child(2n + 1) > th {
   background-color: white;
 }
-
+tbody.noData tr:hover{
+  background-color: unset;
+}
+tbody.noData>tr:hover>td, .table-hover>tbody>tr:hover>th{
+  background-color: unset;
+}
 .collapse {
   width: 100%;
   padding: 0;

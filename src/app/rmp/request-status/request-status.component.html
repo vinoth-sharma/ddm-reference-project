@@ -371,7 +371,7 @@
               </tr>
             </ng-container>
           </tbody>
-          <tbody *ngIf="!reports.length">
+          <tbody *ngIf="!reports.length" class="noData">
             <tr>
               <td align="center" colspan="13" style="border:unset;padding: 50px 0px;">No Data Found</td>
             </tr>
@@ -936,7 +936,9 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" (click)="TBDsave()">Save Changes
+        <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" 
+        (click)="TBDsave()" [disabled]="!tbdselectedItems_report.length"
+        >Save Changes
         </button>
         <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
           (click)="closeTBD()">Close</button>

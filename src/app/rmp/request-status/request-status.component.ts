@@ -681,6 +681,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       this.Tbd_res = ele;
       Utils.hideSpinner();
       this.finalData = [];
+      $('#tbdModal').modal('hide');
       this.toastr.success("Updated Successfully");
       //Refresh Request data from Backend
       this.resetSearchSort();

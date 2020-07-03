@@ -911,13 +911,12 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         };
         this.django.post_link(this.edit_link).subscribe(response => {
           this.add_response = response;
-          const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 };
-          this.django.list_of_reports(obj).subscribe(list => {
-            this.reports = list["report_list"];
-            Utils.hideSpinner();
-            this.finalData = [];
-          })
+          Utils.hideSpinner();
+          this.finalData = [];
           $("#postLink").modal('hide');
+          //Refresh Request data from Backend
+          this.resetSearchSort();
+          this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
         });
       }
       else if (this.checkbox_length == 0) {

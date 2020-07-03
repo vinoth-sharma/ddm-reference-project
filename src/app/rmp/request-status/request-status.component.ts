@@ -273,6 +273,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
 
   statusMasterData = ["Incomplete", "Pending", "In Process", "Completed", "Freq Chg", "Cancelled"]
   statusSelected = [];
+  downloadInProgress:boolean = false;
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -817,13 +818,13 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   // download list of reports into excel sheet
-  public xlsxJson() {
+  public xlsxJson(data) {
     let fileName = "Request_" + this.dateFormat(new Date()); // changes done by Ganesh
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
       const headings = ["Request Number", "Created On", "Requestor", "On Behalf Of", "Title", "Frequency", "Assigned To", "Status", "Status Date"]
-      const reportBody = this.createNewBodyForExcel()
+      const reportBody = this.createNewBodyForExcel(data)
       headings.forEach((heading, index) => {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
@@ -853,23 +854,35 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   // creating a body to generate excel report
-  public createNewBodyForExcel() {
-    let reportBody = []
-    this.reports.forEach(item => {
+  public createNewBodyForExcel(data) {
+    let reportBody = [];
+    data.forEach(item => {
       let obj = {
         "Request Number": item["ddm_rmp_post_report_id"],
-        "Created On": item["created_on"],
+        "Created On": item["created_on1"],
         "Requestor": item["requestor"],
         "On Behalf Of": item["on_behalf_of"],
         "Title": item["title"],
         "Frequency": item["frequency"],
         "Assigned To": item["assigned_to"],
         "Status": item["status"],
-        "Status Date": new Date(item["ddm_rmp_status_date"]).toDateString()
+        "Status Date": item["ddm_rmp_status_date1"]
       }
       reportBody.push(obj)
     })
     return reportBody
+  }
+
+  //download all the request data into xlsx
+  downloadRequestDataExcel(){
+    this.downloadInProgress = true;
+    const body = {page_no :1,page_size:1000}
+    this.django.list_of_requests(body).subscribe((list: any) => {
+      this.xlsxJson(list.data);
+      this.downloadInProgress = false;
+    },err=>{
+      this.downloadInProgress = false;
+    })
   }
 
   public post_link() {

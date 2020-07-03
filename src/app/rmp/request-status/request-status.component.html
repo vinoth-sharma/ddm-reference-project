@@ -18,7 +18,7 @@
                 data-target="#UserDetails" data-backdrop="static" data-keyboard="false">
                 User Details
               </button>
-              <button class="press-button" (click)="xlsxJson()">
+              <button class="press-button" (click)="downloadRequestDataExcel()" [disabled]="downloadInProgress">
                 <a data-toggle="tooltip" title="Download">
                   <i id="ic" class="material-icons" style="margin-top:2px">get_app</i>
                 </a>

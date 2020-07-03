@@ -183,8 +183,7 @@
               <td class="change-freq"
                 (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
                 <div>
-                  <span *ngIf="element.frequency == 'Recurring'">Freq Chg</span>
-                  <span *ngIf="element.frequency != 'Recurring'">{{element?.frequency}}</span>
+                  {{element?.frequency}}
                 </div>
               </td>
               <td *ngFor="let weekDay of weekDays">
@@ -336,7 +335,7 @@
                   <div class="col-xs-7">
                     <select class="form-control pt-0 pb-0" [(ngModel)]="selectedNewFrequency" id="reportFormat"
                       (change)="setSelectedFrequency($event.target.value)">
-                      <option *ngFor="let choice of frequencySelections" [value]="choice.value">{{ choice?.name }}
+                      <option *ngFor="let choice of frequencySelections" [value]="choice.value">{{ choice?.value }}
                       </option>
                     </select>
                   </div>

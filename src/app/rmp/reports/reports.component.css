@@ -90,9 +90,6 @@ label {
   font-size: 30px;
 }
 
-.modal-body {
-  max-height: 400px;
-}
 
 label input[type="checkbox"] {
   display: none;
@@ -191,10 +188,6 @@ td > div {
   padding: 3px;
 }
 
-.modal-dialog{
-  margin-top: auto;
-  top:15%
-}
 
 .material-icons {
   margin-right: none;
@@ -252,4 +245,13 @@ td,th{
 
 .title-position {
   margin-top: 1vh;
+}
+
+#helpModal .modal-content{
+  height:75vh;
+}
+
+::ng-deep .quillEditor .quill .ql-container .ql-editor {
+  height: 42.5vh;
+  overflow: auto; 
 }

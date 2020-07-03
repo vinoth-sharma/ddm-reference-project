@@ -161,7 +161,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public linkUrlId: number;
   public addUrlTitle: String = '';
   public linkToUrlFlag = true;
-  public frequencySelections = [{ name: 'One Time', value: "One Time" }, { name: "Freq Chg", value: 'Recurring' }]
+  public frequencySelections = [{ name: 'One Time', value: "One Time" }, { name: "Freq Chg", value: 'Freq Chg' }]
   public selectedNewFrequency: string = "";
   public isRecurringFrequencyHidden: boolean = false;
   public toolbarTooltips = {
@@ -695,7 +695,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public updateFreq(request_id) {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
-    this.jsonfinal['status'] = "Recurring"
+    this.jsonfinal['status'] = "Freq Chg"
     this.jsonfinal['frequency'] = this.selectedNewFrequency;
     this.setFrequency();
     let comment = "Frequency has changed from : " + this.getPreviousFreqData(this.frequencyLength) + "\n" + " To :" + "\n" + this.getCurrentFreqData(this.jsonfinal);

@@ -183,7 +183,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public tbd_assign_res: any;
   public linkUrlId: number
   public addUrlTitle: String = "";
-  public selectReportStatus = "";
+  public selectedReportStatus = "";
   public changeDoc: boolean = false;
   public linkToUrlFlag = true;
 
@@ -1508,13 +1508,14 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   // setting report id inorder to edit
   public openEditStatusModal(element) {
     this.linkUrlId = element.ddm_rmp_post_report_id;
-    document.querySelector("#selectReportStatus")["value"] = "Active"
+    document.querySelector("#selectReportStatus")["value"] = "Active";
+    this.selectedReportStatus = "Active";
   }
 
-  // capturing report status from input
-  public setselectReportStatus() {
-    this.selectReportStatus = document.querySelector("#selectReportStatus")["value"]
-  }
+  // // capturing report status from input
+  // public setselectReportStatus() {
+  //   this.selectReportStatus = document.querySelector("#selectReportStatus")["value"]
+  // }
 
   // saving report status to server
   public saveReportStatus() {
@@ -1525,13 +1526,17 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       if (response['message'] == "updated successfully") {
         $('#changeStatusModal').modal('hide');
         this.toastr.success("Status updated Successfully !")
-        Utils.hideSpinner()
-        this.reports.map(item => {
-          if (item.ddm_rmp_post_report_id == this.linkUrlId) {
-            item.status = "Completed"
-            item.ddm_rmp_status_date = new Date()
-          }
-        })
+        Utils.hideSpinner();
+        //Refresh Request data from Backend
+        this.resetSearchSort();
+        this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
+
+        // this.reports.map(item => {
+        //   if (item.ddm_rmp_post_report_id == this.linkUrlId) {
+        //     item.status = "Completed"
+        //     item.ddm_rmp_status_date = new Date()
+        //   }
+        // })
       }
     }, error => {
       this.toastr.error("Failed To Change Status, Please Try Again")

@@ -682,9 +682,9 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       Utils.hideSpinner();
       this.finalData = [];
       this.toastr.success("Updated Successfully");
-     //Refresh Request data from Backend
-     this.resetSearchSort();
-     this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
+      //Refresh Request data from Backend
+      this.resetSearchSort();
+      this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
     }, err => {
       Utils.hideSpinner();
       this.toastr.error("Server Error");
@@ -1485,12 +1485,11 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         document.querySelector("#add-url-input")["value"] = "";
         $('#addUrl').modal('hide');
         this.toastr.success("URL Updated Successfully !")
-        Utils.hideSpinner()
-        this.reports.map(item => {
-          if (item.ddm_rmp_post_report_id == this.linkUrlId) {
-            item.link_to_results = link
-          }
-        })
+        Utils.hideSpinner();
+        
+        //Refresh Request data from Backend
+        this.resetSearchSort();
+        this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
       }
     }, error => {
       this.toastr.error(error.error.error.link_to_results.join())

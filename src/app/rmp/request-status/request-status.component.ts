@@ -1427,16 +1427,15 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       });
     this.django.cancel_report(this.onGoingStatus).subscribe(response => {
       this.ongoingStatusResult = response;
-      const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
-      this.django.list_of_reports(obj).subscribe(list => {
-        this.reports = list["report_list"]
-        Utils.hideSpinner();
-        this.finalData = []
-      }, err => {
-        Utils.hideSpinner();
-      });
+      this.finalData = [];
+      this.toastr.success(`Request id #${requestId} - Marked as completed`);
+      Utils.hideSpinner();
+      //Refresh Request data from Backend
+      this.resetSearchSort();
+      this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
     }, err => {
       Utils.hideSpinner();
+      this.toastr.success(`Server Error`);
     })
   }
 

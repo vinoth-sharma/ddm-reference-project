@@ -75,7 +75,10 @@
           <button mat-menu-item disabled>français</button>
         </mat-menu>
         <mat-menu #help="matMenu">
-          <button mat-menu-item class="button-rmp" (click)="redirect('RMP')">RMP</button>
+          <button mat-menu-item class="button-rmp" (click)="redirect('admin')" *ngIf="roleName.role == 'Admin'">User
+            Guide For Admin </button>
+          <button mat-menu-item class="button-rmp" (click)="redirect('business_user')">User Guide For Business User
+          </button>
         </mat-menu>
       </div>
     </div>

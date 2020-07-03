@@ -146,3 +146,12 @@ angular4-multiselect > .c-btn {
     padding-top: 1vh;
     padding-left: 1.5vw;
 }
+
+#helpModal .modal-content{
+    height:75vh;
+}
+
+::ng-deep .quillEditor .quill .ql-container .ql-editor {
+height: 42.5vh;
+overflow: auto; 
+}

@@ -216,8 +216,8 @@
           <div class="modal-header" style="justify-content: flex-start;">
             <h5 class="modal-title help-title">Help</h5>
           </div>
-          <div class="modal-bodydisplay-notes-scroll-modal">
-            <div class="row" style="display: flex;padding: 10px;">
+          <div class="modal-body display-notes-scroll-modal">
+            <div class="row" style="display: flex;padding: 10px 0 10px 10px;">
               <div style="margin-left: 20px;width: 86%;">
                 <span *ngIf="editModes">
                   <button mat-raised-button color="primary" (click)="content_edits()"
@@ -240,7 +240,7 @@
             </div>
           </div>
           <div class="modal-footer modal-footer-pad">
-            <button mat-button (click)="resetHelp()" style="background-color: #6c757d;color: white"
+            <button mat-button (click)="resetHelp()" [cssBtn]="'cancel'"
               data-dismiss="modal">
               Close
             </button>

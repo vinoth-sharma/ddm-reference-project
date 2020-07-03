@@ -102,9 +102,7 @@ a:active {
     padding: 3px;
 }
 
-::ng-deep .info-quill .quill .ql-container .ql-editor {
-    max-height: 53vh;
-}
+
 
 @media print {
     .main-tool-body-header {
@@ -185,4 +183,8 @@ h3 {
 
 .information {
     margin-top: 0.5vh;
+}
+
+#helpModal .modal-content{
+    height:75vh;
 }

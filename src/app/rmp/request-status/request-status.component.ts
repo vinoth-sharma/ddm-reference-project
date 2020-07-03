@@ -538,17 +538,17 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.namings = this.original_contents;
   }
 
-  // supdated the order type
-  public sort(typeVal) {
-    this.param = typeVal.toLowerCase().replace(/\s/g, "_");
-    this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
-    this.orderType = this.reports[typeVal];
-    if (['ddm_rmp_post_report_id'].includes(this.param)) {
-      this.fieldType = 'number';
-    } else {
-      this.fieldType = 'string';
-    }
-  }
+  // // supdated the order type
+  // public sort(typeVal) {
+  //   this.param = typeVal.toLowerCase().replace(/\s/g, "_");
+  //   this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
+  //   this.orderType = this.reports[typeVal];
+  //   if (['ddm_rmp_post_report_id'].includes(this.param)) {
+  //     this.fieldType = 'number';
+  //   } else {
+  //     this.fieldType = 'string';
+  //   }
+  // }
 
   // get the details of checked report
   public Report_request(element, event) {

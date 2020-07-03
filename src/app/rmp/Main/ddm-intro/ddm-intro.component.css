@@ -21,11 +21,7 @@
 }
 
  /* changes done Ganesha */
-::ng-deep .quill .ql-container .ql-editor {
-        overflow-y: auto;
-        max-height: 50vh;
-        height: 50vh;
-}
+
 
 .editButton {
     background: transparent;
@@ -121,4 +117,21 @@ a:active {
 
 h3 {
     margin-top: 0%;
+}
+
+#helpModal .modal-content{
+    height:75vh;
+}
+
+::ng-deep .main-tool-body-content .information .quill .ql-container .ql-editor {
+    border: lightgray solid 1px;
+    height: 42.5vh;
+    overflow: auto;
+}
+
+::ng-deep #ddm-intro-pdf .quill .ql-container .ql-editor {
+    border: lightgray solid 1px;
+    max-height: 54vh !important;
+    min-height: 54vh !important;
+    overflow: auto !important;
 }

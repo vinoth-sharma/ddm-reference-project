@@ -99,6 +99,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public special_identifier: any;
   public concensus_data: any;
   public division_dropdown: any;
+  public attached_file_names: any;
   public tbd_report = [];
   public tbdselectedItems_report = [];
   public tbddropdownSettings_report = {};
@@ -1067,7 +1068,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         let tempArray = [];
         this.frequency_flag = true;
         response["frequency_data"].map(element => {
-            tempArray.push(element.select_frequency_values);
+          tempArray.push(element.select_frequency_values);
         });
         this.report_frequency = tempArray.join(", ");
       } else {
@@ -1162,8 +1163,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         if (response["ost_data"]["checkbox_data"].length) {
           let group = [];
           response["ost_data"]["checkbox_data"].map(ele => {
-            if(ele.ddm_rmp_lookup_ots_checkbox_values === 27 || ele.ddm_rmp_lookup_ots_checkbox_values === 55){
-              group.push('Turn rate:'+ ele.checkbox_description)
+            if (ele.ddm_rmp_lookup_ots_checkbox_values === 27 || ele.ddm_rmp_lookup_ots_checkbox_values === 55) {
+              group.push('Turn rate:' + ele.checkbox_description)
             } else group.push(ele.checkbox_description)
           })
           this.checkbox_data = group.join(',');
@@ -1233,6 +1234,15 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         response['dl_list'].map(element => list.push(element['distribution_list']))
         this.dl_list = list;
       }
+
+      if (response['is_attachment'] && response['attached_files_details'].length) {
+        let fileObjects = response['attached_files_details'];
+        this.attached_file_names = fileObjects.map(f => f.file_name).join(",")
+      }
+      else if (response['is_attachment'] == false) {
+        this.attached_file_names = ""
+      }
+
       this.text_notification = response["user_data"][0]['alternate_number'];
       this.summary = response;
       Utils.hideSpinner();
@@ -1289,7 +1299,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       this.dl_flag = true
     }
     else {
-      if(!this.contacts.includes(this.model)){
+      if (!this.contacts.includes(this.model)) {
         this.contacts.push(this.model);
         this.dl_flag = false
         this.model = "";

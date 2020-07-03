@@ -807,7 +807,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   //download all the request data into xlsx
   downloadRequestDataExcel(){
     this.downloadInProgress = true;
-    const body = {page_no :1,page_size:1000}
+    const body = { page_no : 1 , page_size: this.totalRecords }
     this.django.list_of_requests(body).subscribe((list: any) => {
       this.xlsxJson(list.data);
       this.downloadInProgress = false;
@@ -1550,6 +1550,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.searchColumn("sort");
   }
 
+  //get request data from backend table
   public getRequestListHttp(body) {
     Utils.showSpinner();
     this.django.list_of_requests(body).subscribe((list: any) => {

@@ -400,8 +400,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         if (ele['disclaimer_ack'] != null || ele['disclaimer_ack'] != undefined)
           this.ackList['data'].push(ele);
       });
-      this.tbddropdownListfinalAssigned = this.usersList.filter(item => item.role == 1);;
-      this.tbddropdownListfinal_report = this.usersList
+      this.tbddropdownListfinalAssigned = this.usersList.filter(item => item.role == 1);
+      this.tbddropdownListfinal_report = this.usersList;
       this.discList = check_user_data['data']['users_list'];
     });
 

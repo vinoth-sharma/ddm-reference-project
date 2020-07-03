@@ -491,7 +491,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
 
   // upload file to server
   public files() {
-    if (this.file['type'] == 'text/csv' || this.file['type'] == 'application/pdf' || this.file['type'] == 'application/msword' || this.file['type'] == 'application/vnd.ms-word.document.macroEnabled.12' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
+    if (this.file['type'] == 'text/csv' || this.file['type'] == 'application/pdf' || this.file['type'] == 'application/msword' || this.file['type'] == 'application/vnd.ms-word.document.macroEnabled.12' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel'|| this.file['type'] == 'application/zip'|| this.file['type'] == 'video/mp4') {
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       var formData = new FormData();
       formData.append('file_upload', this.file);
@@ -500,7 +500,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       formData.append('type', 'rmp');
 
       this.spinner.show();
-      this.django.ddm_rmp_file_data(formData).subscribe(response => {
+      this.django.ddm_rmp_file_data(formData).subscribe(response => {   
         this.django.get_files().subscribe(ele => {
           this.filesList = ele['list'];
           if (this.filesList) {
@@ -558,7 +558,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       this.document_detailsEdit["ddm_rmp_desc_text_admin_documents_id"] = this.editid;
       this.document_detailsEdit["title"] = document_title;
       this.document_detailsEdit["url"] = document_url;
-      this.django.ddm_rmp_admin_documents_put(this.document_detailsEdit).subscribe(response => {
+      this.django.ddm_rmp_admin_documents_put(this.document_detailsEdit).subscribe(response => { 
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_admin_documents;

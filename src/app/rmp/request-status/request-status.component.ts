@@ -720,13 +720,12 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.assignOwner_Assigned['assigned_to'] = this.tbdselectedItemsAssigned[0]['full_name'];
     this.django.ddm_rmp_assign_to(this.assignOwner_Assigned).subscribe(ele => {
       this.tbd_assign_res = ele;
-      const obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
-      this.django.list_of_reports(obj).subscribe(list => {
-        this.reports = list["report_list"];
-        Utils.hideSpinner();
-        this.finalData = [];
-      })
+      Utils.hideSpinner();
+      this.finalData = [];
       this.toastr.success("Updated Successfully");
+      //Refresh Request data from Backend
+      this.resetSearchSort();
+      this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });
     }, err => {
       Utils.hideSpinner();
       this.toastr.error("Server Error");
@@ -742,21 +741,21 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.tbdselectedItems_report = [];
   }
 
-  // sort reports based on ascending or descending order
-  public sort_by() {
-    Utils.showSpinner();
-    if (this.sorted_by == "asc")
-      this.sorted_by = "desc";
-    else if (this.sorted_by == "desc")
-      this.sorted_by = "asc";
+  // // sort reports based on ascending or descending order
+  // public sort_by() {
+  //   Utils.showSpinner();
+  //   if (this.sorted_by == "asc")
+  //     this.sorted_by = "desc";
+  //   else if (this.sorted_by == "desc")
+  //     this.sorted_by = "asc";
 
-    const obj = { 'sort_by': this.sorted_by, 'page_no': 1, 'per_page': 6 };
+  //   const obj = { 'sort_by': this.sorted_by, 'page_no': 1, 'per_page': 6 };
 
-    this.django.list_of_reports(obj).subscribe(list => {
-      this.reports = list["report_list"];
-      Utils.hideSpinner();
-    });
-  }
+  //   this.django.list_of_reports(obj).subscribe(list => {
+  //     this.reports = list["report_list"];
+  //     Utils.hideSpinner();
+  //   });
+  // }
 
   // converting status into Active of reports
   public Accept() {
@@ -1486,7 +1485,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         $('#addUrl').modal('hide');
         this.toastr.success("URL Updated Successfully !")
         Utils.hideSpinner();
-        
+
         //Refresh Request data from Backend
         this.resetSearchSort();
         this.getRequestListHttp({ page_no: 1, page_size: this.paginatorpageSize });

@@ -625,7 +625,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       $('#CancelRequest').modal('hide');
       this.toastr.success("The request-id : " + this.finalData[0]['ddm_rmp_post_report_id'] + " has been cancelled successfully")
       Utils.hideSpinner();
-      this.comment_text = "Cancelled"
+      this.comment_text = "Cancelled";
       this.extract_comment(true);
       //Refresh Request data from Backend
       this.resetSearchSort();
@@ -702,6 +702,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       this.assigned_res = ele;
       Utils.hideSpinner();
       this.finalData = [];
+      $('#CancelRequest').modal('hide');
       this.toastr.success("Updated Successfully");
       //Refresh Request data from Backend
       this.resetSearchSort();

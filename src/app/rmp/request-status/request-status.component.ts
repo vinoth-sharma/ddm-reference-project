@@ -156,7 +156,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public self_email: any;
   public Status_List: { 'status_id': number; 'status': string; 'displayValue': string }[];
   public setbuilder_sort: any[];
-  public statusFilter = [];
   public filters = {
     global: '',
     status: ''
@@ -273,6 +272,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public totalRecords = 0;
 
   statusMasterData = ["Incomplete", "Pending", "In Process", "Completed", "Freq Chg", "Cancelled"]
+  statusSelected = [];
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -425,7 +425,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       text: "Status",
       singleSelection: true,
       primaryKey: 'status_id',
-      labelKey: 'displayValue',
+      labelKey: 'status',
     };
   }
 
@@ -1391,16 +1391,6 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       });
   }
 
-  // Search by Request Number/Requestor/Title/Status
-  public filterData() {
-    if (this.statusFilter.length) {
-      this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
-    }
-    else {
-      this.filters.status = '';
-    }
-    this.searchObj = JSON.parse(JSON.stringify(this.filters));
-  }
 
   public searchUserList = (text$: Observable<string>) => {
     let vs = text$.pipe(
@@ -1563,6 +1553,16 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   //   this.paginatorHigherValue = event.pageIndex * event.pageSize + event.pageSize;
   // }
 
+
+  public changeStatusFilterData() {
+    if (this.statusSelected.length)
+      this.searchFields.status = this.statusSelected[0].status;
+    else
+      this.searchFields.status = "";
+
+    this.searchColumn("search");
+  }
+
   public searchColumn(type) {
 
     if (type === "search" || type === "sort") {
@@ -1651,6 +1651,8 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
     this.globalSearch = "";
     this.paginatorpageSize = 10;
     this.paginator.pageIndex = 0;
+    this.statusSelected = [];
+
     for (const col in this.searchFields) {
       if (this.searchFields.hasOwnProperty(col)) {
         this.searchFields[col] = ""

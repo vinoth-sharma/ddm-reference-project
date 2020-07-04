@@ -97,7 +97,8 @@ export class DealerAllocationComp implements OnInit {
       requestor: "",
       is_vin_level_report: null,
       is_summary_report: null,
-      business_req: ""
+      business_req: "",
+      prevSelectedFiles: []
     },
     report_id: null
   }
@@ -124,13 +125,13 @@ export class DealerAllocationComp implements OnInit {
     this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
       this.l_lookupTableMD = tableDate ? JSON.parse(JSON.stringify(tableDate.data)) : {};
       // console.log("this.l_lookupTableMD for the DA page",this.l_lookupTableMD);
-      
+
       this.refillMasterDatatoOptions();
     })
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
-      console.log("result obtained in this.submitService.requestStatusEmitter:",res);
-      
+      console.log("result obtained in this.submitService.requestStatusEmitter:", res);
+
       if (res.type === "srw") {
         this.l_selectedReqData = res.data;
         this.refillDivisionMD(res.data.division_dropdown);
@@ -149,7 +150,7 @@ export class DealerAllocationComp implements OnInit {
           this.req_body.report_detail.status = l_status;
           if (l_status === "Cancelled")
             this.req_body.report_id = null;
-            // ???
+          // ???
           else if (l_status === "Completed" && !res.data.frequency_data.some(freq => freq.ddm_rmp_lookup_select_frequency_id === 39))
             this.req_body.report_id = null;
           else {
@@ -170,6 +171,10 @@ export class DealerAllocationComp implements OnInit {
         }
       }
     })
+    //file data logic
+    if (this.l_selectedReqData['is_attachment'] && (this.submitService.fileObjectDetails && this.submitService.fileObjectDetails.length)) {
+      this.req_body.report_detail.prevSelectedFiles = this.submitService.fileObjectDetails
+    }
     this.submitService.updateLoadingStatus({ status: true, comp: "da" })
   }
 
@@ -213,7 +218,8 @@ export class DealerAllocationComp implements OnInit {
         l_isVvinReq: this.req_body.report_detail.is_vin_level_report,
         l_isSummaryReq: this.req_body.report_detail.is_summary_report,
         l_businessReq: this.req_body.report_detail.business_req,
-        l_requestId: this.req_body.report_id
+        l_requestId: this.req_body.report_id,
+        l_prevSeletedFiles: this.submitService.fileObjectDetails
       }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
         data: obj, disableClose: true
@@ -262,11 +268,11 @@ export class DealerAllocationComp implements OnInit {
       data: {
         reqBody: this.req_body,
         selectedReqData: this.l_selectedReqData,
-        selectedFile: result.data.selectedFile
+        selectedFile: result.data.selectedFile // src here must be altered
       }, disableClose: true
     })
-    
-    
+
+
 
     dialogRef.afterClosed().subscribe(result => {
       //doesnt do anything

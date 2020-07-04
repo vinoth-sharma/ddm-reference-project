@@ -26,7 +26,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
   subjectSubscription: Subscription;
   refreshWrapper: boolean = true;
   clearAll: boolean = false;
-  requestIdAvailable:boolean = false;
+  requestIdAvailable: boolean = false;
   selected = new FormControl(0);
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
@@ -35,8 +35,6 @@ export class SubmitRequestWrapperComponent implements OnInit {
     private report_id_service: GeneratedReportService,
     private submitReqService: SubmitRequestService,
     public toastr: NgToasterComponent) {
-
-
 
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -56,6 +54,7 @@ export class SubmitRequestWrapperComponent implements OnInit {
           Utils.showSpinner();
           this.submitReqService.getReportDescription(requestId).subscribe(res => {
             this.setTabType(res);
+            this.submitReqService.fileObjectDetails = res['attached_files_details'];
             this.submitReqService.updateRequestStatus({ type: "srw", data: res });
             Utils.hideSpinner();
           }, err => {

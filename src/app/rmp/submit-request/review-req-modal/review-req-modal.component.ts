@@ -64,7 +64,7 @@ export class ReviewReqModalComponent implements OnInit {
     }
     else
       this.generateDealerAllocation(this.data.reqBody)
-    
+
   }
 
   submitRequest() {
@@ -83,6 +83,7 @@ export class ReviewReqModalComponent implements OnInit {
       this.closeDailog();
       Utils.hideSpinner();
       this.toaster.success(`Request #${this.l_masterData.reqBody.report_id} Updated successfully`);
+      this.submitService.fileObjectDetails = [];
       this.router.navigate(["user/request-status"]);
     }, err => {
       Utils.hideSpinner();
@@ -98,6 +99,7 @@ export class ReviewReqModalComponent implements OnInit {
       this.closeDailog();
       Utils.hideSpinner();
       this.toaster.success(`Request #${this.l_masterData.reqBody.report_id} Updated successfully`);
+      this.submitService.fileObjectDetails = [];
       this.router.navigate(["user/request-status"]);
     }, err => {
       Utils.hideSpinner();
@@ -127,7 +129,7 @@ export class ReviewReqModalComponent implements OnInit {
     this.reqDetails.business_req = data.reqBody.report_detail.business_req;
     this.reqDetails.is_vin_level_report = data.reqBody.report_detail.is_vin_level_report;
     this.reqDetails.is_summary_report = data.reqBody.report_detail.is_summary_report;
-    console.log("THIS reqDetails : ",this.reqDetails);
+    console.log("THIS reqDetails : ", this.reqDetails);
   }
 
   generateVehicleEvent(data) {
@@ -249,7 +251,7 @@ export class ReviewReqModalComponent implements OnInit {
       data: `${l_obj.endM} - ${l_obj.endY} (${l_obj.endCycle})`
     }
     this.dealerAlloc.consensusProcess.push(obj2);
-    console.log("this.dealerAlloc data: ",this.dealerAlloc);
+    console.log("this.dealerAlloc data: ", this.dealerAlloc);
 
   }
 
@@ -360,9 +362,9 @@ export class ReviewReqModalComponent implements OnInit {
 
     this.otherReportCriteria.textNotification = data.user_data[0].alternate_number ? "Yes" : "No";
 
-    console.log("this.otherReportCriteria obj",this.otherReportCriteria);
-    console.log("this.marketData obj",this.marketData);
-    
+    console.log("this.otherReportCriteria obj", this.otherReportCriteria);
+    console.log("this.marketData obj", this.marketData);
+
   }
 
   downloadSummary() {

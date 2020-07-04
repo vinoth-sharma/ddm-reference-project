@@ -3,6 +3,7 @@ import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dial
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 
 import { FileListModalComponent } from '../file-list-modal/file-list-modal.component';
+import { SubmitRequestService } from "../submit-request.service";
 
 @Component({
   selector: 'app-additional-req-modal',
@@ -18,10 +19,12 @@ export class AdditionalReqModalComponent implements OnInit {
   l_CB_data = [];
   public selDiv: any = "";
   public selectedFilesNames: string = 'Hello World!';
-  public testFileObjects = [];
   public files: any = [];
-  public filesDataArray: any = [];
+  public filesDataArrayBuffer: any = [];
   public procuredRequestId: any;
+  public prevSelectedFilesDataArray: any;
+  public newSelectedFileDataArray: any = [];
+  public breakFileAddition: Boolean = false;
 
   public l_data1 = [];
   public l_data2 = [];
@@ -38,6 +41,7 @@ export class AdditionalReqModalComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<AdditionalReqModalComponent>,
     private toaster: NgToasterComponent,
     public dialog: MatDialog,
+    public submitRequestService: SubmitRequestService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
@@ -48,48 +52,67 @@ export class AdditionalReqModalComponent implements OnInit {
     this.responseData.isVinLevel = this.data.l_isVvinReq;
     this.responseData.isSummaryReport = this.data.l_isSummaryReq;
     this.responseData.businessReq = this.data.l_businessReq;
+    this.responseData.selectedFile = (this.data.l_prevSeletedFiles != undefined) ? this.data.l_prevSeletedFiles : []
     this.procuredRequestId = this.data.l_requestId;
-    console.log("ADDITIONAL REQ data obj : ",this.responseData);
-    
+    console.log("ADDITIONAL REQ data obj : ", this.responseData);
+
     document.querySelector('#file-upload').addEventListener('change', this.handleFileSelect, false);
     this.selDiv = document.querySelector("#selectedFiles");
+
+    if (this.data.l_prevSeletedFiles != undefined) {
+      this.selDiv.innerHTML = this.data.l_prevSeletedFiles.map(f => f.file_name).join(",&nbsp;<br>")
+      this.selDiv.innerHTML = this.selDiv.innerHTML + ",&nbsp;<br>"
+    }
   }
 
   public init() {
     document.querySelector('#file-upload').addEventListener('change', this.handleFileSelect, false);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    console.log("CHANGES SEEN HERE : ", changes);
+  public handleFileSelect(e) {
+    // this.selDiv = document.querySelector("#selectedFiles");
+    //   if(this.breakFileAddition == false){
+    //   if (!e.target.files) {
+    //     return;
+    //   }
+    //   this.files = e.target.files;
 
-    if ('testFileObjects' in this.testFileObjects) {
-      this.toaster.success('FILE CHANGE CAPTURED!!!')
-    }
+    //   for (var i = 0; i < this.files.length; i++) {
+    //     var f = this.files[i];
+    //     this.selDiv.innerHTML += f.name + "&nbsp" + "<br>";
+    //     if(this.selDiv.nodeValue == null){
+    //       this.selDiv.nodeValue = []
+    //     }
+
+    //     console.log("this.selDiv.innerHTML", this.selDiv.innerHTML);
+
+    //   }
+    // }
   }
 
-  public handleFileSelect(e, flag?: string) {
-    this.selDiv = document.querySelector("#selectedFiles");
+  public getFileDetails() {
+    let newlySelectedFileInput = Array.from((<HTMLInputElement>document.getElementById("file-upload")).files);
+    // let newlySelectedFileInputArray = Array.from(newlySelectedFileInput);
 
-    if (flag && flag == 'override') {
-      this.selDiv.innerHTML = '';
-      this.files = e;
+    let uniqueSelectedFileInput = [];
+    this.breakFileAddition = false;
+    if (this.newSelectedFileDataArray.length == 0) {
+      this.newSelectedFileDataArray = [...newlySelectedFileInput];
+      this.newSelectedFileDataArray = Array.from(this.newSelectedFileDataArray);
     }
     else {
-      if (!e.target.files) {
-        return;
+      this.newSelectedFileDataArray.map((t) => { if (t['name'] == newlySelectedFileInput[0]['name']) { this.toaster.error("Please select a non-duplicate file!!"); this.breakFileAddition = true; } else { uniqueSelectedFileInput.push(newlySelectedFileInput[0]) } })
+      if (this.breakFileAddition == false) {
+        uniqueSelectedFileInput = Array.from(uniqueSelectedFileInput)
+        uniqueSelectedFileInput = uniqueSelectedFileInput.filter(i => { if (i != undefined) { return i } });
+        this.newSelectedFileDataArray.push(uniqueSelectedFileInput[0]);
       }
-      this.files = e.target.files;
     }
 
-    for (var i = 0; i < this.files.length; i++) {
-      var f = this.files[i];
-      this.selDiv.innerHTML += f.name + "&nbsp" + "<br>";
-      if (this.testFileObjects == undefined) {
-        this.testFileObjects = [];
-      }
-      this.testFileObjects.push(f);
-      console.log("this.selDiv.innerHTML", this.selDiv.innerHTML);
-    }
+    // file display logic
+    this.data.l_prevSeletedFiles = [...this.submitRequestService.fileObjectDetails];
+    Array.prototype.push.apply(this.data.l_prevSeletedFiles, this.newSelectedFileDataArray);
+    this.constructFileNames(this.data.l_prevSeletedFiles);
   }
 
   public closeDailog() {
@@ -123,6 +146,7 @@ export class AdditionalReqModalComponent implements OnInit {
   }
 
   public validateFile() {
+    // mixed files approach needed ?? call it in fileDetails() itself???
     let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files;
     let tempData = Array.from(l_file);
     let blockerFlag = false;
@@ -150,6 +174,11 @@ export class AdditionalReqModalComponent implements OnInit {
 
     let l_filesDisplay = (<HTMLInputElement>document.getElementById("file-upload")).files;
     let tempData = Array.from(l_filesDisplay);
+
+    ///handle mixing of old and new
+    //prev selected data
+    this.prevSelectedFilesDataArray = (this.submitRequestService.fileObjectDetails != undefined) ? [...this.submitRequestService.fileObjectDetails] : [];
+
     tempData.forEach(file => {
       if (file) {
         let formData = new FormData();
@@ -158,33 +187,41 @@ export class AdditionalReqModalComponent implements OnInit {
         formData.append('flag', "is_req");
         formData.append('type', 'rmp');
         formData.append('request_id', this.procuredRequestId)
-        this.filesDataArray.push(formData);
+        this.filesDataArrayBuffer.push(formData);
       }
     })
-    return this.filesDataArray;
+    this.filesDataArrayBuffer = Array.from(this.filesDataArrayBuffer)
+
+    Array.prototype.push.apply(this.prevSelectedFilesDataArray, this.filesDataArrayBuffer)
+    return this.prevSelectedFilesDataArray;
   }
 
   public closeDialog() {
+    this.selDiv.innerHTML = ""
     this.dialogRef.close();
   }
 
   public openFileChangesModal() {
     let dialogRef = this.dialog.open(FileListModalComponent, {
-      data: document.getElementById("file-upload"), disableClose: true
+      data: this.data.l_prevSeletedFiles, disableClose: true
     })
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log("INPUT MODIFIED FILE LIST!!", result);
-        this.handleFileSelect(result, 'override');
-        // let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files;
-
-        // use standard varaible for result.
-        // (<HTMLInputElement>document.getElementById("file-upload")).files = result;
-
-        // console.log("CROSS CHECKING updated list of files after verifying!!");
-        // console.log("(<HTMLInputElement>document.getElementById('file-upload')).files;",(<HTMLInputElement>document.getElementById("file-upload")).files);
+        this.constructFileNames(result);
       }
     });
+  }
+
+  public constructFileNames(filesArray: any) {
+    let oldFileNames = filesArray.map(i => i.file_name)
+    let finalOldFileNames = oldFileNames.filter(Boolean)
+
+    let latestFileNames = filesArray.map(i => i.name)
+    let finalLatestFileNames = latestFileNames.filter(Boolean)
+
+    Array.prototype.push.apply(finalOldFileNames, finalLatestFileNames)
+    this.selDiv.innerHTML = finalOldFileNames.join(',&nbsp;<br>')
   }
 
 }

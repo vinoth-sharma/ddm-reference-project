@@ -22,8 +22,7 @@ export class AdditionalReqModalComponent implements OnInit {
   public files: any = [];
   public filesDataArrayBuffer: any = [];
   public procuredRequestId: any;
-  public prevSelectedFilesDataArray: any;
-  public newSelectedFileDataArray: any = [];
+  public l_newSelectedFileDataArray: any = [];
   public breakFileAddition: Boolean = false;
 
   public l_data1 = [];
@@ -35,7 +34,8 @@ export class AdditionalReqModalComponent implements OnInit {
     isVinLevel: null,
     isSummaryReport: null,
     businessReq: "",
-    selectedFile: null
+    selectedFile: null,
+    allFileNames: ""
   }
 
   constructor(public dialogRef: MatDialogRef<AdditionalReqModalComponent>,
@@ -54,10 +54,7 @@ export class AdditionalReqModalComponent implements OnInit {
     this.responseData.businessReq = this.data.l_businessReq;
     this.responseData.selectedFile = (this.data.l_prevSeletedFiles != undefined) ? this.data.l_prevSeletedFiles : []
     this.procuredRequestId = this.data.l_requestId;
-    console.log("ADDITIONAL REQ data obj : ", this.responseData);
 
-    document.querySelector('#file-upload').addEventListener('change', this.handleFileSelect, false);
-    this.selDiv = document.querySelector("#selectedFiles");
 
     if (this.data.l_prevSeletedFiles != undefined) {
       this.selDiv.innerHTML = this.data.l_prevSeletedFiles.map(f => f.file_name).join(",&nbsp;<br>")
@@ -65,54 +62,48 @@ export class AdditionalReqModalComponent implements OnInit {
     }
   }
 
-  public init() {
-    document.querySelector('#file-upload').addEventListener('change', this.handleFileSelect, false);
-  }
-
-  public handleFileSelect(e) {
-    // this.selDiv = document.querySelector("#selectedFiles");
-    //   if(this.breakFileAddition == false){
-    //   if (!e.target.files) {
-    //     return;
-    //   }
-    //   this.files = e.target.files;
-
-    //   for (var i = 0; i < this.files.length; i++) {
-    //     var f = this.files[i];
-    //     this.selDiv.innerHTML += f.name + "&nbsp" + "<br>";
-    //     if(this.selDiv.nodeValue == null){
-    //       this.selDiv.nodeValue = []
-    //     }
-
-    //     console.log("this.selDiv.innerHTML", this.selDiv.innerHTML);
-
-    //   }
-    // }
-  }
 
   public getFileDetails() {
     let newlySelectedFileInput = Array.from((<HTMLInputElement>document.getElementById("file-upload")).files);
-    // let newlySelectedFileInputArray = Array.from(newlySelectedFileInput);
+    let fileNameArray = Array.from(newlySelectedFileInput)
+    let fileName = fileNameArray[0]['name']
 
-    let uniqueSelectedFileInput = [];
-    this.breakFileAddition = false;
-    if (this.newSelectedFileDataArray.length == 0) {
-      this.newSelectedFileDataArray = [...newlySelectedFileInput];
-      this.newSelectedFileDataArray = Array.from(this.newSelectedFileDataArray);
+    let blockerFlag = false;
+    if (newlySelectedFileInput) {
+      let extension = fileName.split(".").pop();
+      if (this.supportedFiles.includes(extension))
+        blockerFlag = false
+      else
+        blockerFlag = true
+    }
+
+    if (!blockerFlag) {
+      let uniqueSelectedFileInput = [];
+      this.breakFileAddition = false;
+      if (this.l_newSelectedFileDataArray.length == 0) {
+        this.data.l_prevSeletedFiles.map((t) => { if (t['file_name'] == newlySelectedFileInput[0]['name']) { this.toaster.error("Please select a non-duplicate file!!"); this.breakFileAddition = true; } })
+        if (this.breakFileAddition == false) {
+          this.l_newSelectedFileDataArray = [...newlySelectedFileInput];
+          this.l_newSelectedFileDataArray = Array.from(this.l_newSelectedFileDataArray);
+        }
+      }
+      else {
+        this.l_newSelectedFileDataArray.map((t) => { if (t['name'] == newlySelectedFileInput[0]['name']) { this.toaster.error("Please select a non-duplicate file!!"); this.breakFileAddition = true; } else { uniqueSelectedFileInput.push(newlySelectedFileInput[0]) } })
+        if (this.breakFileAddition == false) {
+          uniqueSelectedFileInput = Array.from(uniqueSelectedFileInput)
+          uniqueSelectedFileInput = uniqueSelectedFileInput.filter(i => { if (i != undefined) { return i } });
+          this.l_newSelectedFileDataArray.push(uniqueSelectedFileInput[0]);
+        }
+      }
+
+      // file display logic
+      this.data.l_prevSeletedFiles = [...this.submitRequestService.fileObjectDetails];
+      Array.prototype.push.apply(this.data.l_prevSeletedFiles, this.l_newSelectedFileDataArray);
+      this.constructFileNames(this.data.l_prevSeletedFiles);
     }
     else {
-      this.newSelectedFileDataArray.map((t) => { if (t['name'] == newlySelectedFileInput[0]['name']) { this.toaster.error("Please select a non-duplicate file!!"); this.breakFileAddition = true; } else { uniqueSelectedFileInput.push(newlySelectedFileInput[0]) } })
-      if (this.breakFileAddition == false) {
-        uniqueSelectedFileInput = Array.from(uniqueSelectedFileInput)
-        uniqueSelectedFileInput = uniqueSelectedFileInput.filter(i => { if (i != undefined) { return i } });
-        this.newSelectedFileDataArray.push(uniqueSelectedFileInput[0]);
-      }
+      this.toaster.error(`Please upload file with valid format (${this.supportedFiles})`)
     }
-
-    // file display logic
-    this.data.l_prevSeletedFiles = [...this.submitRequestService.fileObjectDetails];
-    Array.prototype.push.apply(this.data.l_prevSeletedFiles, this.newSelectedFileDataArray);
-    this.constructFileNames(this.data.l_prevSeletedFiles);
   }
 
   public closeDailog() {
@@ -125,6 +116,7 @@ export class AdditionalReqModalComponent implements OnInit {
     this.responseData.addReq = this.responseData.addReq.trim();
     this.responseData.businessReq = this.responseData.businessReq ? this.responseData.businessReq.trim() : "";
     this.responseData.selectedFile = this.getFile();
+    this.responseData.allFileNames = this.constructFileNames(this.data.l_prevSeletedFiles, 'regularString');
 
     let l_data_validation = this.responseData.cb.filter(ele => {
       if (ele.description && [1, 2].includes(ele.ddm_rmp_ots_checkbox_group_id)) { return ele }
@@ -138,48 +130,19 @@ export class AdditionalReqModalComponent implements OnInit {
     else if (!l_data_validation.every(ele => ele['desc'])) {
       this.toaster.error("Please enter the values if others selected")
     }
-    else if (this.validateFile()) {
-      this.toaster.error(`Please upload file with valid format (${this.supportedFiles})`)
-    }
-    else
-      this.dialogRef.close({ data: this.responseData });
-  }
-
-  public validateFile() {
-    // mixed files approach needed ?? call it in fileDetails() itself???
-    let l_file = (<HTMLInputElement>document.getElementById("file-upload")).files;
-    let tempData = Array.from(l_file);
-    let blockerFlag = false;
-    tempData.forEach(fileObject => {
-      if (fileObject) {
-        let extension = fileObject['name'].split(".").pop();
-        if (this.supportedFiles.includes(extension))
-          blockerFlag = false
-        else
-          blockerFlag = true
-      }
-      else {
-        blockerFlag = true
-      }
-    });
-    if (blockerFlag != false) {
-      return true;
-    }
     else {
-      return false;
+      this.dialogRef.close({ data: this.responseData });
     }
   }
 
   public getFile() {
 
-    let l_filesDisplay = (<HTMLInputElement>document.getElementById("file-upload")).files;
-    let tempData = Array.from(l_filesDisplay);
+    this.filesDataArrayBuffer = []
+    let tempData = Array.from(this.data.l_prevSeletedFiles);
+    let tempFileObjectsArray = []
+    tempData = tempData.filter(i => { if (i['name']) { return tempFileObjectsArray.push(i) } })
 
-    ///handle mixing of old and new
-    //prev selected data
-    this.prevSelectedFilesDataArray = (this.submitRequestService.fileObjectDetails != undefined) ? [...this.submitRequestService.fileObjectDetails] : [];
-
-    tempData.forEach(file => {
+    tempFileObjectsArray.forEach(file => {
       if (file) {
         let formData = new FormData();
         formData.append('file_upload', file);
@@ -192,8 +155,7 @@ export class AdditionalReqModalComponent implements OnInit {
     })
     this.filesDataArrayBuffer = Array.from(this.filesDataArrayBuffer)
 
-    Array.prototype.push.apply(this.prevSelectedFilesDataArray, this.filesDataArrayBuffer)
-    return this.prevSelectedFilesDataArray;
+    return this.filesDataArrayBuffer;
   }
 
   public closeDialog() {
@@ -207,13 +169,13 @@ export class AdditionalReqModalComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log("INPUT MODIFIED FILE LIST!!", result);
+        this.data.l_prevSeletedFiles = result;
         this.constructFileNames(result);
       }
     });
   }
 
-  public constructFileNames(filesArray: any) {
+  public constructFileNames(filesArray: any, regularFlag?: string) {
     let oldFileNames = filesArray.map(i => i.file_name)
     let finalOldFileNames = oldFileNames.filter(Boolean)
 
@@ -221,7 +183,12 @@ export class AdditionalReqModalComponent implements OnInit {
     let finalLatestFileNames = latestFileNames.filter(Boolean)
 
     Array.prototype.push.apply(finalOldFileNames, finalLatestFileNames)
-    this.selDiv.innerHTML = finalOldFileNames.join(',&nbsp;<br>')
+    if (regularFlag == undefined) {
+      this.selDiv.innerHTML = finalOldFileNames.join(',&nbsp;<br>')
+    }
+    else if (regularFlag == 'regularString') {
+      return finalOldFileNames.join(', ')
+    }
   }
 
 }

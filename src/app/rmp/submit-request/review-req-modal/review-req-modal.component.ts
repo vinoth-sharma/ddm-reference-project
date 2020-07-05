@@ -46,6 +46,9 @@ export class ReviewReqModalComponent implements OnInit {
     consensusProcess: []
   };
   public l_masterData: any;
+  public filesConfirmation: boolean = false;
+  public filesNames: string = "";
+
 
   constructor(public dialogRef: MatDialogRef<ReviewReqModalComponent>,
     private toaster: NgToasterComponent,
@@ -57,6 +60,7 @@ export class ReviewReqModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.l_masterData = JSON.parse(JSON.stringify(this.data));
+    this.setupFilesData(this.l_masterData['selectedReqData']['is_attachment'], this.l_masterData['allFileNames'])
     this.generateRequestData(this.data);
     this.generateMarketData(this.data.selectedReqData);
     if (this.data.reqBody.report_detail.report_type === "ots") {
@@ -65,6 +69,13 @@ export class ReviewReqModalComponent implements OnInit {
     else
       this.generateDealerAllocation(this.data.reqBody)
 
+  }
+
+  public setupFilesData(confirmation: Boolean, filesObject: any) {
+    if (confirmation) {
+      this.filesConfirmation = true;
+      this.filesNames = filesObject;
+    }
   }
 
   submitRequest() {
@@ -107,9 +118,6 @@ export class ReviewReqModalComponent implements OnInit {
   }
 
   submitFile() {
-    //loop for multiple objects
-    console.log("this.data.selectedFile", this.data.selectedFile);
-
     this.data.selectedFile.forEach((element, index) => {
       if (element) {
         this.django.ddm_rmp_file_data(this.data.selectedFile[index]).subscribe(response => {
@@ -129,7 +137,6 @@ export class ReviewReqModalComponent implements OnInit {
     this.reqDetails.business_req = data.reqBody.report_detail.business_req;
     this.reqDetails.is_vin_level_report = data.reqBody.report_detail.is_vin_level_report;
     this.reqDetails.is_summary_report = data.reqBody.report_detail.is_summary_report;
-    console.log("THIS reqDetails : ", this.reqDetails);
   }
 
   generateVehicleEvent(data) {
@@ -251,8 +258,6 @@ export class ReviewReqModalComponent implements OnInit {
       data: `${l_obj.endM} - ${l_obj.endY} (${l_obj.endCycle})`
     }
     this.dealerAlloc.consensusProcess.push(obj2);
-    console.log("this.dealerAlloc data: ", this.dealerAlloc);
-
   }
 
   generateMarketData(data) {
@@ -361,9 +366,6 @@ export class ReviewReqModalComponent implements OnInit {
     }
 
     this.otherReportCriteria.textNotification = data.user_data[0].alternate_number ? "Yes" : "No";
-
-    console.log("this.otherReportCriteria obj", this.otherReportCriteria);
-    console.log("this.marketData obj", this.marketData);
 
   }
 

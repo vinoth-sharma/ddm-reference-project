@@ -23,27 +23,18 @@ export class FileListModalComponent implements OnInit {
 
   ngOnInit() {
     this.backupData = this.data;
-    console.log("BACKUP DATA : ", this.backupData);
-
     let oldFiles = this.data.map(i => { if (i['file_id']) return i; })
     oldFiles = oldFiles.filter(Boolean)
     let newFiles = this.data.map(i => { if (i['type']) { return { file_id: 'NA', file_name: i['name'] } } else { }; })
     newFiles = newFiles.filter(Boolean)
     Array.prototype.push.apply(oldFiles, newFiles)
-    console.log("NEW PROCURED FILE NAMES : ", oldFiles);
     this.data = oldFiles;
-    console.log("INPUT FILE LIST : ", this.data);
   }
 
   public closeDialog(): void {
-    //separate the data back to original state and send it back
-
     let nonFileIdFiles = [];
     let fileIdFiles = [];
     this.data.map(i => { if (i['file_id'] != 'NA') { fileIdFiles.push(i); } else { nonFileIdFiles.push(i); } })
-
-    console.log("nonFileIdFiles values : ", nonFileIdFiles);
-    console.log("fileIdFiles values : ", fileIdFiles);
 
     let latestFileIdFiles = [];
     let latestNonFileIdFiles = [];
@@ -53,15 +44,13 @@ export class FileListModalComponent implements OnInit {
 
     this.backupData.map(i => { if (i['name']) { latestNonFileIdFiles.push(i) } })
     latestNonFileIdFiles.filter(Boolean)
-
-    let finalLatestNonFileIdFiles = [];
     latestNonFileIdFiles = Array.from(latestNonFileIdFiles)
-    latestNonFileIdFiles.map((t, index) => { if (t['name'] == nonFileIdFiles[index]['file_name']) { finalLatestNonFileIdFiles.push(t) } })
-    finalLatestNonFileIdFiles.filter(Boolean)
 
-    // latestNonFileIdFiles = nonFileIdFiles;
+    let uniqueNonFileIdFileObjects = [];
+    latestNonFileIdFiles.map(i => { for (let t = 0; t < nonFileIdFiles.length; t++) { if (i['name'] == nonFileIdFiles[t]['file_name']) { uniqueNonFileIdFileObjects.push(i) } } })
+    uniqueNonFileIdFileObjects.filter(Boolean)
 
-    Array.prototype.push.apply(latestFileIdFiles, finalLatestNonFileIdFiles)
+    Array.prototype.push.apply(latestFileIdFiles, uniqueNonFileIdFileObjects)
     this.data = latestFileIdFiles;
 
     this.dialogRef.close(this.data);
@@ -103,39 +92,6 @@ export class FileListModalComponent implements OnInit {
     }
 
     this.data = newArray;
-
-    // CC the refining logic again
-    let nonFileIdFiles = [];
-    let fileIdFiles = [];
-    this.data.map(i => { if (i['file_id'] != 'NA') { fileIdFiles.push(i); } else { nonFileIdFiles.push(i); } })
-
-    console.log("nonFileIdFiles values : ", nonFileIdFiles);
-    console.log("fileIdFiles values : ", fileIdFiles);
-
-    let latestFileIdFiles = [];
-    let latestNonFileIdFiles = [];
-
-    fileIdFiles.map((t, index) => { if (t['file_id'] == this.backupData[index]['file_id']) { latestFileIdFiles.push(t) } })
-    latestFileIdFiles.filter(Boolean)
-    console.log("latestFileIdFiles values :", latestFileIdFiles);
-
-
-    // this is going back to original.. change it 
-    this.backupData.map(i => { if (i['name']) { latestNonFileIdFiles.push(i) } })
-    latestNonFileIdFiles.filter(Boolean)
-    console.log("latestNonFileIdFiles values :", latestNonFileIdFiles);
-
-    let finalLatestNonFileIdFiles = [];
-    latestNonFileIdFiles = Array.from(latestNonFileIdFiles)
-    latestNonFileIdFiles.map((t, index) => {
-      if (t['name'] == nonFileIdFiles[index]['file_name']) {
-        finalLatestNonFileIdFiles.push(t)
-      }
-    })
-    finalLatestNonFileIdFiles.filter(Boolean)
-
-    Array.prototype.push.apply(latestFileIdFiles, finalLatestNonFileIdFiles)
-    this.backupData = latestFileIdFiles;
   }
 
 }

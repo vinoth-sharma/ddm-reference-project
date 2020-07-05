@@ -1311,4 +1311,9 @@
       <span *ngIf='summary && summary.additional_req'>{{summary?.additional_req}}</span>
   </pre>
 </pre>
+<pre class="div-wrap">
+  <b>File Attachment(s):</b>
+  <span *ngIf="!summary?.is_attachment">No&nbsp;&nbsp;</span>
+  <span *ngIf="summary?.is_attachment && attached_file_names.length">{{ attached_file_names }}&nbsp;&nbsp;</span>
+</pre>
 </pre>

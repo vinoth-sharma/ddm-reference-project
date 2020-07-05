@@ -97,8 +97,7 @@ export class DealerAllocationComp implements OnInit {
       requestor: "",
       is_vin_level_report: null,
       is_summary_report: null,
-      business_req: "",
-      prevSelectedFiles: []
+      business_req: ""
     },
     report_id: null
   }
@@ -124,8 +123,6 @@ export class DealerAllocationComp implements OnInit {
     })
     this.dataProvider.currentlookUpTableData.subscribe((tableDate: any) => {
       this.l_lookupTableMD = tableDate ? JSON.parse(JSON.stringify(tableDate.data)) : {};
-      // console.log("this.l_lookupTableMD for the DA page",this.l_lookupTableMD);
-
       this.refillMasterDatatoOptions();
     })
 
@@ -150,7 +147,6 @@ export class DealerAllocationComp implements OnInit {
           this.req_body.report_detail.status = l_status;
           if (l_status === "Cancelled")
             this.req_body.report_id = null;
-          // ???
           else if (l_status === "Completed" && !res.data.frequency_data.some(freq => freq.ddm_rmp_lookup_select_frequency_id === 39))
             this.req_body.report_id = null;
           else {
@@ -171,10 +167,6 @@ export class DealerAllocationComp implements OnInit {
         }
       }
     })
-    //file data logic
-    if (this.l_selectedReqData['is_attachment'] && (this.submitService.fileObjectDetails && this.submitService.fileObjectDetails.length)) {
-      this.req_body.report_detail.prevSelectedFiles = this.submitService.fileObjectDetails
-    }
     this.submitService.updateLoadingStatus({ status: true, comp: "da" })
   }
 
@@ -268,12 +260,10 @@ export class DealerAllocationComp implements OnInit {
       data: {
         reqBody: this.req_body,
         selectedReqData: this.l_selectedReqData,
-        selectedFile: result.data.selectedFile // src here must be altered
+        selectedFile: result.data.selectedFile,
+        allFileNames: result.data.allFileNames
       }, disableClose: true
     })
-
-
-
     dialogRef.afterClosed().subscribe(result => {
       //doesnt do anything
     })

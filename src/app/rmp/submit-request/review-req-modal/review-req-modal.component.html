@@ -6,7 +6,8 @@
                 <div class="">Review Report Request </div>
             </div>
             <div class="alignCenter">
-                <mat-icon style="margin-right: 15px;cursor:pointer;" matTooltip="Download Summary" (click)="downloadSummary()">get_app</mat-icon>
+                <mat-icon style="margin-right: 15px;cursor:pointer;" matTooltip="Download Summary"
+                    (click)="downloadSummary()">get_app</mat-icon>
                 <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
             </div>
         </div>
@@ -51,13 +52,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom" *ngIf="otherReportCriteria.spclIdentifiers.length">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom"
+                    *ngIf="otherReportCriteria.spclIdentifiers.length">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
                             Special Identifiers:
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
+                        *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             {{ spcl.label }}
                         </div>
@@ -103,7 +106,8 @@
                             Order Criteria
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let ele of vehicleEvent.orderCriteria">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
+                        *ngFor="let ele of vehicleEvent.orderCriteria">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             {{ ele.label }}
                         </div>
@@ -116,17 +120,18 @@
                             Order Metrics
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let metrics of vehicleEvent.orderMetrics">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                {{ metrics.label }}
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
-                                {{ metrics.data.toString() }}
-                            </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
+                        *ngFor="let metrics of vehicleEvent.orderMetrics">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            {{ metrics.label }}
                         </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                            {{ metrics.data.toString() }}
+                        </div>
+                    </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="vehicleEvent.keyData_start">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
-                                Key Data Elements for Date Range:
+                            Key Data Elements for Date Range:
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding margBtmlight">
@@ -155,18 +160,18 @@
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf='reqDetails.is_vin_level_report'>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
-                                Is this a Order Number/VIN level detail report?
+                            Is this a Order Number/VIN level detail report?
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                {{reqDetails.is_vin_level_report}}
+                            {{reqDetails.is_vin_level_report}}
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf='reqDetails.is_summary_report'>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold margBottom">
-                                Is this a summary report with metrics?
+                            Is this a summary report with metrics?
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                {{reqDetails.is_summary_report}}
+                            {{reqDetails.is_summary_report}}
                         </div>
                     </div>
                 </div>
@@ -175,7 +180,8 @@
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bold margBottom ">
                         Dealer Allocation Selections:
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight" *ngFor="let ele of dealerAlloc.consensusProcess">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight"
+                        *ngFor="let ele of dealerAlloc.consensusProcess">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             {{ ele.label }}
                         </div>
@@ -184,22 +190,31 @@
                         </div>
                     </div>
                 </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
                         Business Requirements:
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
                         {{ reqDetails.business_req }}
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
                         Additional Requirements:
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
                         {{ reqDetails.addReq }}
+                    </div>
                 </div>
-            </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBtmlight">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 bold">
+                        File Attachment(s):
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
+                        <span *ngIf="!filesConfirmation">No</span>
+                        <span *ngIf="filesConfirmation && filesNames.length">{{ filesNames }}</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="modal-footer">
@@ -207,7 +222,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- REPEATED CODE FOR PDF DOWNLOAD CONTENTS -->
 <pre class="container-fluid" style="height: auto;display: none" id="print">
@@ -229,7 +243,7 @@
         </pre>
 </pre>
 <pre class="Request-summary">
-        
+
     <pre class="div-wrap">
         <b>Market Selections:</b> &nbsp;&nbsp;
         <b>Market(s) Selected:</b> &nbsp;&nbsp;
@@ -237,8 +251,8 @@
             {{ market.label }}&nbsp;&nbsp;
             {{ market.data.toString() }}
         </pre>
-    </pre>
-    <pre class="div-wrap">
+</pre>
+<pre class="div-wrap">
         <b>Special Identifiers:</b> &nbsp;&nbsp;
         <pre *ngFor="let spcl of otherReportCriteria.spclIdentifiers">
                 {{ spcl.label }}&nbsp;&nbsp;
@@ -271,7 +285,7 @@
 <pre class="div-wrap" *ngFor="let metrics of vehicleEvent.orderMetrics">
                 <b>{{  metrics.label }}:</b>  
                 <span>{{  metrics.values }}&nbsp;&nbsp;</span>
-            </pre>     
+            </pre>
 <pre class="div-wrap" *ngIf="vehicleEvent.keyData_start">
                 <b> Key Data Elemet Date Range:</b> <br>
                 <pre class="div-wrap">
@@ -294,15 +308,15 @@
             <b>End:</b> &nbsp;&nbsp;
             <span>{{ vehicleEvent.dosp_end | date: 'dd-MMM-yyyy' }}&nbsp;&nbsp;</span>
         </pre>
-        <pre class="div-wrap" *ngIf='reqDetails.is_vin_level_report'>
+<pre class="div-wrap" *ngIf='reqDetails.is_vin_level_report'>
             <b>Is this a Order Number/VIN level detail report?:</b> &nbsp;&nbsp;
             <span> {{reqDetails.is_vin_level_report}}&nbsp;&nbsp;</span>
         </pre>
-        <pre class="div-wrap" *ngIf='reqDetails.is_summary_report'>
+<pre class="div-wrap" *ngIf='reqDetails.is_summary_report'>
             <b>Is this a summary report with metrics?:</b> &nbsp;&nbsp;
             <span>{{reqDetails.is_summary_report}}&nbsp;&nbsp;</span>
         </pre>
-                
+
 </pre>
 <pre class="div-wrap" *ngIf="reqDetails.type === 'da'">
         <b> Dealer Allocation Selections:</b> <br>
@@ -314,10 +328,15 @@
 <pre class="div-wrap">
         <b>Business Requirements:</b> &nbsp;&nbsp;
         <span>{{ reqDetails.business_req }}&nbsp;&nbsp;</span>
-    </pre>    
+    </pre>
 <pre class="div-wrap">
         <b>Additional Requirements:</b> &nbsp;&nbsp;
         <span>{{ reqDetails.addReq }}&nbsp;&nbsp;</span>
     </pre>
+<pre class="div-wrap">
+        <b>File Attachment(s):</b> &nbsp;&nbsp;
+        <span *ngIf="!filesConfirmation">No</span>
+        <span *ngIf="filesConfirmation && filesNames.length">{{ filesNames }}</span>
+</pre>
 </pre>
 </pre>

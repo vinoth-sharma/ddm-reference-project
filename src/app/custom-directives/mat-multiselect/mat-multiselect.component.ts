@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormControl, FormBuilder } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 declare var document: any;
 
@@ -19,11 +19,12 @@ export class MatMultiselect implements OnInit {
   @ViewChild(MatSelect) matSelect: MatSelect;
   toppings = new FormControl();
 
-  l_data = [];
-  searched_data = [];
-  selectAll = [2];
-  l_db = [];
-  sortApplicableArr = ["Region","Zone","Area","GMMA","LMA"];
+  public l_data = [];
+  public searched_data = [];
+  public selectAll = [2];
+  public l_db = [];
+  public sortApplicableArr = ["Region", "Zone", "Area", "GMMA", "LMA", "Vehicle Line Brands", "Allocation Groups",
+    "Merchandising Models", "Order Types"]
 
   constructor(private fb: FormBuilder) { }
 
@@ -50,7 +51,7 @@ export class MatMultiselect implements OnInit {
       if (this.data.length) {
         this.l_data = JSON.parse(JSON.stringify(this.data));
         this.l_db = this.inputModel ? this.inputModel.map(ele => ele[this.settings.primary_key]) : [];
-        
+
         //remove selcted items which is not present in master data
         this.l_db = this.l_db.filter(value => {
           if (this.l_data.some(ele => ele[this.settings.primary_key] === value))
@@ -72,7 +73,7 @@ export class MatMultiselect implements OnInit {
     }
   }
 
-  onKey(value) {
+  public onKey(value) {
     if (value === '') {
       this.searched_data = [...this.l_data];
       this.searched_data.forEach(element => {
@@ -85,12 +86,12 @@ export class MatMultiselect implements OnInit {
     this.selectAllBoxValidate()
   }
 
-  search(value: string) {
+  public search(value: string) {
     let filter = value.toLowerCase();
     return this.l_data.filter(option => option[this.settings.label_key].toLowerCase().includes(filter));
   }
 
-  toggleAllSelection(event) {
+  public toggleAllSelection(event) {
     if (this.selectAll.length > 1) {
       this.searched_data.forEach(element => {
         this.addSelection(element[this.settings.primary_key]);
@@ -104,7 +105,7 @@ export class MatMultiselect implements OnInit {
     this.stabilizeData();
   }
 
-  checkedBox(event) {
+  public checkedBox(event) {
     if (event.checked)
       this.addSelection(event.source.value)
     else if (!event.checked)
@@ -114,32 +115,32 @@ export class MatMultiselect implements OnInit {
     this.selectAllBoxValidate()
   }
 
-  selectAllBoxValidate() {
+  public selectAllBoxValidate() {
     if (this.searched_data.every(ele => this.l_db.includes(ele[this.settings.primary_key])))
       this.selectAll = [0, 2]
     else
       this.selectAll = [2]
   }
 
-  stabilizeData() {
+  public stabilizeData() {
     this.searched_data.forEach(element => {
       element['checked'] = this.l_db.includes(element[this.settings.primary_key])
     });
   }
 
-  removeSelection(value) {
+  public removeSelection(value) {
     const index = this.l_db.indexOf(value);
     if (index > -1) {
       this.l_db.splice(index, 1);
     }
   }
 
-  addSelection(value) {
+  public addSelection(value) {
     this.l_db.push(value);
     this.l_db = [...new Set(this.l_db)]
   }
 
-  getOutput() {
+  public getOutput() {
     let output = this.data.filter(ele => {
       if (this.l_db.includes(ele[this.settings.primary_key]))
         return ele
@@ -148,7 +149,7 @@ export class MatMultiselect implements OnInit {
     return output
   }
 
-  getTitle() {
+  public getTitle() {
     if (this.l_db.length) {
       let op = this.data.filter(ele => {
         if (this.l_db.includes(ele[this.settings.primary_key]))

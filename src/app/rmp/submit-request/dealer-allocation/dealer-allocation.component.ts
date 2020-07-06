@@ -1,17 +1,18 @@
-import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
+import { Moment } from 'moment';
+import { MatDatepicker } from '@angular/material/datepicker';
+import { Subscription } from 'rxjs';
+
 import { AuthenticationService } from 'src/app/authentication.service';
 import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 import { SubmitRequestService } from "../submit-request.service";
-import { Moment } from 'moment';
-import { MatDatepicker } from '@angular/material/datepicker';
 import { AdditionalReqModalComponent } from '../additional-req-modal/additional-req-modal.component';
 import { DataProviderService } from '../../data-provider.service';
-import { Subscription } from 'rxjs';
 import { ReviewReqModalComponent } from '../review-req-modal/review-req-modal.component';
 
 const moment = _moment;
@@ -44,30 +45,30 @@ export const MY_FORMATS = {
 })
 export class DealerAllocationComp implements OnInit {
 
-  l_lookupTableMD: any = {};
-  l_selectedReqData: any = {};
-  user_name = "";
-  user_role = "";
+  public l_lookupTableMD: any = {};
+  public l_selectedReqData: any = {};
+  public user_name = "";
+  public user_role = "";
 
-  filtered_MD = {
+  public filtered_MD = {
     divisions: [],
     model_years: [],
     allocation_groups: [],
     consensus: []
   }
-  selected = {
+  public selected = {
     divisions: [],
     model_years: [],
     allocation_groups: [],
     consensus: []
   }
 
-  consensusStartDate = new FormControl(moment());
-  consensusEndDate = new FormControl(moment());
-  minDate = null;
+  public consensusStartDate = new FormControl(moment());
+  public consensusEndDate = new FormControl(moment());
+  public minDate = null;
 
-  startCycle = "Cycle 1";
-  endCycle = "Cycle 2";
+  public startCycle = "Cycle 1";
+  public endCycle = "Cycle 2";
 
   public req_body = {
     concensus_time_date: {
@@ -102,8 +103,8 @@ export class DealerAllocationComp implements OnInit {
     report_id: null
   }
 
-  display_message = "Create Request to proceed with Dealer Allocation";
-  messageClass = "red";
+  public display_message = "Create Request to proceed with Dealer Allocation";
+  public messageClass = "red";
 
   subjectSubscription: Subscription;
 
@@ -170,18 +171,18 @@ export class DealerAllocationComp implements OnInit {
   ngOnChanges(simpleChanges: SimpleChanges) {
   }
 
-  refillDivisionMD(divisions) {
+  public refillDivisionMD(divisions) {
     this.selected.divisions = divisions;
     this.filtered_MD.divisions = divisions;
     this.divisionDependencies();
   }
 
-  refillMasterDatatoOptions() {
+  public refillMasterDatatoOptions() {
     this.filtered_MD.consensus = this.l_lookupTableMD.concensus_data_da;
     this.filtered_MD.model_years = this.l_lookupTableMD.model_year;
   }
 
-  divisionDependencies() {
+  public divisionDependencies() {
     let l_division_ids = this.selected.divisions.map(ele => ele[this.division_settings.primary_key]);
     let divisionCBFunc = function (ele) {
       if (l_division_ids.includes(ele.ddm_rmp_lookup_division)) {
@@ -192,7 +193,7 @@ export class DealerAllocationComp implements OnInit {
     this.selected.allocation_groups = this.selected.allocation_groups.filter(divisionCBFunc);
   }
 
-  openAdditionalReqModal() {
+  public openAdditionalReqModal() {
     if (!this.selected.model_years.length)
       this.ngToaster.error("Please select Model year")
     else if (!this.selected.allocation_groups.length)
@@ -220,7 +221,7 @@ export class DealerAllocationComp implements OnInit {
 
   }
 
-  openReviewModal(result) {
+  public openReviewModal(result) {
     this.req_body.allocation_group.dropdown = this.selected.allocation_groups;
     this.req_body.model_year.dropdown = this.selected.model_years;
     this.req_body.concensus_data = this.selected.consensus.map(cons => {
@@ -250,12 +251,12 @@ export class DealerAllocationComp implements OnInit {
     this.openPreviewModal(result);
   }
 
-  openPreviewModal(result) {
+  public openPreviewModal(result) {
     const dialogRef = this.matDialog.open(ReviewReqModalComponent, {
       data: {
         reqBody: this.req_body,
         selectedReqData: this.l_selectedReqData,
-        selectedFile : result.data.selectedFile
+        selectedFile: result.data.selectedFile
       }, disableClose: true
     })
 
@@ -264,7 +265,7 @@ export class DealerAllocationComp implements OnInit {
     })
   }
 
-  refillSelectedRequestData(data) {
+  public refillSelectedRequestData(data) {
 
     //stop the function when da_data is null 
     if (!data['da_data'])
@@ -303,12 +304,12 @@ export class DealerAllocationComp implements OnInit {
     this.consensusEndDate.setValue(this.dateStrToMoment(l_endM, l_endY))
   }
 
-  dateStrToMoment(month, yr) {
+  public dateStrToMoment(month, yr) {
     let str = yr + '-' + month;
     return moment(new Date(str))
   }
 
-  fillReportDetails(data) {
+  public fillReportDetails(data) {
     this.req_body.report_detail.title = data.title;
     this.req_body.report_detail.additional_req = data.additional_req;
     this.req_body.report_detail.created_on = data.report_data.created_on;
@@ -322,13 +323,13 @@ export class DealerAllocationComp implements OnInit {
     this.req_body.report_detail.business_req = data.report_data.business_req;
   }
 
-  chosenYearHandler(normalizedYear: Moment) {
+  public chosenYearHandler(normalizedYear: Moment) {
     const ctrlValue = this.consensusStartDate.value;
     ctrlValue.year(normalizedYear.year());
     this.consensusStartDate.setValue(ctrlValue);
   }
 
-  chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+  public chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
     let from = this.consensusStartDate.value;
     let to = this.consensusEndDate.value;
     from.month(normalizedMonth.month());
@@ -343,13 +344,13 @@ export class DealerAllocationComp implements OnInit {
     datepicker.close();
   }
 
-  chosenYearHandler1(normalizedYear: Moment) {
+  public chosenYearHandler1(normalizedYear: Moment) {
     const ctrlValue = this.consensusEndDate.value;
     ctrlValue.year(normalizedYear.year());
     this.consensusEndDate.setValue(ctrlValue);
   }
 
-  chosenMonthHandler1(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+  public chosenMonthHandler1(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
     const ctrlValue = this.consensusEndDate.value;
     ctrlValue.month(normalizedMonth.month());
     this.consensusEndDate.setValue(ctrlValue);
@@ -373,7 +374,7 @@ export class DealerAllocationComp implements OnInit {
   };
 
   public allocation_settings = {
-    label: "Allocation Groups(s)",
+    label: "Allocation Groups",
     primary_key: 'ddm_rmp_lookup_dropdown_allocation_group_da_id',
     label_key: 'allocation_group',
     title: "",

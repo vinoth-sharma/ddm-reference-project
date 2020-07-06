@@ -59,7 +59,8 @@
           style="display:none"></button>
       </div>
       <div class="tableFixHead">
-        <table class="table report_table table-bordered table-hover" style="overflow:-moz-hidden-unscrollable;border: unset;">
+        <table class="table report_table table-bordered table-hover"
+          style="overflow:-moz-hidden-unscrollable;border: unset;">
           <thead class="thead">
             <tr>
               <th>
@@ -146,8 +147,8 @@
               <th style="min-width: 135px;">
                 <div id="status_dropdown" style="width: 135px !important;">
                   <angular4-multiselect [data]="Status_List" [(ngModel)]="statusSelected"
-                    [settings]="StatusDropdownSettings" (onSelect)="changeStatusFilterData()" (onDeSelect)="changeStatusFilterData()"
-                    style="font-size: 12px;width:135px; ">
+                    [settings]="StatusDropdownSettings" (onSelect)="changeStatusFilterData()"
+                    (onDeSelect)="changeStatusFilterData()" style="font-size: 12px;width:135px; ">
                   </angular4-multiselect>
                 </div>
               </th>
@@ -373,9 +374,7 @@
     </div>
   </div>
 </div>
-<!-- <div class="flex-container row tool-body" *ngIf="!reports.length" style="background: #f1f1f1">
-  <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
-</div> -->
+
 <div id="ModalComment" class="modal fade" role="dialog" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -760,19 +759,19 @@
 
         <h5 class="modal-title help-title">Help</h5>
       </div>
-      <div class="modal-body display-notes-scroll-modal" >
-        <div class="row" style="margin-bottom: 13px;">
+      <div class="modal-body display-notes-scroll-modal">
+        <div class="row" style="padding-right: 0px;margin-right: 0px;margin-bottom: 15px;">
           <div class="col-9">
             <button class="save-text-ddm" [cssBtn]="'ok'" mat-raised-button (click)="content_edits()" *ngIf="editModes"
               style="margin-right:3%">Save</button>
             <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="resetHelpParams()"
               *ngIf="editModes">Cancel</button>
           </div>
-          <div class="col-3">
+          <div class="col-3" style="padding-right: 0px;">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
               style="background-color:white; border:none;float:right">
               <a data-toggle="tooltip" title="EDIT">
-                <i id="ic" class="material-icons">mode_edit</i>
+                <i id="ic" class="material-icons" style="font-size: 2.5rem;margin-left: 50%;">mode_edit</i>
               </a>
             </button>
           </div>
@@ -902,9 +901,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" 
-        (click)="TBDsave()" [disabled]="!tbdselectedItems_report.length"
-        >Save Changes
+        <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" (click)="TBDsave()"
+          [disabled]="!tbdselectedItems_report.length">Save Changes
         </button>
         <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
           (click)="closeTBD()">Close</button>
@@ -1086,8 +1084,8 @@
         </div>
       </div>
       <div class="modal-body">
-        <select class="form-control"  style="height:36px;width:50%"
-          id="selectReportStatus" [(ngModel)]="selectedReportStatus">
+        <select class="form-control" style="height:36px;width:50%" id="selectReportStatus"
+          [(ngModel)]="selectedReportStatus">
           <option value="In Process"> In Process </option>
           <option value="Completed"> Completed </option>
         </select>

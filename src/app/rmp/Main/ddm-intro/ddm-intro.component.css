@@ -22,7 +22,6 @@
 
  /* changes done Ganesha */
 
-
 .editButton {
     background: transparent;
     border: none;
@@ -119,7 +118,7 @@ h3 {
     margin-top: 0%;
 }
 
-#helpModal .modal-content{
+#helpModal .modal-content {
     height:75vh;
 }
 

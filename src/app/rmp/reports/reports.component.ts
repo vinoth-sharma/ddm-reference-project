@@ -3,12 +3,13 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+import '../../../assets/debug2.js';
+
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import { Router } from '@angular/router';
 import Utils from "../../../utils"
-import '../../../assets/debug2.js';
 declare var jsPDF: any;
 declare var $: any;
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
@@ -282,7 +283,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (!reportObject.report_name || !reportObject.report_name.length) {
       this.toasterService.error('Cannot save empty name');
     } else {
-      changedReport['request_id'] = reportObject.ddm_rmp_post_report_id; 
+      changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
       changedReport['report_name'] = reportObject.report_name;
       this.django.update_rmpReports_DDMName(changedReport)
         .subscribe(
@@ -1176,6 +1177,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (data == "") this.linkToUrlFlag = true
     else this.linkToUrlFlag = false;
   }
+
   // to get previous frequency in the form of string
   public getPreviousFreqData(freqArr) {
     let tempArr = []

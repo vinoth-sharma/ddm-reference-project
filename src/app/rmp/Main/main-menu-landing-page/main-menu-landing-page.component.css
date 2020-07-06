@@ -90,7 +90,7 @@ a:active {
     overflow-x: hidden;
 }
 
-.faqCard{
+.faqCard {
     height: 100%;
 }
 
@@ -121,6 +121,7 @@ h3 {
     position: relative;
     width: 17px;
 }
+
 .notes-position {
     float: left;
 }
@@ -133,4 +134,3 @@ h3 {
     height: 42.5vh;
     overflow: auto;
 }
-

@@ -102,8 +102,6 @@ a:active {
     padding: 3px;
 }
 
-
-
 @media print {
     .main-tool-body-header {
         height: 10%;
@@ -185,7 +183,7 @@ h3 {
     margin-top: 0.5vh;
 }
 
-#helpModal .modal-content{
+#helpModal .modal-content {
     height:75vh;
 }
 

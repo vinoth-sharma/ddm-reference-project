@@ -152,6 +152,6 @@ angular4-multiselect > .c-btn {
 }
 
 ::ng-deep .quillEditor .quill .ql-container .ql-editor {
-height: 42.5vh;
-overflow: auto; 
+    height: 42.5vh;
+    overflow: auto; 
 }

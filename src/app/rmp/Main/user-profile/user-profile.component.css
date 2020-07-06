@@ -185,8 +185,6 @@ hr {
     font-style: italic;
 }
 
-
-
 .market-selections-main {
     max-height: 36vh;
     overflow-y: auto;
@@ -246,8 +244,3 @@ hr {
 #helpModal .modal-content{
     height:75vh;
 }
-
-
-
-
-

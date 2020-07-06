@@ -121,13 +121,16 @@ td {
 .table-striped > tbody > tr:nth-child(2n + 1) > th {
   background-color: white;
 }
+
 tbody.noData tr:hover {
   background-color: unset;
 }
+
 tbody.noData > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
   background-color: unset;
 }
+
 .collapse {
   width: 100%;
   padding: 0;
@@ -549,6 +552,7 @@ angular4-multiselect > div.c-btn {
 .top-bar > div:last-child {
   justify-content: flex-end;
 }
+
 .top-bar {
   height: 13.5%;
 }
@@ -639,6 +643,7 @@ td {
   height: 42.5vh;
   overflow: auto; 
 }
+
 .display-notes-scroll {
   height: 45vh;
   min-height: unset;

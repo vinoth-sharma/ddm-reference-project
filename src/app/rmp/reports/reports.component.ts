@@ -280,10 +280,9 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public changeReportName(event: any, reportObject) {
     const changedReport = {};
     if (!reportObject.report_name || !reportObject.report_name.length) {
-      reportObject.report_name = this.ddmReportname;
       this.toasterService.error('Cannot save empty name');
     } else {
-      changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
+      changedReport['request_id'] = reportObject.ddm_rmp_post_report_id; 
       changedReport['report_name'] = reportObject.report_name;
       this.django.update_rmpReports_DDMName(changedReport)
         .subscribe(

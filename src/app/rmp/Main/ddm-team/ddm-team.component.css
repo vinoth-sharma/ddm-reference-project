@@ -188,3 +188,10 @@ h3 {
 #helpModal .modal-content{
     height:75vh;
 }
+
+::ng-deep .information .quill .ql-container .ql-editor {
+    border: lightgray solid 1px;
+    max-height: 54vh !important;
+    min-height: 54vh !important;
+    overflow: auto !important;
+}

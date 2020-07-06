@@ -121,13 +121,16 @@ td {
 .table-striped > tbody > tr:nth-child(2n + 1) > th {
   background-color: white;
 }
+
 tbody.noData tr:hover {
   background-color: unset;
 }
+
 tbody.noData > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
   background-color: unset;
 }
+
 .collapse {
   width: 100%;
   padding: 0;
@@ -517,7 +520,7 @@ angular4-multiselect > div.c-btn {
 
 .modal-dialog {
   margin-top: auto;
-  top: 15%;
+  top:4.5vh
 }
 
 .download-pdf {
@@ -535,9 +538,6 @@ angular4-multiselect > div.c-btn {
   font-size: 12px;
 }
 
-::ng-deep .quillEditor quill-editor .ql-container.ql-snow {
-  height: 255px !important;
-}
 
 .top-bar > div {
   display: flex;
@@ -552,6 +552,7 @@ angular4-multiselect > div.c-btn {
 .top-bar > div:last-child {
   justify-content: flex-end;
 }
+
 .top-bar {
   height: 13.5%;
 }
@@ -633,6 +634,16 @@ td {
 .hr-margin {
   margin: 0.25vh 0 2vh 0;
 }
+
+#helpModal .modal-content{
+  height:75vh;
+}
+
+::ng-deep .quillEditor .quill .ql-container .ql-editor {
+  height: 42.5vh;
+  overflow: auto; 
+}
+
 .display-notes-scroll {
   height: 45vh;
   min-height: unset;

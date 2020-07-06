@@ -376,9 +376,7 @@
     </div>
   </div>
 </div>
-<!-- <div class="flex-container row tool-body" *ngIf="!reports.length" style="background: #f1f1f1">
-  <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
-</div> -->
+
 <div id="ModalComment" class="modal fade" role="dialog" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -770,18 +768,18 @@
         <h5 class="modal-title help-title">Help</h5>
       </div>
       <div class="modal-body display-notes-scroll-modal">
-        <div class="row" style="margin-bottom: 13px;">
+        <div class="row" style="padding-right: 0px;margin-right: 0px;margin-bottom: 15px;">
           <div class="col-9">
             <button class="save-text-ddm" [cssBtn]="'ok'" mat-raised-button (click)="content_edits()" *ngIf="editModes"
               style="margin-right:3%">Save</button>
             <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="resetHelpParams()"
               *ngIf="editModes">Cancel</button>
           </div>
-          <div class="col-3">
+          <div class="col-3" style="padding-right: 0px;">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
               style="background-color:white; border:none;float:right">
               <a data-toggle="tooltip" title="EDIT">
-                <i id="ic" class="material-icons">mode_edit</i>
+                <i id="ic" class="material-icons" style="font-size: 2.5rem;margin-left: 50%;">mode_edit</i>
               </a>
             </button>
           </div>

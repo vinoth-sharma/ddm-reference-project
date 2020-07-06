@@ -185,10 +185,6 @@ hr {
     font-style: italic;
 }
 
-::ng-deep .main-tool-body-content .information .quill .ql-container .ql-editor {
-    border: lightgray solid 1px;
-}
-
 .market-selections-main {
     max-height: 36vh;
     overflow-y: auto;
@@ -245,5 +241,6 @@ hr {
     padding:20px;
 }
 
-
-
+#helpModal .modal-content{
+    height:75vh;
+}

@@ -43,9 +43,6 @@
     text-decoration: underline;
 }
 
-::ng-deep quill-editor .ql-container.ql-snow {
-    height: 36vh;
-}
 
 .disclaimer_section {
     width: 50%;
@@ -71,4 +68,19 @@ h3 {
 
 .disclaimer-footer {
     margin-left : 41vw;
+}
+
+::ng-deep .cdk-global-overlay-wrapper{
+    align-items: flex-start !important;
+}
+
+::ng-deep .cdk-overlay-pane{
+    margin-top:4vh;
+}
+
+::ng-deep .quillEditorSubmit .quill .ql-container .ql-editor {
+    border: lightgray solid 1px;
+    max-height: 44vh !important;
+    min-height: 44vh !important;
+    overflow: auto !important;
 }

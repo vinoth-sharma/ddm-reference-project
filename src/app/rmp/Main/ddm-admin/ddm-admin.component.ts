@@ -491,7 +491,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
 
   // upload file to server
   public files() {
-    if (this.file['type'] == 'text/csv' || this.file['type'] == 'application/pdf' || this.file['type'] == 'application/msword' || this.file['type'] == 'application/vnd.ms-word.document.macroEnabled.12' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel') {
+    if (this.file['type'] == 'text/csv' || this.file['type'] == 'application/pdf' || this.file['type'] == 'application/msword' || this.file['type'] == 'application/vnd.ms-word.document.macroEnabled.12' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || this.file['type'] == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || this.file['type'] == 'application/vnd.ms-excel' || this.file['type'] == 'application/zip' || this.file['type'] == 'video/mp4') {
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       var formData = new FormData();
       formData.append('file_upload', this.file);
@@ -579,7 +579,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   }
 
   // route to internal and external links
-  routeToUrl(url) {
+  public routeToUrl(url) {
     let urlList = this.auth_service.getListUrl();
     let appUrl = urlList.find(link => link === url)
     if (appUrl) {
@@ -593,7 +593,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   }
 
   // validate weather the url is ristricted or not
-  validateRestictedUrl(url) {
+  public validateRestictedUrl(url) {
     let restricedUrl = this.auth_service.restrictedUrls()
     let urlFinder = restricedUrl.filter(item => item == url)
     if (urlFinder.length > 0) return true

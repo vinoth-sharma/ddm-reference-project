@@ -5,11 +5,9 @@
   </div>
   <div class="modal-body">
     <div class="quillEditorSubmit">
-      <div style="height: 60px;justify-content: flex-end;" class="ds-flex-centre">
-        <button mat-icon-button style="margin-right: 15px;" matTooltip="edit"
-          *ngIf="showEditOption && (user_role ==='Admin')" (click)="showEditOption=!showEditOption">
-          <mat-icon class="notification-icon">edit</mat-icon>
-        </button>
+      <div style="height: 50px;justify-content: flex-end;" class="ds-flex-centre">
+        <mat-icon style="margin-right: 15px;" matTooltip="edit" *ngIf="showEditOption && (user_role ==='Admin')"
+          (click)="showEditOption=!showEditOption" class="notification-icon">edit</mat-icon>
         <ng-container *ngIf="!showEditOption">
           <button mat-raised-button [cssBtn]="'ok'" style="margin-right: 15px;"
             (click)="submitReqHelpDesc()">Save</button>

@@ -3,12 +3,13 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+import '../../../assets/debug2.js';
+
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import { Router } from '@angular/router';
 import Utils from "../../../utils"
-import '../../../assets/debug2.js';
 declare var jsPDF: any;
 declare var $: any;
 import { NgLoaderService } from 'src/app/custom-directives/ng-loader/ng-loader.service';
@@ -162,7 +163,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public linkUrlId: number;
   public addUrlTitle: String = '';
   public linkToUrlFlag = true;
-  public frequencySelections = [{ name: 'One Time', value: "One Time" }, { name: "Freq Chg", value: 'Recurring' }]
+  public frequencySelections = [{ name: 'One Time', value: "One Time" }, { name: "Freq Chg", value: 'Freq Chg' }]
   public selectedNewFrequency: string = "";
   public isRecurringFrequencyHidden: boolean = false;
   public toolbarTooltips = {
@@ -281,7 +282,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public changeReportName(event: any, reportObject) {
     const changedReport = {};
     if (!reportObject.report_name || !reportObject.report_name.length) {
-      reportObject.report_name = this.ddmReportname;
       this.toasterService.error('Cannot save empty name');
     } else {
       changedReport['request_id'] = reportObject.ddm_rmp_post_report_id;
@@ -696,7 +696,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public updateFreq(request_id) {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
-    this.jsonfinal['status'] = "Recurring"
+    this.jsonfinal['status'] = "Freq Chg"
     this.jsonfinal['frequency'] = this.selectedNewFrequency;
     this.setFrequency();
     let comment = "Frequency has changed from : " + this.getPreviousFreqData(this.frequencyLength) + "\n" + " To :" + "\n" + this.getCurrentFreqData(this.jsonfinal);
@@ -1187,6 +1187,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     if (data == "") this.linkToUrlFlag = true
     else this.linkToUrlFlag = false;
   }
+
   // to get previous frequency in the form of string
   public getPreviousFreqData(freqArr) {
     let tempArr = []
@@ -1225,7 +1226,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   // get frequency keys from array
   public getFreqName(id, arr) {
     let obj = arr.find(item => item.ddm_rmp_lookup_select_frequency_id == id.ddm_rmp_lookup_select_frequency_id)
-    return obj.select_frequency_values == "Other" ? obj.select_frequency_values + " - " + id.description : obj.select_frequency_values
+    return (obj.select_frequency_values == "Other" || obj.select_frequency_values == "Specific Consensus Period:") ? obj.select_frequency_values + " - " + id.description : obj.select_frequency_values
   }
 
   // post a comment when frequency is changed

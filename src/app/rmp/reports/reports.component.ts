@@ -1215,7 +1215,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   // get frequency keys from array
   public getFreqName(id, arr) {
     let obj = arr.find(item => item.ddm_rmp_lookup_select_frequency_id == id.ddm_rmp_lookup_select_frequency_id)
-    return obj.select_frequency_values == "Other" ? obj.select_frequency_values + " - " + id.description : obj.select_frequency_values
+    return (obj.select_frequency_values == "Other" || obj.select_frequency_values == "Specific Consensus Period:") ? obj.select_frequency_values + " - " + id.description : obj.select_frequency_values
   }
 
   // post a comment when frequency is changed

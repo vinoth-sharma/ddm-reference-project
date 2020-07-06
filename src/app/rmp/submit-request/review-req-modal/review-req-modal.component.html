@@ -211,8 +211,8 @@
                         File Attachment(s):
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 breakWord">
-                        <span *ngIf="!filesConfirmation">No</span>
-                        <span *ngIf="filesConfirmation && filesNames.length">{{ filesNames }}</span>
+                        <span *ngIf="( filesNames && !filesNames.length)">No</span>
+                        <span *ngIf="( filesNames && filesNames.length)">{{ filesNames }}</span>
                     </div>
                 </div>
             </div>
@@ -335,8 +335,8 @@
     </pre>
 <pre class="div-wrap">
         <b>File Attachment(s):</b> &nbsp;&nbsp;
-        <span *ngIf="!filesConfirmation">No</span>
-        <span *ngIf="filesConfirmation && filesNames.length">{{ filesNames }}</span>
+        <span *ngIf="( filesNames && !filesNames.length)">No</span>
+        <span *ngIf="( filesNames && filesNames.length)">{{ filesNames }}</span>
 </pre>
 </pre>
 </pre>

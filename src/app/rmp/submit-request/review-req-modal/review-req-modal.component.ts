@@ -60,7 +60,7 @@ export class ReviewReqModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.l_masterData = JSON.parse(JSON.stringify(this.data));
-    this.setupFilesData(this.l_masterData['selectedReqData']['is_attachment'], this.l_masterData['allFileNames'])
+    this.setupFilesData(this.l_masterData['allFileNames'])
     this.generateRequestData(this.data);
     this.generateMarketData(this.data.selectedReqData);
     if (this.data.reqBody.report_detail.report_type === "ots") {
@@ -71,11 +71,9 @@ export class ReviewReqModalComponent implements OnInit {
 
   }
 
-  public setupFilesData(confirmation: Boolean, filesObject: any) {
-    if (confirmation) {
-      this.filesConfirmation = true;
-      this.filesNames = filesObject;
-    }
+  public setupFilesData(filesObject: any) {
+    this.filesConfirmation = true;
+    this.filesNames = filesObject;
   }
 
   submitRequest() {

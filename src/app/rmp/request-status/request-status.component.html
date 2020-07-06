@@ -317,18 +317,6 @@
                   </button>
                 </div>
               </td>
-              <!-- <td *ngIf="user_role=='Non-Admin'">
-                <div>
-                  <button *ngIf="(element.file_id && element.file_id.length)" [cssBtn]="'mid'" mat-raised-button class="table-buttons"
-                  (click)="getRequestAttachments(element.file_id)" style="font-size: 12px">
-                  <i style="position: absolute;font-size: 24px;" class="material-icons">get_app</i>
-                </button>
-                </div>
-              </td> -->
-              <!-- <td *ngIf="user_role=='Admin' && element.status != 'In Process'">
-                <div>
-                </div>
-              </td> -->
               </tr>
               <tr>
                 <td class="col-sm-12" colspan="12" style="padding: 0;height:auto">
@@ -747,9 +735,9 @@
           </div>
           <div class="div-wrap">
             <b>File Attachment(s): </b> &nbsp;&nbsp;
-            <span *ngIf="!summary?.is_attachment">No&nbsp;&nbsp;</span>
+            <span *ngIf="(attached_file_names && !attached_file_names.length)">No&nbsp;&nbsp;</span>
             <span
-              *ngIf="summary?.is_attachment && attached_file_names.length">{{ attached_file_names }}&nbsp;&nbsp;</span>
+              *ngIf="(attached_file_names && attached_file_names.length)">{{ attached_file_names }}&nbsp;&nbsp;</span>
           </div>
         </div>
       </div>
@@ -1295,7 +1283,7 @@
 </pre>
 <pre class="div-wrap">
   <b>File Attachment(s):</b>
-  <span *ngIf="!summary?.is_attachment">No&nbsp;&nbsp;</span>
-  <span *ngIf="summary?.is_attachment && attached_file_names.length">{{ attached_file_names }}&nbsp;&nbsp;</span>
+  <span *ngIf="(attached_file_names && !attached_file_names.length)">No&nbsp;&nbsp;</span>
+  <span *ngIf="(attached_file_names && attached_file_names.length)">{{ attached_file_names }}&nbsp;&nbsp;</span>
 </pre>
 </pre>

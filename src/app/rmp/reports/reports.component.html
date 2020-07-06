@@ -678,9 +678,9 @@
             <!--                                    File Attachment section code start              -->
             <div class="div-wrap">
               <b>File Attachment(s): </b> &nbsp;&nbsp;
-              <span *ngIf="!summary?.is_attachment">No&nbsp;&nbsp;</span>
+              <span *ngIf="(attached_file_names && !attached_file_names.length)">No&nbsp;&nbsp;</span>
               <span
-                *ngIf="summary?.is_attachment && attached_file_names.length">{{ attached_file_names }}&nbsp;&nbsp;</span>
+                *ngIf="(attached_file_names && attached_file_names.length)">{{ attached_file_names }}&nbsp;&nbsp;</span>
             </div>
             <!--                                    File Attachment section code end                -->
           </div>
@@ -877,8 +877,8 @@
   </pre>
   <pre class="div-wrap">
     <b>File Attachment(s):</b>
-    <span *ngIf="!summary?.is_attachment">No&nbsp;&nbsp;</span>
-    <span *ngIf="summary?.is_attachment && attached_file_names.length">{{ attached_file_names }}&nbsp;&nbsp;</span>
+    <span *ngIf="(attached_file_names && !attached_file_names.length)">No&nbsp;&nbsp;</span>
+    <span *ngIf="(attached_file_names && attached_file_names.length)">{{ attached_file_names }}&nbsp;&nbsp;</span>
   </pre>
   </pre>
   </pre>

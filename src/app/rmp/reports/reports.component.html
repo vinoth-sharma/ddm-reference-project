@@ -675,6 +675,14 @@
               </div>
               <!--                                    Dealer allocation Part End                      -->
             </div>
+            <!--                                    File Attachment section code start              -->
+            <div class="div-wrap">
+              <b>File Attachment(s): </b> &nbsp;&nbsp;
+              <span *ngIf="(attached_file_names && !attached_file_names.length)">No&nbsp;&nbsp;</span>
+              <span
+                *ngIf="(attached_file_names && attached_file_names.length)">{{ attached_file_names }}&nbsp;&nbsp;</span>
+            </div>
+            <!--                                    File Attachment section code end                -->
           </div>
         </div>
       </div>
@@ -866,6 +874,11 @@
         <b>Additional Requirements:</b>
         <span *ngIf='summary && summary.additional_req'>{{summary?.additional_req}}</span>
     </pre>
+  </pre>
+  <pre class="div-wrap">
+    <b>File Attachment(s):</b>
+    <span *ngIf="(attached_file_names && !attached_file_names.length)">No&nbsp;&nbsp;</span>
+    <span *ngIf="(attached_file_names && attached_file_names.length)">{{ attached_file_names }}&nbsp;&nbsp;</span>
   </pre>
   </pre>
   </pre>

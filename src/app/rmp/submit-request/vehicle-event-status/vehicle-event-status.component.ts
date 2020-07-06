@@ -174,6 +174,7 @@ export class VehicleEventStatusComponent implements OnInit {
         let l_status = res.data.status;
         let l_reportId = res.data.ddm_rmp_post_report_id;
         let l_reqType = res.data.report_type;
+        //ots is the code for VES page
         this.display_message = `Request #${l_reportId} (Request type - ${l_reqType === "ots" ? "Vehicle event status" : "Dealer Allocation"})`;
 
         if (res.type === "srw" && (l_status === "Cancelled" || l_status === "Completed")) {
@@ -386,11 +387,12 @@ export class VehicleEventStatusComponent implements OnInit {
         l_addReq: this.req_body.report_detail.additional_req,
         l_isVvinReq: this.req_body.report_detail.is_vin_level_report,
         l_isSummaryReq: this.req_body.report_detail.is_summary_report,
-        l_businessReq: this.req_body.report_detail.business_req
-
+        l_businessReq: this.req_body.report_detail.business_req,
+        l_requestId: this.req_body.report_id,
+        l_prevSeletedFiles: this.submitService.fileObjectDetails
       }
-      if(!(this.keyDataEle.others.checked || this.keyDataEle.selected.length)){
-          this.req_body.data_date_range = { StartDate: null, EndDate: null };
+      if (!(this.keyDataEle.others.checked || this.keyDataEle.selected.length)) {
+        this.req_body.data_date_range = { StartDate: null, EndDate: null };
       }
       const dialogRef = this.matDialog.open(AdditionalReqModalComponent, {
         data: obj, disableClose: true
@@ -449,7 +451,8 @@ export class VehicleEventStatusComponent implements OnInit {
       data: {
         reqBody: this.req_body,
         selectedReqData: this.l_selectedReqData,
-        selectedFile: result.data.selectedFile
+        selectedFile: result.data.selectedFile,
+        allFileNames: result.data.allFileNames
       }, disableClose: true
     })
 

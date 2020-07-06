@@ -46,6 +46,9 @@ export class ReviewReqModalComponent implements OnInit {
     consensusProcess: []
   };
   public l_masterData: any;
+  public filesConfirmation: boolean = false;
+  public filesNames: string = "";
+
 
   constructor(public dialogRef: MatDialogRef<ReviewReqModalComponent>,
     private toaster: NgToasterComponent,
@@ -57,6 +60,7 @@ export class ReviewReqModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.l_masterData = JSON.parse(JSON.stringify(this.data));
+    this.setupFilesData(this.l_masterData['allFileNames'])
     this.generateRequestData(this.data);
     this.generateMarketData(this.data.selectedReqData);
     if (this.data.reqBody.report_detail.report_type === "ots") {
@@ -64,6 +68,12 @@ export class ReviewReqModalComponent implements OnInit {
     }
     else
       this.generateDealerAllocation(this.data.reqBody)
+
+  }
+
+  public setupFilesData(filesObject: any) {
+    this.filesConfirmation = true;
+    this.filesNames = filesObject;
   }
 
   submitRequest() {
@@ -82,6 +92,7 @@ export class ReviewReqModalComponent implements OnInit {
       this.closeDailog();
       Utils.hideSpinner();
       this.toaster.success(`Request #${this.l_masterData.reqBody.report_id} Updated successfully`);
+      this.submitService.fileObjectDetails = [];
       this.router.navigate(["user/request-status"]);
     }, err => {
       Utils.hideSpinner();
@@ -97,6 +108,7 @@ export class ReviewReqModalComponent implements OnInit {
       this.closeDailog();
       Utils.hideSpinner();
       this.toaster.success(`Request #${this.l_masterData.reqBody.report_id} Updated successfully`);
+      this.submitService.fileObjectDetails = [];
       this.router.navigate(["user/request-status"]);
     }, err => {
       Utils.hideSpinner();
@@ -104,10 +116,14 @@ export class ReviewReqModalComponent implements OnInit {
   }
 
   submitFile() {
-    if (this.data.selectedFile)
-      this.django.ddm_rmp_file_data(this.data.selectedFile).subscribe(response => {
-      }, err => {
-      });
+    this.data.selectedFile.forEach((element, index) => {
+      if (element) {
+        this.django.ddm_rmp_file_data(this.data.selectedFile[index]).subscribe(response => {
+          this.toaster.success("File/s upload successful!")
+        }, err => {
+        });
+      }
+    });
   }
 
   generateRequestData(data) {
@@ -240,7 +256,6 @@ export class ReviewReqModalComponent implements OnInit {
       data: `${l_obj.endM} - ${l_obj.endY} (${l_obj.endCycle})`
     }
     this.dealerAlloc.consensusProcess.push(obj2);
-
   }
 
   generateMarketData(data) {
@@ -334,11 +349,12 @@ export class ReviewReqModalComponent implements OnInit {
       }
 
       let freqData = [];
-       data.frequency_data.map(ele => freqData.push(ele.select_frequency_values))
+      data.frequency_data.map(ele => freqData.push(ele.select_frequency_values))
       this.otherReportCriteria.frequency_data = freqData.join(',');
     }
 
     if (data.special_identifier_data.length) {
+      // BAC and FAN
       this.otherReportCriteria.spclIdentifiers = data.special_identifier_data.map(ele => {
         return {
           label: ele.spl_desc,
@@ -348,6 +364,7 @@ export class ReviewReqModalComponent implements OnInit {
     }
 
     this.otherReportCriteria.textNotification = data.user_data[0].alternate_number ? "Yes" : "No";
+
   }
 
   downloadSummary() {

@@ -20,6 +20,7 @@ export class SubmitRequestService {
   public onBehalfUser = "";
   public loadingStatus = new Subject<any>();
   public requestStatusEmitter = new Subject();
+  public fileObjectDetails : any = []
 
   public getHttpLookUpTableData() {
     return this.djangoService.getLookupValues().pipe(map((res: any) => {

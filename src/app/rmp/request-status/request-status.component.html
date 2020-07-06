@@ -170,7 +170,7 @@
                 <div style="margin-bottom: 40px;width: auto !important;">Query Criteria</div>
               </th>
               <th>
-                <div style="margin-bottom: 40px;width: auto !important;">Generate Report</div>
+                <div style="margin-bottom: 40px;width: auto !important;">Query Attachment(s)</div>
               </th>
             </tr>
           </thead>
@@ -307,24 +307,14 @@
                   </button>
                 </div>
               </td>
-              <td *ngIf="user_role=='Admin' && element.status == 'In Process'">
+              <td *ngIf="user_role=='Admin' || user_role=='Non-Admin'">
                 <div>
-                  <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" routerLinkActive="active-route"
-                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
-                    Create Report
+                  <button title="Download Request-Id-{{element.ddm_rmp_post_report_id}} attachment(s)"
+                    *ngIf="( (element.file_id != null) && element.file_id.length)" [cssBtn]="'mid'" mat-raised-button
+                    class="table-buttons" (click)="getRequestAttachments(element.file_id)" style="font-size: 12px">
+                    <i style="position: absolute;font-size: 24px;color: white;padding-left: 0.25vw;"
+                      class="material-icons">get_app</i>
                   </button>
-                </div>
-              </td>
-              <td *ngIf="user_role=='Non-Admin' && element.status == 'In Process'">
-                <div>
-                  <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" routerLinkActive="active-route"
-                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
-                    Create Report
-                  </button>
-                </div>
-              </td>
-              <td *ngIf="user_role=='Admin' && element.status != 'In Process'">
-                <div>
                 </div>
               </td>
               </tr>
@@ -742,6 +732,12 @@
               </div>
             </div>
             <!--                                    Dealer allocation Part End                      -->
+          </div>
+          <div class="div-wrap">
+            <b>File Attachment(s): </b> &nbsp;&nbsp;
+            <span *ngIf="(attached_file_names && !attached_file_names.length)">No&nbsp;&nbsp;</span>
+            <span
+              *ngIf="(attached_file_names && attached_file_names.length)">{{ attached_file_names }}&nbsp;&nbsp;</span>
           </div>
         </div>
       </div>
@@ -1284,5 +1280,10 @@
       <b>Additional Requirements:</b> &nbsp;&nbsp;
       <span *ngIf='summary && summary.additional_req'>{{summary?.additional_req}}</span>
   </pre>
+</pre>
+<pre class="div-wrap">
+  <b>File Attachment(s):</b>
+  <span *ngIf="(attached_file_names && !attached_file_names.length)">No&nbsp;&nbsp;</span>
+  <span *ngIf="(attached_file_names && attached_file_names.length)">{{ attached_file_names }}&nbsp;&nbsp;</span>
 </pre>
 </pre>

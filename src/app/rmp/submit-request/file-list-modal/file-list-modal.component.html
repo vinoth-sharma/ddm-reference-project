@@ -1,0 +1,22 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <p>Change file selections
+    <p>
+      <mat-icon style="cursor:pointer;" (click)="closeDialog();">close</mat-icon>
+  </div>
+  <div class="modal-body">
+    <div class="mb-1" *ngFor="let file of data">
+      <div class="col-xs-7 pr-0">
+        {{ file.file_name }}
+      </div>
+      <div class="col-xs-3 pl-0 ">
+        <i *ngIf="file.file_id != 'NA'" id="ic" class="material-icons small pointer"
+          title="This file has been already saved earlier in Database!">check_circle_outline</i>
+      </div>
+      <div class="col-xs-2">
+        <a data-toggle="tooltip" title="Delete file"><i id="ic" class="material-icons pointer"
+            (click)="deleteFileCapture(file)">delete</i></a>
+      </div>
+    </div>
+  </div>
+</div>

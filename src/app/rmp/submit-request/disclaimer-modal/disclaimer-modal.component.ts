@@ -78,7 +78,7 @@ export class DisclaimerModalComponent implements OnInit {
     this.django.user_info_disclaimer(this.disclaimerAckObj).subscribe(response => {
       this.dialogRef.close(new Date());
       Utils.hideSpinner()
-      this.toaster.success("Acknowledged Disclaimers successfull");
+      this.toaster.success("Acknowledged Disclaimers successfully");
     }, err => {
       Utils.hideSpinner()
       this.toaster.success("server error");

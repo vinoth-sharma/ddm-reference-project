@@ -47,6 +47,7 @@ import { ReviewReqModalComponent } from './submit-request/review-req-modal/revie
 import { RequestOnbehalfComp } from './submit-request/request-onbehalf/request-onbehalf.component';
 import { BrandFormsComponent } from './Main/brand-forms/brand-forms.component';
 import { ReportCriteriaHelpComponent } from './submit-request/report-criteria-help/report-criteria-help.component';
+import { FileListModalComponent } from './submit-request/file-list-modal/file-list-modal.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { ReportCriteriaHelpComponent } from './submit-request/report-criteria-he
     ReviewReqModalComponent,
     RequestOnbehalfComp,
     BrandFormsComponent,
-    ReportCriteriaHelpComponent
+    ReportCriteriaHelpComponent,
+    FileListModalComponent
   ],
   imports: [
     QuillModule.forRoot(),
@@ -107,6 +109,6 @@ import { ReportCriteriaHelpComponent } from './submit-request/report-criteria-he
   ],
   entryComponents: [DisplayNotesComponent, NotesWrapperComponent, DisclaimerModalComponent,
     DisclaimerHelpModalComponent, AdditionalReqModalComponent, ReviewReqModalComponent,
-    RequestOnbehalfComp, ReportCriteriaHelpComponent]
+    RequestOnbehalfComp, ReportCriteriaHelpComponent, FileListModalComponent]
 })
 export class RMPModule { }

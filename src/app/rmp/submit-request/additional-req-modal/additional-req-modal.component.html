@@ -6,7 +6,7 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
+                <div class="noPadding">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margBottom">
                         <mat-form-field style="width: 100%">
                             <mat-label>Report Title<span class="red">*</span></mat-label>
@@ -15,17 +15,20 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 noPadding">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 margBottom">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 margBottom">
                         Attach files from the computer
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <input type="file" id="file-upload">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <input type="file" title="Please upload a file of CSV/PDF/WORD/EXCEL format!" id="file-upload"
+                            (change)="getFileDetails()" style="color: white;" />
+                    </div>
+                    <div (click)="openFileChangesModal()" title="Click here to deselect the selected files"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-5 file-input" id="selectedFiles">
                     </div>
                 </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
                 <ng-container *ngFor="let cb of l_CB_data">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding ds-flex-centre"
                         *ngIf="cb.description && [1,2].includes(cb.ddm_rmp_ots_checkbox_group_id)">
@@ -54,7 +57,7 @@
                     </div>
                 </ng-container>
 
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding" style="margin-top: 1vw;">
                     <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
                         <div>Is this a Order Number/VIN level detail report?</div>
                     </div>

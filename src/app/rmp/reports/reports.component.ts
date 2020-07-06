@@ -87,6 +87,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   public summary: any;
   public bac_description: any;
   public fan_desc: any;
+  public attached_file_names: any;
   public text_notification: any;
 
   /*--------------------------------------*/
@@ -1088,6 +1089,15 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       else {
         this.fan_desc = []
       }
+
+      if (response['is_attachment'] && response['attached_files_details'].length) {
+        let fileObjects = response['attached_files_details'];
+        this.attached_file_names = fileObjects.map(f => f.file_name).join(",")
+      }
+      else if (response['is_attachment'] == false) {
+        this.attached_file_names = ""
+      }
+
       this.text_notification = response["user_data"][0]['alternate_number'];
       this.summary = response;
 

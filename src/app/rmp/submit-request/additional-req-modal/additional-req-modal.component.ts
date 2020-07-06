@@ -12,7 +12,7 @@ import { SubmitRequestService } from "../submit-request.service";
 })
 export class AdditionalReqModalComponent implements OnInit {
 
-  public supportedFiles = ["csv", "pdf", "doc", "docx", "xlsx"];
+  public supportedFiles = ["csv", "pdf", "doc", "docx", "xlsx", "mp4", "zip"];
   public radioOpt = [{ label: "Yes", value: true }, { label: "No", value: false }]
   public report_title = "";
   public additional_req = "";
@@ -55,10 +55,14 @@ export class AdditionalReqModalComponent implements OnInit {
     this.responseData.selectedFile = (this.data.l_prevSeletedFiles != undefined) ? this.data.l_prevSeletedFiles : []
     this.procuredRequestId = this.data.l_requestId;
 
+    this.selDiv = document.querySelector("#selectedFiles");
 
     if (this.data.l_prevSeletedFiles != undefined) {
       this.selDiv.innerHTML = this.data.l_prevSeletedFiles.map(f => f.file_name).join(",&nbsp;<br>")
       this.selDiv.innerHTML = this.selDiv.innerHTML + ",&nbsp;<br>"
+    }
+    else {
+      this.data.l_prevSeletedFiles = [];
     }
   }
 
@@ -81,7 +85,9 @@ export class AdditionalReqModalComponent implements OnInit {
       let uniqueSelectedFileInput = [];
       this.breakFileAddition = false;
       if (this.l_newSelectedFileDataArray.length == 0) {
-        this.data.l_prevSeletedFiles.map((t) => { if (t['file_name'] == newlySelectedFileInput[0]['name']) { this.toaster.error("Please select a non-duplicate file!!"); this.breakFileAddition = true; } })
+        if (this.data.l_prevSeletedFiles.length != 0) {
+          this.data.l_prevSeletedFiles.map((t) => { if (t['file_name'] == newlySelectedFileInput[0]['name']) { this.toaster.error("Please select a non-duplicate file!!"); this.breakFileAddition = true; } })
+        }
         if (this.breakFileAddition == false) {
           this.l_newSelectedFileDataArray = [...newlySelectedFileInput];
           this.l_newSelectedFileDataArray = Array.from(this.l_newSelectedFileDataArray);
@@ -97,7 +103,12 @@ export class AdditionalReqModalComponent implements OnInit {
       }
 
       // file display logic
-      this.data.l_prevSeletedFiles = [...this.submitRequestService.fileObjectDetails];
+      if ((this.submitRequestService.fileObjectDetails != undefined) && (this.submitRequestService.fileObjectDetails.length != 0)) {
+        this.data.l_prevSeletedFiles = [...this.submitRequestService.fileObjectDetails];
+      }
+      else {
+        this.data.l_prevSeletedFiles = [];
+      }
       Array.prototype.push.apply(this.data.l_prevSeletedFiles, this.l_newSelectedFileDataArray);
       this.constructFileNames(this.data.l_prevSeletedFiles);
     }

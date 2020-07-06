@@ -288,8 +288,7 @@ export class SelectReportCriteriaComp implements OnInit {
       this.req_body.report_id = null;
       this.req_body.report_detail.report_type = "";
     }
-    console.log("LATEST UPDATED DATA OBJ after S&P :",this.req_body);
-    
+
     // confirmation of S&P
     Utils.showSpinner();
     this.submitService.submitUserMarketSelection(this.req_body).subscribe(response => {

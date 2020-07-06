@@ -127,7 +127,6 @@ export class DealerAllocationComp implements OnInit {
     })
 
     this.subjectSubscription = this.submitService.requestStatusEmitter.subscribe((res: any) => {
-      console.log("result obtained in this.submitService.requestStatusEmitter:", res);
 
       if (res.type === "srw") {
         this.l_selectedReqData = res.data;

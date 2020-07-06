@@ -373,7 +373,7 @@ export class DealerAllocationComp implements OnInit {
   };
 
   public allocation_settings = {
-    label: "Allocation Groups(s)",
+    label: "Allocation Groups",
     primary_key: 'ddm_rmp_lookup_dropdown_allocation_group_da_id',
     label_key: 'allocation_group',
     title: "",

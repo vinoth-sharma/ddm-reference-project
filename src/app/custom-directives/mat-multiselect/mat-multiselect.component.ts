@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormControl, FormBuilder } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 declare var document: any;
 
@@ -23,7 +23,8 @@ export class MatMultiselect implements OnInit {
   searched_data = [];
   selectAll = [2];
   l_db = [];
-  sortApplicableArr = ["Region","Zone","Area","GMMA","LMA"];
+  sortApplicableArr = ["Region", "Zone", "Area", "GMMA", "LMA", "Vehicle Line Brands", "Allocation Groups",
+    "Merchandising Models", "Order Types"]
 
   constructor(private fb: FormBuilder) { }
 
@@ -50,7 +51,7 @@ export class MatMultiselect implements OnInit {
       if (this.data.length) {
         this.l_data = JSON.parse(JSON.stringify(this.data));
         this.l_db = this.inputModel ? this.inputModel.map(ele => ele[this.settings.primary_key]) : [];
-        
+
         //remove selcted items which is not present in master data
         this.l_db = this.l_db.filter(value => {
           if (this.l_data.some(ele => ele[this.settings.primary_key] === value))

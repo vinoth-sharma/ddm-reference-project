@@ -613,10 +613,10 @@
             </div>
             <div class="div-wrap" *ngIf='special_identifier && special_identifier.length'>
               <b style="font-size:120%">Special Identifiers</b>
-            <div *ngFor='let spcl of special_identifier'> 
-             <b>{{spcl.label}}:</b>&nbsp;&nbsp;<span>{{spcl.value}}</span>
+              <div *ngFor='let spcl of special_identifier'>
+                <b>{{spcl.label}}:</b>&nbsp;&nbsp;<span>{{spcl.value}}</span>
+              </div>
             </div>
-          </div>
             <div class="div-wrap">
               <b>Emails:</b> &nbsp;&nbsp;
               <span>{{dl_list}}</span>
@@ -701,30 +701,30 @@
                 <br>
               </div>
               <div class="div-wrap">
-                  <b>DOSP - Orders Processed:</b> &nbsp;&nbsp;
-                  <span *ngFor="let element of summary?.ost_data.data_date_range">
-                    <b>Start:</b>&nbsp;{{element?.dosp_start_date| date: 'dd-MMM-yyyy'}}
-                    <b>End:</b>&nbsp;{{element?.dosp_end_date| date: 'dd-MMM-yyyy' }}
-                  </span>
-                  <br>
-                </div>
-                <div class="div-wrap" *ngIf='is_vin_level_report'>
-                       <b>Is this a Order Number/VIN level detail report?:</b>
-                    <span>
-                            {{is_vin_level_report}}
-                    </span>
-                </div>
-                <div class="div-wrap" *ngIf='is_summary_report'>
-                    <b>Is this a summary report with metrics?:</b>
-                    <span>
-                            {{is_summary_report}}
-                    </span>
-                </div>
-                <div class="div-wrap">
-                    <b>Additional Requirements:</b> &nbsp;&nbsp;
-                    <span>{{summary?.additional_req}}</span>
-                    <br>
-                </div>
+                <b>DOSP - Orders Processed:</b> &nbsp;&nbsp;
+                <span *ngFor="let element of summary?.ost_data.data_date_range">
+                  <b>Start:</b>&nbsp;{{element?.dosp_start_date| date: 'dd-MMM-yyyy'}}
+                  <b>End:</b>&nbsp;{{element?.dosp_end_date| date: 'dd-MMM-yyyy' }}
+                </span>
+                <br>
+              </div>
+              <div class="div-wrap" *ngIf='is_vin_level_report'>
+                <b>Is this a Order Number/VIN level detail report?:</b>
+                <span>
+                  {{is_vin_level_report}}
+                </span>
+              </div>
+              <div class="div-wrap" *ngIf='is_summary_report'>
+                <b>Is this a summary report with metrics?:</b>
+                <span>
+                  {{is_summary_report}}
+                </span>
+              </div>
+              <div class="div-wrap">
+                <b>Additional Requirements:</b> &nbsp;&nbsp;
+                <span>{{summary?.additional_req}}</span>
+                <br>
+              </div>
             </div>
             <!--                                Order To Sale Start                                    -->
 
@@ -781,18 +781,18 @@
         <h5 class="modal-title help-title">Help</h5>
       </div>
       <div class="modal-body display-notes-scroll-modal">
-        <div class="row" style="margin-bottom: 13px;">
+        <div class="row" style="padding-right: 0px;margin-right: 0px;margin-bottom: 15px;">
           <div class="col-9">
             <button class="save-text-ddm" [cssBtn]="'ok'" mat-raised-button (click)="content_edits()" *ngIf="editModes"
               style="margin-right:3%">Save</button>
             <button class="save-text-ddm" [cssBtn]="'cancel'" mat-raised-button (click)="resetHelpParams()"
               *ngIf="editModes">Cancel</button>
           </div>
-          <div class="col-3">
+          <div class="col-3" style="padding-right: 0px;">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)='editEnable()'
               style="background-color:white; border:none;float:right">
               <a data-toggle="tooltip" title="EDIT">
-                <i id="ic" class="material-icons">mode_edit</i>
+                <i id="ic" class="material-icons" style="font-size: 2.5rem;margin-left: 50%;">mode_edit</i>
               </a>
             </button>
           </div>

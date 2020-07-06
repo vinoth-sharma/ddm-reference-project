@@ -59,7 +59,8 @@
           style="display:none"></button>
       </div>
       <div class="tableFixHead">
-        <table class="table report_table table-bordered table-hover" style="overflow:-moz-hidden-unscrollable;border: unset;">
+        <table class="table report_table table-bordered table-hover"
+          style="overflow:-moz-hidden-unscrollable;border: unset;">
           <thead class="thead">
             <tr>
               <th>
@@ -146,8 +147,8 @@
               <th style="min-width: 135px;">
                 <div id="status_dropdown" style="width: 135px !important;">
                   <angular4-multiselect [data]="Status_List" [(ngModel)]="statusSelected"
-                    [settings]="StatusDropdownSettings" (onSelect)="changeStatusFilterData()" (onDeSelect)="changeStatusFilterData()"
-                    style="font-size: 12px;width:135px; ">
+                    [settings]="StatusDropdownSettings" (onSelect)="changeStatusFilterData()"
+                    (onDeSelect)="changeStatusFilterData()" style="font-size: 12px;width:135px; ">
                   </angular4-multiselect>
                 </div>
               </th>
@@ -169,7 +170,7 @@
                 <div style="margin-bottom: 40px;width: auto !important;">Query Criteria</div>
               </th>
               <th>
-                <div style="margin-bottom: 40px;width: auto !important;">Generate Report</div>
+                <div style="margin-bottom: 40px;width: auto !important;">Query Attachment(s)</div>
               </th>
             </tr>
           </thead>
@@ -306,26 +307,28 @@
                   </button>
                 </div>
               </td>
-              <td *ngIf="user_role=='Admin' && element.status == 'In Process'">
+              <td *ngIf="user_role=='Admin' || user_role=='Non-Admin'">
                 <div>
-                  <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" routerLinkActive="active-route"
-                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
-                    Create Report
+                  <button title="Download Request-Id-{{element.ddm_rmp_post_report_id}} attachment(s)"
+                    *ngIf="( (element.file_id != null) && element.file_id.length)" [cssBtn]="'mid'" mat-raised-button
+                    class="table-buttons" (click)="getRequestAttachments(element.file_id)" style="font-size: 12px">
+                    <i style="position: absolute;font-size: 24px;color: white;padding-left: 0.25vw;"
+                      class="material-icons">get_app</i>
                   </button>
                 </div>
               </td>
-              <td *ngIf="user_role=='Non-Admin' && element.status == 'In Process'">
+              <!-- <td *ngIf="user_role=='Non-Admin'">
                 <div>
-                  <button [cssBtn]="'mid'" mat-raised-button class="table-buttons" routerLinkActive="active-route"
-                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)" style="font-size: 12px">
-                    Create Report
-                  </button>
+                  <button *ngIf="(element.file_id && element.file_id.length)" [cssBtn]="'mid'" mat-raised-button class="table-buttons"
+                  (click)="getRequestAttachments(element.file_id)" style="font-size: 12px">
+                  <i style="position: absolute;font-size: 24px;" class="material-icons">get_app</i>
+                </button>
                 </div>
-              </td>
-              <td *ngIf="user_role=='Admin' && element.status != 'In Process'">
+              </td> -->
+              <!-- <td *ngIf="user_role=='Admin' && element.status != 'In Process'">
                 <div>
                 </div>
-              </td>
+              </td> -->
               </tr>
               <tr>
                 <td class="col-sm-12" colspan="12" style="padding: 0;height:auto">
@@ -766,7 +769,7 @@
 
         <h5 class="modal-title help-title">Help</h5>
       </div>
-      <div class="modal-body display-notes-scroll-modal" >
+      <div class="modal-body display-notes-scroll-modal">
         <div class="row" style="margin-bottom: 13px;">
           <div class="col-9">
             <button class="save-text-ddm" [cssBtn]="'ok'" mat-raised-button (click)="content_edits()" *ngIf="editModes"
@@ -908,9 +911,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" 
-        (click)="TBDsave()" [disabled]="!tbdselectedItems_report.length"
-        >Save Changes
+        <button type="button" [cssBtn]="'ok'" mat-raised-button data-dismiss="modal" (click)="TBDsave()"
+          [disabled]="!tbdselectedItems_report.length">Save Changes
         </button>
         <button type="button" [cssBtn]="'cancel'" mat-raised-button data-dismiss="modal"
           (click)="closeTBD()">Close</button>
@@ -1092,8 +1094,8 @@
         </div>
       </div>
       <div class="modal-body">
-        <select class="form-control"  style="height:36px;width:50%"
-          id="selectReportStatus" [(ngModel)]="selectedReportStatus">
+        <select class="form-control" style="height:36px;width:50%" id="selectReportStatus"
+          [(ngModel)]="selectedReportStatus">
           <option value="In Process"> In Process </option>
           <option value="Completed"> Completed </option>
         </select>

@@ -133,7 +133,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public model: string;
   public notification_set: Set<any>;
   public self_email: any;
-  public Status_List: { 'status_id': number; 'status': string;}[];
+  public Status_List: { 'status_id': number; 'status': string; }[];
   public setbuilder_sort: any[];
   public filters = {
     global: '',
@@ -240,7 +240,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   public totalRecords = 0;
 
   statusSelected = [];
-  downloadInProgress:boolean = false;
+  downloadInProgress: boolean = false;
 
   constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
@@ -257,7 +257,7 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
       { 'status_id': 1, 'status': 'Incomplete' },
       { 'status_id': 2, 'status': 'Pending' },
       { 'status_id': 3, 'status': 'In Process' },
-      { 'status_id': 4, 'status': 'Completed'},
+      { 'status_id': 4, 'status': 'Completed' },
       { 'status_id': 5, 'status': 'Freq Chg' },
       { 'status_id': 6, 'status': 'Cancelled' }
     ];
@@ -806,13 +806,13 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   //download all the request data into xlsx
-  downloadRequestDataExcel(){
+  downloadRequestDataExcel() {
     this.downloadInProgress = true;
-    const body = { page_no : 1 , page_size: this.totalRecords }
+    const body = { page_no: 1, page_size: this.totalRecords }
     this.django.list_of_requests(body).subscribe((list: any) => {
       this.xlsxJson(list.data);
       this.downloadInProgress = false;
-    },err=>{
+    }, err => {
       this.downloadInProgress = false;
     })
   }
@@ -1592,5 +1592,23 @@ export class RequestStatusComponent implements OnInit, OnChanges, AfterViewInit 
         this.sortFields[col] = ""
       }
     }
+  }
+
+  public getRequestAttachments(fileIds: any) {
+    fileIds.map(file_id => {
+      this.django.get_doc_link(file_id).subscribe(ele => {
+        Utils.showSpinner();
+        if (ele) {
+          var url = ele['data']['url'];
+          window.open(url, '_blank')
+          Utils.hideSpinner();
+        }
+      },
+        err => {
+          Utils.hideSpinner();
+          this.toastr.error("Server Error");
+        })
+    })
+
   }
 }

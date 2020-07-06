@@ -57,8 +57,11 @@ export class DjangoService {
         per_page: obj.per_page,
         page_no: obj.page_no
       }
-
     })
+  }
+
+  public list_of_requests(body) {
+    return this.httpClient.post(`${environment.baseUrl}RMP/new_request_filter/`, body);
   }
 
   public get_report_description(report_id) {

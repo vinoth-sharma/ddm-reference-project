@@ -228,8 +228,13 @@ export class MetricsComponent implements OnInit, AfterViewInit {
             });
           }
         });
+        let reportsSpecialBackuppp = this.reports[3];
+        console.log('reportsSpecialBackup',reportsSpecialBackuppp);
         for (var i = 0; i < this.reports.length; i++) {
           if (this.reports[i]['frequency_data'] != null) {
+            let reportsSpecialBackup = [...this.reports[i]];
+            console.log('reportsSpecialBackup',reportsSpecialBackup);
+            
             this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday'))
             if (this.reports[i]['description'] != null) {
               this.reports[i]['description'].forEach(ele => {
@@ -240,6 +245,7 @@ export class MetricsComponent implements OnInit, AfterViewInit {
                   }
                 }
               })
+              //write special logic
             }
           }
           else if (this.reports[i]['frequency_data_filtered'] == null) {

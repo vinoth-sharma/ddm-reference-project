@@ -376,6 +376,8 @@ export class SelectReportCriteriaComp implements OnInit {
     this.req_body.report_detail.is_vin_level_report = reqData.report_data.is_vin_level_report;
     this.req_body.report_detail.is_summary_report = reqData.report_data.is_summary_report;
     this.req_body.report_detail.business_req = reqData.report_data.business_req;
+    this.req_body.report_detail.link_to_results = reqData.report_data.link_to_results;
+    this.req_body.report_detail.link_title = reqData.report_data.link_title;
     this.req_body.report_id = reqData.ddm_rmp_post_report_id;
 
     this.submitService.setSubmitOnBehalf(this.req_body.report_detail.on_behalf_of, "");
